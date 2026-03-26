@@ -1,0 +1,28 @@
+=== DEFINIZIONE ===
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{theorem}
+   
+\end{theorem}}}
+
+
+
+=== TEOREMA ===
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{theorem}
+   
+\end{theorem}}}
+
+
+
+=== IMMAGINE ===
+\begin{figure}[H]
+    \includegraphics[width=0.5\linewidth]{}
+    \caption{caption}
+    \label{label}
+\end{figure}
+
+
+
+
+=== TABELLA ===
+\begin{tabular}{c|c}
+     
+\end{tabular}
