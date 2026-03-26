@@ -1,0 +1,73 @@
+\chapter{Programmazione Dinamica}
+\section{Panoramica generale}
+La programmazione dinamica, come il metodo Divide et Impera, risolve i problemi combinando le soluzioni dei sottoproblemi. La programmazione dinamica può essere applicata quando i sottoproblemi non sono indipendenti, ovvero quando i sottoproblemi hanno in comune dei sottoproblemi.\smallskip\\
+A differenza del metodo Divide et Impera, la programmazione dinamica risolve ciascun sotto - sottoproblema \textbf{una sola volta} e salva la sua soluzione in una tabella, evitando così di ricalcolare la soluzione ogni volta che si presenta il sotto - sottoproblema.\smallskip\\
+La programmazione dinamica, tipicamente, si applica ai \textbf{problemi di ottimizzazione}. Per questi problemi ci possono essere molte soluzioni possibili, ogni soluzione ha un valore e vogliamo trovare una soluzione con il valore ottimo.
+
+\section{Sviluppo dell'algoritmo}
+Per sviluppare un algoritmo che faccia uso della programmazione dinamica, seguiamo una strategia formata dalle seguenti quattro fasi:
+\begin{enumerate}
+    \item Identificare i sottoproblemi.
+    \item Definire la funzione di stato.
+    \item Scegliere tra un approccio \textsc{top down} o \textsc{bottom up}.
+
+    \item Recuperare la soluzione (se necessario).
+\end{enumerate}
+Vediamo nel dettaglio i vari passaggi.
+
+\subsection{Funzione di stato}
+Dopo aver identificato i sottoproblemi dobbiamo definire la \textbf{funzione di stato}.\smallskip\\
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
+    (Funzione di Stato) La funzione di stato è la funzione che descrive la soluzione di un sottoproblema. 
+\end{definition}}}\smallskip\\
+Ogni sottoproblema è identificato da una o più variabili di stato, cioè i parametri che descrivono in quale punto del problema ci si trova. La funzione di stato permette di tradurre il problema in una forma ricorsiva.\medskip\\
+Ora vediamo i due approcci \textsc{top down} e \textsc{bottom up}:\smallskip\\
+
+\subsection{Top - Down}
+Con l'approccio \textbf{Top Down} con \textbf{memoizzazione} scriviamo la soluzione ricorsiva, salvando il risultato di ciascun sottoproblema (di solito in un array o in una tabella hash). La procedura prima verifica se ha risolto precedentemente questo sottoproblema. In caso affermativo, restituisce il valore salvato, risparmiando gli ulteriori calcoli a quel livello; altrimenti, la procedura calcola il valore nel modo usuale e lo memoizza. Diciamo che la procedura ricorsiva è stata dotata di un blocco note (memo) e quindi memoizzata, nel senso che “annota” quali risultati sono stati calcolati in precedenza.
+ 
+
+\subsection{Bottom Up}
+Con l'approccio \textbf{Bottom Up} Risolviamo i problemi in ordine di grandezza, partendo dai più piccoli, e tenendo da parte la soluzione di ogni sottoproblema la prima volta che viene incontrato. Così facendo, quando si risolve un certo sottoproblema, le soluzioni di tutti quelli più piccoli da cui dipende sono già state salvate. Dobbiamo risolvere un sottoproblema una sola volta e la prima volta in cui ci imbattiamo in esso abbiamo già risolto tutti i sottoproblemi da cui dipende la sua soluzione.\bigskip\\
+
+
+\noindent \textit{Esempio.}\\
+Prendiamo in considerazione il problema della successione di \textbf{Fibonacci}.\\
+Per prima cosa vediamo un codice che non segue le regole della programmazione dinamica:
+\begin{verbatim}
+    int fib(int n) {
+        if (n <= 1) return n;
+        return fib(n-1) + fib(n-2);
+    }
+    // Complessità: O(2^n)
+\end{verbatim}
+Questa soluzione segue il metodo Divide et Impera, ma è molto inefficiente poichè sottoproblemi uguali vengono calcolati più volte, senza alcuna memorizzazione.\medskip\\
+
+\noindent Ora utilizziamo la programmazione dinamica.\\
+Vediamo prima l'approccio \textsc{top down} con memoizzazione:
+\begin{verbatim}
+    #define MAX 100
+    int memo[MAX];
+    int fib_memo(int n) {
+        if (memo[n] != -1) return memo[n];
+        if (n <= 1) return n;
+        memo[n] = fib_memo(n-1) + fib_memo(n-2);
+        return memo[n];
+    }
+    // In main(): inizializzare memo con -1
+\end{verbatim}
+In questa soluzione ogni valore delle chiamate ricorsive viene salvato in \texttt{meno[n]}, in questo modo non servirà ricalcolare sottoproblemi già calcolati in precedenza.\smallskip\\
+
+\noindent Infine vediamo l'approccio \textsc{bottom up}:
+\begin{verbatim}
+    int fib_tab(int n) {
+        int dp[MAX];
+        dp[0] = 0;
+        dp[1] = 1;
+        for (int i = 2; i <= n; i++)
+            dp[i] = dp[i-1] + dp[i-2];
+            return dp[n];
+        }
+\end{verbatim}
+Qui vengono prima calcolati i primi due sottoproblemi (\texttt{dp[0]  dp[1]}), che poi verranno usati nel ciclo \texttt{for} e non dovranno essere ricalcolati.
+    

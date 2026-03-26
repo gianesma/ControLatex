@@ -1,0 +1,281 @@
+\chapter{Algoritmi}
+
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
+    Un algoritmo è una procedura di calcolo ben definita che prende un certo valore (o un insieme di valori) come input e genera, in un tempo finito, un valore (o un insieme di valori) come output.
+\end{definition}}}\medskip\\
+Un algoritmo è quindi una sequenza di passi computazionali che trasforma l'input  nell'output.
+
+\section{Costo di un algoritmo}
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
+    Un algoritmo A ha costo O(g(n)) se la quantità di tempo (spazio) sufficiente per eseguire A su un input di dimensione n nel caso peggiore è O(g(n)).
+\end{definition}}}\\
+\subsection{Complessità temporale}
+La complessità temporale di un algoritmo è la misura del tempo di esecuzione di un algoritmo in funzione della dimensione dei dati in input. Questa complessità cresce al crescere della dimensione in input.
+
+\subsection{Complessità spaziale}
+La complessità spaziale di un algoritmo è una misura delle risorse hardware utilizzate durante l'esecuzione di un algoritmo. Se un algoritmo richiede più memoria per elaborare un insieme di dati più grande, allora ha una complessità spaziale più alta.
+
+\subsection{Istruzione dominante}
+Quando si analizza un algoritmo in cui sono presenti molti confronti, assegnazioni ecc..., è complicato calcolare il costo, in tal caso si prende in considerazione l'istruzione dominante, ovvero quell'operazione che si ripete più volte nel programma, tipicamente quella contenuta nei cicli più interni.
+
+\section{Andamento asintotico}
+L'andamento asintotico di un algoritmo è una misura della crescita del tempo di esecuzione o dello spazio richiesto quando le dimensioni dell'input crescono. In altre parole l'andamento asintotico ci dice come si comporta l'algoritmo quando l'input diventa grande, ovvero quando cresce la sua dimensione, il numero di bit di cui si ha bisogno di rappresentarlo (se l'input è pari ad n, la sua dimensione sarà pari a $\lceil \log_2(n+1) \rceil$). Il logaritmo in base 2 di un numero rappresenta esattamente il numero di bit necessari per rappresentarlo.\\
+
+\noindent L'analisi ha le seguente caratteristiche:
+\begin{itemize}
+    \item \textbf{Asintotica} $\rightarrow$ non vogliamo sapere la funzione di costo esatta, ma vogliamo sapere il suo andamento asintotico ($f(x)$ per $x\to \infty$)\smallskip\\
+    Due funzioni $f(x)$ e $g(x)$ hanno lo \textbf{stesso comportamento asintotico} quando $ \displaystyle \lim_{x\to\infty} \frac{f(x)}{g(x)} = C > 0$
+    Algoritmo divisi in 2:
+    \begin{itemize}
+        \item Costo esponenziale
+        \item Costo polinomiale
+    \end{itemize}
+
+    \item Analisi asintotica di \textbf{caso peggiore} (worst case)
+
+    \item Analisi asintotica della \textbf{dimensione in funzione dell’input} 
+    \begin{itemize}
+        \item Array in input con n celle, ogni cella ha $k$ bit, dimensione input $k \cdot n$ essendo $k$ costante mentre $n \to \infty$, $k$ la definiamo costante moltiplicativa perciò non ci interessa.
+    \end{itemize}
+    
+\end{itemize}
+
+\noindent L'algoritmo asintotico è utile perchè ci consente di fare previsioni sulle prestazioni di un algoritmo su input grandi senza dover eseguire l'algoritmo su input effettivamente grandi. \\
+Il \textbf{comportamento asintotico} del costo di un programma si basa sull'idea di trascurare costanti moltiplicative e termini di ordine inferiore, fornendo un valore che cambia man mano che la dimensione aumenta. Ad esempio, il costo an+b ha comportamento asintotico lineare, il costo $an^2+b$ ha comportamento asintotico quadratico, il costo $a \cdot log_bn +c$ ha comportamento asintotico logaritmico.\\
+Per calcolare la complessità di un algoritmo si utilizza l'analisi asintotica che trasforma il tempo di esecuzione dell'algoritmo in una funzione $T(n)$ in funzione della dimensione n dei dati in input, con la quale misurare il numero di comandi eseguiti dall'algoritmo.  
+
+\subsection{Analisi degli algoritmi}
+Analizzare un algoritmo significa prevedere le risorse che l'algoritmo richiederà, tra cui il tempo di elaborazione. Analizzando più algoritmi candidati a risolvere uno stesso problema, si può identificare quello più efficiente. Prima di analizzare un algoritmo, c'è bisogno di avere un modello della tecnologia di implementazione che sarà utilizzata e di un modo per esprimere i loro costi. Noi utilizzeremo il modello RAM (Random-Access Machine).
+
+\subsection{Notazioni}
+Ci sono delle notazioni principali utilizzate per esprimere l'andamento asintotico di un algoritmo:
+\subsubsection{Notazione O}
+La notazione $O$ definisce un limite superiore al comportamento asintotico di una funzione. In altre parole, ci dice che una funzione noncresce più velocemente di un certo tasso di crescita, determinato dal termine di ordine superiore.\medskip\\
+\textit{Esempio.}\\
+Data la funzione 
+$$7n^3+100n^2-20n+6$$
+il suo termine di ordine superiore è $7n^3$ e quindi diciamo che il tasso di crescita di questa funzione è $n^3$, poichè questa funzione non cresce più velocemente di $n^3$ possiamo scrivere che è $O(n^3)$
+
+\subsubsection{Notazione  $\Omega$}
+La notazione $\Omega$ definisce un limite inferiore al comportamento asintotico di una funzione. In altre parole, ci dice che una funzione cresce almeno alla sessa velocità di un certo tasso di crescita.\medskip\\
+\textit{Esempio.}\\
+Data la funzione 
+$$7n^3+100n^2-20n+6$$
+questa funzione è $\Omega(n^3)$, ma anche $\Omega(n^2)$ e $\Omega(n)$, più in generale è $\Omega(n^c)$ per ogni costante c $\le$ 3.
+
+\subsubsection{Notazione $\Theta$}
+La notazione $\Theta$ definisce un limite stretto al comportamento asintotico di una funzione. Ci dice che una funzione cresce esattamente con un certo tasso di crescita.\medskip\\
+\textit{Esempio.}\\
+Se riuscite a dimostrare che una funzione è al contempo $O(f(n))$ e $\Omega(f(n))$ per una qualche f(n), allora avete dimostrato che la funzione è proprio $\Theta(f(n))$, nel nostro esempio è sia $\Omega(n^3)$ sia O($n^3$), allora e anche $\Theta(n^3)$.
+
+\subsubsection{Notazione o}
+Utilizziamo la notazione \textit{o} per denotare un limite superiore che non è asintoticamente stretto.\smallskip\\
+\textit{Esempio.}
+$$2n = o(n^2), \text{ ma }\  2n^2 \neq o(n^2)$$
+
+\subsubsection{Notazione $\omega$}
+Utilizziamo la notazione $\omega$ per indicare un limite inferiore che  non è asintoticamente stretto.\smallskip\\
+\textit{Esempio.}
+$$\frac{n^2}{2}=\omega(n) \text{, ma } \frac{n^2}{2} \neq \omega (n^2)$$
+
+\subsubsection{Proprietà}
+\subsubsection{Proprietà transitiva}
+$$f(n) = \Theta(g(n)) \text{ e } g(n)=\Theta(h(n)) \text{ implicano } f(n)=\Theta(h(n))$$\\
+$$f(n) = O(g(n)) \text{ e } g(n)=O(h(n)) \text{ implicano } f(n)=O(h(n))$$\\
+$$f(n) = \Omega(g(n)) \text{ e } g(n)=\Omega(h(n)) \text{ implicano } f(n)=\Omega(h(n))$$\\
+$$f(n) = o(g(n)) \text{ e } g(n)=o(h(n)) \text{ implicano } f(n)=o(h(n))$$\\
+$$f(n) = \omega(g(n)) \text{ e } g(n)=\omega(h(n)) \text{ implicano } f(n)=\omega(h(n))$$
+\subsubsection{Proprietà riflessiva}
+$$f(n)=\Theta(f(n))$$
+$$f(n)=O(f(n))$$
+$$f(n)=\Omega(f(n))$$
+\subsubsection{Proprietà simmetrica}
+$$f(n)=\Theta(g(n)) \Longleftrightarrow g(n)=\Theta(f(n))$$
+\subsubsection{Proprietà trasposta}
+$$f(n)=O(g(n)) \Longleftrightarrow g(n)=\Omega(f(n))$$
+$$f(n)=o(g(n)) \Longleftrightarrow g(n)=\omega(f(n))$$
+
+
+\section{Categorie di algoritmi}
+Dividiamo in 3 categorie le istruzioni degli algoritmi
+\begin{itemize}
+    \item costante
+    \item cicli
+    \item ricorsioni
+\end{itemize}
+
+\subsection{Costante}
+Al variare dell'input non cambia nulla.\smallskip\\
+\textit{Esempio.}\\
+$x = 10 \to $ non dipende dall'input, costo costante\\
+\textit{Esempio.}\\
+$\  y=\frac{10+20}{5} \to $ costo non cambia al variare dell'input, costo costante\\
+\textit{Esempio.}\\
+$z = x+20y \to$ costo costante\\
+\textit{Esempio.}\\
+\texttt{return 0} $\to $ costo costante
+
+
+\subsection{Cicli}
+Attribuiamo il costo di un ciclo in base a quante volte viene eseguito il corpo del ciclo\smallskip\\
+\textit{Esempio.}
+\begin{verbatim}
+    for (i=0; i<n; i++) {
+        for (j=0; j<n; j++) {
+            ... costante
+            ... costante
+        }
+    }
+\end{verbatim}
+Il ciclo viene eseguito $n\cdot m$ volte, quindi il costo sarà proprio $n\cdot m$.\smallskip\\
+\textit{Esempio.}
+\begin{verbatim}
+    for (i=0; i<n; i++) {
+        for (j=0; j<i; j++) {
+            ... costante
+            ... costante
+        }
+    }
+\end{verbatim}
+In questo ciclo il costo è $\displaystyle \frac{(n-1)\ n}{2}$, quindi il costo sarà quadratico.\smallskip\\
+\textit{Esempio.}\\
+\noindent Nel caso in cui abbiamo 2 cicli:
+\begin{itemize}
+    \item ciclo1 $\to $ costo: $n^2$
+    \item ciclo2 $\to $ costo $n$
+\end{itemize}
+Il ciclo/cicli con costo più basso può essere trascurato
+
+
+
+\subsection{Ricorsione}
+\begin{verbatim}
+R
+    _______ -> costo costante
+    _______ -> costo costante
+    R
+        _______ -> costo costante
+        ...
+\end{verbatim}
+Il costo di una ricorsione dipende da quanti livelli ricorsivi (numero di chiamate ricorsive) vengono eseguiti.
+
+
+
+\section{Definizioni importanti}
+
+\subsection{Upper Bound}
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
+   (Upper Bound) L'upper buond è un tetto al costo dell'algoritmo.
+\end{definition}}}\smallskip\\
+Quando un upper bound è il più basso possibile lo chiamiamo \textbf{tight}.
+
+
+
+\subsection{Lower Bound}
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
+   (Lower Bound) Il lower buond è un pavimento al costo dell'algoritmo.
+\end{definition}}}
+
+
+
+
+\subsection{\texorpdfstring{Definizione di $\Omega(g(x))$}{Definizione di Omega(g(x))}}
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
+  $$ f(x) \in \Omega \big( g(x) \big)\ \Leftrightarrow \ \exists \ C>0 : \forall \ n> n_0 \  \ f(x) > C \cdot g(x)$$
+\end{definition}}}
+
+
+
+
+\subsection{O-grande di una funzione}
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
+   (O-grande)
+   $$ f(n) \in O \big( g(n) \big) \ \Leftrightarrow \ \exists \ C>0: \forall\  n>n_0 \ \ f(n) >C\cdot g(n)$$
+\end{definition}}}
+
+
+
+
+\subsection{\texorpdfstring{Definizione di $\theta(f(x))$}{Definizione di Theta(f(x))}}
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
+   $$f(x) \in \theta \big( g(x) \big) \ \Leftrightarrow \ f(x) \in O \big( g(x)\big) \wedge f(x)\in \Omega \big( g(x) \big) $$
+\end{definition}}} \smallskip\\
+
+
+
+\subsection{\texorpdfstring{Definizione di Istruzione Dominante}{Definizione di Istruzione DOMINANTE}}
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
+   supponiamo che:
+      $$ A \in O(f(n)) $$
+   \\istruzione D con contributo espresso da $g(n)$ : 
+   $$\exists \ c > 0 : c \cdot g(n) > f(n) $$
+\end{definition}}}\medskip\\ 
+Perchè facciamo l'analisi asintotica?\\
+Con l'analisi asintotica non solo valutiamo l'andamento asintotico del costo ma possiamo trascurare tutte le costanti moltiplicative.\smallskip\\
+\textit{Esempio.} \\
+Funzione \texttt{ordina (int primo, int ultimo)};
+\begin{verbatim}
+    int ordina ( int primo , int ultimo ) {
+        if( ultimo > primo ) infila ( primo , ordina ( primo + 1 , ultimo ) );
+        return ultimo ;
+    }
+\end{verbatim}
+Il costo della funzione è definito dalla seguente:
+$$C_O = C_I + C_O $$
+Il costo è quindi la somma della chiamata della funzione \texttt{infila} e la chiamata ricorsiva di \texttt{ordina}. Rappresentiamo il costo esplicitando i parametri:
+$$C_O(a,b) = C_I(a,b) + C_O(a+1,b)\ \ \ \ \ \ \text{se}\ \ a<b$$
+Se invece $a \le b$ la funzione esegue il \texttt{return}, che è un'istruzione a costo costante $C_1$.\\
+Ora esplicitiamo la ricorsione:
+$$C_O (0, n-1) = C_I (a,b) + C_I (a+1,b) + C_I (a+2,b) + \dots +  C_I(a+..., b) + C_1$$ 
+Che possiamo riscrivere con una sommatoria:
+$$C_O (0,n-1) = \sum_{i = 0}^{n-2}C_I(i, n-1) +C_1$$
+Ora vediamo il costo della funzione \texttt{infila (int i, int ultimo)};
+\begin{verbatim}
+    static void infila ( int i , int ultimo ) {
+        int h = i + 1;
+        int k = A [ i ];
+        while (( h <= ultimo ) && ( A[ h ] < k ) ) {
+            A [h -1] = A [ h ];
+            h ++;
+        }
+        A [h -1] = k ;
+    }
+\end{verbatim}
+L'istruzione dominante è un ciclo while, quindi ci concentriamo su quello.\\ 
+Il costo di un ciclo while è il massimo numero di iterazioni che può compiere
+$$\text{Numero di iterazioni} :\ x+1\ \dots \dots \ y = y+1-(x+1) = \bm{y-x}$$
+Il costo di \texttt{infila} sarà quindi il numero di iterazioni più una costante che rappresenta il costo delle istruzioni a costo costante fuori dal ciclo. 
+$$C_I (x,y) = y - x + C_2$$
+Avendo calcolato il costo di $C_I$, possiamo sostituire questo risultato al costo di \texttt{ordina} che avevamo trovato:
+$$C_O(0, n-1) = \sum_{i =0}^{n-2}{(\underbrace{n-1}_{y}-\underbrace{i}_{x}+C_2)} + C_1$$
+Per risolvere questa sommatoria applico la proprietà distributiva e divido la sommatoria in due sommatorie, dove nella prima compaiono i termini costanti e nella seconda i termini che vengono incrementati.
+$$\sum_{i =0}^{n-2}{(n-1-i+C_2)} + C_1 = \sum_{i =0}^{n-2} (n-1+C_2) - \sum_{i=0}^{n-2}i$$
+Per la prima sommatoria visto che sono tutti termini costanti vuol dire che l'espressione dentro la sommatoria si ripeterà $n-1$ volte. Per la seconda usiamo il criterio di Gauss per la somma dei numeri naturali.
+$$ \sum_{i =0}^{n-2} (n-1+C_2) - \sum_{i=0}^{n-2}i = (n-1)(n-1+C_2) -\frac{(n-2)(n-1)}{2}$$
+Per calcolare il costo basta fare questo calcolo:
+$$ (n-1)(n-1+C_2) -\frac{(n-2)(n-1)}{2} = \frac{n^2 - 2n(2-C_2)+2(1-C_2)-n^2+3n-2}{2}$$
+L'algoritmo ha quindi complessità ordine $n^2$.
+
+\subsection{\texorpdfstring{Upper Bound problema}{Upper Bound problema}}
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
+    Un problema P ammette\\
+    $$UB \  O(f(n))$$
+    $$\Leftrightarrow$$
+    $$\exists\  A(\text{che risolve P}):UB(A) \in O(f(n))$$
+\end{definition}}}\medskip\\ 
+\subsection{\texorpdfstring{Lower Bound problema}{Lower Bound problema}}
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
+    Un problema P ammette\\
+    $$\Omega \  g(f(n))$$
+    $$\Leftrightarrow$$
+    $$\forall \ A(\text{che risolve P}): LB(A) \in \Omega(g(n))$$
+\end{definition}}}\medskip\\ 
+\subsection{\texorpdfstring{Algoritmo ottimo}{Algoritmo ottimo}}
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
+Quando LB e UB coincidono, l'algoritmo è definito OTTIMO.
+\end{definition}}} 
+
+
+
+
+
