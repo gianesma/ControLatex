@@ -1,0 +1,64 @@
+\chapter{Debbugging}
+
+\section{GDB}
+Uno dei requisiti necessari per utilizzare gli strumenti di debbuing è l’inclusione delle informazioni di debbuing durante la fase di compilazione. Per compilare un programma C con le informazioni di debug, bisogna compilare in questo modo:
+\begin{verbatim}
+    gcc -g programma.c -o programma
+\end{verbatim}
+In modo analogo per includere del codice assembly da noi scritto, bisogna aggiungere (Esempio caso codice assembly IA32) nella riga di compilazione:
+\begin{verbatim}
+    gcc -g -m32 programma.c -o programma
+\end{verbatim}
+Potrebbe capitare che il debug non funzioni, in questo caso è consigliato di definire in gdb i comandi custom, per farlo bisogna editare il file .gdbinit all’interno della home utente (Esempio sulla VM BIAR):
+\\ Andare nella directory: /home/studente/.gdbinit\\ 
+Inserire nel file il seguente contenuto:
+\begin{verbatim}
+    define go
+    	   start
+    	   layout src
+        layout regs
+        focus cmd
+    end
+
+\end{verbatim}
+Il comando go ci permette di visualizzare diverse informazioni durante l’uso di GDB. Per avviare il debugging su un eseguibile “e” (dopo aver compilato): $\xrightarrow{}$  \verb|gdb ./e|
+\\Comandi principali di GDB:
+\begin{itemize}
+    \item \textbf{go} $\xrightarrow{}$ lancia il debug.
+    \item \textbf{run} $\xrightarrow{}$ rilancia l’esecuzione con eventuali aggiornamenti da specificare dopo (run [argomento]).
+    \item \textbf{quit} $\xrightarrow{}$ per uscire da gdb.
+    \item \textbf{cont} $\xrightarrow{}$ riprende l’esecuzione normalmente dopo un breakpoint.
+    \item \textbf{step} $\xrightarrow{}$ esegue una singola istruzione (non si ferma alle assegnazioni)
+    \item \textbf{next} $\xrightarrow{}$ esegue la funzione fino al return “finale” .
+    \item \textbf{finish} $\xrightarrow{}$ esegue fino alla fine della funzione in cui siamo, non funziona correttamente in codice assembly.
+    \item \textbf{break} $\xrightarrow{}$ inserisce un breakpoint, esempio b e.c:20  inserisce un breakpoint alla linea 20 del file “e.c”, per avere informazioni sui breakpoint attivi invece dovremmo usare info break, inoltre si può posizionare un break condizionale: break e.c:20 if x == 0, quindi in questo caso sarà posizionato il break solamente se x sarà uguale a 0, altrimenti continuerà normalmente.
+    \item \textbf{print}:
+        \begin{itemize}
+            \item \textbf{\texttt{print \$eax}} $\xrightarrow{}$ stampa il contenuto di un registro.
+            \item \textbf{\texttt{print x}} $\xrightarrow{}$ stampa il contenuto della variabile x.
+        \end{itemize}
+    \item \textbf{x addr} $\xrightarrow{}$ stampa il contenuto della memoria all’indirizzo addr.
+    \item \textbf{\texttt{x\$eax + 4}} $\rightarrow$ stampa il contenuto della memoria dato dall’espressione (in questo caso + 4 posizioni).
+    \item \textbf{\texttt{x/nfu addr}} $\rightarrow$ stampa il contenuto della memoria all’indirizzo addr.
+    \item \textbf{start} $\xrightarrow{}$ si posizione all’inizio del main, non c’è bisogno di utilizzarlo quando si usa go.
+    \item \textbf{where} $\xrightarrow{}$ mostra la posizione corrente nell’esecuzione.
+    \item \textbf{list} $\xrightarrow{}$ mostra il contenuto del file sorgente che contiene la funzione corrente.
+    \item \textbf{backtrace} $\xrightarrow{}$ ti dà l’elenco dei frame attivi.
+    \item \textbf{refresh} $\xrightarrow{}$ esegue il refresh dell’output del debugger.
+\end{itemize}
+
+\section{Valgrind}
+Per utilizzare Valgrind avremo bisogno di compilare il nostro file allo stesso modo di gdb. Viene utilizzato per identificare molti errori in C, come:
+\begin{itemize}
+    \item Accessi invalidi alla memoria (segmentation fault)
+    \item uso di variabili non inizializzate
+    \item mancata de-allocazione di blocchi allocati dinamicamente (memory leak)
+\end{itemize}
+La riga di codice per avviare Valgrind è la seguente:
+\begin{verbatim}
+    valgrind --leak-check=full ./programma
+\end{verbatim}
+Per terminare la esecuzione della macchina virtuale stando su VS:
+\begin{verbatim}
+    sudo shutdown -h now 
+\end{verbatim}
