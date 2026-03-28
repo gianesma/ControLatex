@@ -71,3 +71,44 @@ In questa soluzione ogni valore delle chiamate ricorsive viene salvato in \textt
 \end{verbatim}
 Qui vengono prima calcolati i primi due sottoproblemi (\texttt{dp[0]  dp[1]}), che poi verranno usati nel ciclo \texttt{for} e non dovranno essere ricalcolati.
     
+\section{Problema dello zaino 0/1}
+Immaginiamo di possedere uno zaino che può sopportare un peso massimo $w$. Abbiamo a disposizione $n$ oggetti, ogni oggetto ha:
+\begin{itemize}
+    \item Un \textbf{peso} (\texttt{peso[i]})
+    \item Un \textbf{valore} (\texttt{valore[i]}) 
+\end{itemize} 
+L'obiettivo è massimizzare il valore totale degli oggetti che mettiamo nello zaino, senza che il loro peso totale superi il valore di peso massimo $w$. 
+Si chiama $(0/1)$ perchè ogni oggetto o lo prendiamo intero (1) o lo lasciamo (0), non è possibile quindi prendere frazioni di oggetti.\smallskip\\
+
+\noindent Questo è il codice che risolve il problema dello zaino $0/1$:
+\begin{verbatim}
+    int knapsack(int n, int W, int peso[], int valore[]) {
+        int dp[n+1][W+1];
+        for (int i = 0; i <= n; i++) {
+            for (int w = 0; w <= W; w++) {
+                if (i == 0 || w == 0)
+                    dp[i][w] = 0;
+                else if (peso[i-1] <= w)
+                    dp[i][w] = fmax(dp[i-1][w], dp[i-1][w - peso[i-1]] + valore[i-1]);
+                else
+                    dp[i][w] = dp[i-1][w];
+            }
+        }
+        return dp[n][W];
+    }
+\end{verbatim}
+
+\noindent Ecco la spiegazione della soluzione proposta:
+\begin{enumerate}
+    \item \texttt{dp[n+1][W+1];}\\
+    Viene introdotta la \textbf{funzione di stato} , che rappresenta il massimo valore con $n$ oggetti
+    e capacità massima $W$.
+    \item \texttt{for (int i = 0; i <= n; i++)}\\ 
+    Inizia il ciclo esterno, iteriamo sul numero di oggetti a nostra disposizione.
+    \item \texttt{for (int w = 0; w <= W; w++)}\\ 
+    Inizia il ciclo interno, per ogni numero di oggetti \texttt{i}, proviamo a
+    riempire zaini di capacità crescente, da $0$ fino alla capacità massima $W$.
+    \item \texttt{if (i == 0 || w == 0)
+                        dp[i][w] = 0;}\\
+    Con questa condizione viene implementato il \textbf{caso base}, se stiamo considerando $0$ oggetti o abbiamo una capacità massima nulla, impostiamo il valore a $0$.
+\end{enumerate}
