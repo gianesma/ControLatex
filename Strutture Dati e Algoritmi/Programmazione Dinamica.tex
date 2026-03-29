@@ -77,7 +77,7 @@ Immaginiamo di possedere uno zaino che può sopportare un peso massimo $W$. Abbi
     \item Un \textbf{peso} (\texttt{peso[i]})
     \item Un \textbf{valore} (\texttt{valore[i]}) 
 \end{itemize} 
-L'obiettivo è massimizzare il valore totale degli oggetti che mettiamo nello zaino, senza che il loro peso totale superi il valore di peso massimo $w$. 
+L'\textbf{obiettivo} è massimizzare il valore totale degli oggetti che mettiamo nello zaino, senza che il loro peso totale superi il valore di peso massimo $w$. 
 Si chiama $(0/1)$ perchè ogni oggetto o lo prendiamo intero (1) o lo lasciamo (0), non è possibile quindi prendere frazioni di oggetti.\smallskip\\
 
 \noindent Questo è il codice che risolve il problema dello zaino $0/1$:
@@ -132,7 +132,32 @@ Si chiama $(0/1)$ perchè ogni oggetto o lo prendiamo intero (1) o lo lasciamo (
 
 
 \section{Cammini su griglia (senza ostacoli)}
+Data una griglia rettangolare $m \times n$ si ha che:
+\begin{itemize}
+    \item \textbf{Partenza}: si parte alle coordinate $0,0$
+    \item \textbf{Arrivo}: si deve raggiungere la cella in basso a destra, alle coordinate $(m-1,n-1)$
+    \item \textbf{Vincoli}: ci si può muovere solo verso destra oppure verso il basso 
+\end{itemize}
+L'\textbf{obiettivo} è quello di contare quanti percorsi diversi (distinti) esistono per andare dalla partenza all'arrivo. 
+Seguiamo la logica della programmazione dinamica e spezziamo il problema in sottoproblemi. Quindi piuttosto che cercare di calcolare 
+tutti i percorsi fino all'arrivo in un colpo solo, cerchiamo di capire quanti percorsi ci sono per arrivare a un a singola cella intermedia.\smallskip\\
 
+\noindent Questo è il codice che risolve il problema:
+\begin{verbatim}
+    int unique_paths(int m, int n) {
+        int dp[m][n];
+            for (int i = 0; i < m; i++)
+                dp[i][0] = 1;
+            for (int j = 0; j < n; j++)
+                dp[0][j] = 1;
+            for (int i = 1; i < m; i++)
+                for (int j = 1; j < n; j++)
+                    dp[i][j] = dp[i-1][j] + dp[i][j-1];
+        return dp[m-1][n-1];
+    }
+\end{verbatim}
+
+\noindent CONTINUO...
 
 
 
