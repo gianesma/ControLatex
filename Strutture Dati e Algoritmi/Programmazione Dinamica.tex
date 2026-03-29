@@ -72,7 +72,7 @@ In questa soluzione ogni valore delle chiamate ricorsive viene salvato in \textt
 Qui vengono prima calcolati i primi due sottoproblemi (\texttt{dp[0]  dp[1]}), che poi verranno usati nel ciclo \texttt{for} e non dovranno essere ricalcolati.
     
 \section{Problema dello zaino 0/1}
-Immaginiamo di possedere uno zaino che può sopportare un peso massimo $w$. Abbiamo a disposizione $n$ oggetti, ogni oggetto ha:
+Immaginiamo di possedere uno zaino che può sopportare un peso massimo $W$. Abbiamo a disposizione $n$ oggetti, ogni oggetto ha:
 \begin{itemize}
     \item Un \textbf{peso} (\texttt{peso[i]})
     \item Un \textbf{valore} (\texttt{valore[i]}) 
@@ -111,4 +111,21 @@ Si chiama $(0/1)$ perchè ogni oggetto o lo prendiamo intero (1) o lo lasciamo (
     \item \texttt{if (i == 0 || w == 0)
                         dp[i][w] = 0;}\\
     Con questa condizione viene implementato il \textbf{caso base}, se stiamo considerando $0$ oggetti o abbiamo una capacità massima nulla, impostiamo il valore a $0$.
+    \item \texttt{else if (peso[i-1] <= w);}\\
+    Con questa condizione si verifica se l'oggetto corrente (\texttt{i-1}) può entrare nello zaino senza superare il peso disponibile $w$.
+    Se l'oggetto non può entrare perchè troppo pesante, allora \texttt{dp[i][w] = dp[i-1][w];}, ovvero copiamo semplicemente il valore che avevamo ottenuto senza quell'oggetto.
+    \item \texttt{dp[i][w] = fmax(dp[i-1][w], dp[i-1][w - peso[i-1]] + valore[i-1]);}\\
+    Se l'oggetto può entrare, devo fare una scelta che massimizzi il mio guadagno. Usiamo la funzione \texttt{fmax} per decidere se conviene di più:
+                \begin{itemize}
+                    \item Lasciare l'oggetto (\texttt{dp[i-1][w]})
+                    \item Prendere l'oggetto (\texttt{dp[i-1][w - peso[i-1]] + valore[i-1]})
+                \end{itemize}
+    Qui l'uso degli indici può sembrare difficile da capire, perciò vediamo nel dettaglio cosa vogliono dire quelle due espressioni.
+     Se lasciamo l'oggetto corrente, impostiamo che \texttt{d[i][w] = dp[i-1][w]}, quindi stiamo attribuendo a \texttt{d[i][w]} un valore che già era stato calcolato in precedenza e che è stato ritenuto il valore
+     massimo dalla funzione \texttt{fmax} rispetto al valore che avremmo ottenuto prendendo l'oggetto. Siccome non prendiamo l'oggetto l'indice $w$ rimane invariato, in quanto il peso corrente non cambia.\smallskip\\
+     Invece se prendiamo l'oggetto, impostiamo che \texttt{d[i][w] = dp[i-1][w - peso[i-1]] + valore[i-1]}. Siccome stiamo prendendo l'oggetto, dobbiamo considerare due cose: la prima è aggiungere il valore dell'oggetto che 
+     prendiamo, e questo lo facciamo sommando \texttt{valore[i-1]}, la seconda è che ora il peso disponibile diminuisce visto che abbiamo preso l'oggetto e quindi dobbiamo sottrarre alla capacità corrente (\texttt{w}) il
+    peso dell'oggetto che prendiamo (\texttt{peso[i-1]}), quindi scriviamo \texttt{w - peso[i-1]}.
+    \item \texttt{return dp[n][W];}\\
+    Restituisco il risultato finale: il valore massimo ottenibile considerando tutti gli $n$ oggetti e sfruttando tutta la capacità $W$ dello zaino.
 \end{enumerate}
