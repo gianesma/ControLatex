@@ -759,3 +759,133 @@ Altrimenti l'algoritmo è considerato non stabile.
 \colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
     (Riduzione fra problemi) Nel campo degli algoritmi, ridurre un Problema $A$ a un Problema $B$ significa trasformare un'istanza del Problema $A$ in un'istanza del Problema $B$, in modo da poter usare un algoritmo che risolve $B$ per risolvere anche $A$.
 \end{definition}}}
+
+\section{HeapSort}
+\subsection{Definizione Heap}
+Un Heap è una struttura dati, basata su alberi binari, ovvero alberi che possono avere al massimo due figli. Queste strutture possono essere rappresentate mediante array i cui elementi sono i nodi dell'albero.\\
+\textbf{proprietà}
+\begin{itemize}
+    \item ogni elemento dell'albero corrisponde ad un elemento dell'array
+    \item tutti i livelli dell'albero sono completamente riempiti salvo l'ultimo che può essere parzialmente riempito da sinistra fino ad un certo punto.
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\linewidth]{../images/max-heap.png}
+    \label{fig:placeholder}
+\end{figure}
+\noindent Un heap è rappresentato da un oggetto che contiene
+\begin{itemize}
+    \item un array di elementiA[1,n]
+    \item un intero size (tale che $0 \le size \le n$)
+\end{itemize}
+\noindent Un array A che rappresenta un heap ha due attributi specifici: \textbf{A.lenght} che indica il numero di elementi dell'array e \textbf{A.heapSize} che indica il numero di elementi dell'array che appartengono all'heap. In generale si ha che $0 \le A.heapSize \le A.lenght$.\\
+Per ogni elemento i dell'array, ad eccezione della radice che è l'elemento $A[1]$, è possibile determinare il padre e i suoi due figli, in particolare:\\
+PARENT(i) = $\lfloor \frac{1}{2} \rfloor$\\
+LEFT(i) = 2i\\
+RIGHT(i) = 2i+1\\
+
+\subsection{Max-heap e Min-heap}
+Esistono due tipi particolari di heap chiamati mex-heap e min-heap.\\
+Un \textbf{max-heap} è un heap in cui, per ogni nodo i diverso dalla radice, abbiamo che $A[PARENT(i)] \ge A[i]$, ovvero il padre è maggiore del figlio.\\
+Un \textbf{min-heap} è un heap in cui, per ogni nodo i diverso dalla radice, abbiamo che $A[PARENT(i)] \le A[i]$, ovvero i figli sono maggiori del padre.\\
+\textbf{Osservazione}\\
+In un max-heap la radice rappresenta il massimo.\\
+In un min-heap la radice rappresenta il minimo.\\
+\textbf{Esempio:}\\
+Dato l'array\\
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{../images/esempio-max-heap.png}
+    \label{fig:placeholder}
+\end{figure}
+\noindent determinare il max-heap:\\
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{../images/esempio-max-heap2.png}
+    \label{fig:placeholder}
+\end{figure}
+
+\subsection{Max-Heapify}
+L'heap memorizza elementi e può essere modificato.
+Per non perdere proprietà durante le modifiche  della strutture dati utilizziamo l'algoritmo MAX-HEAPIFY(A,i) che si occupa di costruire un max-heap con radice nel nodo i.
+\subsubsection{pseudocodice MAX-HEAPIFY(A,i)}
+\begin{verbatim}
+MAX-HEAPIFY(A,i)
+1   l = left(i)
+2   r = right(i)
+3   if i <= A.heapSize AND A[l]  > A[i]
+4       largest = i
+5   else largest = i
+6   if r <= A.shapeSize AND A[r] > A[largest]
+7       largest = r
+8   if largest != i
+9       scambia A[i] con A[largest]
+10  MAX-HEAPIFY(A,largest)
+\end{verbatim}
+\noindent \textbf{Funzionamento}\\
+Quando viene chiamata questa funzione, si assume che i sottoalberi con radici \textbf{left(i)} e \textbf{right(i)} siano max-heap, mentre non è certo che il padre \textbf{i} sia effettivamente più grande dei figli. Vengono salvati gli indici del figlio sinistro e del figlio destro, dopodiché si procede a verificare innanzitutto se questi indici sono nei limiti dell'array e se viene rispettata la condizione $A[i]>A[l]$ e $A[r]$, se così non fosse verrebbe salvato nella variabile \textbf{largest} l'indice del figlio maggiore e verrebbero scambiati A[largest] e il padre.\\
+Così facendo la condizione di un max-heap sarebbe verificata per la terna appena considerata, tuttavia potrebbe non essere verificata nel sottoalbero che ha come radice il nodo appena scambiato, allora si procede a richiamare ricorsivamente la funzione sull'indice di largest, ovvero il nodo appena scambiato. Dunque, in breve, si fa scendere il valore $A[i]$ nel max-heap in modo che il sottoalbero con radice di indice $i$ diventi un max-heap.\\
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\linewidth]{../images/max-heapify.png}
+    \label{fig:placeholder}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\linewidth]{../images/funzionamento-max-heapify.png}
+    \label{fig:placeholder}
+\end{figure}
+\noindent \subsubsection{costo}
+dalla riga a 9 faccio solo confronti perciò ha costo O(1), mentre la chiamata ricorsiva fatta al più h volte, dove h è l'altezza del sottoalbero $(< \log n)$. Quindi ha costo \textbf{O(h)}.\\
+\subsection{Costruire un max-heap}
+La procedura Build-Max-Heap eseguita in un tempo lineare, genera da un array di input non ordinato un max-heap;
+\begin{verbatim}
+BUILD-MAX-HEAP(A,n)
+1   A.heapSize = n
+2   for i = [n/2] down to 1
+3       MAX-HEAPIFY(A,i)
+\end{verbatim}
+\noindent \textbf{Funzionamento}\\
+La funzione Max-Heapify può essere utilizzata in modo alternativo, ovvero dal basso verso l'alto, per convertire un array di input con n = A.length in un max-heap. E' possibile utilizzare la funzione Max-Heapify poiché gli ultimi elementi di ciascun sottoalbero possono essere considerati foglie dell'albero, dunque si parte da esse per salire verso la radice. Build-Max-Heap si limita a richiamare iterativamente Max-Heapify su A passando l'indice i che varia dalla metà dell'array decrementato fino ad 1, così facendo fa salire nell'albero i valori più grandi e fa scendere quelli più bassi.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\linewidth]{../images/buil-max-heap.png}
+\begin{figure}[H]
+        \centering
+        \includegraphics[width=0.75\linewidth]{../images/funzionamento-buil-max-heap.png}
+        \label{fig:placeholder}
+    \end{figure}
+        \label{fig:placeholder}
+\end{figure}
+
+\noindent \subsubsection{costo}
+Upper bound $O(n \log n)$ perché MAX-HEAPIFY mi costa $\log n$ e lo ripeto al più n volte\\
+Questo limite superiore sebbene corretto, non è asintoticamente stretto.\\
+Possiamo ottenere un limite più stretto osservando che il tempo per eseguire Max-Heapify in un nodo varia con l'altezza del nodo nell'albero, e le altezza della maggior parte di essi sono più piccole. L'analisi più rigorosa si basa sulle proprietà che un heap di n elementi ha altezza $\lfloor \log n \rfloor$ e, per ogni h,ha al più $\lceil n/2^{h+1} \rceil$ nodi di altezza h.
+Il tempo richiesto dalla procedura Max-Heapify quando viene chiamata per un nodo di altezza $h$ è $O(h)$. Possiamo dire che il costo totale di build-Max-Heap è limitato superiormente da\\
+$\sum_{h=0}^{ \lfloor \log n \rfloor} \lceil \frac{n}{2^{h+1}} \rceil O(h)=O(n \sum_{h=0}^{ \lfloor \log n \rfloor} \frac{h}{2^h})$\\
+con $\sum_{h=0}^{ \lfloor \log n \rfloor} \frac{h}{2^h} \rightarrow \sum_{h=0}^\infty \frac{h}{2^h}=\frac{1/2}{(1-1/2)^2}=2$\\
+Perciò ho $O(n)$.
+\subsubsection{Correttezza di Build-Max-Heap}
+Per verificare che Build-Max-Heap funziona correttamente, utilizziamo la seguente invariante di ciclo.\\
+\texttt{All'inizio di ogni iterazione del ciclo for, righe 2-3, ognuno dei nodi i+1, i+2,...,n è la radie di un max-heap}\\
+\textbf{Inizializzazione}\\
+Prima della prima iterazione del cicl, $i =\lfloor n/2 \rfloor$\\. Ognuno dei nodi $\lfloor n/2 \rfloor + 1$, $\lfloor n/2 \rfloor + 2$,...,$n$ è una foglia e, quindi, è la radice di un max-heap con un solo nodo. \\
+\textbf{Mantenimento}\\
+per verificare che ogni iterazione conserva l'invariante di ciclo, notiamo che i figli del nodo $i$ hanno una numerazione più alta di $i$. Per l'invariante di ciclo, quindi, essi sono entrambi radici di un max-heap. Questa è esattamente la condizione richiesta affinché la chiamata Max-Heapify(A,i) renda il nodo $i$ la radice di un max-heap. Inoltre, la chiamata di Max-Heapify preserva la proprietà che tutti i nodi $i+1,i+2,..,n$ siano radici di un max-heap. Il fatto che $i$ venga decrementato di un'unità a ogni iterazione del ciclo for ristabilisce l'invariante di ciclo per la successiva ietrazione. \\
+\textbf{Conclusione}\\
+Il ciclo esegue esattamente $\lfloor n/2 \rfloor$ iterazioni, e quindi termina. Alla fine del ciclo si ha $i=0$. Per l'invariante di ciclo, ognuno dei nodi 1,2,...,n è la radice di un max-heap; in particolare, lo è il nodo 1.
+\subsection{Heap Sort}
+Che eseguita in un tempo $O(n \log n)$, ordina un array.
+\begin{verbatim}
+HeapSort(A,n)
+1   BUILD-MAX-HEAP(A,n)
+2   for i = n down to 2
+3       scambia A[1] con A[i]
+4       A.heapSize = A.heapSize-1
+5       MAX-HEAPIFY(A,1)
+\end{verbatim}
+\noindent \textbf{Funzionamento}\\
+La funzione HeapSort chiama inizialmente Build-Max-Heap(A, n) per trasformare A in un max-heap. Dunque, se per definizione l’elemento più grande dell’array è memorizzato nella radice A[1], per ordinare in modo crescente l’albero, basta scambiare la radice con l’elemento in posizione finale, ovvero A[n]. Dopodichè si decrementa A.heapSize, in modo tale da non considerare più l’elemento in ultima posizione, in quanto si trova nella sua posizione definitiva. Per ottenere un max-heap basta chiamare Max-Heapify(A, 1) per far tornare il max alla radice. Questo ciclo viene ripetuto n-1 volte. Build-Max-Heap impiega \textbf{O(n)}, mentre
+Max-Heapify \textbf{O(log n)}, in totale il costo di HeapSort ammonta a \textbf{O(n log n)}.
