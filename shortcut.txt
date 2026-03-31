@@ -50,3 +50,6 @@ $\longrightarrow$
 
     \end{verbatim}
 \end{minipage}\medskip\\
+
+=== IN CASO DI ERRORE DI SINCRONIZZAZIONE ===
+git pull --no-rebase origin main
