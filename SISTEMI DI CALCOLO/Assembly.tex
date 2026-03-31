@@ -1830,3 +1830,170 @@ In C esistono due operatori che possono sembrare simili ma hanno comportamenti d
     \item \texttt{\&} (AND bit a bit): \textbf{non utilizza il cortocircuito}. Entrambe le espressioni vengono sempre valutate, indipendentemente dal valore della prima.
 \end{itemize}
 In sintesi, il cortocircuito è una proprietà dell'operatore logico \texttt{\&\&}, mentre l'operatore \texttt{\&} esegue sempre entrambe le valutazioni.\\
+\section{Allineamento in Stack}
+
+Mettemo sto disegno o no? nonnooooo\\
+\begin{minipage}{0.4\textwidth}
+    \begin{verbatim}
+void g(char *c);
+void f(){
+    ...
+    char a; // 1 byte
+    g(&a);  // 4 byte
+    ...
+}
+
+f.c
+    \end{verbatim}
+\end{minipage}
+\hfill
+$\longrightarrow$
+\hfill
+\begin{minipage}{0.5\textwidth}
+    \begin{verbatim}
+f:
+    subl $4, %esp   #spazio per a
+    subl $4, %esp   #spazio per il parametro di g
+    ... 
+    leal ... 
+    movl ..., (%esp)
+    call g
+     ...
+
+f.s
+    \end{verbatim}
+\end{minipage}\medskip\\
+\textbf{\textcolor{red}{Importante:}} in qualsiasi momento dell'esecuzione di qualsiasi funzione, 
+lo stack pointer deve contenere un indirizzo multiplo di 4.\\
+Attenzione il compilatore tipicamente allinea lo stack a 16 byte.\\
+Altro disegno altra corsa\medskip\\
+\begin{minipage}{0.3\textwidth}
+    \begin{verbatim}
+char a,b,c
+g(&a, &b, &c);
+...
+
+f.c
+    \end{verbatim}
+\end{minipage}
+\hfill
+$\longrightarrow$
+\hfill
+\begin{minipage}{0.6\textwidth}
+    \begin{verbatim}
+#Prologo
+subl $16, %esp  #spazio per a,b,c e per i parametri di g
+                #dove i char occupano 1 byte ciascuno, 
+                #ma per allineamento ne occupano 4
+                #quindi 3 char occupano 3 byte, 
+                #più i 4 byte per il ogni parametro di g fanno 16
+                #ovvero il multiplo di 4 
+                #più vicino a 3 + 3*4 = 15 
+...
+
+f.s
+    \end{verbatim}
+\end{minipage}\medskip\\
+foto di un disegno con stack allineato a 16 byte\\
+\textbf{\textcolor{red}{Importante:}} i dati di dimensione x nella stack
+sono allineati ad indirizzi multipli di x.\medskip\\
+\begin{minipage}{0.4\textwidth}
+    \begin{verbatim}
+char[5] a;
+short b;
+g(&a, &b);
+...
+
+f.c
+    \end{verbatim}
+\end{minipage}
+\hfill
+$\longrightarrow$
+\hfill
+\begin{minipage}{0.5\textwidth}
+    \begin{verbatim}
+#Prologo
+subl $16, %esp  #spazio per a,b e per i parametri di g
+                #dove a occupa 5 byte ma per allineamento 
+                #ne occupa 8
+                #b occupa 2 byte ma per allineamento ne occupa 4
+                #quindi 8 + 4 + 4*2 = 16
+...
+
+f.s
+    \end{verbatim}
+\end{minipage}\medskip\\
+\subsection{L'allineamento in memoria di struct }
+Per tradurre una struct in Assembly, dobbiamo partire col farci
+queste domande:
+\begin{enumerate}
+    \item Dove inizia in memoria ciascun campo della struct?
+    \item quanto spazio occupa complessivamente la struct
+\end{enumerate}
+L'allineamento in memoria della struct segue 4 regole:
+\begin{enumerate}
+    \item Un dato di dimensione x deve trovarsi allineato in
+    memoria ad un indirizzo multiplo di x
+    \item La struct in memoria ha un allineamento complessivo
+    che deriva dal campo di tipo più grande
+    \item La dimensione complessiva della struct in memoria è
+    multipla della dimensione del suo campo più grande
+    \item 
+\end{enumerate}
+\begin{minipage}{0.3\textwidth}
+    \begin{verbatim}
+struct s{   // base
+    char x; // +0   |x - - -|
+    int y;  // +4   |x x x x|
+    short z;// +8   |x x - -|
+            // sizeof s = 12;
+            // di cui 5 byte sono sprecati
+}
+    \end{verbatim}
+\end{minipage}
+\hfill
+$\longrightarrow$
+\hfill
+\begin{minipage}{0.4\textwidth}
+    \begin{verbatim}
+struct s{   // base
+    char x; // +0  |x - 
+    short z;// +2  |    x x|
+    int y;  // +4  |x x x x|
+            // sizeof s = 8;
+            // di cui 1 byte solo è sprecato
+            // redendo più efficiente 
+            // l'uso della memoria
+}
+    \end{verbatim}
+\end{minipage}\medskip\\
+Vediamo un esempio con traduzione ora in Assembly: \medskip\\
+\begin{minipage}{0.3\textwidth}
+    \begin{verbatim}
+struct s{   // base
+    char x; // +0
+    int y;  // +4
+}
+void f(struct s *p,char a, int b){
+    p->x = a;
+    p->y = b;
+}
+    \end{verbatim}
+\end{minipage}
+\hfill
+$\longrightarrow$
+\hfill
+\begin{minipage}{0.3\textwidth}
+    \begin{verbatim}
+.globl f
+f:
+    movl 4(%esp), %eax
+    movb 8(%esp), %cl   #x
+    movl 12(%esp), %edx #y
+
+    movb %cl, (%eax)
+    movl %edx, 4(%eax)
+    
+    ret
+    \end{verbatim}
+\end{minipage}\medskip\\
