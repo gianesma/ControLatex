@@ -97,7 +97,6 @@ Per ogni istruzione dobbiamo definire la taglia dei dati su cui andrà a operare
          int, T* & l & 4 \\
          \hline
     \end{tabular}
-   \label{tab:placeholder}
 \end{table}
 \noindent
 
@@ -339,7 +338,6 @@ Le istruzioni di salto condizionato in ASM si sviluppano in due fasi:
          be &  &  $\le$ 0 \\
          \hline
     \end{tabular}
-    \label{tab:placeholder}
 \end{table}
 
 \noindent Il salto condizionato è implementato da:
@@ -1831,4 +1829,4 @@ In C esistono due operatori che possono sembrare simili ma hanno comportamenti d
     \item \texttt{\&\&} (AND logico): applica la \textbf{valutazione con cortocircuito}. La seconda espressione viene valutata \textbf{solo se} la prima è vera (diversa da zero). Se la prima è falsa, il risultato è già determinato e la seconda non viene eseguita.
     \item \texttt{\&} (AND bit a bit): \textbf{non utilizza il cortocircuito}. Entrambe le espressioni vengono sempre valutate, indipendentemente dal valore della prima.
 \end{itemize}
-In sintesi, il cortocircuito è una proprietà dell'operatore logico \texttt{\&\&}, mentre l'operatore \texttt{\&} esegue sempre entrambe le valutazioni.
+In sintesi, il cortocircuito è una proprietà dell'operatore logico \texttt{\&\&}, mentre l'operatore \texttt{\&} esegue sempre entrambe le valutazioni.\\

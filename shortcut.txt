@@ -26,3 +26,26 @@
 \begin{tabular}{c|c}
      
 \end{tabular}
+
+=== MINIPAGE A 3 BLOCCHI ===
+\begin{minipage}{0.3\textwidth}
+    \begin{verbatim}
+
+    \end{verbatim}
+\end{minipage}
+\hfill
+$\longrightarrow$
+\hfill
+\begin{minipage}{0.3\textwidth}
+    \begin{verbatim}
+
+    \end{verbatim}
+\end{minipage}
+\hfill
+$\longrightarrow$
+\hfill
+\begin{minipage}{0.3\textwidth}
+    \begin{verbatim}
+
+    \end{verbatim}
+\end{minipage}\medskip\\
