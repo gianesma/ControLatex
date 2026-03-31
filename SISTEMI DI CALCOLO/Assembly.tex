@@ -1830,170 +1830,193 @@ In C esistono due operatori che possono sembrare simili ma hanno comportamenti d
     \item \texttt{\&} (AND bit a bit): \textbf{non utilizza il cortocircuito}. Entrambe le espressioni vengono sempre valutate, indipendentemente dal valore della prima.
 \end{itemize}
 In sintesi, il cortocircuito è una proprietà dell'operatore logico \texttt{\&\&}, mentre l'operatore \texttt{\&} esegue sempre entrambe le valutazioni.\\
-\section{Allineamento in Stack}
+\section{Allineamento nello Stack}
 
-Mettemo sto disegno o no? nonnooooo\\
+Consideriamo il seguente esempio:\medskip\\
+
 \begin{minipage}{0.4\textwidth}
-    \begin{verbatim}
+\begin{verbatim}
 void g(char *c);
+
 void f(){
     ...
     char a; // 1 byte
-    g(&a);  // 4 byte
+    g(&a);  // parametro: 4 byte
     ...
 }
-
-f.c
-    \end{verbatim}
+\end{verbatim}
 \end{minipage}
 \hfill
 $\longrightarrow$
 \hfill
 \begin{minipage}{0.5\textwidth}
-    \begin{verbatim}
+\begin{verbatim}
 f:
-    subl $4, %esp   #spazio per a
-    subl $4, %esp   #spazio per il parametro di g
-    ... 
-    leal ... 
+    subl $4, %esp   # spazio per a (allineato a 4 byte)
+    subl $4, %esp   # spazio per il parametro di g
+    ...
+    leal ...
     movl ..., (%esp)
     call g
-     ...
+    ...
+\end{verbatim}
+\end{minipage}
 
-f.s
-    \end{verbatim}
-\end{minipage}\medskip\\
-\textbf{\textcolor{red}{Importante:}} in qualsiasi momento dell'esecuzione di qualsiasi funzione, 
-lo stack pointer deve contenere un indirizzo multiplo di 4.\\
-Attenzione il compilatore tipicamente allinea lo stack a 16 byte.\\
-Altro disegno altra corsa\medskip\\
+\medskip
+
+\noindent\textbf{\textcolor{red}{Importante:}}  
+In ogni momento dell'esecuzione, lo \texttt{stack pointer} deve essere allineato a un multiplo di 4 byte.  
+In pratica, i compilatori moderni allineano lo stack a \textbf{16 byte}.
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.3\linewidth]{../images/Allineamento in stack.png}
+    \caption{SP}
+    \label{label}
+\end{figure}
+
+\medskip
+
+\noindent\textbf{Esempio con più variabili}: \medskip\\
+
 \begin{minipage}{0.3\textwidth}
-    \begin{verbatim}
-char a,b,c
+\begin{verbatim}
+char a, b, c;
 g(&a, &b, &c);
-...
-
-f.c
-    \end{verbatim}
+\end{verbatim}
 \end{minipage}
 \hfill
 $\longrightarrow$
 \hfill
 \begin{minipage}{0.6\textwidth}
-    \begin{verbatim}
-#Prologo
-subl $16, %esp  #spazio per a,b,c e per i parametri di g
-                #dove i char occupano 1 byte ciascuno, 
-                #ma per allineamento ne occupano 4
-                #quindi 3 char occupano 3 byte, 
-                #più i 4 byte per il ogni parametro di g fanno 16
-                #ovvero il multiplo di 4 
-                #più vicino a 3 + 3*4 = 15 
-...
+\begin{verbatim}
+# Prologo
+subl $16, %esp  # spazio totale
 
-f.s
-    \end{verbatim}
-\end{minipage}\medskip\\
-foto di un disegno con stack allineato a 16 byte\\
-\textbf{\textcolor{red}{Importante:}} i dati di dimensione x nella stack
-sono allineati ad indirizzi multipli di x.\medskip\\
+# Spiegazione:
+# - a, b, c occupano 1 byte ciascuno
+# - per allineamento diventano 4 byte ciascuno
+# - parametri di g: 3 * 4 byte = 12 byte
+# - totale: 3*4 + 12 = 24 → arrotondato a 16 (allineamento)
+\end{verbatim}
+\end{minipage}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\linewidth]{../images/Esempio con più variabili.png}
+    \caption{Ecco cosa succede nello SP}
+    \label{label}
+\end{figure}
+\medskip
+\noindent\textbf{\textcolor{red}{Regola fondamentale:}}  
+Un dato di dimensione $x$ viene allocato a indirizzi multipli di $x$.
+
+\medskip
+
+\noindent\textbf{Altro esempio}:
+
 \begin{minipage}{0.4\textwidth}
-    \begin{verbatim}
-char[5] a;
+\begin{verbatim}
+char a[5];
 short b;
 g(&a, &b);
-...
+
+
+
+
 
 f.c
-    \end{verbatim}
+\end{verbatim}
 \end{minipage}
 \hfill
 $\longrightarrow$
 \hfill
 \begin{minipage}{0.5\textwidth}
-    \begin{verbatim}
-#Prologo
-subl $16, %esp  #spazio per a,b e per i parametri di g
-                #dove a occupa 5 byte ma per allineamento 
-                #ne occupa 8
-                #b occupa 2 byte ma per allineamento ne occupa 4
-                #quindi 8 + 4 + 4*2 = 16
-...
+\begin{verbatim}
+# Prologo
+subl $16, %esp
+
+# Spiegazione:
+# - a occupa 5 byte → allineato a 8 byte
+# - b occupa 2 byte → allineato a 4 byte
+# - parametri: 2 * 4 = 8 byte
+# - totale: 8 + 4 + 8 = 20 → arrotondato a 16/32
 
 f.s
-    \end{verbatim}
-\end{minipage}\medskip\\
-\subsection{L'allineamento in memoria di struct }
-Per tradurre una struct in Assembly, dobbiamo partire col farci
-queste domande:
+\end{verbatim}
+\end{minipage}
+
+\bigskip
+
+\section{Allineamento delle Struct}
+
+Per tradurre una \texttt{struct} in Assembly, bisogna rispondere a:
+
 \begin{enumerate}
-    \item Dove inizia in memoria ciascun campo della struct?
-    \item quanto spazio occupa complessivamente la struct
+    \item Dove inizia ogni campo in memoria?
+    \item Quanto spazio occupa complessivamente la struct?
 \end{enumerate}
-L'allineamento in memoria della struct segue 4 regole:
+
+\noindent\textbf{Regole di allineamento}:
 \begin{enumerate}
-    \item Un dato di dimensione x deve trovarsi allineato in
-    memoria ad un indirizzo multiplo di x
-    \item La struct in memoria ha un allineamento complessivo
-    che deriva dal campo di tipo più grande
-    \item La dimensione complessiva della struct in memoria è
-    multipla della dimensione del suo campo più grande
-    \item 
+    \item Un dato di dimensione $x$ deve essere allineato a indirizzi multipli di $x$
+    \item L'allineamento della struct è determinato dal campo più grande
+    \item La dimensione totale della struct è un multiplo della dimensione del campo più grande
 \end{enumerate}
-\begin{minipage}{0.3\textwidth}
-    \begin{verbatim}
-struct s{   // base
-    char x; // +0   |x - - -|
-    int y;  // +4   |x x x x|
-    short z;// +8   |x x - -|
-            // sizeof s = 12;
-            // di cui 5 byte sono sprecati
+\textbf{Esempio (non ottimizzato)}
+
+\begin{minipage}{0.4\textwidth}
+\begin{verbatim}
+struct s{
+    char x;   // +0 |x - - -|
+    int y;    // +4 |x x x x|
+    short z;  // +8 |x x - -|
+             // sizeof(s) = 12 (5 byte sprecati)
+};
+
+\end{verbatim}
+\end{minipage}\bigskip\\
+\noindent\textbf{Esempio (ottimizzato)}:\medskip\\
+\begin{minipage}{0.4\textwidth}
+\begin{verbatim}
+struct s{
+    char x;     // +0 |x -    
+    short z;    // +2 |    x x|
+    int y;      // +4 |x x x x|
+                // sizeof(s) = 8 (1 byte sprecato)
+};
+
+\end{verbatim}
+\end{minipage}
+
+\medskip
+\noindent\textbf{Nota:} Riordinare i campi riduce lo spazio sprecato e migliora l'efficienza.\\
+\noindent\textbf{Esempio completo con Assembly}: \medskip\\
+\begin{minipage}{0.4\textwidth}
+\begin{verbatim}
+struct s{
+    char x; // +0
+    int y;  // +4
+};
+
+void f(struct s *p, char a, int b){
+    p->x = a;
+    p->y = b;
 }
-    \end{verbatim}
+\end{verbatim}
 \end{minipage}
 \hfill
 $\longrightarrow$
 \hfill
 \begin{minipage}{0.4\textwidth}
-    \begin{verbatim}
-struct s{   // base
-    char x; // +0  |x - 
-    short z;// +2  |    x x|
-    int y;  // +4  |x x x x|
-            // sizeof s = 8;
-            // di cui 1 byte solo è sprecato
-            // redendo più efficiente 
-            // l'uso della memoria
-}
-    \end{verbatim}
-\end{minipage}\medskip\\
-Vediamo un esempio con traduzione ora in Assembly: \medskip\\
-\begin{minipage}{0.3\textwidth}
-    \begin{verbatim}
-struct s{   // base
-    char x; // +0
-    int y;  // +4
-}
-void f(struct s *p,char a, int b){
-    p->x = a;
-    p->y = b;
-}
-    \end{verbatim}
-\end{minipage}
-\hfill
-$\longrightarrow$
-\hfill
-\begin{minipage}{0.3\textwidth}
-    \begin{verbatim}
+\begin{verbatim}
 .globl f
 f:
-    movl 4(%esp), %eax
-    movb 8(%esp), %cl   #x
-    movl 12(%esp), %edx #y
+    movl 4(%esp), %eax   # p
+    movb 8(%esp), %cl    # a
+    movl 12(%esp), %edx  # b
 
-    movb %cl, (%eax)
-    movl %edx, 4(%eax)
-    
+    movb %cl, (%eax)     # p->x
+    movl %edx, 4(%eax)   # p->y
+
     ret
-    \end{verbatim}
-\end{minipage}\medskip\\
+\end{verbatim}
+\end{minipage}
