@@ -1,7 +1,7 @@
 \chapter{Programmazione Dinamica}
 \section{Panoramica generale}
 La programmazione dinamica, come il metodo Divide et Impera, risolve i problemi combinando le soluzioni dei sottoproblemi. La programmazione dinamica può essere applicata quando i sottoproblemi non sono indipendenti, ovvero quando i sottoproblemi hanno in comune dei sottoproblemi.\smallskip\\
-A differenza del metodo Divide et Impera, la programmazione dinamica risolve ciascun sotto - sottoproblema \textbf{una sola volta} e salva la sua soluzione in una tabella, evitando così di ricalcolare la soluzione ogni volta che si presenta il sotto - sottoproblema.\smallskip\\
+A differenza del metodo Divide et Impera, la programmazione dinamica risolve ciascun sotto sottoproblema \textbf{una sola volta} e salva la sua soluzione in una tabella, evitando così di ricalcolare la soluzione ogni volta che si presenta il sotto sottoproblema.\smallskip\\
 La programmazione dinamica, tipicamente, si applica ai \textbf{problemi di ottimizzazione}. Per questi problemi ci possono essere molte soluzioni possibili, ogni soluzione ha un valore e vogliamo trovare una soluzione con il valore ottimo.
 
 \section{Sviluppo dell'algoritmo}
@@ -23,7 +23,7 @@ Dopo aver identificato i sottoproblemi dobbiamo definire la \textbf{funzione di 
 Ogni sottoproblema è identificato da una o più variabili di stato, cioè i parametri che descrivono in quale punto del problema ci si trova. La funzione di stato permette di tradurre il problema in una forma ricorsiva.\medskip\\
 Ora vediamo i due approcci \textsc{top down} e \textsc{bottom up}:\smallskip\\
 
-\subsection{Top - Down}
+\subsection{Top  Down}
 Con l'approccio \textbf{Top Down} con \textbf{memoizzazione} scriviamo la soluzione ricorsiva, salvando il risultato di ciascun sottoproblema (di solito in un array o in una tabella hash). La procedura prima verifica se ha risolto precedentemente questo sottoproblema. In caso affermativo, restituisce il valore salvato, risparmiando gli ulteriori calcoli a quel livello; altrimenti, la procedura calcola il valore nel modo usuale e lo memoizza. Diciamo che la procedura ricorsiva è stata dotata di un blocco note (memo) e quindi memoizzata, nel senso che “annota” quali risultati sono stati calcolati in precedenza.
  
 
@@ -101,11 +101,11 @@ Si chiama $(0/1)$ perchè ogni oggetto o lo prendiamo intero (1) o lo lasciamo (
 \noindent Ecco la spiegazione della soluzione proposta:
 \begin{enumerate}
     \item \texttt{dp[n+1][W+1];}\\
-    Viene introdotta la \textbf{funzione di stato} , che rappresenta il massimo valore con $n$ oggetti
+    Viene introdotta la \textbf{funzione di stato}, che rappresenta il massimo valore con $n$ oggetti
     e capacità massima $W$.
     \item \texttt{for (int i = 0; i <= n; i++)}\\ 
     Inizia il ciclo esterno, iteriamo sul numero di oggetti a nostra disposizione.
-    \item \texttt{for (int w = 0; w <= W; w++)}\\ 
+    \item \texttt{for (int w = 0; w <= W; w++)}\\ % chktex 13
     Inizia il ciclo interno, per ogni numero di oggetti \texttt{i}, proviamo a
     riempire zaini di capacità crescente, da $0$ fino alla capacità massima $W$.
     \item \texttt{if (i == 0 || w == 0)
@@ -114,18 +114,18 @@ Si chiama $(0/1)$ perchè ogni oggetto o lo prendiamo intero (1) o lo lasciamo (
     \item \texttt{else if (peso[i-1] <= w);}\\
     Con questa condizione si verifica se l'oggetto corrente (\texttt{i-1}) può entrare nello zaino senza superare il peso disponibile $w$.
     Se l'oggetto non può entrare perchè troppo pesante, allora \texttt{dp[i][w] = dp[i-1][w];}, ovvero copiamo semplicemente il valore che avevamo ottenuto senza quell'oggetto.
-    \item \texttt{dp[i][w] = fmax(dp[i-1][w], dp[i-1][w - peso[i-1]] + valore[i-1]);}\\
+    \item \texttt{dp[i][w] = fmax (dp[i-1][w], dp[i-1][w-peso[i-1]] + valore[i-1]);}\\
     Se l'oggetto può entrare, devo fare una scelta che massimizzi il mio guadagno. Usiamo la funzione \texttt{fmax} per decidere se conviene di più:
                 \begin{itemize}
                     \item Lasciare l'oggetto (\texttt{dp[i-1][w]})
-                    \item Prendere l'oggetto (\texttt{dp[i-1][w - peso[i-1]] + valore[i-1]})
+                    \item Prendere l'oggetto (\texttt{dp[i-1][w-peso[i-1]] + valore[i-1]})
                 \end{itemize}
     Qui l'uso degli indici può sembrare difficile da capire, perciò vediamo nel dettaglio cosa vogliono dire quelle due espressioni.
      Se lasciamo l'oggetto corrente, impostiamo che \texttt{d[i][w] = dp[i-1][w]}, quindi stiamo attribuendo a \texttt{d[i][w]} un valore che già era stato calcolato in precedenza e che è stato ritenuto il valore
      massimo dalla funzione \texttt{fmax} rispetto al valore che avremmo ottenuto prendendo l'oggetto. Siccome non prendiamo l'oggetto l'indice $w$ rimane invariato, in quanto il peso corrente non cambia.\smallskip\\
-     Invece se prendiamo l'oggetto, impostiamo che \texttt{d[i][w] = dp[i-1][w - peso[i-1]] + valore[i-1]}. Siccome stiamo prendendo l'oggetto, dobbiamo considerare due cose: la prima è aggiungere il valore dell'oggetto che 
+     Invece se prendiamo l'oggetto, impostiamo che \texttt{d[i][w] = dp[i-1][w-peso[i-1]] + valore[i-1]}. Siccome stiamo prendendo l'oggetto, dobbiamo considerare due cose: la prima è aggiungere il valore dell'oggetto che 
      prendiamo, e questo lo facciamo sommando \texttt{valore[i-1]}, la seconda è che ora il peso disponibile diminuisce visto che abbiamo preso l'oggetto e quindi dobbiamo sottrarre alla capacità corrente (\texttt{w}) il
-    peso dell'oggetto che prendiamo (\texttt{peso[i-1]}), quindi scriviamo \texttt{w - peso[i-1]}.
+    peso dell'oggetto che prendiamo (\texttt{peso[i-1]}), quindi scriviamo \texttt{w-peso[i-1]}.
     \item \texttt{return dp[n][W];}\\
     Restituisco il risultato finale: il valore massimo ottenibile considerando tutti gli $n$ oggetti e sfruttando tutta la capacità $W$ dello zaino.
 \end{enumerate}
