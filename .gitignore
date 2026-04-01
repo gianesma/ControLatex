@@ -1,3 +1,17 @@
+
+## --- REGOLE PERSONALIZZATE ---
+# Ignora tutti i PDF generati da LaTeX
+*.pdf
+
+# Ignora la spazzatura di sistema del Mac (per il tuo collega)
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Ignora la spazzatura di sistema di Windows (per te)
+Thumbs.db
+Desktop.ini
+## -----------------------------
 ## Core latex/pdflatex auxiliary files:
 *.aux
 *.lof
