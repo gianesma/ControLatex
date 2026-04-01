@@ -20,8 +20,8 @@ definiamo il \textbf{problema della selezione} come segue:
 osservazione:\\
 dato un elemento $x \in A$, x è il k-esimo in ordine di grandezza se gli altri n-1 elementi si possono ripartire in 2 gruppi tali che:
 \begin{itemize}
-    \item un gruppo contiene k-1 elementi tutti minori o uguali di x ed
-    \item un gruppo contiene n-k elementi tutti maggiori o uguali di x
+    \item un gruppo contiene $k-1$ elementi tutti minori o uguali di x ed
+    \item un gruppo contiene $n-k$ elementi tutti maggiori o uguali di x
 \end{itemize}
 
 \section{Minimo o Massimo}
@@ -35,12 +35,12 @@ Trovare il minimo e il massimo di un insieme sono problemi molto comuni e per cu
 6        return min
 \end{verbatim}
 \textbf{osservazioni}
-n-1 confronti è un upper bound per il problema del minimo/massimo\\
+$n-1$ confronti è un upper bound per il problema del minimo/massimo\\
 L'algoritmo proposto è ottimo rispetto al numero di confronti e la complessità è $\Theta(n)$
 
 \section{Minimo e Massimo}
 Come sappiamo per cercare il min o il max siamo abituati a svolgere n confronti, ovvero confrontare ciascun elemento dell'array con il min e max.  \\ 
-Per trovare sia il minimo che il massimo, eseguo in sequenza Minium e il duale Maxium (soluzione Naif) e ottengo un totale di 2(n-1) confronti.
+Per trovare sia il minimo che il massimo, eseguo in sequenza Minium e il duale Maxium (soluzione Naif) e ottengo un totale di $2(n-1)$ confronti.
 Il costo asintotico nel caso peggiore per la ricerca del min e del max è $\Theta(n)$, non è possibile trovare un algoritmo che faccia meglio. Nonostante ciò, è comunque possibile scansionarli a coppie così che il numero di cicli passi da n a $\frac{n}{2}$ e con al più $3 \lfloor n/2 \rfloor $.\\
 \subsection{Psudocodice}
 \begin{verbatim}
@@ -86,22 +86,22 @@ Nelle ietrazioni del ciclo while vengono effettuati sempre 3 confronti, allora �
 n dispari: $3 \cdot (\frac{n-1}{2})$ \qquad n pari: $3 \cdot (\frac{n-2}{n})+1$\\
 Nel caso di n dispari viene assegnato ad i il valore 2, questo significa che il while farà $\frac{n-1}{2}$ cicli; infatti, bisogna notare come i venga incrementato di 2 ogni volta, dimezzando così il numeoro di cicli. Il tutto è moltiplicato per 3 in quanto come abbiamo visto il numero di confronti per il ciclo è 3. Nel caso n pari dobbiamo considerare il costo costante del confronto (+1) e notare in seguito come ad i venga assegnato il valore 3. Questo significa che, ragionando come prima, il numero di cicli che effettuerà il while sarà $\frac{n-2}{2}$, il tutto moltiplicato per 3 dato il numero di confronti per ciclo.\\
 \noindent \textbf{esempio:}\\
-A = $<5,8,23,1,7,9>$ con n=6\\
+A = $<5,8,23,1,7,9>$ con $n=6$\\
 \textbf{Passo 1:}\\
-n è pari allora prendo i primi due valori dell'array e li confronto e assegno min=5 e max=8 e pongo i=3\\
+$n$ è pari allora prendo i primi due valori dell'array e li confronto e assegno $min=5$ e $max=8$ e pongo $i=3$\\
 \textbf{Passo 2:}\\
 \textbf{Iterazione 1:}\\
-prendo la coppia A[i] = 23 e A[i+1] = 1:\\
+prendo la coppia $A[i] = 23$ e $A[i+1] = 1$:\\
 $A[i] < A[i+1]$ ? No, allora:\\
-A[i+1] $<$ min = 5 ? Si, allora min = 1\\
-A[i] $>$ max = 8 ? Si, allora max = 23\\
-i = 3 + 2 = 5\\
+$$A[i+1]$$ $<$ min = 5 ? Si, allora min = 1\\
+$A[i]$ $>$ max = 8 ? Si, allora max = 23\\
+$i = 3 + 2 = 5$\\
 \textbf{Iterazione 2:}\\
-prendo la coppia A[i] = 7 e A[i+1] = 9:\\
+prendo la coppia $A[i] = 7$ e $A[i+1] = 9$:\\
 A[i] $<$ A[i+1] ? Si, allora:\\
 A[i] $<$ min = 1 ? No\\
 A[i+1] $>$ max = 23 ? No\\
-i = 5 + 2 = 7\\
+$i = 5 + 2 = 7$\\
 esce dal ciclo e il programma termina con min=1 e max=23.\\
 Analisi esempio:\\
 \begin{figure}[H]
@@ -194,7 +194,7 @@ Poiché non tutte le partizioni non sono necessariamente utili, assegniamo a cia
 \end{figure}
 \noindent Ora definiamo la variabile casuale\\
 $$X_k=h_{k+1}-h_k$$\\
-per k=0,1,2,..,m-1. Quindi, $X_k$ è il numero di insiemi nella k-esima generazione, di modo che gli insiemi nella k-esima generazione sono $A^{(h_k)}$, $A^{(h_k+1)}$,..,$A^{(h_k+X_k-1)}$.\\
+per $k=0,1,2,..,m-1$. Quindi, $X_k$ è il numero di insiemi nella k-esima generazione, di modo che gli insiemi nella k-esima generazione sono $A^{(h_k)}$, $A^{(h_k+1)}$,..,$A^{(h_k+X_k-1)}$.\\
 Per il lemma precedente, la probabilità che una partizione sia utile è almeno $\frac{1}{2}$. La probabilità è in realtà maggiore, poiché una partizione è utile anche se il pivot non cade nella metà centrale, ma l'i-esimo elemento più piccolo si torva nella sezione più piccola della partizione. Utilizzeremo comunque la stima inferiore di $\frac{1}{2}$, quindi dall'equazione segue $E[X_k] \le 2$ per k=0,1,2,..,m-1.\\
 Ne segue che l'equazione di ricorrenza calcolata in precedenza viene al massimo raddoppiata non andando ad impattare sul costo asintotico atteso.\medskip\\
 Stimiamo superiormente il numero totale di confronti durante tutte le partizioni. 
@@ -237,9 +237,9 @@ Pertanto, il tempo di esecuzione atteso di RANDOMIZED-SELECT è:
 \end{proof}
 \section{Selezione in tempo} 
 Esamiamo ora un algoritmo di selezione interessante dal punto di vista teorico, il cui tempo di esecuzione è $\Theta(n)$ nel caso peggiore.\\
-Come RANDOMIZED-SELECT, che ha un tempo di esecuzione lineare nel caso peggiore, trova l'elemento desiderato partizionando ricorsivamente l'array di input. A differenza di RANDOMIZED-SELECT, però, SELECT garantisce che la partizione sia buona scegliendo, durante la partizione dell'array, un pivot di cui si può provare la bontà. Pertanto ci sono due chiamate di SELECT: una per trovare un buon pivot e una seconda per trovare ricorsivamente la statistica d'ordine.\\
+Come \texttt{RANDOMIZED-SELECT}, che ha un tempo di esecuzione lineare nel caso peggiore, trova l'elemento desiderato partizionando ricorsivamente l'array di input. A differenza di \texttt{RANDOMIZED-SELECT}, però, \texttt{SELECT} garantisce che la partizione sia buona scegliendo, durante la partizione dell'array, un pivot di cui si può provare la bontà. Pertanto ci sono due chiamate di SELECT: una per trovare un buon pivot e una seconda per trovare ricorsivamente la statistica d'ordine.\\
 \subsection{Pseudocodice}
-prende in input un array A[p : r] di n=r-p+1
+prende in input un array $A[p : r]$ di $n=r-p+1$
  elementi e un intero i tale che $1 \le i \le n$\\
  \begin{verbatim}
 1   Select (A,p,r,i)
@@ -280,4 +280,5 @@ prende in input un array A[p : r] di n=r-p+1
     \label{fig:placeholder}
 \end{figure}
 
-\noindent Le cinquine sono costruite verticalmente, in modo che gli elementi che le costruiscono siano vicini tra loro. Di ciascuna si seleziona la mediana, con la caratteristica di essere maggiore degli elementi precedenti e minore dei successivi della cinquina. In questo modo si è messo in evidenza l'insieme delle mediane. Con l'istruzione x=select(A,p+2g,p+3g-1,(g+1)/2); si cerca la mediana delle mediane all'interno dell'insieme, questo coincide con l'elemento al centro dell'array complessivo. Una volta chiamata la funzione partiziona questa sposta tutti gli elementi minori di x nel sottoarray di sinistra e quelli maggiori nel sottoarray di destra. Se i==k si è trovata la k-esima statistica d'ordine, altrimenti si chiama ricorsivamente la funzione select sul sottoarray di sinistra se i < k, o su quello di destra.
+\noindent Le cinquine sono costruite verticalmente, in modo che gli elementi che le costruiscono siano vicini tra loro. Di ciascuna si seleziona la mediana, con la caratteristica di essere maggiore degli elementi precedenti e minore dei successivi della cinquina. In questo modo si è messo in evidenza l'insieme delle mediane. Con l'istruzione x=select(A,p+2g,p+3g-1,(g+1)/2); si cerca la mediana delle mediane all'interno dell'insieme, questo coincide con l'elemento al centro dell'array complessivo. Una volta chiamata la funzione partiziona questa sposta tutti gli elementi minori di x nel sottoarray di sinistra e quelli maggiori nel sottoarray di destra. Se i==k si è trovata la $k$-esima 
+statistica d'ordine, altrimenti si chiama ricorsivamente la funzione select sul sottoarray di sinistra se $i < k$, o su quello di destra.
