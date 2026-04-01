@@ -24,7 +24,15 @@ Ogni sottoproblema è identificato da una o più variabili di stato, cioè i par
 Ora vediamo i due approcci \textsc{top down} e \textsc{bottom up}:\smallskip\\
 
 \subsection{Top  Down}
-Con l'approccio \textbf{Top Down} con \textbf{memoizzazione} scriviamo la soluzione ricorsiva, salvando il risultato di ciascun sottoproblema (di solito in un array o in una tabella hash). La procedura prima verifica se ha risolto precedentemente questo sottoproblema. In caso affermativo, restituisce il valore salvato, risparmiando gli ulteriori calcoli a quel livello; altrimenti, la procedura calcola il valore nel modo usuale e lo memoizza. Diciamo che la procedura ricorsiva è stata dotata di un blocco note (memo) e quindi memoizzata, nel senso che “annota” quali risultati sono stati calcolati in precedenza.
+Con l'approccio \textbf{Top Down} con \textbf{memoizzazione} scriviamo la soluzione ricorsiva, 
+salvando il risultato di ciascun sottoproblema (di solito in un array o in una tabella hash). 
+La procedura prima verifica se ha risolto precedentemente questo sottoproblema. 
+In caso affermativo, restituisce il valore salvato, risparmiando gli ulteriori calcoli a quel livello; 
+altrimenti, la procedura calcola il valore nel modo usuale e lo memoizza. 
+Diciamo che la procedura ricorsiva è stata dotata di un blocco note (memo) e quindi memoizzata, 
+nel senso che “annota” quali risultati sono stati calcolati in precedenza. 
+Una cosa importante dell'approccio Top Down è che l'array o la tabella dove vengono salvati i risultati, 
+possono non essere riempiti completamente, e questo è un gran vantaggio per l'utilizzo della memoria. 
  
 
 \subsection{Bottom Up}
@@ -156,7 +164,59 @@ tutti i percorsi fino all'arrivo in un colpo solo, cerchiamo di capire quanti pe
         return dp[m-1][n-1];
     }
 \end{verbatim}
-ROTTURA DI CAZZO 
+La \textbf{funzione di stato} \texttt{dp[i][j]} rappresenta il numero totale di cammini distinti per raggiungere la cella alle coordinate $(i,j)$. 
+Per capire come calcolare questo numero, basta pensare ai vincoli di movimento: in una qualsiasi cella $(i,j)$, ci si può arrivare solamente da due posizioni:
+\begin{enumerate}
+    \item Dalla cella esattamente \textbf{sopra}: $(i-1,j)$, scendendo di un passo.
+    \item Dalla cella esattamente a \textbf{sinistra}: $(i,j-1)$, spostandosi verso destra di un passo.
+\end{enumerate} 
+Quindi, il numero totale di modi per arrivare ad una cella è la somma dei modi in cui si può arrivare dalla cella di sopra, più i modi in cui si può arrivare 
+dalla cella di sinistra, perciò l'espressione diventa:
+$$\texttt{dp[i][j] = dp[i-1][j] + dp[i][j-1]}$$
+I primi due \texttt{if} si occupano dei due casi base, ovvero il percorso che percorre la prima riga e il percorso che percorre la prima colonna. 
+I due \texttt{for} annidati permettono di riempire il resto della matrice. 
+
+
+
+
+\section{Problema LIS (List Increasing Subsequence)}
+
+
+
+
+
+
+
+
+
+
+
+
+\section{Problema MSIS (Max Sum Increasing Subsequence)}
+Dato un array $A$ di $n$ interi positivi, l'\textbf{obiettivo} è trovare una sottosequenza crescente dell'array in input tale che la somma dei
+suoi elementi sia massima. Ecco lo pseudocodice che risolve il problema:
+\begin{verbatim}
+    Algoritmo MSIS(A):
+        n = lunghezza(A)
+        se n == 0 ritorna 0
+
+        crea array D di dimensione n
+
+        per i da 0 a n - 1
+            D[i] = A[i]
+
+        per i da 1 a n - 1
+            per j da 0 a i - 1
+                se A[j] < A[i]
+                    D[i] = max(D[i], D[j] + A[i])
+
+    ritorna il valore massimo in D
+\end{verbatim} 
+
+\noindent La \textbf{funzione di stato} \texttt{D[i]} rappresenta la somma massima di una sottosequenza crescente. Il \textbf{caso base} è il caso in 
+cui la lunghezza dell'array in input è 0. Per ottenere il risultato finale viene usato un approccio Bottom Up, ovvero vengono confrontati ogni numero dell'array e, 
+se la condizione di crescenza $(\texttt{A[j] < A[i]})$ è vera, allora decidiamo di prendere il massimo tra \texttt{D[i]} e \texttt{D[j]+A[i]}. Il \textbf{costo temporale} di
+questa soluzione del problema MSIS è $\Theta(n^2)$, poichè vengono effettuati due cicli che eseguono $n-1$ iterazioni.
 
 
 
