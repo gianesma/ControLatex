@@ -1,0 +1,24 @@
+name: Genera PDF Automatico
+
+# Avvia il robottino ogni volta che qualcuno fa "Sync" (Push)
+on: [push]
+
+jobs:
+  crea_pdf:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Scarica il codice sorgente
+        uses: actions/checkout@v4
+
+      - name: Compila il documento LaTeX
+        uses: xu-cheng/latex-action@v3
+        with:
+          # Assicurati che il nome della cartella sia identico a quello che hai su VS Code
+          working_directory: "STRUTTURE DATI E ALGORITMI"
+          root_file: main.tex
+
+      - name: Metti il PDF in vetrina per il download
+        uses: actions/upload-artifact@v4
+        with:
+          name: Appunti_Strutture_Dati_PDF
+          path: "STRUTTURE DATI E ALGORITMI/main.pdf"
