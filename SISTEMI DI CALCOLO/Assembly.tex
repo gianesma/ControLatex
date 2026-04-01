@@ -97,7 +97,6 @@ Per ogni istruzione dobbiamo definire la taglia dei dati su cui andrà a operare
          int, T* & l & 4 \\
          \hline
     \end{tabular}
-   \label{tab:placeholder}
 \end{table}
 \noindent
 
@@ -339,7 +338,6 @@ Le istruzioni di salto condizionato in ASM si sviluppano in due fasi:
          be &  &  $\le$ 0 \\
          \hline
     \end{tabular}
-    \label{tab:placeholder}
 \end{table}
 
 \noindent Il salto condizionato è implementato da:
@@ -1730,17 +1728,16 @@ f:
     f.s
     \end{verbatim}
 \end{minipage}\medskip \\
-%\begin{figure} [H]
- %   \centering
-  %  \includegraphics[width=0.9\linewidth]{}
-   % \caption{Graficamente in memoria}
-    %\label{fig:placeholder}
-%\end{figure}
-METTERE IMMAGINE DEL PROGRAMMA DEL PROF CON CODICE DI FIANCO. 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{../images/Esempio Movz xy.png}
+    \caption{Graficamente}
+    \label{label}
+\end{figure}
 \subsection{Espressioni Booleane}
 L'istruzione \texttt{SETcc} (dove \texttt{cc} sta per \textit{condition code}) consente di assegnare il valore 0 oppure 1 a un registro a 8 bit oppure a un byte in memoria, in base al risultato di una condizione valutata sui flag contenuti nel registro \texttt{EFLAGS}. La forma generale dell'istruzione è:
 \begin{verbatim}
-SETcc D1
+SETcc D
 \end{verbatim}
 \noindent Il suo comportamento può essere descritto come:
 \[
@@ -1832,4 +1829,194 @@ In C esistono due operatori che possono sembrare simili ma hanno comportamenti d
     \item \texttt{\&\&} (AND logico): applica la \textbf{valutazione con cortocircuito}. La seconda espressione viene valutata \textbf{solo se} la prima è vera (diversa da zero). Se la prima è falsa, il risultato è già determinato e la seconda non viene eseguita.
     \item \texttt{\&} (AND bit a bit): \textbf{non utilizza il cortocircuito}. Entrambe le espressioni vengono sempre valutate, indipendentemente dal valore della prima.
 \end{itemize}
-In sintesi, il cortocircuito è una proprietà dell'operatore logico \texttt{\&\&}, mentre l'operatore \texttt{\&} esegue sempre entrambe le valutazioni.
+In sintesi, il cortocircuito è una proprietà dell'operatore logico \texttt{\&\&}, mentre l'operatore \texttt{\&} esegue sempre entrambe le valutazioni.\\
+\section{Allineamento nello Stack}
+
+Consideriamo il seguente esempio:\medskip\\
+
+\begin{minipage}{0.4\textwidth}
+\begin{verbatim}
+void g(char *c);
+
+void f(){
+    ...
+    char a; // 1 byte
+    g(&a);  // parametro: 4 byte
+    ...
+}
+\end{verbatim}
+\end{minipage}
+\hfill
+$\longrightarrow$
+\hfill
+\begin{minipage}{0.5\textwidth}
+\begin{verbatim}
+f:
+    subl $4, %esp   # spazio per a (allineato a 4 byte)
+    subl $4, %esp   # spazio per il parametro di g
+    ...
+    leal ...
+    movl ..., (%esp)
+    call g
+    ...
+\end{verbatim}
+\end{minipage}
+
+\medskip
+
+\noindent\textbf{\textcolor{red}{Importante:}}  
+In ogni momento dell'esecuzione, lo \texttt{stack pointer} deve essere allineato a un multiplo di 4 byte.  
+In pratica, i compilatori moderni allineano lo stack a \textbf{16 byte}.
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.3\linewidth]{../images/Allineamento in stack.png}
+    \caption{SP}
+    \label{label}
+\end{figure}
+
+\medskip
+
+\noindent\textbf{Esempio con più variabili}: \medskip\\
+
+\begin{minipage}{0.3\textwidth}
+\begin{verbatim}
+char a, b, c;
+g(&a, &b, &c);
+\end{verbatim}
+\end{minipage}
+\hfill
+$\longrightarrow$
+\hfill
+\begin{minipage}{0.6\textwidth}
+\begin{verbatim}
+# Prologo
+subl $16, %esp  # spazio totale
+
+# Spiegazione:
+# - a, b, c occupano 1 byte ciascuno
+# - per allineamento diventano 4 byte ciascuno
+# - parametri di g: 3 * 4 byte = 12 byte
+# - totale: 3*4 + 12 = 24 → arrotondato a 16 (allineamento)
+\end{verbatim}
+\end{minipage}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\linewidth]{../images/Esempio con più variabili.png}
+    \caption{Ecco cosa succede nello SP}
+    \label{label}
+\end{figure}
+\medskip
+\noindent\textbf{\textcolor{red}{Regola fondamentale:}}  
+Un dato di dimensione $x$ viene allocato a indirizzi multipli di $x$.
+
+\medskip
+
+\noindent\textbf{Altro esempio}:
+
+\begin{minipage}{0.4\textwidth}
+\begin{verbatim}
+char a[5];
+short b;
+g(&a, &b);
+
+
+
+
+
+f.c
+\end{verbatim}
+\end{minipage}
+\hfill
+$\longrightarrow$
+\hfill
+\begin{minipage}{0.5\textwidth}
+\begin{verbatim}
+# Prologo
+subl $16, %esp
+
+# Spiegazione:
+# - a occupa 5 byte → allineato a 8 byte
+# - b occupa 2 byte → allineato a 4 byte
+# - parametri: 2 * 4 = 8 byte
+# - totale: 8 + 4 + 8 = 20 → arrotondato a 16/32
+
+f.s
+\end{verbatim}
+\end{minipage}
+
+\bigskip
+
+\section{Allineamento delle Struct}
+
+Per tradurre una \texttt{struct} in Assembly, bisogna rispondere a:
+
+\begin{enumerate}
+    \item Dove inizia ogni campo in memoria?
+    \item Quanto spazio occupa complessivamente la struct?
+\end{enumerate}
+
+\noindent\textbf{Regole di allineamento}:
+\begin{enumerate}
+    \item Un dato di dimensione $x$ deve essere allineato a indirizzi multipli di $x$
+    \item L'allineamento della struct è determinato dal campo più grande
+    \item La dimensione totale della struct è un multiplo della dimensione del campo più grande
+\end{enumerate}
+\textbf{Esempio (non ottimizzato)}
+
+\begin{minipage}{0.4\textwidth}
+\begin{verbatim}
+struct s{
+    char x;   // +0 |x - - -|
+    int y;    // +4 |x x x x|
+    short z;  // +8 |x x - -|
+             // sizeof(s) = 12 (5 byte sprecati)
+};
+
+\end{verbatim}
+\end{minipage}\bigskip\\
+\noindent\textbf{Esempio (ottimizzato)}:\medskip\\
+\begin{minipage}{0.4\textwidth}
+\begin{verbatim}
+struct s{
+    char x;     // +0 |x -    
+    short z;    // +2 |    x x|
+    int y;      // +4 |x x x x|
+                // sizeof(s) = 8 (1 byte sprecato)
+};
+
+\end{verbatim}
+\end{minipage}
+
+\medskip
+\noindent\textbf{Nota:} Riordinare i campi riduce lo spazio sprecato e migliora l'efficienza.\\
+\noindent\textbf{Esempio completo con Assembly}: \medskip\\
+\begin{minipage}{0.4\textwidth}
+\begin{verbatim}
+struct s{
+    char x; // +0
+    int y;  // +4
+};
+
+void f(struct s *p, char a, int b){
+    p->x = a;
+    p->y = b;
+}
+\end{verbatim}
+\end{minipage}
+\hfill
+$\longrightarrow$
+\hfill
+\begin{minipage}{0.4\textwidth}
+\begin{verbatim}
+.globl f
+f:
+    movl 4(%esp), %eax   # p
+    movb 8(%esp), %cl    # a
+    movl 12(%esp), %edx  # b
+
+    movb %cl, (%eax)     # p->x
+    movl %edx, 4(%eax)   # p->y
+
+    ret
+\end{verbatim}
+\end{minipage}

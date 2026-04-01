@@ -83,27 +83,34 @@ Il costo asintotico nel caso peggiore per la ricerca del min e del max è $\Thet
 \noindent Prima confrontiamo due elementi di input l'uno con l'altro e poi il più piccolo dei due con il minimo corrente, e il più grande dei due con il massimo corrente, con un costo di 3 confronti ogni 2 elementi.\\
 Come si debba impostare i valori iniziali del minimo e del massimo dipende dal fatto che n sia pari o dispari. Se n è dispari, assegniamo al minimo e al massimo il valore del primo elemento, e poi esaminiamo i restanti elementi a coppie. Se n è pari, effettuiamo un confronto fra i primi 2 elementi per determinare i valori iniziali del minimo e del massimo; poi esaminiamo i restanti elementi a coppie, come nel caso di n dispari.\\
 Nelle ietrazioni del ciclo while vengono effettuati sempre 3 confronti, allora è possibile dire che il numero di confronti se n è pari o dispari è:\\
-n dispari: $3 \cdot (\frac{n-1}{2})$ \qquad n pari: $3 \cdot (\frac{n-2}{n})+1$\\
-Nel caso di n dispari viene assegnato ad i il valore 2, questo significa che il while farà $\frac{n-1}{2}$ cicli; infatti, bisogna notare come i venga incrementato di 2 ogni volta, dimezzando così il numeoro di cicli. Il tutto è moltiplicato per 3 in quanto come abbiamo visto il numero di confronti per il ciclo è 3. Nel caso n pari dobbiamo considerare il costo costante del confronto (+1) e notare in seguito come ad i venga assegnato il valore 3. Questo significa che, ragionando come prima, il numero di cicli che effettuerà il while sarà $\frac{n-2}{2}$, il tutto moltiplicato per 3 dato il numero di confronti per ciclo.\\
-\noindent \textbf{esempio:}\\
-A = $<5,8,23,1,7,9>$ con $n=6$\\
+$n$ dispari: $3 \cdot (\frac{n-1}{2})$ \qquad $n$ pari: $3 \cdot (\frac{n-2}{n})+1$\\
+Nel caso di $n$ dispari viene assegnato ad $i$ il valore 2, questo significa che il while farà $\frac{n-1}{2}$ cicli; infatti, bisogna notare come $i$ venga incrementato di 2 ogni volta, dimezzando così il numeoro di cicli. 
+Il tutto è moltiplicato per 3 in quanto come abbiamo visto il numero di confronti per il ciclo è 3. 
+Nel caso $n$ pari dobbiamo considerare il costo costante del confronto (+1) e notare in seguito come ad $i$ venga assegnato il valore 3. 
+Questo significa che, ragionando come prima, il numero di cicli che effettuerà il while sarà $\frac{n-2}{2}$, il tutto moltiplicato per 3 dato il numero di confronti per ciclo.\smallskip\\
+\noindent \textit{Esempio.}\\
+$A = <5,8,23,1,7,9>$ con $n=6$\\
 \textbf{Passo 1:}\\
 $n$ è pari allora prendo i primi due valori dell'array e li confronto e assegno $min=5$ e $max=8$ e pongo $i=3$\\
 \textbf{Passo 2:}\\
-\textbf{Iterazione 1:}\\
-prendo la coppia $A[i] = 23$ e $A[i+1] = 1$:\\
-$A[i] < A[i+1]$ ? No, allora:\\
-$$A[i+1]$$ $<$ min = 5 ? Si, allora min = 1\\
-$A[i]$ $>$ max = 8 ? Si, allora max = 23\\
-$i = 3 + 2 = 5$\\
-\textbf{Iterazione 2:}\\
-prendo la coppia $A[i] = 7$ e $A[i+1] = 9$:\\
-A[i] $<$ A[i+1] ? Si, allora:\\
-A[i] $<$ min = 1 ? No\\
-A[i+1] $>$ max = 23 ? No\\
-$i = 5 + 2 = 7$\\
-esce dal ciclo e il programma termina con min=1 e max=23.\\
-Analisi esempio:\\
+\textbf{Iterazione 1:}
+\begin{enumerate}
+\item prendo la coppia $A[i] = 23$ e $A[i+1] = 1$:
+\item $A[i] < A[i+1]$ ? No, allora:
+\item $A[i+1]$ $<$ $min = 5$ ? Si, allora $min = 1$
+\item $A[i]$ $>$ $max = 8$ ? Si, allora $max = 23$
+\item $i = 3 + 2 = 5$
+\end{enumerate}
+\textbf{Iterazione 2:}
+\begin{enumerate}
+\item prendo la coppia A[i] = 7 e A[i+1] = 9:
+\item $A[i]$ $<$ $A[i+1]$ ? Si, allora:
+\item $A[i]$ $<$ $min = 1$ ? No
+\item $A[i+1]$ $>$ $max = 23$ ? No
+\item $i = 5 + 2 = 7$
+\item esce dal ciclo e il programma termina con $min=1$ e $max=23$.
+\end{enumerate}
+\textit{Analisi esempio}.\\
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\linewidth]{../images/Screenshot 2026-03-22 alle 12.05.41.png}
@@ -150,7 +157,7 @@ in dettaglio:\\
 19  return partiziona(A,p,r) //stessa procedura usata in QuickSort
 \end{verbatim}
 \noindent 
-\textbf{esempio funzionamento pseudocodice: }\\
+\textit{Esempio.}\\
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.75\linewidth]{../images/Screenshot 2026-03-22 alle 19.12.01.png}
@@ -186,7 +193,11 @@ pertanto il pivot ha probabilità almeno $\frac{1}{2}$ di cadere nella metà cen
 La procedura Randomized-Select ha un tempo di esecuzione atteso $\Theta(n)$ su un array di input di n valori distinti    
 \end{theorem}}}\smallskip\\
 \begin{proof}
-Poiché non tutte le partizioni non sono necessariamente utili, assegniamo a ciascuna un indice a partire da 0 e indichiamo con $< h_0,h_1,h_2,....,h_m >$ la sequenza di partizioni utili, in modo che la $h_k$-esima partizione sia utile per k = 0,1,2,...,m. Assumiamo convenzionalmente che la partizione fittizia di indice 0 è utile, così che $h_0=0$. Indichiamo $|A^{(h_k)}|$ con $n_k$, dove $n_0=|A^{(0)}|$ è la dimensione del problema originale. Poiché la $h_k$-esima partizione è utile e le cardinalità degli insiemi $|A^{(j)}|$ decrescono strettamente, si ha $n_k=|A^{(h_k)}| \le (3/4)|A^{(h_{k-1})}|=(3/4)n_{k-1}$ per k=1,2,..,m. Iterando la disuguaglianza $n_k \le (3/4)n_{k-1}$, si ha $n_k \le (3/4)^kn_0$ per k=0,1,2,..,m.\\
+Poiché non tutte le partizioni non sono necessariamente utili, assegniamo a ciascuna un indice a partire da 0 e indichiamo con $< h_0,h_1,h_2,....,h_m >$ la 
+sequenza di partizioni utili, in modo che la $h_k$-esima partizione sia utile per $k = 0,1,2,...,m$. 
+Assumiamo convenzionalmente che la partizione fittizia di indice 0 è utile, così che $h_0=0$. Indichiamo $|A^{(h_k)}|$ con $n_k$, dove $n_0=|A^{(0)}|$ 
+è la dimensione del problema originale. Poiché la $h_k$-esima partizione è utile e le cardinalità degli insiemi $|A^{(j)}|$ decrescono strettamente, 
+si ha $n_k=|A^{(h_k)}| \le (3/4)|A^{(h_{k-1})}|=(3/4)n_{k-1}$ per $k=1,2,..,m$. Iterando la disuguaglianza $n_k \le (3/4)n_{k-1}$, si ha $n_k \le (3/4)^kn_0$ per $k=0,1,2,..,m$.\\
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.75\linewidth]{../images/Screenshot 2026-03-24 alle 00.09.05.png}
@@ -194,8 +205,8 @@ Poiché non tutte le partizioni non sono necessariamente utili, assegniamo a cia
 \end{figure}
 \noindent Ora definiamo la variabile casuale\\
 $$X_k=h_{k+1}-h_k$$\\
-per $k=0,1,2,..,m-1$. Quindi, $X_k$ è il numero di insiemi nella k-esima generazione, di modo che gli insiemi nella k-esima generazione sono $A^{(h_k)}$, $A^{(h_k+1)}$,..,$A^{(h_k+X_k-1)}$.\\
-Per il lemma precedente, la probabilità che una partizione sia utile è almeno $\frac{1}{2}$. La probabilità è in realtà maggiore, poiché una partizione è utile anche se il pivot non cade nella metà centrale, ma l'i-esimo elemento più piccolo si torva nella sezione più piccola della partizione. Utilizzeremo comunque la stima inferiore di $\frac{1}{2}$, quindi dall'equazione segue $E[X_k] \le 2$ per k=0,1,2,..,m-1.\\
+per k=0,1,2,..,m-1. Quindi, $X_k$ è il numero di insiemi nella k-esima generazione, di modo che gli insiemi nella k-esima generazione sono $A^{(h_k)}$, $A^{(h_k+1)}$,..,$A^{(h_k+X_k-1)}$.\\
+Per il lemma precedente, la probabilità che una partizione sia utile è almeno $\frac{1}{2}$. La probabilità è in realtà maggiore, poiché una partizione è utile anche se il pivot non cade nella metà centrale, ma l'i-esimo elemento più piccolo si torva nella sezione più piccola della partizione. Utilizzeremo comunque la stima inferiore di $\frac{1}{2}$, quindi dall'equazione segue $E[X_k] \le 2$ per $k=0,1,2,..,m-1$.\\
 Ne segue che l'equazione di ricorrenza calcolata in precedenza viene al massimo raddoppiata non andando ad impattare sul costo asintotico atteso.\medskip\\
 Stimiamo superiormente il numero totale di confronti durante tutte le partizioni. 
 Alla $j$-esima partizione si effettuano meno di $|A^{(j-1)}|$ confronti.\\
@@ -230,14 +241,14 @@ Estendendo la somma a infinito:
 8 n_0.
 \]\\
 Quindi il numero atteso di confronti è $O(n)$; inoltre, essendo necessario esaminare tutti gli elementi almeno una volta, si ha anche un limite inferiore $\Omega(n)$. 
-Pertanto, il tempo di esecuzione atteso di RANDOMIZED-SELECT è:
+Pertanto, il tempo di esecuzione atteso di \texttt{RANDOMIZED-SELECT} è:
 \[
 \Theta(n).
 \]
 \end{proof}
 \section{Selezione in tempo} 
 Esamiamo ora un algoritmo di selezione interessante dal punto di vista teorico, il cui tempo di esecuzione è $\Theta(n)$ nel caso peggiore.\\
-Come \texttt{RANDOMIZED-SELECT}, che ha un tempo di esecuzione lineare nel caso peggiore, trova l'elemento desiderato partizionando ricorsivamente l'array di input. A differenza di \texttt{RANDOMIZED-SELECT}, però, \texttt{SELECT} garantisce che la partizione sia buona scegliendo, durante la partizione dell'array, un pivot di cui si può provare la bontà. Pertanto ci sono due chiamate di SELECT: una per trovare un buon pivot e una seconda per trovare ricorsivamente la statistica d'ordine.\\
+Come \texttt{RANDOMIZED-SELECT}, che ha un tempo di esecuzione lineare nel caso peggiore, trova l'elemento desiderato partizionando ricorsivamente l'array di input. A differenza di \texttt{RANDOMIZED-SELECT}, però, \texttt{SELECT} garantisce che la partizione sia buona scegliendo, durante la partizione dell'array, un pivot di cui si può provare la bontà. Pertanto ci sono due chiamate di \texttt{SELECT}: una per trovare un buon pivot e una seconda per trovare ricorsivamente la statistica d'ordine.\\
 \subsection{Pseudocodice}
 prende in input un array $A[p : r]$ di $n=r-p+1$
  elementi e un intero i tale che $1 \le i \le n$\\
@@ -280,5 +291,4 @@ prende in input un array $A[p : r]$ di $n=r-p+1$
     \label{fig:placeholder}
 \end{figure}
 
-\noindent Le cinquine sono costruite verticalmente, in modo che gli elementi che le costruiscono siano vicini tra loro. Di ciascuna si seleziona la mediana, con la caratteristica di essere maggiore degli elementi precedenti e minore dei successivi della cinquina. In questo modo si è messo in evidenza l'insieme delle mediane. Con l'istruzione x=select(A,p+2g,p+3g-1,(g+1)/2); si cerca la mediana delle mediane all'interno dell'insieme, questo coincide con l'elemento al centro dell'array complessivo. Una volta chiamata la funzione partiziona questa sposta tutti gli elementi minori di x nel sottoarray di sinistra e quelli maggiori nel sottoarray di destra. Se i==k si è trovata la $k$-esima 
-statistica d'ordine, altrimenti si chiama ricorsivamente la funzione select sul sottoarray di sinistra se $i < k$, o su quello di destra.
+\noindent Le cinquine sono costruite verticalmente, in modo che gli elementi che le costruiscono siano vicini tra loro. Di ciascuna si seleziona la mediana, con la caratteristica di essere maggiore degli elementi precedenti e minore dei successivi della cinquina. In questo modo si è messo in evidenza l'insieme delle mediane. Con l'istruzione \texttt{x=select(A,p+2g,p+3g-1,(g+1)/2);} si cerca la mediana delle mediane all'interno dell'insieme, questo coincide con l'elemento al centro dell'array complessivo. Una volta chiamata la funzione partiziona questa sposta tutti gli elementi minori di x nel sottoarray di sinistra e quelli maggiori nel sottoarray di destra. Se $i==k$ si è trovata la $k$-esima statistica d'ordine, altrimenti si chiama ricorsivamente la funzione select sul sottoarray di sinistra se $i < k$, o su quello di destra.

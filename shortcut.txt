@@ -14,6 +14,7 @@
 
 === IMMAGINE ===
 \begin{figure}[H]
+    \centering  
     \includegraphics[width=0.5\linewidth]{}
     \caption{caption}
     \label{label}
@@ -26,3 +27,29 @@
 \begin{tabular}{c|c}
      
 \end{tabular}
+
+=== MINIPAGE A 3 BLOCCHI ===
+\begin{minipage}{0.3\textwidth}
+    \begin{verbatim}
+
+    \end{verbatim}
+\end{minipage}
+\hfill
+$\longrightarrow$
+\hfill
+\begin{minipage}{0.3\textwidth}
+    \begin{verbatim}
+
+    \end{verbatim}
+\end{minipage}
+\hfill
+$\longrightarrow$
+\hfill
+\begin{minipage}{0.3\textwidth}
+    \begin{verbatim}
+
+    \end{verbatim}
+\end{minipage}\medskip\\
+
+=== IN CASO DI ERRORE DI SINCRONIZZAZIONE ===
+git pull --no-rebase origin main
