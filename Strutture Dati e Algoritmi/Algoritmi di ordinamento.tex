@@ -1,4 +1,5 @@
-\chapter{Algoritmi di ordinamento (sorting)} 
+% !TeX root = main.tex
+\chapter{Algoritmi di ordinamento} 
 Il problema dell'ordinamento è un problema molto comune e spesso è il passo base per risolvere problemi più complessi.\smallskip\\
 \textit{Esempio.}\\
 Vogliamo mettere in ordine alfabetico una lista di studenti prenotati ad un esame, perciò é necessario avere:
@@ -65,7 +66,7 @@ Insertion Sort è un algoritmo di ordinamento molto semplice che ordina l'insiem
 \begin{figure}[H]
     \centering
     \includegraphics[width=1\linewidth]{../images/Screenshot 2026-03-07 alle 15.31.09.png}
-    \label{fig:placeholder}
+
 \end{figure}
 
 \subsection{Analisi dell'insertion sort}
@@ -75,7 +76,7 @@ Per analizzare la procedura insertion-sort, la scriviamo qua sotto indicando a f
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.6\linewidth]{../images/Screenshot 2026-03-09 alle 18.03.59.png}
-    \label{fig:placeholder}
+    
 \end{figure}
 
 \noindent Il tempo di esecuzione dell'algoritmo è la somma dei tempi di esecuzione per ogni istruzione eseguita; un'istruzione che richiede $c_k$ passi viene eseguita m volte contribuirà con $c_k \cdot m$ al tempo di esecuzione totale. Indicheremo il tempo di esecuzione di un algoritmo su un input di dimensione n con T(n). Per calcolare T(n), il tempo di esecuzione di insertion-sort con un input di n valori, sommiamo i prodotti delle colonne costo e numero di volte ottenendo:\\
@@ -216,7 +217,6 @@ L'algoritmo merge sort segue da vicino la strategia divide et impera. A ogni pas
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\linewidth]{../images/Screenshot 2026-03-10 alle 17.47.34.png}
-    \label{fig:placeholder}
 \end{figure}
 
 \subsection{Analisi del MergeSort}
@@ -239,7 +239,6 @@ $$
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\linewidth]{../images/Screenshot 2026-03-11 alle 08.20.07.png}
-    \label{fig:placeholder}
 \end{figure}
 
 \section{Quick sort}
@@ -296,7 +295,6 @@ PARTIZIONA(A,p,r)
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.70\linewidth]{../images/Screenshot 2026-03-12 alle 22.38.44.png}
-    \label{fig:placeholder}
 \end{figure}
 \noindent All'inizio di ogni iterazione del ciclo for, per ogni indice $k$ dell'array valgono le seguenti condizioni:
 \begin{enumerate}
@@ -510,7 +508,6 @@ Vediamo prima cosa succede nel \textbf{caso migliore}, ovvero nel caso in cui sc
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.68\linewidth]{../images/5450169ba45ae0bd93cbcfde2b1f647259b4606c853e058070134d14cb74b5a9 .png}
-    \label{fig:placeholder}
 \end{figure}
 \noindent Quindi si ha che:
 \begin{itemize}
@@ -547,11 +544,10 @@ $$\boxed{T(n) = N\cdot \log_{2}N}$$
 \vspace{0.5cm}
 
 \noindent Ora vediamo il \textbf{caso peggiore}: ciò succede quando o la lista è gia ordinata, oppure quando viene scelto un pivot che sia il primo o l'ultimo elemento dell'array. Infatti l'albero di ricorsione sarà degenere (ogni nodo ha al massimo un figlio), poichè l'array viene suddiviso in un sotto-array di dimensione $n-1$, e un sotto-array di 1 elemento. L'albero di ricorsione perciò sarà così:
-\begin{figure}[h]
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.5\linewidth]{../images/albero di ricorsione caso peggiore .png}
-    \label{fig:placeholder}
-\end{figure}\\
+\end{figure}
 In questo caso il costo totale è evidente, in quanto l'albero di ricorsione è alto $N$ e ad ogni livello il costo viene diminuito di 1:
 $$T(n) = N\cdot \sum_{i =0}^{k}(N-i)\to \boxed{T(n) \in O(n^2)}$$
 
@@ -574,11 +570,10 @@ Siccome qualsiasi algoritmo di ordinamento corretto deve essere in grado di prod
 \noindent \textit{Esempio.}\\
 Vogliamo ordinare un'array di 3 elementi tramite l'algoritmo di Insertion Sort.\\
 L'albero di decisione per questo algoritmo è il seguente:
-\begin{figure}[h]
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.5\linewidth]{../images/Albero di decisione .png}
-    \label{fig:placeholder}
-\end{figure}\\
+\end{figure}
 \textit{Osservazione.} I numeri che sono nei nodi non sono i numeri di con cui sta avvenendo il confronto, ma sono gli indici dell'array di 3 elementi.\smallskip\\
 Una volta impostato l'albero di decisione verifichiamo la condizione necessaria, quindi controlliamo che nelle foglie ci siano tutte le possibili permutazioni dell'input: la dimensione dell'array è $n= 3$, quindi ci aspettiamo che nelle foglie ci siano tutte le $n! = 3! = 6$ combinazioni dell'array. Si nota che le 6 permutazioni sono presenti nelle foglie e che sono tutte raggiungibili a partire dalla radice, quindi la condizione necessaria è soddisfatta. Ovviamente il percorso dalla radice alla foglia più corto rappresenta il caso migliore dell'algortimo, analogamente il percorso più lungo (che corrisponde all'altezza dell'albero) rappresenta il caso peggiore.
 
@@ -639,11 +634,10 @@ COUNTING-SORT(A, n, k)
 L'algoritmo prende in input un'array $A[1:n]$, la dimensione $n$ dell'array e una soglia superiore $k$ sui valori in $A$ (in altre parole $k$ è il valore massimo negli elementi dell'array), che sono interi non negativi. Restituisce l'array $B[1:n]$ che contiene l'output ordinato e usa un array $C[0:k]$ come memoria temporanea di lavoro.\bigskip\\
 \textit{Esempio.}\\
 Applichiamo l'algoritmo sull'array \texttt{A = [2  5  3  0  2  3  0  3]}, il numero massimo è 5 quindi $k = 5$:
-\begin{figure}[h]
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.9\linewidth]{../images/Counting Sort .png}
-    \label{fig:placeholder}
-\end{figure}\\
+\end{figure}
 Il funzionamento della procedura Counting Sort su un array di input $A[1 : 8]$, dove ogni elemento di $A$ è un intero non negativo non maggiore di $k = 5$.
 \begin{itemize}
     \item[\textbf{(a)}] l’array $A$ e l’array ausiliario $C$ dopo la riga 5.
@@ -713,7 +707,6 @@ Si vuole ordinare l'array \texttt{A = [0.78  0.17  0.39  0.26  0.72  0.94  0.21 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.58\linewidth]{../images/Esempio Bucket Sort .png}
-    \label{fig:placeholder}
 \end{figure}
 \noindent Il funzionamento di Bucket Sort con $n = 10 $ e tutti gli elementi compresi tra 0 e 1, quindi non c'è bisogno della normalizzazione.
 \begin{itemize}
@@ -730,7 +723,6 @@ Dobbiamo ordinare i seguenti numeri: \texttt{329  457  657  839  436  720  355}
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\linewidth]{../images/Esempio Radix Sort.png}
-    \label{fig:placeholder}
 \end{figure}
 
 \vspace{1cm}
@@ -772,7 +764,6 @@ Un Heap è una struttura dati, basata su alberi binari, ovvero alberi che posson
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.75\linewidth]{../images/max-heap.png}
-    \label{fig:placeholder}
 \end{figure}
 \noindent Un heap è rappresentato da un oggetto che contiene
 \begin{itemize}
@@ -797,13 +788,11 @@ Dato l'array\\
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\linewidth]{../images/esempio-max-heap.png}
-    \label{fig:placeholder}
 \end{figure}
 \noindent determinare il max-heap:\\
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\linewidth]{../images/esempio-max-heap2.png}
-    \label{fig:placeholder}
 \end{figure}
 
 \subsection{Max-Heapify}
@@ -829,12 +818,12 @@ Così facendo la condizione di un max-heap sarebbe verificata per la terna appen
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.75\linewidth]{../images/max-heapify.png}
-    \label{fig:placeholder}
+    
 \end{figure}
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.75\linewidth]{../images/funzionamento-max-heapify.png}
-    \label{fig:placeholder}
+    
 \end{figure}
 \noindent \subsubsection{costo}
 dalla riga a 9 faccio solo confronti perciò ha costo O(1), mentre la chiamata ricorsiva fatta al più h volte, dove h è l'altezza del sottoalbero $(< \log n)$. Quindi ha costo \textbf{O(h)}.\\
@@ -854,9 +843,9 @@ La funzione Max-Heapify può essere utilizzata in modo alternativo, ovvero dal b
 \begin{figure}[H]
         \centering
         \includegraphics[width=0.75\linewidth]{../images/funzionamento-buil-max-heap.png}
-        \label{fig:placeholder}
+       
     \end{figure}
-        \label{fig:placeholder}
+        
 \end{figure}
 
 \noindent \subsubsection{costo}
