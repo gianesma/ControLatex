@@ -172,24 +172,39 @@ Per capire come calcolare questo numero, basta pensare ai vincoli di movimento: 
 \end{enumerate} 
 Quindi, il numero totale di modi per arrivare ad una cella è la somma dei modi in cui si può arrivare dalla cella di sopra, più i modi in cui si può arrivare 
 dalla cella di sinistra, perciò l'espressione diventa:
-$$\texttt{dp[i][j] = dp[i-1][j] + dp[i][j-1]}$$
+\begin{center}
+\texttt{dp[i][j] = dp[i-1][j] + dp[i][j-1]} 
+\end{center}
 I primi due \texttt{if} si occupano dei due casi base, ovvero il percorso che percorre la prima riga e il percorso che percorre la prima colonna. 
 I due \texttt{for} annidati permettono di riempire il resto della matrice. 
 
 
-
-
 \section{Problema LIS (List Increasing Subsequence)}
+Dato un array di numeri interi $A[0\dots n-1]$, l'\textbf{obiettivo} è determinare la lunghezza della sottosequenza strettamente crescente più lunga 
+contenuta in $A$. La sottosequenza deve rispettare l'ordine dell'array in input $A$. Ecco il codice che risolve il problema:
+\begin{verbatim}
+    int LIS(int A[], int n) {
+        int dp[n];
+        int maxLIS = 1;
+        // Inizializzazione: ogni elemento da solo è una LIS di lunghezza 1 */
+        for (int i = 0; i < n; i++)
+            dp[i] = 1;
+        // Transizione dinamica
+        for (int i = 1; i < n; i++) {
+            for (int j = 0; j < i; j++)
+                if (A[j] < A[i] && dp[j] + 1 > dp[i])
+                    dp[i] = dp[j] + 1;
+            if (dp[i] > maxLIS)
+                maxLIS = dp[i];
+        }
+        return maxLIS;
+    }
+\end{verbatim}
 
-
-
-
-
-
-
-
-
-
+\noindent  La \textbf{funzione di stato} \texttt{dp[i]} rappresenta la lunghezza della sottosequenza crescente più lunga che termina esattamente nell'elemento 
+$A[i]$. Per sapere quanto può essere lunga la sequenza che termina nell'elemento attuale $A[i]$, bisogna guardare tutti gli elementi $A[j]$ che precedono 
+l'elemento attuale in cui termina la sequenza (cioè per ogni $j < i$). Se si trova un elemento $A[j]<A[i]$, vuol dire che ci si può 'attaccare' alla sequenza %chktex 32
+che finiva in $A[j]$ allungandola di 1.
 
 
 \section{Problema MSIS (Max Sum Increasing Subsequence)}
@@ -217,6 +232,15 @@ suoi elementi sia massima. Ecco lo pseudocodice che risolve il problema:
 cui la lunghezza dell'array in input è 0. Per ottenere il risultato finale viene usato un approccio Bottom Up, ovvero vengono confrontati ogni numero dell'array e, 
 se la condizione di crescenza $(\texttt{A[j] < A[i]})$ è vera, allora decidiamo di prendere il massimo tra \texttt{D[i]} e \texttt{D[j]+A[i]}. Il \textbf{costo temporale} di
 questa soluzione del problema MSIS è $\Theta(n^2)$, poichè vengono effettuati due cicli che eseguono $n-1$ iterazioni.
+
+\section{Problema WIS (Weighted Interval Scheduling)}
+Sono date $n$ attività, ogni attività $i$ è caratterizzata da:
+\begin{itemize}
+    \item un \textbf{inizio} \texttt{start[i]}.
+    \item una \textbf{fine} \texttt{end[i]}.
+    \item un \textbf{profitto} \texttt{profit[i]}.
+\end{itemize} 
+L'\textbf{obiettivo} è trovare il massimo profitto totale selezionando un sottoinsieme di attività non sovrapposte.
 
 
 
