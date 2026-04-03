@@ -15,7 +15,7 @@
 === IMMAGINE ===
 \begin{figure}[H]
     \centering  
-    \includegraphics[width=0.5\linewidth]{}
+    \includegraphics[width=0.5\linewidth]{../images}
     \caption{caption}
     \label{label}
 \end{figure}
