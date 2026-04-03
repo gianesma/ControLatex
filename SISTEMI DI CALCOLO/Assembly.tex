@@ -1901,7 +1901,7 @@ subl $16, %esp  # spazio totale
 \end{minipage}
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.3\linewidth]{../images/Esempio con più variabili.png}
+    \includegraphics[width=0.3\linewidth]{../images/Esempio_con_piu_variabili.png}
     \caption{Ecco cosa succede nello SP}
     \label{label}
 \end{figure}
@@ -2355,12 +2355,13 @@ otteniamo un numero adimensionale 2x\\
 \textbf{Legge di Amdahl}\\
 Ci permette di calcolare lo speedup complessivo di un programmaa fronte 
 dell'ottimizzazione di una delle sue parti.\\
-\begin{figure}
-    \centering
-    \includegraphics[width=0.5\linewidth]{../images/imagine}
-    \caption{Caption}
-    \label{fig:placeholder}
-\end{figure}\\
+% \begin{figure}
+%     \centering
+%     \includegraphics[width=0.5\linewidth]{../images/imagine}
+%     \caption{Caption}
+%     \label{fig:placeholder}
+% \end{figure}\\
+\textbf{METTERE IMMAGINE}\\
 $T = \alpha T + (1 - \alpha)T$\\
 Ipotesi: posso ottimizzare A ottenendo per questo modulo uno speedup $k_A$\\
 Qual'é lo speedup complessivo S di P?\\
@@ -2393,12 +2394,13 @@ i bit di un operando a sinistra o a destra. Esistono due tipi principali di shif
         SHR S,D | D <- D >> S   I nuovi bit meno significatavi sono posti pari a 0
     \end{verbatim}
 \end{itemize}
-\begin{figure}[H]
-    \centering  
-    \includegraphics[width=0.8\linewidth]{../images/Shift.png}
-    \caption{Shift dei bit}
-    \label{label}
-\end{figure}
+% \begin{figure}[H]
+%     \centering  
+%     \includegraphics[width=0.8\linewidth]{../images/Shift.png}
+%     \caption{Shift dei bit}
+%     \label{label}
+% \end{figure}
+MAETTERE IMMAGINE
 \noindent Esempio:
 \begin{verbatim}
     int c = 0xABADCAFE;
@@ -2681,11 +2683,12 @@ $= \frac{T_A}{k_A}+T_B$
 $=\frac{\alpha T}{k_A}+(1-\alpha)T$
 $=(\frac{\alpha}{k_A}+1-\alpha)T$\smallskip\\
 $S=\frac{T}{T'}=\frac{T}{(\frac{\alpha}{k_A}+1-\alpha)T}=\frac{1}{\frac{\alpha}{k_A}+1-\alpha}$\\
-\begin{figure}[H]
-    \centering  
-    \includegraphics[width=0.7\linewidth]{../images/Legge di Amdahl.png}
-    \caption{Legge di Amdahl}
-\end{figure}
+% \begin{figure}[H]
+%     \centering  
+%     \includegraphics[width=0.7\linewidth]{../images/Legge di Amdahl.png}
+%     \caption{Legge di Amdahl}
+% \end{figure}
+\textbf{METTERE IMMAGINE LEGGE DI AMDAHL}\\
 
 \noindent\textbf{Esempi}
 
