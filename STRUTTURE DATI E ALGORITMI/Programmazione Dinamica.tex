@@ -240,8 +240,132 @@ Sono date $n$ attività, ogni attività $i$ è caratterizzata da:
     \item una \textbf{fine} \texttt{end[i]}.
     \item un \textbf{profitto} \texttt{profit[i]}.
 \end{itemize} 
-L'\textbf{obiettivo} è trovare il massimo profitto totale selezionando un sottoinsieme di attività non sovrapposte.
+L'\textbf{obiettivo} è trovare il massimo profitto totale selezionando un sottoinsieme di attività non sovrapposte.\\
+Ad esempio:\\
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.65\linewidth]{../images/WIS.png}
+\end{figure}
+
+\noindent Questo problema è leggermente più complesso rispetto agli altri, perciò vediamo che strategia viene usata nel codice:
+\begin{enumerate}
+    \item Ordinare le attività in base al loro tempo di fine (\texttt{end[i]}), in questo modo si crea una linea temporale facilmente analizzabile da
+    sinistra verso destra.
+    \item Per ogni attività $i$, trovare l'attività $j<i$ non sovrapposta, per questo viene creato l'array \texttt{pre[i]}, che indica qual è l'ultima attività
+    di $i$ che si è conlcusa in tempo affinchè l'attività $i$ possa iniziare, e viene quindi definita così:
+        \begin{verbatim}
+                        pre[i] = max { j < i | end[j] <= start[i] }
+        \end{verbatim}
+    Se non ci sono eventi che non si sovrappongono allora il valore di \texttt{pre[i]} viene impostato a -1.
+    \item Definire la \textbf{funzione di stato} \texttt{dp[i]} come il massimo profitto ottenibile considerando solo le prime $i$ attività, ed è definita così:
+    \begin{verbatim}
+                        dp[i] = max(dp[i-1], profit[i] + dp[pre[i]])
+    \end{verbatim}
+    È una relazione binaria (prendo o lascio):
+    \begin{itemize}[label=--]
+        \item \textbf{Lascio l'attività} $\bm{i}$: il profitto rimane quello che avevo calcolato per le prime $i-1$ attività (\texttt{dp[i-1]}).
+        \item \textbf{Prendo l'attività} $\bm{i}$: guadagno il suo profitto (\texttt{profit[i]}). Ma visto che la sto prendendo, non posso prendere attività
+        che si sovrappongono, quindi a questo profitto devo sommare il miglior guadagno che avevo ottenuto fino all'ultima attività compatibile, ovvero \texttt{pre[i]}. 
+    \end{itemize}
+\end{enumerate} 
+
+\noindent Ecco il codice che risolve il problema:
+\begin{verbatim}
+    typedef struct {
+        int start, end, profit;
+    }
+
+    // Caso base: il primo intervallo può essere incluso da solo
+        dp[0] = intervals[0].profit;
+        decision[0] = 1;
+    // Costruzione tabella dp: applicazione della ricorrenza
+    // dp[i] = max(dp[i-1], profit[i] + dp[pre[i]])
+    for (int i = 1; i < n; ++i) {
+        int incl = intervals[i].profit;
+    // Se esiste un intervallo compatibile, aggiungine il profitto
+        if (pre[i] != -1) incl += dp[pre[i]];
+    // Scelta migliore: includere o escludere l'intervallo i
+        if (incl > dp[i - 1]) {
+            dp[i] = incl;
+            decision[i] = 1; // includiamo i
+        } else {
+            dp[i] = dp[i - 1];
+            decision[i] = 0; // escludiamo i
+        }
+    }
+\end{verbatim}
+Il risultato finale si troverà in \texttt{dp[n-1]}.
+
+\section{Problema LCS (Longest Common Subsequence)}
+Date due stringhe $X$ e $Y$, l'\textbf{obiettivo} è trovare la sequenza di caratteri più lunga che compare in entrambe le stringhe. Attenzione: i caratteri
+delle sottosequenze devono apparire nello stesso ordine relativo, ma non devono essere per forza contigui (attaccati). Ad esempio:\\
+\begin{center}
+    $X$ = A\textbf{\underline{BC}}B\textbf{\underline{A}}B   \hspace{0.5cm}            $Y$ = \textbf{\underline{B}}D\textbf{\underline{CAB}}\\
+\end{center}
+La sottosequenza comune più lunga è \textbf{\underline{BCAB}}, che ha lunghezza 4.\smallskip\\
+
+\noindent Ecco il codice che risolve il problema: 
+\begin{verbatim}
+    int lcs(const char* A, const char* B, char** lcs_str_out) {
+        int m = strlen(A);
+        int n = strlen(B);
+        int dp[m+1][n+1];
+        // Costruzione tabella dp
+        for (int i = 0; i <= m; i++)
+            for (int j = 0; j <= n; j++)
+                if (i == 0 || j == 0)
+                    dp[i][j] = 0;
+                else if (A[i-1] == B[j-1])
+                    dp[i][j] = dp[i-1][j-1] + 1;
+                else
+                    dp[i][j] = max(dp[i-1][j], dp[i][j-1]);
+\end{verbatim}
+La \textbf{funzione di stato} \texttt{dp[i][j]} viene riempita in questo modo:
+\begin{itemize}
+    \item \textbf{Caso base} (\texttt{i == 0 || j == 0}): se una delle due stringhe è vuota, non possono avere nessuna lettera in comune, perciò la prima riga e la prima 
+    colonna della matrice saranno tutte a 0.
+    \item \textbf{I caratteri sono uguali} (\texttt{A[i-1] == B[j-1]}): la LCS si allunga di 1. Il suo valore sarà 1 + la lunghezza della LCS che avevamo 
+    prima di considerare queste due lettere.
+    \item \textbf{I caratteri sono diversi} (\texttt{A[i-1] != B[j-1]}): non possiamo allungare la LCS di 1, però bisogna decidere se scartare l'ultima lettera
+    della stringa $A$ o scartare l'ultima lettera della stringa $B$, quindi scegliamo quello che ci garantisce il valore maggiore (\texttt{dp[i][j] = max(dp[i-1][j], dp[i][j-1])}).
+\end{itemize}
+Alla fine \texttt{dp[m][n]} conterrà la lunghezza della LCS. %chktex 13
 
 
 
-
+\section{Problema del Rod Cutting}
+Data un'asta di lunghezza $n$ e un'array di prezzi \texttt{price[]}, dove \texttt{price[i]} è il prezzo di un pezzo di asta di lunghezza $i+1$. L'\textbf{obiettivo}
+è massimizzare il profitto tagliando o non tagliando l'asta.\smallskip\\
+La \textbf{funzione di stato} \texttt{dp[i]} rappresenta il massimo profitto ottenibile vendendo un'asta (o frammenti di essa) di lunghezza totale $i$.
+Il massimo profitto verrà calcolato in questo modo: il prezzo del pezzo che ho appena tagliato (\texttt{price[j-1]}) sommato al massimo profitto che posso
+ottenere dall'asta rimanente, che ora è lunga $i-j$ e questo valore è proprio \texttt{dp[i-j]}. Quindi la funzione di stato è:\
+\begin{verbatim}
+                                dp[i] = price[j-i] + dp[i-j]
+\end{verbatim} 
+Ecco quindi il codice che risolve il problema:
+\begin{verbatim}
+    int rodCutting(int price[], int n) {
+        int dp[n + 1];
+        int cuts[n + 1]; // array per memorizzare il primo
+        // taglio ottimale
+        dp[0] = 0;
+        for (int i = 1; i <= n; i++) {
+            int max_val = INT_MIN;
+            int best_cut = 0;
+            for (int j = 1; j <= i; j++)
+                if (price[j - 1] + dp[i - j] > max_val) {
+                    max_val = price[j - 1] + dp[i - j];
+                    best_cut = j;
+                }
+            dp[i] = max_val;
+            cuts[i] = best_cut;
+        }
+        // ricostruzione
+        while (length > 0) {
+            printf("%d ", cuts[length]);
+            length -= cuts[length];
+        }
+        return dp[n]; // restituisce il massimo profitto
+    }
+\end{verbatim}
+Il risultato (massimo profitto) sarà in \texttt{dp[n]}.

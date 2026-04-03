@@ -28,6 +28,9 @@
      
 \end{tabular}
 
+
+
+
 === MINIPAGE A 3 BLOCCHI ===
 \begin{minipage}{0.3\textwidth}
     \begin{verbatim}
