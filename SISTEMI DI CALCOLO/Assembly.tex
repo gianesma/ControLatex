@@ -2020,3 +2020,686 @@ f:
     ret
 \end{verbatim}
 \end{minipage}
+
+\section{Allineamento Struct in memoria}
+esempio:\medskip\\
+\begin{minipage}{0.2\textwidth}
+    \begin{verbatim} typedef struct nodo nodo;
+    struct nodo{        base
+        int elem;       +0 |xxxx|
+        nodo *next;     +4 |xxxx|
+    }                   sizeof nodo=8
+    int sum(nodo *p){                   
+        int count=0;                       
+        for(;p;p=p->next)       
+            count+=p->elem;               
+        return count                        
+    }            
+    \end{verbatim}
+\end{minipage}
+\hfill
+\hfill
+$\longrightarrow$
+\hfill
+\begin{minipage}{0.2\textwidth}
+    \begin{verbatim}
+nodo *edx=p;
+int eax=0;   //count
+ L:  
+ if(edx==NULL)
+goto E;   
+int ecx=edx->elem;
+eax+=ecx;
+edx=edx->next;
+goto L;
+E:
+return eax;
+}
+    \end{verbatim}
+\end{minipage}
+\hfill
+$\longrightarrow$
+\hfill
+\begin{minipage}{0.2\textwidth}
+    \begin{verbatim}
+.globl sum
+sum:
+    movl 4(%esp), %edx  
+    xorl %eax, %eax  
+
+L:
+    testl %edx,%edx
+    je E
+
+    movl (%edx),%ecx
+    addl %ecx,%eax
+    movl 4(%edx),(%edx)
+    jmp L
+E:
+    ret
+    \end{verbatim} 
+\end{minipage}\medskip\\
+\noindent ESERCIZI SU 3.B-struct (vedi tu quale mettere tra questi che sono quelli fatti dal prof)\\
+ESERCIZIO 1 SU PERSONA-ETA-GENDER\\
+ESERCIZIO 2 SU FIND-YOUNGEST\\
+\section{Istruzioni SHIFT}
+\begin{verbatim}
+                                ________________________________
+    int a = ...;            a  |    .   |   .   |  .    |  .    |
+    a = a >> 8;                 --------------------------------
+                                        \       \       \       \___>scarto
+                                ________________________________
+                            a  |   ?    |   .   |  .    |   .   |
+                                --------------------------------
+
+                                ________________________________
+    a = a << 8;             a  |    .   |   .   |   .   |   .   |  
+                                --------------------------------
+                  scartato <______/     /       /       /
+                                ________________________________
+                            a  |   .    |   .   |  .    |  ?    |  
+                                --------------------------------
+                                
+\end{verbatim}  
+\subsection{shift con segno}
+\begin{verbatim}
+    SAL S,D | D <- D << S   I nuovi bit meno significatavi sono posti uguali a 0
+    SAR S,D | D <- D >> S   I nuovi bit più significativi sono posti uguali al
+                            valore del bit più significativo
+\end{verbatim}
+\subsection{shift senza segno }
+\begin{verbatim}
+    SHL S,D | D <- D << S   I nuovi bit meno significatavi sono posti pari a 0
+    SHR S,D | D <- D >> S   I nuovi bit meno significatavi sono posti pari a 0
+\end{verbatim}
+\noindent esepio:
+\begin{verbatim}
+    int c = 0xABADCAFE;
+    unsigned d = 0xABADCAFE;
+    c = c << 8;      // assembly: sall $8,%ecx       %ecx -> 0xADCAFE00
+    d = d << 8;      // assembly: shll $8,%ecx       %ecx -> 0xADCAFE00
+    c = c >> 8;      // assembly: sarl $8,%ecx       %ecx -> 0xFFADCAFE   
+    d = d >> 8;      // assembly: shrl $8,%ecx       %ecx -> 0x00ADCAFE
+\end{verbatim}
+\noindent esempio:
+\begin{verbatim}
+    int  a = 8;      000....001000 -> 8
+    a = a >> 2;      000....000010 -> 2 = 8/(2^2) esponente di 2 è il numero di bit shift
+\end{verbatim}
+\noindent $a >> x \rightarrow a/2^x$
+\begin{verbatim}
+    int  a = 8;      000....001000 -> 8
+    a = a << 2;      000....100000 -> 32 = 8*(2^2) esponente di 2 è il numero di bit shift
+\end{verbatim}
+\noindent $a << x \rightarrow a \cdot 2^x$\medskip\\
+esercizio:\medskip\\
+\begin{minipage}{0.3\textwidth}
+    \begin{verbatim}
+unsigned count1(unsigned n){
+    unsigned a=0;
+    while(n>0){
+        if(n & 1)a++;
+        n = n >> 1;
+    }
+    return a;
+}
+
+e1.c
+    \end{verbatim}
+\end{minipage}
+\hfill
+$\longrightarrow$
+\hfill
+\begin{minipage}{0.3\textwidth}
+    \begin{verbatim}
+unsigned count1(unsigned n){
+    unsigned eax=0;
+    unsigned ecx=n;
+L:
+    if(c <= 0) goto E;
+    if ((n & 1)==0) goto A;
+    eax++;
+A:
+    ecx = ecx >> 1;
+    goto L;
+E:  
+    return eax
+}
+
+e1_eq.c
+    \end{verbatim}
+\end{minipage}
+\hfill
+$\longrightarrow$
+\hfill
+\begin{minipage}{0.3\textwidth}
+    \begin{verbatim}
+.globl count1
+count1:
+    xorl %eax,%eax
+    movl 4(%esp),%ecx
+L:
+    cmpl $0,%ecx
+    jbe E
+    testl $1,%ecx
+    jz A
+    incl %eax
+A:
+    shrl $1,%ecx
+    jmp L
+E:
+    ret
+
+e1.s
+    \end{verbatim} 
+\end{minipage}\medskip\\
+\section{istruzione IDIV}
+\begin{verbatim}
+    idiv s  |   A <- D : A / S  quoziente
+            |   D <- D : A % S  resto
+\end{verbatim}
+\noindent esempio:\\
+\begin{minipage}{0.4\textwidth}
+    \begin{verbatim}
+int a = 20;
+int c = 3;
+a = a/c
+    
+f.c
+    \end{verbatim}
+\end{minipage}
+\hfill
+$\longrightarrow$
+\hfill
+\begin{minipage}{0.4\textwidth}
+    \begin{verbatim}
+movl $20,%eax              
+movl $3,%ecx            
+
+movl %eax,%edx      |   questa coppia di 
+sarl $31,%edx       |   istruzioni prepara 
+                    |   per i idiv
+
+idiv %ecx
+
+f.s
+    \end{verbatim}
+\end{minipage}\medskip\\
+Esempio:\\
+\begin{minipage}{0.3\textwidth}
+    \begin{verbatim}
+int f(int x, int y){
+return x/y;
+}
+
+e1.c
+    \end{verbatim}
+\end{minipage}
+\hfill
+$\longrightarrow$
+\hfill
+\begin{minipage}{0.3\textwidth}
+    \begin{verbatim}
+int f(int x, int y){
+    int a = x;
+    int c = y;
+    int d = a;
+    d=d >> 31;
+    a = a / c;
+    return a;
+}
+
+e1_eq.c
+    \end{verbatim}
+\end{minipage}
+\hfill
+$\longrightarrow$
+\hfill
+\begin{minipage}{0.3\textwidth}
+    \begin{verbatim}
+.globl f
+f:
+    movl 4(%esp),%eax
+    movl 8(%esp),%ecx
+    movl %eax,%edx
+    sarl $31,%edx
+    idivl %ecx
+    ret
+
+e1.s
+    \end{verbatim} 
+\end{minipage}\medskip\\
+\section{Istruzione CMOV}
+\begin{verbatim}
+    if (a>b) y=x;
+
+    CMOVcc S,D  |   D <- S se cc è vero
+                |   D <- D se cc è falso
+
+    S non può essere un valore immediato
+    D deve essere un registro a 16/32 bit
+\end{verbatim}
+\noindent Esempio\\
+\begin{minipage}{0.3\textwidth}
+    \begin{verbatim}
+int max(int x, int y){
+return (x > y) ? x : y;
+}
+
+e1.c
+    \end{verbatim}
+\end{minipage}
+\hfill
+$\longrightarrow$
+\hfill
+\begin{minipage}{0.3\textwidth}
+    \begin{verbatim}
+int max(int x, int y){
+    int eax = x;
+    int ecx = y;
+    if(ecx > eax) 
+        goto E;
+    eax=ecx;
+E:
+    return eax;
+    
+}
+
+e1_eq.c
+    \end{verbatim}
+\end{minipage}
+\hfill
+$\longrightarrow$
+\hfill
+\begin{minipage}{0.3\textwidth}
+    \begin{verbatim}
+.globl max
+max:
+    movl 4(%esp),%eax
+    movl 8(%esp),%ecx
+    cmpl %ecx,%eax
+    cmovle %ecx,%eax  
+    ret
+
+e1.s
+    \end{verbatim} 
+\end{minipage}
+\section{Ottimizzazione dei programmi}
+Modificare un programma in modo che la sua esecuzione minimizzi l'uso delle risorse
+disponibili, cercando allo stesso tempo di massimizzare le prestazioni, e senza 
+alcun impatto sulla correttezza.\\
+Problemi:\\
+\begin{enumerate}
+    \item Come posso valutare l'impatto che una modifica ha sul programma?\\
+          Come misuro le prestazioni e l'uso delle risorse?
+    \item Come posso scegliere le parti di un programma che voglio ottimizzare?\\
+          Come identidico in un programma i "punti caldi" meritevoli di attenzione per possibili ottimizzazioni
+\end{enumerate}
+\noindent \subsection{Misure prestazionali}
+\begin{itemize}
+    \item \textbf{Latenza}: tempo necessario per eseguire il programma
+    \item \textbf{Throughput}: numero di operazioni completate per unità di tempo
+    \item \textbf{Spazio}: memoria utilizzata
+    \item \textbf{Energia}
+    \item \textbf{...}
+\end{itemize}
+\noindent \subsection{Analisi prestazionale del programma}
+Quanto tempo richiede l'esecuzione di movl \$10,(\%eax) ? 
+\begin{enumerate}
+    \item Legge eax $\rightarrow$ $CPU + REG$       Maggiori prestazioni
+    \item Scrive $10$ $\rightarrow$ Memoria RAM     Maggiori risorse       
+\end{enumerate}
+\noindent Il miglioramento prestazionale lo misuriamo come "speed up"\\
+$speedup_o=\frac{t_o}{t'_0}$\\
+otteniamo un numero adimensionale 2x\\
+\textbf{Legge di Amdahl}\\
+Ci permette di calcolare lo speedup complessivo di un programmaa fronte 
+dell'ottimizzazione di una delle sue parti.\\
+\begin{figure}
+    \centering
+    \includegraphics[width=0.5\linewidth]{../images/imagine}
+    \caption{Caption}
+    \label{fig:placeholder}
+\end{figure}\\
+$T = \alpha T + (1 - \alpha)T$\\
+Ipotesi: posso ottimizzare A ottenendo per questo modulo uno speedup $k_A$\\
+Qual'é lo speedup complessivo S di P?\\
+$S=\frac{T}{T'} \quad T'=T'_A+T'_B=$\\
+$=\frac{T_A}{k_A}+T_B=$\\
+$=\frac{\alpha T}{k_A}+(1-\alpha)T=$\\
+$=(\frac{\alpha}{k_A}+1-\alpha)T$\\
+$S=\frac{T}{T'}=\frac{T}{(\frac{\alpha}{k_A}+1-\alpha)T}=\frac{1}{\frac{\alpha}{k_A}+1-\alpha}$\\
+esempio: $\alpha=0,5 \quad k_A=2x \rightarrow s=1,33x$\\
+esempio: $\alpha=0,9 \quad k_A=6x \rightarrow s=4x$\\
+qual'è lo speedup teorico massimo?\\
+$$\lim_{k_A\to\infty}\frac{1}{\frac{\alpha}{k_A}+1-\alpha}=\frac{1}{1-\alpha}$$
+
+\newpage
+
+
+\section{Istruzioni SHIFT}
+Le istruzioni di shift (spostamento) in Assembly consentono di spostare 
+i bit di un operando a sinistra o a destra. Esistono due tipi principali di shift:
+\begin{itemize}
+    \item \textbf{Shift con segno}
+    \begin{verbatim}
+        SAL S,D | D <- D << S   I nuovi bit meno significatavi sono posti uguali a 0
+        SAR S,D | D <- D >> S   I nuovi bit più significativi sono posti uguali al
+                                valore del bit più significativo
+    \end{verbatim}
+    \item \textbf{Shift senza segno}
+    \begin{verbatim}
+        SHL S,D | D <- D << S   I nuovi bit meno significatavi sono posti pari a 0
+        SHR S,D | D <- D >> S   I nuovi bit meno significatavi sono posti pari a 0
+    \end{verbatim}
+\end{itemize}
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.8\linewidth]{../images/Shift.png}
+    \caption{Shift dei bit}
+    \label{label}
+\end{figure}
+\noindent Esempio:
+\begin{verbatim}
+    int c = 0xABADCAFE;
+    unsigned d = 0xABADCAFE;
+    c = c << 8;      // assembly: sall $8,%ecx       %ecx -> 0xADCAFE00
+    d = d << 8;      // assembly: shll $8,%ecx       %ecx -> 0xADCAFE00
+    c = c >> 8;      // assembly: sarl $8,%ecx       %ecx -> 0xFFADCAFE   
+    d = d >> 8;      // assembly: shrl $8,%ecx       %ecx -> 0x00ADCAFE
+\end{verbatim}
+\noindent Esempio:
+\begin{verbatim}
+    int  a = 8;      000....001000 -> 8
+    a = a >> 2;      000....000010 -> 2 = 8/(2^2) esponente di 2 è il numero di bit shift
+\end{verbatim}
+\noindent   $a >> x \rightarrow a/2^x$
+\begin{verbatim}
+    int  a = 8;      000....001000 -> 8
+    a = a << 2;      000....100000 -> 32 = 8*(2^2) esponente di 2 è il numero di bit shift
+\end{verbatim}
+\noindent $a << x \rightarrow a \cdot 2^x$ \medskip\\
+Vediamo ora attraverso un esercizio:\\
+\begin{minipage}{0.3\textwidth}
+    \begin{verbatim}
+unsigned count1(unsigned n){
+    unsigned a=0;
+    while(n>0){
+        if(n & 1)a++;
+        n = n >> 1;
+    }
+    return a;
+}
+
+
+
+
+
+
+
+f.c
+    \end{verbatim}
+\end{minipage}
+\hfill
+$\longrightarrow$
+\hfill
+\begin{minipage}{0.3\textwidth}
+    \begin{verbatim}
+unsigned count1(unsigned n){
+    unsigned eax=0;
+    unsigned ecx=n;
+L:
+    if(c <= 0) goto E;
+    if ((n & 1)==0) goto A;
+    eax++;
+A:
+    ecx = ecx >> 1;
+    goto L;
+E:  
+    return eax
+}
+
+
+f_eq.c
+    \end{verbatim}
+\end{minipage}
+\hfill
+$\longrightarrow$
+\hfill
+\begin{minipage}{0.3\textwidth}
+    \begin{verbatim}
+.globl count1
+count1:
+    xorl %eax,%eax
+    movl 4(%esp),%ecx
+L:
+    cmpl $0,%ecx
+    jbe E
+    testl $1,%ecx
+    jz A
+    incl %eax
+A:
+    shrl $1,%ecx
+    jmp L
+E:
+    ret
+
+f.s
+    \end{verbatim} 
+\end{minipage}\medskip\\
+\section{Istruzione IDIV}
+\noindent L'istruzione \texttt{IDIV} esegue la divisione intera con segno 
+tra il valore contenuto nel registro \texttt{EAX} (dividendo) e un operando 
+specificato (divisore). Il risultato della divisione viene memorizzato in due registri:
+\begin{itemize}
+    \item Il quoziente (risultato della divisione) viene memorizzato in \texttt{EAX}.
+    \item Il resto (modulo) viene memorizzato in \texttt{EDX}.
+\end{itemize}
+\begin{verbatim}
+idiv s  |   A <- D : A / S  quoziente
+        |   D <- D : A % S  resto
+\end{verbatim}
+Esempio:\\
+\begin{minipage}{0.25\textwidth}
+    \begin{verbatim}
+int f(int x, int y){
+return x/y;
+}
+
+
+
+
+
+
+f.c
+    \end{verbatim}
+\end{minipage}
+\hfill
+$\longrightarrow$
+\hfill
+\begin{minipage}{0.25\textwidth}
+    \begin{verbatim}
+int f(int x, int y){
+    int a = x;
+    int c = y;
+    int d = a;
+    d=d >> 31;
+    a = a / c;
+    return a;
+}
+
+f_eq.c
+    \end{verbatim}
+\end{minipage}
+\hfill
+$\longrightarrow$
+\hfill
+\begin{minipage}{0.4\textwidth}
+    \begin{verbatim}
+.globl f
+f:
+    movl 4(%esp),%eax
+    movl 8(%esp),%ecx
+    movl %eax,%edx      |   questa coppia di 
+    sarl $31,%edx       |   istruzioni prepara 
+    idivl %ecx          |   per i idiv
+    ret
+
+f.s
+    \end{verbatim} 
+\end{minipage}\medskip\\
+\section{Istruzione CMOV}
+L'istruzione \texttt{CMOVcc} (Conditional Move) consente di eseguire un'operazione 
+di assegnamento condizionale, spostando il valore da una sorgente a una destinazione 
+solo se una specifica condizione è soddisfatta. La forma generale dell'istruzione è:
+\begin{verbatim}
+CMOVcc S,D  |   D <- S se cc è vero
+            |   D <- D se cc è falso
+
+S non può essere un valore immediato
+D deve essere un registro a 16/32 bit
+\end{verbatim}
+\noindent Esempio\\
+\begin{minipage}{0.3\textwidth}
+    \begin{verbatim}
+
+
+
+int max(int x, int y){
+return (x > y) ? x : y;
+}
+
+
+
+
+
+f.c
+    \end{verbatim}
+\end{minipage}
+\hfill
+$\longrightarrow$
+\hfill
+\begin{minipage}{0.3\textwidth}
+    \begin{verbatim}
+int max(int x, int y){
+    int eax = x;
+    int ecx = y;
+    if(ecx > eax) 
+        goto E;
+    eax=ecx;
+E:
+    return eax;
+    
+}
+
+f_eq.c
+    \end{verbatim}
+\end{minipage}
+\hfill
+$\longrightarrow$
+\hfill
+\begin{minipage}{0.3\textwidth}
+    \begin{verbatim}
+
+
+.globl max
+max:
+    movl 4(%esp),%eax
+    movl 8(%esp),%ecx
+    cmpl %ecx,%eax
+    cmovle %ecx,%eax  
+    ret
+
+
+
+f.s
+    \end{verbatim} 
+\end{minipage}
+\section{Ottimizzazione dei programmi}
+L'ottimizzazione di un programma consiste nel modificarlo in modo da minimizzare 
+l'uso delle risorse disponibili, cercando allo stesso tempo di massimizzare le prestazioni, 
+senza compromettere la correttezza.\\
+\noindent\textbf{Problemi principali}:
+\begin{enumerate}
+    \item Come valutare l'impatto di una modifica sul programma?\\
+    In altre parole: come misurare le prestazioni e l'uso delle risorse?
+    \item Come individuare le parti del programma da ottimizzare?\\
+    Come identificare i \textit{punti caldi} (hot spots) che meritano attenzione?
+\end{enumerate}
+\noindent\textbf{Misure prestazionali}:
+\begin{itemize}
+    \item \textbf{Latenza}: tempo necessario per eseguire il programma
+    \item \textbf{Throughput}: numero di operazioni completate per unità di tempo
+    \item \textbf{Spazio}: memoria utilizzata
+    \item \textbf{Energia}: consumo energetico
+\end{itemize}
+\subsection{Analisi prestazionale del programma}
+Ad esempio, quanto tempo richiede l'esecuzione dell'istruzione:
+\begin{center}
+\texttt{movl \$10,(\%eax)} ?
+\end{center}
+Possiamo scomporre l'operazione in:
+\begin{enumerate}
+    \item Lettura del registro \texttt{eax} $\rightarrow$ CPU + registri (operazione veloce)
+    \item Scrittura del valore $10$ in memoria $\rightarrow$ RAM (operazione più costosa)
+\end{enumerate}
+\noindent Il miglioramento prestazionale si misura tramite lo \textbf{speedup}:
+
+\[
+\text{speedup} = \frac{T}{T'}
+\]
+
+\noindent dove $T$ è il tempo di esecuzione originale e $T'$ quello ottimizzato.
+
+\subsection{Legge di Amdahl}
+La legge di Amdahl permette di calcolare lo speedup complessivo di un programma
+quando si ottimizza solo una sua parte.\\
+Sia:
+\[
+T = \alpha T + (1 - \alpha)T
+\]
+\noindent dove:
+\begin{itemize}
+    \item $\alpha$ è la frazione di tempo spesa nella parte ottimizzabile
+    \item $(1 - \alpha)$ è la parte non ottimizzabile
+\end{itemize}
+\noindent Supponiamo di ottenere uno speedup $k_A$ sulla parte ottimizzabile. Allora:
+
+\[
+T' = \frac{\alpha T}{k_A} + (1 - \alpha)T
+\]
+
+\noindent Lo speedup complessivo diventa:
+
+\[
+S = \frac{T}{T'} = \frac{1}{\frac{\alpha}{k_A} + (1 - \alpha)}
+\]
+
+\noindent\textbf{Procedimento:}\smallskip\\
+$S=\frac{T}{T'} \quad T'=T'_A+T'_B$
+$= \frac{T_A}{k_A}+T_B$
+$=\frac{\alpha T}{k_A}+(1-\alpha)T$
+$=(\frac{\alpha}{k_A}+1-\alpha)T$\smallskip\\
+$S=\frac{T}{T'}=\frac{T}{(\frac{\alpha}{k_A}+1-\alpha)T}=\frac{1}{\frac{\alpha}{k_A}+1-\alpha}$\\
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.7\linewidth]{../images/Legge di Amdahl.png}
+    \caption{Legge di Amdahl}
+\end{figure}
+
+\noindent\textbf{Esempi}
+
+\begin{itemize}
+    \item $\alpha = 0.5$, $k_A = 2 \quad \Rightarrow \quad S \approx 1.33$
+    \item $\alpha = 0.9$, $k_A = 6 \quad \Rightarrow \quad S \approx 4$
+\end{itemize}
+
+\noindent\textbf{Limite teorico}
+\noindent Qual è lo speedup massimo ottenibile?
+
+\[
+\lim_{k_A \to \infty} \frac{1}{\frac{\alpha}{k_A} + (1 - \alpha)} 
+= \frac{1}{1 - \alpha}
+\]
+
+\noindent Questo mostra che lo speedup è limitato dalla parte non ottimizzabile del programma.
