@@ -369,3 +369,57 @@ Ecco quindi il codice che risolve il problema:
     }
 \end{verbatim}
 Il risultato (massimo profitto) sarà in \texttt{dp[n]}.
+
+
+\section{Matrix Chain Multiplication}
+Il problema del Matrix Chain Multiplication (moltiplicazione di una catena di matrici) ha come \textbf{obiettivo} quello di determinare una 
+parentizzazione ottimale della sequenza (catena) di prodotti matriciali $A_1,A_2,\dots,A_n$, ma che cazzo vuol dire?\smallskip\\
+Il prodotto tra matrici è \textbf{associativa}, ma non è commutativa, quindi l'ordine dei moltiplicandi non può essere cambiato, ma solo le parentesi.
+Se ad esempio devo fare il prodotto tra le matrici $A,B,C$, posso fare:
+$$(A\times B)\times C\ \ \ \ \ \text{oppure}\ \ \ \ \ A\times (B\times C)$$
+L'algoritmo Matrix Chain Multiplication si occupa di scegliere in quale modo svolgere questo prodotto in modo tale che vengano effettuate il minor numero
+di moltiplicazioni possibili. A seconda di quale parentizzazione viene scelta, il costo computazionale può variare molto, basti vedere il seguente esempio:
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.9\linewidth]{../images/Matrix_chain.png}
+\end{figure}
+\noindent Ora che abbiamo compreso di cosa si occupa questo problema, vediamo in che modo viene risolto.\\
+Sia $A_1,A_2,\dots,A_n$ una sequenza di $n$ matrici, sia $p = (p_0,p_1,p_2,\dots, p_n)$ una sequenza di dimensioni. Ovvero che ogni matrice $A_i$
+ha dimensioni $p_{i-1}\times p_i$. Definiamo la \textbf{funzione di stato} \texttt{dp[i][j]} che rappresenta il costo minimo per moltiplicare le matrici 
+$A_i\ A_{i+1}\dots A_j$, ricordando che il costo per moltiplicare una matrice $l\times m$ per una matrice $m\times n$ è $lmn$:
+\[ \texttt{dp[i][j]}  = \begin{cases}
+    0 \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \text{se } i = j \\
+    \text{min}_{i\le k<j}\big( \texttt{dp[i][k]}+ \texttt{dp[k+1][j]} + p_{i-1} \cdot p_k \cdot p_j  \big)\ \ \ \text{se } i <j
+\end{cases} \]
+Dove $k$, che è compreso tra $i$ e $j$, è l'indice della matrice dopo la quale viene divisa l'espressione con le parentesi. Per chiarezza ecco l'immagine:
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.95\linewidth]{../images/k_matrice.png}
+\end{figure}
+
+\vspace{0.5cm}
+
+\noindent Allora, ecco il codice che risolve il problema Matrix Chain Multiplication:
+\begin{verbatim}
+    /* dp[] inizializzato a -1 */
+    int matrixChain(int p[], int i, int j) {
+        if (i == j)
+            return 0;
+        if (dp[i][j] != -1)
+            return dp[i][j];
+        int min = INT_MAX;
+        for (int k = i; k < j; k++) {
+            int cost = matrixChain(p, i, k) + matrixChain(p, k+1, j) + p[i-1]*p[k]*p[j];
+            if (cost < min) min = cost;
+        }
+        dp[i][j] = min;
+        return min;
+    }
+\end{verbatim}
+
+\noindent In questa soluzione la funzione di stato che avevamo definita è stata implementata con delle chiamate \textbf{ricorsive}, e il risultato ottimale è 
+nella variabile \texttt{min}.
+
+
+
+\section{Coin Change Analysis}
