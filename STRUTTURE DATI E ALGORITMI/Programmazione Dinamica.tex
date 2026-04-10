@@ -477,5 +477,37 @@ Quindi prima troviamo quante monete sono necessarie nel caso ottimo (\texttt{dp[
 
 
 
-\section{Distanza di edit}
-DA FAAAAREEEE
+\section{Distanza di edit (distanza di Levenshtein)}
+Date due stringhe $s_1, s_2$ aventi rispettivamente lunghezza $n$ e lunghezza $m$,
+l'\textbf{obiettivo} è calcolare il numero minimo di operazioni per trasformare $s_1$
+in $s_2$. Sono ammesse 3 operazioni a costo unitario:
+\begin{itemize}
+    \item \textbf{Inserimento}: aggiunta di un carattere a $s_1$
+    \item \textbf{Cancellazione}: rimozione di un carattere da $s_1$
+    \item \textbf{Sostituzione}: cambio di un carattere di $s_1$ in uno di $s_2$
+\end{itemize}
+Definiamo la \textbf{funzione di stato} \texttt{dp[i][j]} che rappresenta il costo 
+minimo per trasformare i primi $i$ caratteri di $s_1$ nei primi $j$ caratteri di $s_2$.
+Prima di vedere quale operazione usare, bisogna stabilire i \textbf{casi base}:
+\begin{enumerate}
+    \item \texttt{dp[i][0] = i}: caso in cui si vuole trasformare una stringa di lunghezza
+    $i$ in una stringa vuota (lunghezza 0), quindi l'unica operazione da fare è \textbf{cancellare} tutte le lettere $i$.
+    Costo unitario della cancellazione per $i$-volte, quindi il costo è $i$.
+    \item \texttt{dp[0][j] = j}: caso in cui si vuole trasformare una stringa vuota in una
+    stringa di lunghezza $j$, quindi l'unica operazione da fare è \textbf{inserire} tutte le lettere $j$.
+    Costo unitario dell'inserimento per $j$-volte, quindi il costo è $j$.
+\end{enumerate}
+Ora vediamo cosa succede al di fuori dei casi base. Ci sono due scenari:
+\begin{itemize}
+    \item $\bm{s_1[i] = s_2[j]}$: i caratteri sono uguali, quindi non dobbiamo
+    effettuare alcuna operazione. Basterà copiare il costo minimo che avevamo calcolato
+    prima di questo carattere: \texttt{dp[i][j] = dp[i-1][j-1]}.
+    \item $\bm{s_1[i] \ne s_2[j]}$ i caratteri non sono uguali, quindi dobbiamo effettuare
+    una delle tre operazioni consentite, per fare ciò l'algoritmo simulerà tutte e tre le operazioni
+    e alla fine verrà scelta quella che ha costo \textbf{minimo}:
+    \begin{itemize}
+        \item \textbf{cancellazione}: \texttt{dp[i-1][j]}
+        \item \textbf{inserimento}: \texttt{dp[i][j-1]}
+        \item \textbf{sostituzione}: \texttt{dp[i-1][j-1]}
+    \end{itemize}  
+\end{itemize}
