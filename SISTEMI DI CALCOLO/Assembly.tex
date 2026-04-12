@@ -2260,6 +2260,7 @@ f.s
     \end{verbatim} 
 \end{minipage}
 \section{Ottimizzazione dei programmi}
+
 L'ottimizzazione di un programma consiste nel modificarlo in modo da minimizzare 
 l'uso delle risorse disponibili, cercando allo stesso tempo di massimizzare le prestazioni, 
 senza compromettere la correttezza.\\
@@ -2347,4 +2348,185 @@ $S=\frac{T}{T'}=\frac{T}{(\frac{\alpha}{k_A}+1-\alpha)T}=\frac{1}{\frac{\alpha}{
 \]
 
 \noindent Questo mostra che lo speedup è limitato dalla parte non ottimizzabile del programma.
+\section{Gestione dinamica della memoria in Assembly con \texttt{malloc}}
+\noindent In assembly, la gestione della memoria dinamica non è automatica come in C: 
+il programmatore deve gestire esplicitamente la chiamata alla funzione \texttt{malloc}, 
+il controllo degli errori e l'utilizzo del puntatore restituito.\\
+\textbf{Ruolo di \texttt{malloc}}\\
+La funzione \texttt{malloc} è una funzione di libreria che:
+\begin{itemize}
+    \item Alloca un blocco di memoria nello heap
+    \item Restituisce l'indirizzo del blocco allocato
+    \item Restituisce \texttt{NULL} (0) in caso di errore
+\end{itemize}
+\noindent In assembly, non esiste alcun meccanismo automatico: 
+\texttt{malloc} viene trattata come una normale funzione esterna.
+\subsection{Gestione interna in assembly}
+Quando si usa \texttt{malloc} in assembly, bisogna gestire manualmente:
 
+\begin{enumerate}
+    \item \textbf{Preparazione del parametro:} $\rightarrow$
+    la dimensione da allocare (in byte) deve essere calcolata dal programmatore. Ad esempio, per una struct:
+    \begin{verbatim}
+sizeof(node_t) = 2 (short) + 4 (pointer) + 2 (padding)
+               = 8 byte
+    \end{verbatim}
+Il padding sarebbe memoria vuota per garantire l'allineamento corretto dei campi.
+    \item \textbf{Passaggio del parametro:} $\rightarrow$
+    il valore viene inserito nello stack: (riprendendo l'esempio di sopra)
+    \begin{verbatim}
+pushl $8
+    \end{verbatim}
+    \item \textbf{Chiamata della funzione}
+    \begin{verbatim}
+call malloc
+    \end{verbatim}
+
+    \item \textbf{Recupero del risultato} $\rightarrow$
+    il puntatore restituito è contenuto nel registro \texttt{EAX}:
+    \begin{verbatim}
+eax = puntatore al blocco allocato
+    \end{verbatim}
+
+    \item \textbf{Controllo dell'errore} $\rightarrow$
+    è necessario verificare se il puntatore è nullo:
+    \begin{verbatim}
+cmpl $0, %eax
+je errore
+    \end{verbatim}
+
+    \item \textbf{Uso della memoria allocata} $\rightarrow$
+    il puntatore in \texttt{EAX} viene usato per accedere e inizializzare la struttura:
+    \begin{verbatim}
+movl %val, (%eax)           #primo campo
+movl %val, offset(%eax)     #altri campi
+    \end{verbatim}
+
+    \item \textbf{Pulizia dello stack:} $\rightarrow$
+    dopo la chiamata: (ripristiamo lo stack al suo stato originale)
+    \begin{verbatim}
+addl $4, %esp
+\end{verbatim}
+\end{enumerate}
+\noindent  Abbiamo aggiunto 4 byte allo stack per rimuovere il parametro passato a \texttt{malloc} essendo
+quest'ultimo un parametro a 4 byte (l'intero 8).\\
+\noindent\textbf{Osservazioni importanti}
+\begin{itemize}
+    \item In assembly non esiste il concetto di tipo: è il programmatore che gestisce gli offset.
+    \item L'allineamento della memoria è importante (tipicamente a multipli di 4 byte).
+    \item Il puntatore restituito deve essere salvato se serve dopo altre operazioni.
+\end{itemize}
+\noindent Ricordiamo che l'offset è una distanza in byte tra 
+l'inizio della struttura e il campo specifico. \bigskip\\
+\newpage
+\noindent\textbf{Esempio:} \bigskip\\
+\begin{minipage}{0.4\textwidth}
+    \begin{verbatim}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+int list_add_first(node_t **l, short elem) {
+    node_t *p = *l;
+    node_t *n = malloc(sizeof(node_t));
+    if (n == NULL) return -1;
+    n->elem = elem;
+    n->next = p;
+    *l = n;
+    return 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+f.c
+    \end{verbatim}
+\end{minipage}
+\hfill
+$\longrightarrow$
+\hfill
+\begin{minipage}{0.5\textwidth}
+    \begin{verbatim}
+.global list_add_first
+.extern malloc
+
+list_add_first:
+    pushl %ebp
+    movl %esp, %ebp
+
+    # p = *l
+    movl 8(%ebp), %eax     # eax = l
+    movl (%eax), %ecx      # ecx = p
+
+    # malloc(sizeof(node_t)) = 8 byte
+    pushl $8        #passo sizeof(node_t) come parametro
+    call malloc     #chiama malloc
+    addl $4, %esp   #pulisco lo stack 
+                    #poichè grandezza 
+                    #del parametro è 4 byte
+
+    # if (n == NULL)
+    cmpl $0, %eax
+    je ERRORE
+
+    # n->elem = elem
+    movw 12(%ebp), %dx  # dx = elem
+    movw %dx, (%eax)    # scrivo elem in n->elem (offset 0)
+
+    # n->next = p
+    movl %ecx, 4(%eax) 
+
+    # *l = n
+    movl 8(%ebp), %edx  # edx = l
+    movl %eax, (%edx)   # scrivo n in *l
+
+    # return 0
+    movl $0, %eax
+    jmp END
+
+ERRORE:
+    movl $-1, %eax
+
+END:
+    movl %ebp, %esp  #ripristino dello stack
+    popl %ebp
+    ret
+
+
+f.s
+    \end{verbatim}
+\end{minipage}
+\newpage
