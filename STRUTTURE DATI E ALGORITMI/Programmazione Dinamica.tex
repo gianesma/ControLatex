@@ -369,3 +369,145 @@ Ecco quindi il codice che risolve il problema:
     }
 \end{verbatim}
 Il risultato (massimo profitto) sarà in \texttt{dp[n]}.
+
+
+\section{Matrix Chain Multiplication}
+Il problema del Matrix Chain Multiplication (moltiplicazione di una catena di matrici) ha come \textbf{obiettivo} quello di determinare una 
+parentizzazione ottimale della sequenza (catena) di prodotti matriciali $A_1,A_2,\dots,A_n$, ma che cazzo vuol dire?\smallskip\\
+Il prodotto tra matrici è \textbf{associativa}, ma non è commutativa, quindi l'ordine dei moltiplicandi non può essere cambiato, ma solo le parentesi.
+Se ad esempio devo fare il prodotto tra le matrici $A,B,C$, posso fare:
+$$(A\times B)\times C\ \ \ \ \ \text{oppure}\ \ \ \ \ A\times (B\times C)$$
+L'algoritmo Matrix Chain Multiplication si occupa di scegliere in quale modo svolgere questo prodotto in modo tale che vengano effettuate il minor numero
+di moltiplicazioni possibili. A seconda di quale parentizzazione viene scelta, il costo computazionale può variare molto, basti vedere il seguente esempio:
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.9\linewidth]{../images/Matrix_chain.png}
+\end{figure}
+\noindent Ora che abbiamo compreso di cosa si occupa questo problema, vediamo in che modo viene risolto.\\
+Sia $A_1,A_2,\dots,A_n$ una sequenza di $n$ matrici, sia $p = (p_0,p_1,p_2,\dots, p_n)$ una sequenza di dimensioni. Ovvero che ogni matrice $A_i$
+ha dimensioni $p_{i-1}\times p_i$. Definiamo la \textbf{funzione di stato} \texttt{dp[i][j]} che rappresenta il costo minimo per moltiplicare le matrici 
+$A_i\ A_{i+1}\dots A_j$, ricordando che il costo per moltiplicare una matrice $l\times m$ per una matrice $m\times n$ è $lmn$:
+\[ \texttt{dp[i][j]}  = \begin{cases}
+    0 \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \text{se } i = j \\
+    \text{min}_{i\le k<j}\big( \texttt{dp[i][k]}+ \texttt{dp[k+1][j]} + p_{i-1} \cdot p_k \cdot p_j  \big)\ \ \ \text{se } i <j
+\end{cases} \]
+Dove $k$, che è compreso tra $i$ e $j$, è l'indice della matrice dopo la quale viene divisa l'espressione con le parentesi. Per chiarezza ecco l'immagine:
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.95\linewidth]{../images/k_matrice.png}
+\end{figure}
+
+\vspace{0.5cm}
+
+\noindent Allora, ecco il codice che risolve il problema Matrix Chain Multiplication:
+\begin{verbatim}
+    /* dp[] inizializzato a -1 */
+    int matrixChain(int p[], int i, int j) {
+        if (i == j)
+            return 0;
+        if (dp[i][j] != -1)
+            return dp[i][j];
+        int min = INT_MAX;
+        for (int k = i; k < j; k++) {
+            int cost = matrixChain(p, i, k) + matrixChain(p, k+1, j) + p[i-1]*p[k]*p[j];
+            if (cost < min) min = cost;
+        }
+        dp[i][j] = min;
+        return min;
+    }
+\end{verbatim}
+
+\noindent In questa soluzione la funzione di stato che avevamo definita è stata implementata con delle chiamate \textbf{ricorsive}, e il risultato ottimale è 
+nella variabile \texttt{min}.
+
+
+
+\section{Coin Change Analysis}
+Il problema Coin Change Analysis è molto simile al problema knapsack. Dato un set di $n$ tagli $C = \{c_1,c_2,\dots , c_n\}$ e un target $V$, 
+l'\textbf{obiettivo} è trovare il numero minimo di monete tale che:
+\[ \sum_{i =1}^{n} x_i c_i = V  \]
+Prima di tutto specifichiamo che l'approccio \textbf{greedy} (prendi sempre la monete più grande), non funziona sempre, infatti esso fallisce se il
+sistema monetario non è canonico (canonico vuol dire che l'uso del taglio massimo fa sempre parte della soluzione). Dimostriamo questo fatto con un
+esempio:\smallskip\\
+Sia $C = \{ 1,3,4 \}$ e il target $V = 6$
+\begin{itemize}
+    \item \textbf{Greedy}: 4 + 1 + 1 (3 monete)
+    \item \textbf{Ottimo}: 3 + 3 (2 monete)
+\end{itemize} 
+Ora definiamo la \textbf{funzione di stato} \texttt{dp[v]} come il numero minimo di monete per il valore $v$.
+\[    
+\texttt{dp[v]} = \begin{cases}
+    0 \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  \text{se } v = 0 \\
+    \text{min}_{j:c_j \le v} \{ \texttt{dp}[v - c_j + 1]  \}\ \ \text{se } v >0
+\end{cases}
+\]
+Ovviamente se il valore da coprire è 0, serviranno 0 monete, e questo è il \textbf{caso base}. Altrimenti, se possiamo prendere la moneta
+$c_j < v$ aggiungiamo 1 (la moneta $c_j$ che prendiamo) al numero di monete che servono per coprire il valore precedente ($v-c_j$) che avremmo 
+già calcolato e non servirà ricalcolarlo (infatti il valore sarà in \texttt{dp}$[v-c_j]$). Questo è il codice che risolve Coin Change Analysis:
+\begin{verbatim}
+    int* get_coin_set(int coins[], int n, int V, int* result_size) {
+        int* dp = malloc((V + 1) * sizeof(int));
+        int* parent = malloc((V + 1) * sizeof(int));
+        dp[0] = 0;
+        for (int i = 1; i <= V; i++) {
+            dp[i] = INT_MAX;
+            parent[i] = -1;
+        }
+        for (int v = 1; v <= V; v++)
+            for (int j = 0; j < n; j++)
+                if (coins[j] <= v && dp[v - coins[j]] != INT_MAX)
+                    if (dp[v - coins[j]] + 1 < dp[v]) {
+                        dp[v] = dp[v - coins[j]] + 1;
+                        parent[v] = coins[j];
+        }
+        if (dp[V] == INT_MAX) { free(dp); free(parent); return NULL; }
+        // Ricostruzione nell’array di output
+        *result_size = dp[V];
+        int* sol = malloc((*result_size) * sizeof(int));
+        for (int curr = V, i = 0; curr > 0; i++) {
+            sol[i] = parent[curr];
+            curr -= parent[curr];
+        }
+        free(dp); free(parent);
+        return sol;
+    }
+\end{verbatim}
+Quindi prima troviamo quante monete sono necessarie nel caso ottimo (\texttt{dp[V]}) e successivamente viene effettuata la ricostruzione nell'array
+\texttt{sol[]}.
+
+
+
+\section{Distanza di edit (distanza di Levenshtein)}
+Date due stringhe $s_1, s_2$ aventi rispettivamente lunghezza $n$ e lunghezza $m$,
+l'\textbf{obiettivo} è calcolare il numero minimo di operazioni per trasformare $s_1$
+in $s_2$. Sono ammesse 3 operazioni a costo unitario:
+\begin{itemize}
+    \item \textbf{Inserimento}: aggiunta di un carattere a $s_1$
+    \item \textbf{Cancellazione}: rimozione di un carattere da $s_1$
+    \item \textbf{Sostituzione}: cambio di un carattere di $s_1$ in uno di $s_2$
+\end{itemize}
+Definiamo la \textbf{funzione di stato} \texttt{dp[i][j]} che rappresenta il costo 
+minimo per trasformare i primi $i$ caratteri di $s_1$ nei primi $j$ caratteri di $s_2$.
+Prima di vedere quale operazione usare, bisogna stabilire i \textbf{casi base}:
+\begin{enumerate}
+    \item \texttt{dp[i][0] = i}: caso in cui si vuole trasformare una stringa di lunghezza
+    $i$ in una stringa vuota (lunghezza 0), quindi l'unica operazione da fare è \textbf{cancellare} tutte le lettere $i$.
+    Costo unitario della cancellazione per $i$-volte, quindi il costo è $i$.
+    \item \texttt{dp[0][j] = j}: caso in cui si vuole trasformare una stringa vuota in una
+    stringa di lunghezza $j$, quindi l'unica operazione da fare è \textbf{inserire} tutte le lettere $j$.
+    Costo unitario dell'inserimento per $j$-volte, quindi il costo è $j$.
+\end{enumerate}
+Ora vediamo cosa succede al di fuori dei casi base. Ci sono due scenari:
+\begin{itemize}
+    \item $\bm{s_1[i] = s_2[j]}$: i caratteri sono uguali, quindi non dobbiamo
+    effettuare alcuna operazione. Basterà copiare il costo minimo che avevamo calcolato
+    prima di questo carattere: \texttt{dp[i][j] = dp[i-1][j-1]}.
+    \item $\bm{s_1[i] \ne s_2[j]}$ i caratteri non sono uguali, quindi dobbiamo effettuare
+    una delle tre operazioni consentite, per fare ciò l'algoritmo simulerà tutte e tre le operazioni
+    e alla fine verrà scelta quella che ha costo \textbf{minimo}:
+    \begin{itemize}
+        \item \textbf{cancellazione}: \texttt{dp[i-1][j]}
+        \item \textbf{inserimento}: \texttt{dp[i][j-1]}
+        \item \textbf{sostituzione}: \texttt{dp[i-1][j-1]}
+    \end{itemize}  
+\end{itemize}
