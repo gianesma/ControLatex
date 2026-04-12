@@ -2420,7 +2420,7 @@ quest'ultimo un parametro a 4 byte (l'intero 8).\\
 l'inizio della struttura e il campo specifico. \bigskip\\
 \newpage
 \noindent\textbf{Esempio:} \bigskip\\
-\begin{minipage}{0.4\textwidth}
+\begin{minipage}{0.3\textwidth}
     \begin{verbatim}
 
 
@@ -2440,7 +2440,7 @@ l'inizio della struttura e il campo specifico. \bigskip\\
 
 
 
-int list_add_first(node_t **l, short elem) {
+int list_add_first(node_t **l, short elem){
     node_t *p = *l;
     node_t *n = malloc(sizeof(node_t));
     if (n == NULL) return -1;
@@ -2478,7 +2478,7 @@ f.c
 \hfill
 $\longrightarrow$
 \hfill
-\begin{minipage}{0.5\textwidth}
+\begin{minipage}{0.53\textwidth}
     \begin{verbatim}
 .global list_add_first
 .extern malloc
