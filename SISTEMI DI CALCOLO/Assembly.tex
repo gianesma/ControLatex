@@ -2372,10 +2372,11 @@ sizeof(node_t) = 2 (short) + 4 (pointer) + 2 (padding)
                = 8 byte
     \end{verbatim}
 Il padding sarebbe memoria vuota per garantire l'allineamento corretto dei campi.
-    \item \textbf{Passaggio del parametro:} $\rightarrow$
-    il valore viene inserito nello stack: (riprendendo l'esempio di sopra)
+    \item \textbf{Preparazione dello Stack:} $\rightarrow$
+    viene riservato lo spazio nello stack per l'allocazione
+    della grandezza (8 = 4 byte): (riprendendo l'esempio di sopra)
     \begin{verbatim}
-pushl $8
+subl $4, %esp
     \end{verbatim}
     \item \textbf{Chiamata della funzione}
     \begin{verbatim}
@@ -2422,51 +2423,15 @@ l'inizio della struttura e il campo specifico. \bigskip\\
 \noindent\textbf{Esempio:} \bigskip\\
 \begin{minipage}{0.3\textwidth}
     \begin{verbatim}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-int list_add_first(node_t **l, short elem){
+int list_add_first(node_t **l, short elem) {
     node_t *p = *l;
     node_t *n = malloc(sizeof(node_t));
-    if (n == NULL) return -1;
+    if (n == NULL) return -1;         
     n->elem = elem;
     n->next = p;
     *l = n;
     return 0;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -2478,55 +2443,177 @@ f.c
 \hfill
 $\longrightarrow$
 \hfill
+\begin{minipage}{0.3\textwidth}
+    \begin{verbatim}
+int list_add_first(node_t **l, short elem){
+    node_t **si = l;
+    node_t *b = *si;
+    node_t *a = malloc(sizeof(node_t));
+    if (a != NULL) goto F;
+    return -1;           // allocation error
+F:
+    short d = elem;
+    (*a).elem = d;
+    (*a).next = b;
+    *si = a;
+    return 0;
+}
+
+
+f_eq.c
+    \end{verbatim}
+\end{minipage}
+\hfill
+$\longrightarrow$
+\hfill
 \begin{minipage}{0.53\textwidth}
     \begin{verbatim}
-.global list_add_first
-.extern malloc
+
+
+
+
+.globl list_add_first
+
+# typedef struct node_t {    // base
+#     short elem;            // offset: 0 |xx..|   (base)
+#     struct node_t *next;   // offset: 4 |xxxx|  4(base)
+# } node_t;                  // sizeof: 8
 
 list_add_first:
-    pushl %ebp
-    movl %esp, %ebp
+    pushl %ebx
+    pushl %esi
+    subl $4, %esp
 
-    # p = *l
-    movl 8(%ebp), %eax     # eax = l
-    movl (%eax), %ecx      # ecx = p
-
-    # malloc(sizeof(node_t)) = 8 byte
-    pushl $8        #passo sizeof(node_t) come parametro
-    call malloc     #chiama malloc
-    addl $4, %esp   #pulisco lo stack 
-                    #poichè grandezza 
-                    #del parametro è 4 byte
-
-    # if (n == NULL)
-    cmpl $0, %eax
-    je ERRORE
-
-    # n->elem = elem
-    movw 12(%ebp), %dx  # dx = elem
-    movw %dx, (%eax)    # scrivo elem in n->elem (offset 0)
-
-    # n->next = p
-    movl %ecx, 4(%eax) 
-
-    # *l = n
-    movl 8(%ebp), %edx  # edx = l
-    movl %eax, (%edx)   # scrivo n in *l
-
-    # return 0
+    movl 16(%esp), %esi     # node_t **si = l;
+    movl (%esi), %ebx       # node_t *b = *si;
+    movl $8, (%esp)
+    call malloc             # *a = malloc(sizeof(node_t));
+    testl %eax, %eax        # if (a != NULL) 
+    jnz F                   # goto F;
+    movl $1, %eax           # return -1;           // allocation error
+    jmp E
+F:
+    movl 20(%esp), %edx     # short d = elem;
+    movw %dx, (%eax)        # (*a).elem = d;
+    movl %ebx, 4(%eax)      # (*a).next = b;
+    movl %eax, (%esi)       # *si = a;
     movl $0, %eax
-    jmp END
+E:
+    addl $4, %esp
+    popl %esi
+    popl %ebx
+    ret 		            # return 0;
 
-ERRORE:
-    movl $-1, %eax
 
-END:
-    movl %ebp, %esp  #ripristino dello stack
-    popl %ebp
-    ret
 
 
 f.s
     \end{verbatim}
 \end{minipage}
 \newpage
+\section{Profilazione delle prestazioni}
+L'obbiettivo della profilazione è calcolare la latena di esecuzione
+di ogni parte di un programma. Si divide in:
+\begin{itemize}
+    \item \textbf{Manuale} $\rightarrow$ tramite instrumentazione manuale
+    del codice
+    \item \textbf{Automatica} $\rightarrow$ l'instrumentazione viene fatta
+    da un tool
+\end{itemize}
+\subsection{Profilazione Manuale}
+\begin{verbatim}
+    main(){
+        .
+        .
+        tempo -> x
+        __________
+        | target |
+        ----------
+        tempo -> x'
+        calcolo x - x' // e sarà il tempo di esecuzione finale
+        .
+        .
+    }
+\end{verbatim}
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.9\linewidth]{../images/Profilazione manuale.png}
+    \caption{Profilazione manuale}
+\end{figure}\bigskip\bigskip
+Questo tipo di profilazione ha dei limiti:
+\begin{enumerate}
+    \item \textbf{Latenza dello strumento} $\rightarrow$ tempo necessario per eseguire 
+    la misurazione
+    \item \textbf{Risoluzione dello strumento} $\rightarrow$ nel nostro caso risulta essere
+    il minimo intervallo temporale misurabile
+\end{enumerate}
+\textbf{\textcolor{red}{Importante}}: la misurazione di un \textit{tempo T} con uno
+\textit{strumento A} è significativa solo se la risoluzione di A è maggiore di T.\\
+\textbf{\textcolor{red}{Importante}}: la latenza dello strumento utilizzato per la misura deve
+influire sui risultati in modo \textit{trascurabile}.
+\subsection{Profilazione Automatica}
+Per la prolificazione automatica ci aiuteremo con il tool \textbf{"gprof"}, vediamo come funziona:
+\begin{enumerate}
+    \item Bisogna inanzitutto compilare il codice target con "-pg"
+    \item Eseguo il programma compilato
+    \item Visualizzo i risultato con "gprof $<$nome programma$>$"
+\end{enumerate}
+Vediamo un esempio dove c'è un codice che chiama 3 sottoprogrammi: main, A e B.
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.7\linewidth]{../images/Esempio profliazione automatica.jpg}
+    \caption{Esempio del risultato della compilazione}
+\end{figure}
+\noindent\textbf{gmon.out} è il nostro profilo prestazionale dove all'interno troveremo appunto
+il tempo impiegato dal nostro programma.
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.7\linewidth]{../images/gmon.jpg}
+    \caption{gmon.out}
+\end{figure}
+\noindent C'è inoltre un altro tipo di lista ovvero il \textbf{Call graph}, ovvero un 
+grafo che rappresenta le chiamate:
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.5\linewidth]{../images/Call graph.png}
+    \caption{Call Graph}
+\end{figure}
+\subsection{Assetti chiave della ottimizzazione}
+L'obbiettivo è ridurre l'uso delle risorse massimizzando le prestazioni
+(nel nostro caso la latenza) senza impattare la correttezza del programma. In linea genereale
+possiamo intervenire su due livelli:
+\begin{enumerate}
+    \item \textbf{Algoritmo} $\rightarrow$ scegliere l'algoritmo con costo computazionale
+    minore che risolve il problema. Tipicamente questa scelta è affidata al progettista,
+    ma in alcuni casi può impattare anche il programmatore. Anche questo ha i suoi pregi e difetti:
+    \begin{itemize}
+        \item \textbf{\textcolor{green}{+}} La scelta dell'algoritmo ha un  impatto molto signifiativo sulle prestazioni.
+        \item \textbf{\textcolor{red}{-}}  Non è sempre possibile
+        \item \textbf{\textcolor{red}{-}} Richiede una implementazione ad-hoc
+    \end{itemize}
+    \item \textbf{Implementazione} $\rightarrow$ ottimizzare il codice che implementa
+    l'algoritmo scelto. Questa parte è affidata tipicamente al programmatore o il compilatore.
+    Anche qui ci sono vantaggi e svantaggi:
+    \begin{itemize}
+        \item \textbf{\textcolor{green}{+}} Soluzione (parzialmente) automatica
+        \item \textbf{\textcolor{green}{+}}  Soluzione "economica" da adottare
+        \item \textbf{\textcolor{red}{-}} Alcune  implementazioni possono essere "platform-dependent"
+        (potrebbero funzionare solo su alcune piattaforme)
+    \end{itemize}
+\end{enumerate}
+\subsection{Tecniche di ottimizzazione del codice}
+Per l'ottimizzazione del codice abbiamo due approcci principali:
+\begin{enumerate}
+    \item \textbf{Riduzione del "work"} $\rightarrow$ ridurre il numero di istruzioni da eseguire.
+    \item \textbf{Riduzione del "costo"} $\rightarrow$ scelgo tra più alternative quella che impegna
+    la CPU per meno tempo possibile.
+\end{enumerate}
+Il compilatore applica questi approcci usando numerose tecniche di ottimizzazione attraverso queste opzioni:
+\begin{itemize}
+    \item \textbf{"-O0"} $\rightarrow$ default con cui non applica \textit{NESSUNA} ottimizzazione 
+    \item \textbf{"-O1"} $\rightarrow$ ottimizza
+    \item \textbf{"-O2"} $\rightarrow$ ottimizza di più 
+    \item \textbf{"-O3"} $\rightarrow$ ottimizza ancora di più
+    \item \textbf{"-Og"} $\rightarrow$ ottimizza il codice cercando di preservare i simboli di debug
+    \item \textbf{"-Os"} $\rightarrow$ ottimizza riducendo lo spazio
+\end{itemize}
