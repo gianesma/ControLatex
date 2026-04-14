@@ -1,0 +1,100 @@
+\chapter{Ridimensionamento}
+A volte possiamo avere la necessità di gestire strutture dati dinamiche ossia che siano in grado di adattare la loro dimensione a fronte di inserimenti e cancellazioni\\
+\begin{itemize}
+    \item può capitare di aver allocato una certa quantità di memoria per poi accorgersi, durante l'esecuzione del programma, che non ci basta.
+    \item E' anche opportuno evitare spechi di memoria ossia, dopo aver rimosso molti elementi, ridurre la memoria allocandone una più piccola in cui memorizzare elementi rimasti
+\end{itemize}
+\noindent \textbf{Strategia per la gestione dinamica}\\
+\begin{itemize}
+    \item Alloca una nuova struttura più grande/più piccola
+    \item Copia tutti gli elementi della vecchia struttura dati nella nuova
+\end{itemize}
+\noindent \textbf{Osservazioni}\\
+\begin{itemize}
+    \item La strategia appena descritta ha un costo proporzionale all'allocazione della nuova struttura + il costo della copia + il costo dell'inserimento/cancellazione
+    \item Nella maggior parte delle strutture dati, il costo dominante è quello della copia
+    \item Se il ridimensionamento avviene una tantum il suo costo può essere ammortizzato e distribuito sulle operazioni di inserimento successive
+    \item in questo caso parleremo quindi di analisi ammortizzata del costo
+    \item Consideriamo una struttura dati tabellare e vediamo
+    \begin{itemize}[label=--]
+        \item come sia possibile aggiungere/togliere un elemento in tempo ammortizzato costante $O(1)$, benché tali operazioni abbiano un costo unitario maggiore
+        \item come sia possibile ridimensionare garantendo che la memoria inutilizzata sia sempre inferiore ad una frazione costante della memoria allocata
+    \end{itemize}
+\end{itemize}
+\section{tabelle dinamiche}
+Una tabella è una generica struttura dati che viene rappresentata in una locazione di memoria e che è divisa in celle.\\
+Una tabella \textbf{T} abbia i seguenti attributi:\\
+\begin{itemize}
+    \item un puntatore \textbf{T.table} alla memoria allocata;
+    \item \textbf{T.size} che rappresenta la dimensione della tabella
+    \item un intero \textbf{T.num} che rappresenta il numero di elementi presenti nella tabella
+\end{itemize}
+\noindent Le operazioni che possiamo eseguire su una tabella sono:\\
+\begin{itemize}
+    \item \textbf{Table(T)} che crea una nuova tabella vuota T
+    \item \textbf{Insert(T,x)} che inserisce l'oggetto x nella tabella T
+    \item \textbf{Delete(T,x)} che rimuove l'oggetto x dalla tabella T
+\end{itemize}
+\noindent \subsection{Ridimensionamento: espansione}
+Consideriamo dapprima il caso in cui vengano eseguite soltanto inserimenti di nuovi elementi e nessuna rimozione\\
+Definiamo il fattore di carico della tabella come il rapporto $\alpha = num / size$\\
+Quando $\alpha = 1$ la tabella è piena ed occorre espanderla allocando nuova memoria.\\
+Un tipico metodo euristico consiste nell'allocare una nuova tabella che ha il doppio di celle della vecchia il che garantisce un fattore di carico $\alpha > 1/2$.\\ 
+L'operazione di inserimento dovrà quindi essere realizzata come segue
+\begin{verbatim}
+INSERT(T, x)
+1 If T.size == 0
+2   Alloca una nuova tabella di dimensione 1
+3 If T.size == T.num
+4   Alloca T’ di dimensione 2*T.size e assegna al puntatore p
+5   Copia tutti gli elementi di T in T’
+6   Rilascia la memoria occupata da T
+7   Aggiorna puntatore di T a p
+8   T.table=T'
+9   T.size=2*T.size
+10   inserisci x in T’
+11  T.num = T.num+1
+\end{verbatim}
+\noindent Costo:\\
+Assumiamo che l'allocazione e il rilascio di memoria abbiano costo costante mentre la copia dipende dalla dimensione originale della struttura dati\\
+La procedura di INSERT costerà quindi:\\
+\begin{itemize}
+    \item $O(1)$ se non devo espandere la tabella
+    \item $O(T.size)$ se devo procedere con l'espansione
+\end{itemize}
+\noindent \textbf{Analisi del costo ammortizzato}\\
+Consideriamo il costo di una sequenza di n \textbf{Insert} eseguite a partire da una tabella vuota\\
+\begin{itemize}
+    \item Il costo della k-esima Insert è 1 se non vi è espansione ed è k se vi è espansione
+\end{itemize}
+\noindent Siccome T.size è sempre una potenza di 2 e l'espansione si ha quando T.num=k-1 è uguale a T.size, il costo della k-esima Insert è:\medskip\\
+$\begin{cases}
+\text{k se k-1 è una potenza di 2} \\
+\text{1 negli altri casi}
+\end{cases}$\medskip\\
+\noindent e il costo totale di n Insert è:\\
+$$C(n)=\sum_{k=1}^n c_k=n+\sum_{j=0}^{\lfloor \log n \rfloor}2^j<n+2n=3n$$\\
+\noindent se adesso dividiamo il costo totale di n operazioni per il numero di operazioni otteniamo il costo ammortizzato\\
+$O(3n)/n=O(1)$
+\subsection{Ridimensionamento: Contrazione}
+Quando cancelliamo elementi, la struttura dati usa sempre più memoria di quanta in realtà gliene serve.\\
+Per evitare uno spreco eccessivo di memoria è opportuno contrarre la tabella quando il fattore di carico $\alpha = num/size$ diventa troppo piccolo.\\
+La contrazione della tabella è simile all'espansione: quando il numero di elementi in essa diventa troppo piccolo, allochiamo una nuova tabella più piccola e poi copia gli elementi della vecchia in quella nuova. Possiamo rilasciare lo spazio in memoria per la vecchia tabella restituendo al sistema di gestione della memoria.
+\subsubsection{Strategia naive}
+Dimezzare la memoria quando il fattore di carico $\alpha$ diventa $\le 1/2$\\
+Questo ci assicura un fattore di carico $\alpha > 1/2$ anche in presenza di \textbf{Delete}\\
+Purtroppo con questa strategia il costo ammortizzato delle operazioni non è più costante.\\
+Consideriamo una successione costituita da $2^k$ \textbf{Insert} seguite da $2^{k-2}$ gruppi di quattro operazioni\\
+\begin{center}
+    \textbf{Insert - Delete - Delete - Insert}
+\end{center}
+per un totale di \textbf{$n=2^{k+1}$} operazioni.\\
+In ogni gruppo la prima Insert comporta una espanzionedi costo $2^k$ e la seconda Delete una contrazione di costo $2^
+k$.\\
+Quindi ogni gruppo ha costo $\ge 2^{k+1}$\\
+e in totale i $2^{k-2}$ gruppi hanno costo:
+$$\ge 2^{k-2}2^{k+1}=\frac{n^2}{8}=\Omega(n^2)$$\\
+e il costo ammortizzato è \textbf{$\Omega(n^2)/n=\Omega(n)$}.\\
+Utilizziamocome criterio per ridimensionare $\alpha=1/2$ le sequenze di contrazioni non mi consentono di ammortizzare i costi degli inserimenti come vorrei.\\
+Per le contrazioni quindi ho bisogno di svuotare a sufficienza la tabella per bilanciare il costo degli inserimenti\\
+occorre quindi aspettare che $\alpha$ diventa $1/4$.
