@@ -876,5 +876,76 @@ HeapSort(A,n)
 5       MAX-HEAPIFY(A,1)
 \end{verbatim}
 \noindent \textbf{Funzionamento}\\
-La funzione HeapSort chiama inizialmente Build-Max-Heap(A, n) per trasformare A in un max-heap. Dunque, se per definizione l’elemento più grande dell’array è memorizzato nella radice A[1], per ordinare in modo crescente l’albero, basta scambiare la radice con l’elemento in posizione finale, ovvero A[n]. Dopodichè si decrementa A.heapSize, in modo tale da non considerare più l’elemento in ultima posizione, in quanto si trova nella sua posizione definitiva. Per ottenere un max-heap basta chiamare Max-Heapify(A, 1) per far tornare il max alla radice. Questo ciclo viene ripetuto n-1 volte. Build-Max-Heap impiega \textbf{O(n)}, mentre
+La funzione HeapSort chiama inizialmente Build-Max-Heap(A, n) per trasformare A in un max-heap. Dunque, se per definizione l’elemento più grande dell’array è memorizzato 
+nella radice A[1], per ordinare in modo crescente l’albero, basta scambiare la radice con l’elemento in posizione finale, ovvero A[n]. Dopodichè si decrementa A.heapSize, 
+in modo tale da non considerare più l’elemento in ultima posizione, in quanto si trova nella sua posizione definitiva. Per ottenere un max-heap basta chiamare Max-Heapify(A, 1) 
+per far tornare il max alla radice. Questo ciclo viene ripetuto n-1 volte. Build-Max-Heap impiega \textbf{O(n)}, mentre
 Max-Heapify \textbf{O(log n)}, in totale il costo di HeapSort ammonta a \textbf{O(n log n)}.
+\subsection{Code di proprità}
+Una delle applicazioni più efficienti e diffuse dell'heap è la coda di priorità. Una coda di priorità è una struttura dati che ci consente di mantenere un insieme S di elementi, ciascuno con  un valore associato detto chiave che ne rappresenta la priorità.
+Una coda di max-priorità supporta le seguenti operazioni:\\
+\begin{itemize}
+    \item \textbf{INSERT(S, x, k)} inserisce l'elemento x con chiave k nell'insieme S
+    \item \textbf{MAXIMUM(S)} restituisce l'elemento di S con la chiave più grande
+    \item \textbf{EXTRACT-MAX(S)} rimuove e restituisce l'elemento di S con la chiave più grande
+    \item \textbf{INCREASE-KEY(S, x, k)} aumenta il valore della chiave di x al nuovo valore k
+    \item \textbf{CHANGE-KEY(S, x, k)} aggiorna la priorità di x
+\end{itemize}
+\noindent Per rappresentare una coda di priorità si utilizza un heap, in questo caso si ha bisogno di due array: un array di chiavi che definisce le priorità e un array di oggetti che sono gli elementi di S. In particolare, ad ogni elemento in posizione $i$ dell'array di oggetti è associata la rispettiva chiave in posizione $i$ nell'array delle chiavi. 
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\linewidth]{../images/12aprile1.png}
+\end{figure}
+
+\noindent \textbf{MAX-HEAP-MAXIUM}
+\begin{verbatim}
+MAXIUM(A)
+1   if A.heapSize < 1
+2       error "underflow dell'heap"       
+3   return A[1]
+\end{verbatim}
+Costo: O(1)\medskip\\
+\noindent \textbf{MAX-HEAP-EXTRACT-MAX}
+\begin{verbatim}
+EXTRACT-MAXIUM(A)
+1   max = MAX-HEAP-MAXIUM(A)
+2   A[1] = A[A.heapSize]
+3   A.heapSize = A-heapSize-1
+4   MAX-HEAPIFY(A, 1)
+5   return max
+\end{verbatim}
+\noindent Costo:\\
+Istruzioni 1, 2, 3 costo $O(1)$\\
+Istruzione 4 costo $O(\log n)$\\
+Costo complessivo: $O(\log n)$\medskip\\
+\textbf{INCREASE-KEY}
+\begin{verbatim}
+INCREASE-KEY(A,x,k)
+1   if k < x.key
+2       error "nuova chiave più piccola"
+3   x.key=k
+4   cerca l'indice nell'array dove si trova x
+5   while i > 1 and A[parent(i)].key < A[i].key
+6       scambia A[i] e A[parent] e
+7   aggiorna le corrispondenze tra gli oggetti e gli indici dell'array
+8   i = parent(i)
+\end{verbatim}
+\noindent Innanzitutto, verifica che la nuova chiave $k$ causi il decremento di quela dell'oggetto x, e se non ci sono problemi assegna a x il suo nuovo valore. Quindi la procedura cerca l'indice $i$ dell'array che corrisponde all'oggetto x, cioè tale che $A[i]=x$. Poiché l'incremento della chiave di $A[i]$ potrebbe violare la proprietà di max-heap, la procedura, segue un cammino semplice da questo nodo verso la radice, per trovare un posto appropriato alla nuova chiave. Durante questo attraversamento, INCREASE-KEY confronta ripetutamente la chiave di un elemento con quella del padre, e se la chiave dell'elemento è più grande, scambia i puntatori. In caso contrario la procedura termina, perchè in questo caso la proprietà di max-heap è soddisfatta.\\
+Costo: $\log n$\\ 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\linewidth]{../images/12aprile2.png}
+\end{figure}
+\noindent \textbf{INSERT-KEY}
+\begin{verbatim}
+INSERT-KEY(A,x,n)
+1   if A.heap-size == n
+2       error "overflow  dell'Heap"
+3   A.heap-size = A.heap-size + 1
+4   x.key = k
+5   x.key = - (infinito)
+6   A[A.heap-size] = x
+7   INCREASE-KEY(A,x,k)
+\end{verbatim}
+\noindent Costo: $O(\log n)$, più il costo della corrispondenza tra gli oggetti della coda di priorità e gli indici.
