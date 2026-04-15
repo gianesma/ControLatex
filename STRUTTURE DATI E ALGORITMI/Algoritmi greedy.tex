@@ -1,0 +1,98 @@
+\chapter{Algoritmi greedy}
+\section{Introduzione e definizione}
+Gli \textbf{algoritmi greedy} (golosi), sono una classe di algoritmi che prende sempre una
+soluzione ottima localmente, nella speranza che tale soluzione porterà ad una
+ottimalità globale. Infatti questo tipo di algoritmo non funziona sempre, ma se 
+riusciamo ad usarlo è preferibile per motivi di semplicità ed efficienza. Vediamo degli esempi:\smallskip\\
+Abbiamo già visto nel capitolo precedente (\ref{Coin Change Analysis}) il problema del \textit{Coin Change Analysis}.
+Questo problema è un esempio perfetto per capire che un approccio \textbf{greedy} può funzionare
+(rendendo il problema nettamente più semplice ed efficiente), o non funzionare.\\
+Infatti avevamo visto che se il sistema monetario non è canonico (canonico vuol dire che l’uso del taglio massimo fa
+sempre parte della soluzione), non era possibile utilizzare un algoritmo greedy, ma dovevamo utilizzare
+la programmazione dinamica che rendeva l'algoritmo molto più dispendioso e complesso.\\
+Se invece il sistema monetario è canonico, possiamo utilizzare un approccio greedy,
+prendendo sempre il taglio di moneta più grande disponibile fino a raggiungere il
+target (vd \ref{Coin Change Analysis}).\smallskip\\
+La \textbf{strategia} che caratterizza un algoritmo greedy è:
+\begin{itemize}
+    \item Si valutano l'insieme di opzioni disponibili.
+    \item Si sceglie quella che sembra migliore nel breve termine (la scelta "greedy"),
+    che porterà ad un ottimo locale.
+    \item Si procede senza ripensare alle decisioni fatte (che è esattamente il contrario
+    di quello che si fa con la programmazione dinamica).
+\end{itemize}
+Un problema si può affrontare con un approccio greedy se possiede queste due caratteristiche:
+\begin{itemize}
+    \item \textbf{Greedy choice property}: una scelta locale ottimale porta ad una soluzione
+    globale ottimale.
+    \item \textbf{Optimal substructure}: la soluzione ottimale del problema contiene le soluzioni
+    ottimali ai suoi sottoproblemi.
+\end{itemize}
+Nelle prossime sezioni vedremo problemi risolti con degli algoritmi greedy.
+
+
+
+\section{Problema della codifica di Huffman}
+Dato $S = \{ s_1, s_2,\dots ,s_n\}$ un insieme di $n$ caratteri e che ogni carattere
+$c \in C$ sia presente con una certa frequenza $f_i$ (\texttt{c.freq}). L'\textbf{obiettivo}
+è:
+\begin{enumerate}
+    \item Assegnare ad ogni simbolo un codice binario (0 o 1), creando un prefisso (detto \textit{codice di Huffman}) che
+    identificherà univocamente il simbolo.
+    \item Minimizzare la lunghezza della media pesata $\left(  \sum^{i} f_i \times l_i
+    (\text{lunghezza codice di } s_i)  \right)$ 
+\end{enumerate}
+Visto che a parole può risultare poco chiaro, vediamo un esempio e successivamente spieghiamo
+la strategia di risoluzione.
+
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=1\linewidth]{../images/esempio_Huffman.jpg}
+\end{figure}
+\noindent Questi sono i passi dell'algoritmo di Huffman $\Big( (a) \rightarrow (b) \cdots \rightarrow (f)  \Big)$, la \textbf{strategia} è la seguente:\\
+All'inizio abbiamo i dati di input, ovvero i caratteri con la rispettiva frequenza. 
+Consideriamo ogni dato come radice di un albero binario. A ogni passo i due alberi 
+con le frequenze più piccole vengono fusi, quindi questi due alberi diventano figli di un nuovo nodo 
+rappresentante la somma delle frequenze degli alberi che sono stati fusi. Ad ogni fusione
+vengono assegnati i codici binari, in questo caso la regola è: un arco che collega un nodo interno con i suoi figli
+ha l'etichetta 0 se è un arco che congiunge il figlio sinistro, ha l'etichetta 1 se è un arco che congiunge 
+un figlio destro.\\
+Ripetendo questo procedimento fino ad ottenere un unico albero binario abbiamo ottenuto che ogni carattere ha 
+il proprio codice che lo rappresenta, formato dalla sequenza di codici binari (0 o 1) a partire dalla radice 
+dell'albero completo fino alla foglia che rappresenta il carattere. In questo esempio guardando l'ultimo step $(f)$, si ha che:
+\begin{itemize}
+    \item \textbf{f:5} $\to 1100$
+    \item \textbf{e:9} $\to 1101$
+    \item \textbf{c:12} $\to 100$
+    \item \textbf{b:13} $\to 101$
+    \item \textbf{d:16} $\to 111$
+    \item \textbf{a:45} $\to 0$ 
+\end{itemize}
+Il codice per creare questo albero è:
+\begin{verbatim}
+    while (heap->size > 1) {
+        left = extractMin(heap);
+        right = extractMin(heap);
+        top = createNode('$', left->freq+right->freq);
+        top->left = left;
+        top->right = right;
+        insertMinHeap(heap, top);
+    }
+\end{verbatim}
+
+\noindent Come è ben visibile dall'esempio, i simboli con le frequenze minime $f_i$ 
+si trovano alla massima profondità dell'albero. Visto che la \textbf{lunghezza media pesata} 
+è calcolata come $\sum^i (f_i \times l_i)$, e che più la frequenza è alta, minore è il 
+codice binario associato al carattere che ha tale frequenza, la lunghezza media è \textbf{minima}.
+
+
+
+
+
+
+\section{Problema di Activity selection}
+Il problema della selezione di attività consente di selezionare il più grande
+insieme di attività compatibili. Più formalmente diciamo che:\\
+Dato $A = \{ a_1, a_2,\dots, a_n \}$ insieme di attività, dove ciascuna $a_i$
+ha un tempo di inizio $s_i\in \mathbb{R}$ e un tempo di fine $f_i\in\mathbb{R}$
+con $s_i< f_i$, e dato il vincolo
