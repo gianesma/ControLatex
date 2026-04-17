@@ -34,7 +34,7 @@ Nelle prossime sezioni vedremo problemi risolti con degli algoritmi greedy.
 
 \section{Problema della codifica di Huffman}
 Dato $S = \{ s_1, s_2,\dots ,s_n\}$ un insieme di $n$ caratteri e che ogni carattere
-$c \in C$ sia presente con una certa frequenza $f_i$ (\texttt{c.freq}). L'\textbf{obiettivo}
+$c \in C$ sia presente con una certa frequenza $f_i$. L'\textbf{obiettivo}
 è:
 \begin{enumerate}
     \item Assegnare ad ogni simbolo un codice binario (0 o 1), creando un prefisso (detto \textit{codice di Huffman}) che
@@ -93,8 +93,41 @@ codice binario associato al carattere che ha tale frequenza, la lunghezza media 
 \section{Problema di Activity selection}
 Il problema della selezione di attività consente di selezionare il più grande
 insieme di attività compatibili. Più formalmente diciamo che:\\
-Dato $A = \{ a_1, a_2,\dots, a_n \}$ insieme di attività, dove ciascuna $a_i$
+Dato $A = \{ a_1, a_2,\dots, a_n \}$ un insieme di attività, dove ciascuna attività $a_i$
 ha un tempo di inizio $s_i\in \mathbb{R}$ e un tempo di fine $f_i\in\mathbb{R}$
-con $s_i< f_i$, e dato il vincolo di compatibilità ($a_i$ e $a_j$)
+con $s_i< f_i$, e dato il vincolo di compatibilità: $a_i$ e $a_j$ sono compatibili se non si sovrappongono nel tempo
+$\left([s_i,f_i]  \cap [s_j,f_j]  = \emptyset     \right)$, l'\textbf{obiettivo} è quello di trovare un sottoinsieme $A' \subseteq A$ tale che:
+\begin{itemize}
+    \item Tutte le attività in $A'$ sono compatibili.
+    \item $|A'|$ è il massimo possibile, ovvero il numero di attività del sottoinsieme soluzione è massimo.
+\end{itemize}
+La \textbf{strategia} per risolvere questo problema con un approccio greedy è la seguente:
+\begin{enumerate}
+    \item Ordina le attività di $A$ per tempo di fine crescente, ovvero $f_1 \le f_2 \le \cdots \le f_n$.
+    \item Inizializza $G \leftarrow \emptyset$ e $t = 0$, dove $G = \{ g_1,g_2,\dots,g_k  \}$ è l'insieme delle attività selezionate dall'algortimo greedy, all'inizio ovviamente
+    sarà inizializzato come un insieme vuoto.
+    \item Realizza il ciclo che ad ogni iterazione aggiorna le varibili sotto certe condizioni, ovvero se $s_i \ge t$ aggiungo $a_i$ a $G$ e pongo $t \leftarrow f_i$, in
+    questo modo scarto le attività che si sovrappongono e in $G$ andranno solo quelle che rispettano il vincolo di compatibilità.
+    \item Restituisce $G$
+\end{enumerate}
 
+\noindent Il codice quindi sarà (supponendo che gli eventi in $A$ siano già ordinati):
+\begin{verbatim}
+    GREEDY-ACTIVITY-SELECTOR(s, f, n, A) {
+        G = {};
+        t = 0;
+        for i = 1 to n
+            if s[i] >= t
+                G.add(A[i]);
+                t = f[i];
+        
+        return G;
+    }   
+\end{verbatim}
 
+\subsection{Dimostrazione dell'ottimalità}
+Vogliamo dimostrare che l'approccio greedy ci dà effettivamente un risultato ottimale. Sia $G = \{  g_1,g_2, \dots , g_k  \}$ l'insieme 
+delle attività selezionate dall'algoritmo greedy, sia $O=\{  o_1,o_2,\dots, o_m   \}$ un sottoinsieme ottimo, cioè un insieme di attività compatibili
+con $m\ge k$. L\textbf{obiettivo} è dimostrare che $\bm{k = m}$, cioè che l'algoritmo greedy seleziona tante attivtà quante ne ha 
+una soluzione ottima. Procediamo per \textbf{induzione}:\\
+CONTNUAREEE
