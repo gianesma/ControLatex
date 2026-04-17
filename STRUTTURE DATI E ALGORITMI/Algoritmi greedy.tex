@@ -96,7 +96,7 @@ insieme di attività compatibili. Più formalmente diciamo che:\\
 Dato $A = \{ a_1, a_2,\dots, a_n \}$ un insieme di attività, dove ciascuna attività $a_i$
 ha un tempo di inizio $s_i\in \mathbb{R}$ e un tempo di fine $f_i\in\mathbb{R}$
 con $s_i< f_i$, e dato il vincolo di compatibilità: $a_i$ e $a_j$ sono compatibili se non si sovrappongono nel tempo
-$\left([s_i,f_i]  \cap [s_j,f_j]  = \emptyset     \right)$, l'\textbf{obiettivo} è quello di trovare un sottoinsieme $A' \subseteq A$ tale che:
+$\left([s_i,f_i]  \cap [s_j,f_j]  = \emptyset     \right)$, l'\textbf{obiettivo} di trovare un sottoinsieme $A' \subseteq A$ tale che:
 \begin{itemize}
     \item Tutte le attività in $A'$ sono compatibili.
     \item $|A'|$ è il massimo possibile, ovvero il numero di attività del sottoinsieme soluzione è massimo.
@@ -120,7 +120,6 @@ La \textbf{strategia} per risolvere questo problema con un approccio greedy è l
             if s[i] >= t
                 G.add(A[i]);
                 t = f[i];
-        
         return G;
     }   
 \end{verbatim}
@@ -128,6 +127,33 @@ La \textbf{strategia} per risolvere questo problema con un approccio greedy è l
 \subsection{Dimostrazione dell'ottimalità}
 Vogliamo dimostrare che l'approccio greedy ci dà effettivamente un risultato ottimale. Sia $G = \{  g_1,g_2, \dots , g_k  \}$ l'insieme 
 delle attività selezionate dall'algoritmo greedy, sia $O=\{  o_1,o_2,\dots, o_m   \}$ un sottoinsieme ottimo, cioè un insieme di attività compatibili
-con $m\ge k$. L\textbf{obiettivo} è dimostrare che $\bm{k = m}$, cioè che l'algoritmo greedy seleziona tante attivtà quante ne ha 
-una soluzione ottima. Procediamo per \textbf{induzione}:\\
-CONTNUAREEE
+con $m\ge k$. L\textbf{obiettivo} è dimostrare che $\bm{k = m}$, cioè che l'algoritmo greedy seleziona tante attività quante ne ha 
+una soluzione ottima. Procediamo per \textbf{induzione}:\smallskip\\
+Costruiamo un altro insieme $O'$ tale che tutte le sue attività sono compatibili
+(non si sovrappongono le attività) e che $|O| = |O'|$ (soluzione ottima).
+\begin{itemize}
+    \item \textbf{Passo base}:
+    \begin{itemize}
+        \item confrontiamo $g_1$ con $o_1$, e avremo che $f_{g_1} \le f_{o_1}$ per costruzione, poichè in $G$ ci sono
+        le attività scelte dall'algoritmo Greedy, il quale sceglie le attività che finiscono prima.
+        \item sostituiamo $o_1$ con $g_1$ in $O$
+        \item dopo la sostituzione otteniamo un insieme $O'$ che ha tutti gli elementi di $O$, ma con
+        la prima attività che è diventata $g_1$, ovvero $O' = \{ g_1, o_2, o_3, \dots, o_m  \}$.
+        \item Notiamo che l'insieme $O'$ è ancora ottimo, perchè l'attività $g_1$ che abbiamo inserito è compatibile
+        con tutte le altre attività dentro $O'$, visto che finisce prima.
+    \end{itemize}
+
+    \item \textbf{Passo induttivo}
+    \begin{itemize}
+        \item supponiamo di aver già sostituito le prime $r$ attività in $O$ cone le prime $r$ in $G$,
+        ottenendo un insieme $O'$ ancora ottimo, dobbiamo mostrare che possiamo sostituire anche $g_{r+1}$ a $o_{r+1}$, 
+        mantenendo una soluzione ottima.
+        \item $o_{r+1}$ essendo compatibile con $g_r$, deve iniziare dopo $f_{g_r}$, l'algoritmo greedy sceglie
+        l'attività che finisce prima, quindi sceglie $g_{r+1}$. 
+        \item sotituiamo anche $o_{r+1}$ con $g_{r+1}$, siccome $f_{g_{r+1}} \le f_{o_{r+1}}$.
+    \end{itemize}
+\end{itemize}
+Alla fine di tutti i confronti abbiamo che $O' = G$, che è la soluzione ottima scelta dall'algoritmo greedy. 
+In questo procedimento non abbiamo scartato alcuna attività, ma abbiamo solo sostituito facendo rimanere la soluzione ottima,
+quindi abbiamo dimostrato che $\bm{k = m}$.
+
