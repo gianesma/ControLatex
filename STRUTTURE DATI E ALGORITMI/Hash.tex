@@ -1,0 +1,185 @@
+\chapter{Hash}
+\section{Dizionari}
+Una struttura dati molto comoda ed 
+efficiente per supportare diverse applicazioi è quelle del \textbf{dizionario}
+\begin{itemize}
+    \item consente di rappresentare il concetto matematico di relazione univoca R : D $\rightarrow$ C, o associazione chiave valore
+    \item deve supportare in modo efficiente le operazioni: Insert, Search, Delete  
+\end{itemize}
+\noindent Esistono diversi modi per realizzare un dizionario tra cui:
+\begin{itemize}
+    \item tebelle ad indirizzamento diretto
+    \item tabelle di hash
+\end{itemize}
+\section{Tabelle ad indirizzamento diretto}
+Il dizionario si gestisce in maniera semplice sfruttando. un 'array di puntatori'\\
+Dato l'insieme delle chiavi $U=(k_1,k_2,..,k_m)$ possiamo usare un array T in cui associo ad ogni posizione una chiave $k_i$\\
+$T[k]$ è un puntatore al valore associato alla chiave k.
+AGGIUNGI FOTO\\
+Le operazioni caratteristiche della struttura dati possono essere realizzate in modo semplice\\ 
+AGGIUNGI FOTO\\
+Pro:\\
+\begin{itemize}
+    \item Operazioni efficienti eseguite in $O(1)$
+\end{itemize}
+\noindent Contro:
+\begin{itemize}
+    \item occorre riservare memoria sufficiente per tante celle quante sono le possibili chiavi 
+    \item Se U è molto grande è inutilizzabile a causa delle limitazioni di memoria
+    \item Se le chiavi effettive sono molto di meno delle chiavi potenziali abbiamo uno spreco di memoria
+\end{itemize}
+
+\section{Tabelle di Hahs}
+Concettualmente si realizza con gli stessi principi utilizzati per le tabelle di 
+indirizzamento diretto ma l'associazione chiave-cella è definta tramite una funzione e non in maniera statica\\
+In una \textbf{tabella hash} di m celle ogni chiave k viene memorizzata nella cella $h(k)$ usando una funzione $h: U \rightarrow {0,..,m-1}$ detta \textbf{funzione di hash}\\
+Vantaggio: richeide memoria proporzionale al numero massimo di chiavi presenti nel dizionario indipendentemente dalla cardinalità dell'insieme $U$ di tutte le possibili chiavi.\\
+AGGIUNGI FOTO\\
+\subsection{Collisioni}
+\textbf{Il principio della PICCIONAIA}
+\begin{definition}
+    Se p piccioni devono trovare posto in c caselle e ci sono più piccioni che caselle allora
+    in qualche casella entreranno almeno due piccioni
+\end{definition}
+\noindent Siccome $|U|>m$, esisteranno coppie di chiavi diverse $k_1 \neq k_2$ tali che $h(k_1)=h(k_2)$ diremo in questo caso che vi è una coliisione tra le due chiavi
+
+\subsection{Risoluzione collisioni}
+\subsection{Metodo del concatenamento}
+L'insieme di input di $n$ viene diviso casualmente in $m$ sottoinsiemi, una funzione di hash $h()$ determina a quale sottoinsieme appartiene un elemento, ogni. sottoinsieme è gestito in modo indipendente tramite una lista\\
+AGGIUNGI FOTO\\
+AGGIUNGI FOTO o MINIPAGE A 3 REALIZZAZIONE\\
+\subsection{Analisi dell'hashing con concatenamento}
+Caso peggiore\\
+Tutte le $n$ chiavi sono in conflitto e puntano tutte alla stessa cella\\
+AGGIUNGI FOTO\\
+
+\subsection{Progettare funzioni di hash}
+AGGIUNGI FOTO\\
+Una buona funzione di hash dovrebbe soddisfare l'ipotesi di hash uniforme indipendente\\
+Ogni chiave. ha la stessa probabilità $1/m$ di essere mandata di ua qualsiasi delle $m$ celle, indipendentementedalle chiavi inserite precedentemente\\
+Svantaggio:\\
+L'ipotesi di hash unifore indipendente dipende dalle probabilità con cui vengono estratti gli elementi da inserire\\
+Assunzione:\\
+Le chiavi che considereremo nelle prossime pagine sono rappresentate degli interi non negativo piccoli
+\subsection{Hashing Statico}
+\textbf{Metodo divisione}\\
+Associa ad una chiave $k$ una delle $m$ celle prendendo il resto della divisioe intera tra $k$ e $m$\\
+AGGIUNGI FOTO\\
+\textbf{Meotdo della moltiplicazione}
+Moltiplica la chiave k per una costante A (A comoresa tra 0 e 1) ed estrai la parte frazionaria di kA\\
+Moltiplica il valore ottenuto per m e prendi la parte intera inferiore\\
+$$h(k)=\lfloor m(kA \mod 1) \rfloor$$\\
+AGGIUNGI FOTO\\
+\textbf{Metodo della moltiplicazione}\\
+Mtolo efficiente se m è una potenza di 2\\
+$m=2^p$ e $A=q/2^W$\\
+Assumiamo che ogni chiave possa essere rappresentata da una cola parola di w bit\\
+FOTO
+\subsection{Warning}
+Nessuna funzione di hash può evitare che un avversario malevolo inserisca
+nella tabella una sequenza di valori che vadano a finire tutti nella stessa lista\\
+Più in generale, per ogni funzione di hash si possono trovare delle distribuzioni
+di probabilità degli input per le quali la funzione non ripartisce bene le chiavi
+tra le varie liste della tabella hash
+\subsection{Hashing Randomizzato}
+Possiamo usare la randomizzazione per rendere il comportamento della tabella hash indipendente dall'input.\\
+L’idea è quella di usare una funzione di hash scelta casualmente in un insieme
+“universale” di funzioni di hash.
+Questo approccio viene detto \textbf{hashing universale}.\\
+Un insieme $H$ di funzioni di hash che mandano un insieme U di chiavi bell'insieme {0,1,..,m-1} degli indici della tabella hash si dice universale se per ogni coppia di chiavi diverse $j$ e $k$ vi sono al più $|H|/m$ funzioni di hash in $H$ tali che $h(j)=h(k)$\\
+continua pagina 21 e 22
+\subsection{Risoluzione delle collisioni}
+\textbf{Metodo dell'indirizzamento aperto}\\
+Con la tecnica di indirizzamento aperto tutti gli elementi stanno nella tabella, non utilizziamo puntatori a zone estere di memoria ma tutto risiede nella tabella,
+se la tabella è piena potrei non riuscire a completare un inserimento\\
+Quando voglio inserire un elemento, provo a mattelro nella posizione primaria se non riesco, provo a inserirlo nella posizione secondaria, se non riesco nella terziaria e cosi via...\\
+Ne segue che:
+La funzione di hash non individua una singola cella ma ma deve definire un ordine in cui ispezionare
+tutte le celle. \\
+L’inserimento di un elemento avviene nella prima cella libera che si incontra nell’ordine di ispezione.\\
+In questo caso, la funzione di hash è una funzione h(k,i) che al variare di $i$ tra $0$ ed $m-1$ fornisce, per ciascuna chiave k, una sequenza di indici\\
+$$h(k,0), h(k,1),..., h(k,m-1)$$\\
+che rappresenta l'ordine di ispezione\\
+Siccome vogliamo poter ispezionare tutte le celle, la sequenza deve essere una permutazione dell'insieme degli indici $0,1,..,m-1$ della tabella.\\
+FOTO\\
+\textbf{Metodo dell'indirizzamento aperto-delete}\\
+\textbf{warning}
+Non possiamo infatti limitarci a porre nil (null) nella cella, perché altrimenti
+interromperemmo delle sequenze di ispezione\\
+\textbf{Delete} assegna alla chiave dell'elemento da togliere un particolare diverso da ogni possibile chiave:\\
+FOTO\\
+Con l'indirizzamento aperto, la funzione di hash fornisce una sequenza di ispezione\\
+Si modifica l’ipotesi di hashing indipendente e uniforme e si parla di hashing con
+permutazioni indipendenti e uniformi (più comunemente noto come hashing
+uniforme)\\
+ogni chiave ha la stessa probabilità $1/m!$ di generare
+una qualsiasi delle $m!$ possibili sequenze di ispezione\\
+Ci sono tre tecniche comunemente usate per determinare l’ordine di ispezione:\\
+\begin{enumerate}
+    \item Ispezione lineare
+    \item Ispezione quadratica
+    \item Doppio hashing
+\end{enumerate}
+\noindent Nessuna delle tre genera tutte le $m!$ sequenze di ispezione. Le prime due ne generano soltanto m e l’ultima ne genera $m^2$\\
+Ispeazione lineare\\
+La funzione di hash $h(k,i)$ si ottiene da una funzione di hash ordinaria $h'(k)$
+ponendo\\
+$$ h(k,i) = [h'(k)+i] \mod m $$\\
+L’esplorazione inizia dalla cella $h(k,0) = h'(k)$ e continua con le celle $h'(k)+1$,
+$h'(k)+2$, ecc. fino ad arrivare alla cella $m-1$, dopo di che si continua con le celle
+$0,1,ecc..$ fino ad aver percorso circolarmente tutta la tabella.\\
+L’ispezione lineare è facile da implementare ma soffre del problema del
+clustering primario:\\
+i nuovi elementi inseriti nella tabella tendono ad addensarsi (formare un
+cluster) attorno agli elementi già presenti\\
+Ispezione quadratica\\
+La funzione di hash $h(k, i)$ si ottiene da una funzione di hash ordinaria $h'(k)$
+ponendo\\
+$$ h(k,i)=[h'(k)+c_1 i+ c_2 i^2] \mod m$$\\
+dove $c_1$ e $c_2$ sono due costanti con $c_2 \neq 0$\\
+I valori di $m$, $c1$ e $c2$ non possono essere qualsiasi ma debbono essere scelti
+opportunamente in modo che la sequenza di ispezione percorra tutta la tabella\\
+ispezione doppio hashing\\
+La funzione di hash $h(k,i)$ si ottiene da due funzioni di hash ordinarie $h_1(k)$ ed 
+$h_2(k)$ ponendo\\
+$$ h(k,1)=[h_1(k)+ih_2 (k)]\mod m $$\\
+Perché la sequenza di ispezione percorra tutta la tabella, il valore di $h_2 (k)$ deve
+essere relativamente primo con m.\\
+Possiamo soddisfare questa condizione in diversi modi.\\
+FOTO\\
+\section{Analisi della Complessità}
+\textbf{Caso Peggiore}\\
+Tutte le n chiavi sono in conflitto e puntano tutte alla stessa cella.\\
+FOTO\\
+\textbf{caso Medio}\\
+Le prestazioni dipendono dal modo in cui la funzione di hash distribuisce 
+le chiavi tra le celle.\\
+Valutiamo la complessità media di Search in funzione del \textbf{fattore di carico} $a = n/m$.\\
+Valutiamo le prestazioni sotto l’ipotesi che la funzione hash $h(k)$ sia uniforme e
+indipendente\\
+i.e., $h(k)$ distribuisce in modo uniforme le n chiavi tra le m liste.
+\begin{enumerate}
+    \item ogni elemento in input ha la stessa probabilità di essere mandato in una qualsiasi delle m celle
+    \item l’immagine tramite la funzione di hash di ogni elemento è indipendente da quella di ogni altro elemento
+\end{enumerate}
+\noindent FOTO PAGINA 39\\
+\textbf{Teorema 1}\\
+\begin{definition}
+In una tabella hash le cui collisioni sono risolte tramite la tecnica del concatenamento, una
+ricerca senza successo richiede in media un tempo $\Theta(1 + \alpha)$, nell’ipotesi di hashing
+uniforme e indipendente.
+\end{definition}
+\noindent Dimostrazione:\\
+Consideriamo che il calcolo della funzione $h(k)$ sia O(1)\\
+\textbf{Search}\\
+Calcola $j=h(k)$\\
+Controlla tutti gli $n_j$ elementi della lista $T[j]$\\
+Nell'ipotesi di hash uniforme indipendente $E[n_j]=\alpha$ e quindi l'algoritmo richiede un tempo $\Theta(1+\alpha)$ in media.\\
+\textbf{Teorema2}
+\begin{definition}
+In una tabella hash le cui collisioni sono risolte tramite la tecnica del concatenamento, una
+ricerca con successo richiede in media un tempo $\Theta(1 + \alpha)$, nell’ipotesi di hashing
+uniforme e indipendente.
+\end{definition}
+\noindent dimostrazione\\
+CONTINUA DA PAGINA 42
