@@ -157,3 +157,80 @@ Alla fine di tutti i confronti abbiamo che $O' = G$, che è la soluzione ottima 
 In questo procedimento non abbiamo scartato alcuna attività, ma abbiamo solo sostituito facendo rimanere la soluzione ottima,
 quindi abbiamo dimostrato che $\bm{k = m}$.
 
+
+
+\section{Confronto con altri approcci}
+\begin{table}[ht]
+    \centering
+    % Aggiunge un po' di spazio in altezza alle celle per non farle sembrare schiacciate
+    \renewcommand{\arraystretch}{1.3} 
+    
+    % La prima colonna ha una larghezza fissa di 3.2cm, le altre 3 si dividono lo spazio rimanente (X)
+    \begin{tabularx}{\textwidth}{|p{3.2cm}|X|X|X|}
+        \hline
+        
+        % Sfondo verde scuro per la prima riga
+        \rowcolor{SALZO} 
+        
+        \multicolumn{1}{|c|}{\textbf{caratteristica}} & 
+        \multicolumn{1}{c|}{\textbf{greedy}} & 
+        \multicolumn{1}{c|}{\textbf{programmazione dinamica}} & 
+        \multicolumn{1}{c|}{\textbf{divide et impera}} \\ 
+        \hline
+        
+        \textbf{strategia principale} & 
+        scelte locali ottimali & 
+        risoluzione e memorizzazione di sottoproblemi & 
+        divisione in sottoproblemi indipendenti \\ 
+        \hline
+        
+        \textbf{approccio} & 
+        iterativo & 
+        iterativo o ricorsivo con memoization & 
+        ricorsivo \\ 
+        \hline
+        
+        \textbf{ottimalità} & 
+        solo se problema ha proprietà greedy & 
+        sempre (se struttura ottimale esiste) & 
+        non garantita direttamente \\ 
+        \hline
+        
+        \textbf{dipendenza tra sottoproblemi} & 
+        non considera sottoproblemi & 
+        i sottoproblemi si sovrappongono & 
+        i sottoproblemi sono indipendenti \\ 
+        \hline
+        
+        \textbf{efficienza} & 
+        molto veloce ($O(n)$ spesso) & 
+        più lento ($O(n^2)$ o $O(n^3)$ tipico) & 
+        dipende dalla profondità della ricorsione \\ 
+        \hline
+        
+        \textbf{uso della memoria} & 
+        basso & 
+        alto (per salvare soluzioni parziali) & 
+        variabile \\ 
+        \hline
+        
+        \textbf{esempi classici} & 
+        cammini minimi (Dijkstra), Kruskal & 
+        Zaino 0/1, Fibonacci, allineamento di sequenze & 
+        MergeSort, QuickSort, Ricerca binaria \\ 
+        \hline
+        
+        \textbf{punti di forza} & 
+        semplicità, velocità & 
+        precisione, correttezza garantita & 
+        suddivisione naturale di problemi complessi \\ 
+        \hline
+        
+        \textbf{punti deboli} & 
+        rischio di soluzioni subottimali & 
+        maggior consumo di tempo e memoria & 
+        richiede problemi naturalmente divisibili \\ 
+        \hline
+        
+    \end{tabularx}
+\end{table}
