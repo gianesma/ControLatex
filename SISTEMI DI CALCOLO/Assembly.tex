@@ -2192,6 +2192,20 @@ f:
 f.s
     \end{verbatim} 
 \end{minipage}\medskip\\
+Quando ususiamo idiv, la divisione non avviene solo su EAX, ma su EDX:EAX (un numero a 64 bit).
+Quindi dobbiamo prima preparare EDX correttamente: deve contenere l’estensione del segno di EAX.
+Per fare ciò utilizziamo lo shift aritmetico a destra (SAR) di 31 bit, che riempie EDX con il bit 
+più significativo di EAX (0 se EAX è positivo, 1 se è negativo). In questo modo, quando eseguiamo IDIV, 
+otteniamo il risultato corretto anche per numeri negativi. Quindi:
+\begin{verbatim}
+    movl %eax,%edx
+    sarl $31,%edx
+\end{verbatim}
+serve proprio a questo: copia il bit di segno di EAX in tutto EDX
+\begin{itemize}
+    \item EDX = 0 se il numero è positivo
+    \item EDX = -1 se è negativo
+\end{itemize}
 \section{Istruzione CMOV}
 L'istruzione \texttt{CMOVcc} (Conditional Move) consente di eseguire un'operazione 
 di assegnamento condizionale, spostando il valore da una sorgente a una destinazione 
