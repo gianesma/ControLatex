@@ -34,7 +34,7 @@ Nelle prossime sezioni vedremo problemi risolti con degli algoritmi greedy.
 
 \section{Problema della codifica di Huffman}
 Dato $S = \{ s_1, s_2,\dots ,s_n\}$ un insieme di $n$ caratteri e che ogni carattere
-$c \in C$ sia presente con una certa frequenza $f_i$ (\texttt{c.freq}). L'\textbf{obiettivo}
+$c \in C$ sia presente con una certa frequenza $f_i$. L'\textbf{obiettivo}
 è:
 \begin{enumerate}
     \item Assegnare ad ogni simbolo un codice binario (0 o 1), creando un prefisso (detto \textit{codice di Huffman}) che
@@ -93,6 +93,144 @@ codice binario associato al carattere che ha tale frequenza, la lunghezza media 
 \section{Problema di Activity selection}
 Il problema della selezione di attività consente di selezionare il più grande
 insieme di attività compatibili. Più formalmente diciamo che:\\
-Dato $A = \{ a_1, a_2,\dots, a_n \}$ insieme di attività, dove ciascuna $a_i$
+Dato $A = \{ a_1, a_2,\dots, a_n \}$ un insieme di attività, dove ciascuna attività $a_i$
 ha un tempo di inizio $s_i\in \mathbb{R}$ e un tempo di fine $f_i\in\mathbb{R}$
-con $s_i< f_i$, e dato il vincolo
+con $s_i< f_i$, e dato il vincolo di compatibilità: $a_i$ e $a_j$ sono compatibili se non si sovrappongono nel tempo
+$\left([s_i,f_i]  \cap [s_j,f_j]  = \emptyset     \right)$, l'\textbf{obiettivo} di trovare un sottoinsieme $A' \subseteq A$ tale che:
+\begin{itemize}
+    \item Tutte le attività in $A'$ sono compatibili.
+    \item $|A'|$ è il massimo possibile, ovvero il numero di attività del sottoinsieme soluzione è massimo.
+\end{itemize}
+La \textbf{strategia} per risolvere questo problema con un approccio greedy è la seguente:
+\begin{enumerate}
+    \item Ordina le attività di $A$ per tempo di fine crescente, ovvero $f_1 \le f_2 \le \cdots \le f_n$.
+    \item Inizializza $G \leftarrow \emptyset$ e $t = 0$, dove $G = \{ g_1,g_2,\dots,g_k  \}$ è l'insieme delle attività selezionate dall'algortimo greedy, all'inizio ovviamente
+    sarà inizializzato come un insieme vuoto.
+    \item Realizza il ciclo che ad ogni iterazione aggiorna le varibili sotto certe condizioni, ovvero se $s_i \ge t$ aggiungo $a_i$ a $G$ e pongo $t \leftarrow f_i$, in
+    questo modo scarto le attività che si sovrappongono e in $G$ andranno solo quelle che rispettano il vincolo di compatibilità.
+    \item Restituisce $G$
+\end{enumerate}
+
+\noindent Il codice quindi sarà (supponendo che gli eventi in $A$ siano già ordinati):
+\begin{verbatim}
+    GREEDY-ACTIVITY-SELECTOR(s, f, n, A) {
+        G = {};
+        t = 0;
+        for i = 1 to n
+            if s[i] >= t
+                G.add(A[i]);
+                t = f[i];
+        return G;
+    }   
+\end{verbatim}
+
+\subsection{Dimostrazione dell'ottimalità}
+Vogliamo dimostrare che l'approccio greedy ci dà effettivamente un risultato ottimale. Sia $G = \{  g_1,g_2, \dots , g_k  \}$ l'insieme 
+delle attività selezionate dall'algoritmo greedy, sia $O=\{  o_1,o_2,\dots, o_m   \}$ un sottoinsieme ottimo, cioè un insieme di attività compatibili
+con $m\ge k$. L\textbf{obiettivo} è dimostrare che $\bm{k = m}$, cioè che l'algoritmo greedy seleziona tante attività quante ne ha 
+una soluzione ottima. Procediamo per \textbf{induzione}:\smallskip\\
+Costruiamo un altro insieme $O'$ tale che tutte le sue attività sono compatibili
+(non si sovrappongono le attività) e che $|O| = |O'|$ (soluzione ottima).
+\begin{itemize}
+    \item \textbf{Passo base}:
+    \begin{itemize}
+        \item confrontiamo $g_1$ con $o_1$, e avremo che $f_{g_1} \le f_{o_1}$ per costruzione, poichè in $G$ ci sono
+        le attività scelte dall'algoritmo Greedy, il quale sceglie le attività che finiscono prima.
+        \item sostituiamo $o_1$ con $g_1$ in $O$
+        \item dopo la sostituzione otteniamo un insieme $O'$ che ha tutti gli elementi di $O$, ma con
+        la prima attività che è diventata $g_1$, ovvero $O' = \{ g_1, o_2, o_3, \dots, o_m  \}$.
+        \item Notiamo che l'insieme $O'$ è ancora ottimo, perchè l'attività $g_1$ che abbiamo inserito è compatibile
+        con tutte le altre attività dentro $O'$, visto che finisce prima.
+    \end{itemize}
+
+    \item \textbf{Passo induttivo}
+    \begin{itemize}
+        \item supponiamo di aver già sostituito le prime $r$ attività in $O$ cone le prime $r$ in $G$,
+        ottenendo un insieme $O'$ ancora ottimo, dobbiamo mostrare che possiamo sostituire anche $g_{r+1}$ a $o_{r+1}$, 
+        mantenendo una soluzione ottima.
+        \item $o_{r+1}$ essendo compatibile con $g_r$, deve iniziare dopo $f_{g_r}$, l'algoritmo greedy sceglie
+        l'attività che finisce prima, quindi sceglie $g_{r+1}$. 
+        \item sotituiamo anche $o_{r+1}$ con $g_{r+1}$, siccome $f_{g_{r+1}} \le f_{o_{r+1}}$.
+    \end{itemize}
+\end{itemize}
+Alla fine di tutti i confronti abbiamo che $O' = G$, che è la soluzione ottima scelta dall'algoritmo greedy. 
+In questo procedimento non abbiamo scartato alcuna attività, ma abbiamo solo sostituito facendo rimanere la soluzione ottima,
+quindi abbiamo dimostrato che $\bm{k = m}$.
+
+
+
+\section{Confronto con altri approcci}
+\begin{table}[ht]
+    \centering
+    % Aggiunge un po' di spazio in altezza alle celle per non farle sembrare schiacciate
+    \renewcommand{\arraystretch}{1.3} 
+    
+    % La prima colonna ha una larghezza fissa di 3.2cm, le altre 3 si dividono lo spazio rimanente (X)
+    \begin{tabularx}{\textwidth}{|p{3.2cm}|X|X|X|}
+        \hline
+        
+        % Sfondo verde scuro per la prima riga
+        \rowcolor{SALZO} 
+        
+        \multicolumn{1}{|c|}{\textbf{caratteristica}} & 
+        \multicolumn{1}{c|}{\textbf{greedy}} & 
+        \multicolumn{1}{c|}{\textbf{programmazione dinamica}} & 
+        \multicolumn{1}{c|}{\textbf{divide et impera}} \\ 
+        \hline
+        
+        \textbf{strategia principale} & 
+        scelte locali ottimali & 
+        risoluzione e memorizzazione di sottoproblemi & 
+        divisione in sottoproblemi indipendenti \\ 
+        \hline
+        
+        \textbf{approccio} & 
+        iterativo & 
+        iterativo o ricorsivo con memoization & 
+        ricorsivo \\ 
+        \hline
+        
+        \textbf{ottimalità} & 
+        solo se problema ha proprietà greedy & 
+        sempre (se struttura ottimale esiste) & 
+        non garantita direttamente \\ 
+        \hline
+        
+        \textbf{dipendenza tra sottoproblemi} & 
+        non considera sottoproblemi & 
+        i sottoproblemi si sovrappongono & 
+        i sottoproblemi sono indipendenti \\ 
+        \hline
+        
+        \textbf{efficienza} & 
+        molto veloce ($O(n)$ spesso) & 
+        più lento ($O(n^2)$ o $O(n^3)$ tipico) & 
+        dipende dalla profondità della ricorsione \\ 
+        \hline
+        
+        \textbf{uso della memoria} & 
+        basso & 
+        alto (per salvare soluzioni parziali) & 
+        variabile \\ 
+        \hline
+        
+        \textbf{esempi classici} & 
+        cammini minimi (Dijkstra), Kruskal & 
+        Zaino 0/1, Fibonacci, allineamento di sequenze & 
+        MergeSort, QuickSort, Ricerca binaria \\ 
+        \hline
+        
+        \textbf{punti di forza} & 
+        semplicità, velocità & 
+        precisione, correttezza garantita & 
+        suddivisione naturale di problemi complessi \\ 
+        \hline
+        
+        \textbf{punti deboli} & 
+        rischio di soluzioni subottimali & 
+        maggior consumo di tempo e memoria & 
+        richiede problemi naturalmente divisibili \\ 
+        \hline
+        
+    \end{tabularx}
+\end{table}
