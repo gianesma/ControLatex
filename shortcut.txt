@@ -17,7 +17,7 @@
     \centering  
     \includegraphics[width=0.5\linewidth]{../images}
     \caption{caption}
-    \label{label}
+    %\label{label}
 \end{figure}
 
 
