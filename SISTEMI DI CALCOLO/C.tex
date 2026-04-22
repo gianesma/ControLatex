@@ -178,7 +178,7 @@ Vediamo ora come gestire la \textbf{memoria} in C.
     \textbf{\textcolor{red}{ATTENZIONE:}} non usare su buffer che si sovrappongono.
         \begin{figure}[H]
         \centering  
-        %\includegraphics[width=0.5\linewidth]{../images}
+        \includegraphics[width=0.9\linewidth]{../images/Buffer Sovrappongono.png}
         \caption{Esempio di buffer che si sovrappongono}
         %\label{label}
         \end{figure}
@@ -276,6 +276,12 @@ void sort_strings(char *strings[], size_t n){
     qsort(strings, n, sizeof(char *), comparatore_stringhe);
 }
 \end{verbatim}
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.8\linewidth]{../images/Qsort.png}
+    \caption{Qsort}
+    %\label{label}
+\end{figure}
 Ricordiamo che:
 \begin{itemize}
     \item \texttt{p} $\rightarrow$ indirizzo
@@ -330,7 +336,7 @@ processo automaticamente tre stream standard:
 \end{itemize}
 \begin{figure}[H]
     \centering  
-    %\includegraphics[width=0.5\linewidth]{../images}
+    \includegraphics[width=0.9\linewidth]{../images/Gestione Stream.png}
     \caption{Stream standard}
     %\label{label}
 \end{figure}
