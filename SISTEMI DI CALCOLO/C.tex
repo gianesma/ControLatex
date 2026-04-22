@@ -162,3 +162,309 @@ int getchar();                      // legge un carattere da standard input (da 
 int scanf(const char* format, ...); // legge da tastiera e salva i valori letti nelle 
                                         variabili passate come argomenti
 \end{verbatim}
+\subsection{Gestione della Memoria}
+Vediamo ora come gestire la \textbf{memoria} in C.
+\begin{itemize}
+    \item \texttt{void *malloc(size\_t size)}; $\rightarrow$ alloca \texttt{size} byte di memoria e restituisce un puntatore a tale memoria. 
+    Se l'allocazione fallisce, restituisce \texttt{NULL}.
+    \item \texttt{void free(void *ptr)}; $\rightarrow$ libera la memoria precedentemente allocata con \texttt{malloc}.
+    \item \texttt{void *calloc(size\_t count, size\_t size)}; $\rightarrow$ dove \texttt{count} indica il numero di 
+    elementi da allocare e \texttt{size} la dimensione di ciascun elemento. Restituisce un puntatore alla memoria allocata, 
+    inizializzata a zero.
+    \item \texttt{void *memset(void *buf, int c, size\_t len)}; $\rightarrow$ imposta i primi \texttt{len} byte di \texttt{buf} 
+    al valore del byte meno significativo di \texttt{c}. Restituisce un puntatore a \texttt{buf}.
+    \item \texttt{void *memcpy(void *dst, const void *src, size\_t len)}; $\rightarrow$ copia \texttt{len} 
+    byte da \texttt{src} a \texttt{dst}. Restituisce un puntatore a \texttt{dst}.\\ 
+    \textbf{\textcolor{red}{ATTENZIONE:}} non usare su buffer che si sovrappongono.
+        \begin{figure}[H]
+        \centering  
+        %\includegraphics[width=0.5\linewidth]{../images}
+        \caption{Esempio di buffer che si sovrappongono}
+        %\label{label}
+        \end{figure}
+    \item \texttt{void *memmove(void *dst, const void *src, size\_t len)}; $\rightarrow$ copia \texttt{len} byte da \texttt{src} a \texttt{dst}. Restituisce un puntatore a \texttt{dst}.\\
+    \textbf{\textcolor{red}{ATTENZIONE:}} può essere usato su buffer che si sovrappongono. Poichè src non viene mai sovrascritto.
+\end{itemize}
+Vediamo un esempio di utilizzo tramite una funzione bubblesort che ordina un 
+array di stringhe di stessa lunghezza:
+\begin{verbatim}
+// buf buffer con all'interno stringhe, nel numero di stringhe presenti, size grandezza delle strighe
+void bubblesort(void *buf, size_t nel, size_t size){
+    char *tmp = buf;
+    for(;;){
+        for(int i = 1, i<nel; i++){
+            int swap = 0; // variabile aggiuntiva per uscire dal ciclo
+            strncmp(tmp+(i-1)*size,tmp+i*size, size) > 0{
+                // scambio elementi
+                swap_mem(tmp+(i-1)*size, tmp+i*size, size);
+                swap = 1;
+            }
+        }
+        // condizione di uscita poichè for infinito
+        if(!swap) break;
+    }
+}
+void swap_mem(void *s1, void *s2, size_t l){
+    char *buf = malloc(l);
+    if(buf == NULL) return;
+    memmove(buf, s1, l); // copiamo s1 in buf
+    memmove(s1, s2, l);  // copiamo s2 in s1
+    memmove(s2, buf, l); // copiamo buf in s2
+    free(buf);          // liberiamo la memoria allocata per buf
+}
+\end{verbatim}
+Vediamo ora un ulteriore esempio di utilizo, tramite una funzione che indica il carettere
+più frequente in un array buf di dimensione nel:
+\begin{verbatim}
+int most_freq_char(void *buf, size_t nel){
+    int *c = malloc(sizeof(int)*256); // array per contare le occorrenze di ogni carattere
+    assert(c != NULL);                // equivalente a if(c == NULL) return -1;
+    memset(c, 0, sizeof(int)*256);    // inizializziamo a 0 l'array delle occorrenze
+    // potevamo semplicemente fare int *c = calloc(sizeof(int)*256) che inizializza a 0 l'array, 
+    // ma abbiamo visto che è più efficiente usare malloc e memset
+    for(int i=0; i<nel; i++)
+        c[buf[i]]++; // incrementiamo il contatore del carattere
+    int max = 0; // variabile per tenere traccia del carattere più frequente
+    for(int i=1; i<256; i++)
+        if(c[i] > c[max]) 
+            max = i; // aggiorniamo il carattere più frequente
+    free(c); 
+    return max; 
+}
+\end{verbatim}
+\subsection{Funzioni di Ordinamento e Ricerca}
+Vediamo ora le funzioni di ordinamento e ricerca presenti nella libreria \textbf{stdlib.h}:
+\begin{verbatim}
+void qsort(void *base, size_t numelem, size_t sizeelem, int (*compar)(const void *, const void *));
+\end{verbatim}
+Dove:
+\begin{itemize}
+    \item \texttt{base} $\rightarrow$ è un puntatore al primo elemento dell'array da ordinare
+    \item \texttt{numelem} $\rightarrow$ è il numero di elementi in base
+    \item \texttt{sizeelem} $\rightarrow$ è la dimensione di ogni elemento dell'array
+    \item \texttt{compar} $\rightarrow$ è un puntatore a una funzione di confronto che prende in ingresso due puntatori a 
+    elementi dell'array e restituisce un intero che indica l'ordine degli elementi:\medskip\\
+    $
+    \begin{cases}
+    \textbf{$< 0$} & \text{se il primo elemento precede il secondo} \\
+    \textbf{$= 0$} & \text{se i due elementi sono uguali} \\
+    \textbf{$> 0$} & \text{se il primo elemento segue il secondo}
+    \end{cases}
+    $\medskip\\
+    \textbf{\textcolor{red}{ATTENZIONE:}} la funzione di confronto deve essere definita dall'utente in base al tipo di dati dell'array da ordinare
+\end{itemize}
+Vediamo un esempio di utilizzo:
+\begin{verbatim}
+int comparatore(const void *a, const void *b){
+    int x = *(int *)a;
+    int y = *(int *)b;
+    return x - y;   // confronto tra due interi
+}
+void sort_ints(int ints[], size_t n){
+    qsort(ints, n, sizeof(int), comparatore);
+}
+\end{verbatim}
+Vediamo una versione più articolata di questa tipologia di esercizio, dove ordiniamo un array di stringhe in ordine alfabetico:
+\begin{verbatim}
+int comparatore_stringhe(const void *a, const void *b){
+    const char *x = *(char **)a; // cast a char** per ottenere il puntatore alla stringa
+    const char *y = *(char **)b; // cast a char** per ottenere il puntatore alla stringa
+    // ad a e b utilizziamo il doppio asterisco perchè a e b sono puntatori a puntatori
+    return strcmp(x, y); // confronto tra due stringhe
+}
+void sort_strings(char *strings[], size_t n){
+    qsort(strings, n, sizeof(char *), comparatore_stringhe);
+}
+\end{verbatim}
+Ricordiamo che:
+\begin{itemize}
+    \item \texttt{p} $\rightarrow$ indirizzo
+    \item \texttt{*p} $\rightarrow$ valore
+    \item \texttt{\&x} $\rightarrow$ indirizzo di x
+    \item \texttt{*(\&x)} $\rightarrow$ valore di x
+    \item \texttt{(char **)a} $\rightarrow$ puntatore a elemento (char *)
+    \item \texttt{*(char **)a} $\rightarrow$ valore di elemento (char *)
+\end{itemize}
+Altra funzione:
+\begin{verbatim}
+void bsearch (const void* key, const void *base, size_t numelem, size_t sizeelem, int (*compar)(const void *, const void *));
+\end{verbatim}
+Cerca l'elemento \texttt{key} nell'array \textbf{\textcolor{red}{ordinato}} \texttt{base} di \texttt{numelem} elementi, ciascuno di dimensione \texttt{sizeelem}, utilizzando la funzione di confronto \texttt{compar}.
+Restituisce un puntatore all'elemento trovato o \texttt{NULL} se l'elemento non è presente nell'array.\\
+\textbf{\textcolor{red}{ATTENZIONE:}} l'array base deve essere ordinato poichè è una ricerca binaria.\\
+Esempio di utilizzo:
+\begin{verbatim}
+int comparatore(const void *a, const void *b){
+    int x = *(int *)a;
+    int y = *(int *)b;
+    return x - y;   // confronto tra due interi
+}
+int search_int(int v[], size_t n, int x){
+    void * risultato = bsearch( &x, v, n, sizeof(int), comparatore);    
+    // &x poichè devo passare un puntatore
+    return risultato != NULL;
+}
+\end{verbatim}
+\subsection{Funzioni Matematiche}
+Vediamo ora le funzioni matematiche presenti nella libreria \textbf{math.h}, hanno tutte la stessa sintassi:
+\begin{verbatim}
+double sqrt(double x);          // restituisce la radice quadrata di x
+double pow(double x, double y); // restituisce x elevato alla potenza y
+double sin(double x);           // restituisce il seno di x (x in radianti)
+double cos(double x);           // restituisce il coseno di x (x in radianti)
+double tan(double x);           // restituisce la tangente di x (x in radianti)
+double log(double x);           // restituisce il logaritmo naturale di x
+double exp(double x);           // restituisce e elevato alla potenza x
+\end{verbatim}
+\textbf{\textcolor{red}{ATTENZIONE:}} per compilare bisogna aggiungere lo switch \texttt{-lm} per linkare la libreria matematica, altrimenti si ottiene un errore di linker.\\
+\subsection{Funzioni per la Gesione degli Stream}
+Vediamo ora le funzioni per la gestione degli stream presenti nella libreria \textbf{stdio.h}.Gli stream sono un astrazione
+che rappresenta un flusso di byte, che può essere utilizzato per leggere o scrivere dati. Gli stream possono essere associati a file, 
+dispositivi di input/output, o anche a stringhe in memoria.\\
+Quando eseguiamo un programma in C, il sistema operativo assegna al corrispondente
+processo automaticamente tre stream standard:
+\begin{itemize}
+    \item \texttt{stdin} $\rightarrow$ stream standard di input, associato alla tastiera. Utilizzato per leggere l'input del programma.
+    \item \texttt{stdout} $\rightarrow$ stream standard di output, associato al terminale (schermo), utilizzato per scrivere l'output del programma.
+    \item \texttt{stderr} $\rightarrow$ stream standard di errori, associato al terminale (schermo), utilizzato per scrivere messaggi di errore.
+\end{itemize}
+\begin{figure}[H]
+    \centering  
+    %\includegraphics[width=0.5\linewidth]{../images}
+    \caption{Stream standard}
+    %\label{label}
+\end{figure}
+\textbf{Redirezione stdout:} è possibile redirigere l'output di un programma verso un file invece che verso il terminale, utilizzando l'operatore \texttt{>} in bash:
+\begin{verbatim}
+$ ./programma > output.txt
+\end{verbatim}
+In questo modo, l'output del programma verrà scritto nel file \texttt{output.txt} invece che sul terminale.\\
+\textbf{Redirezione stderr:} è possibile redirigere anche l'output di errori verso un file, utilizzando l'operatore \texttt{2>} in bash:
+\begin{verbatim}
+$ ./programma 2> error.txt
+\end{verbatim}
+In questo modo, i messaggi di errore del programma verranno scritti nel file
+\texttt{error.txt} invece che sul terminale.\\
+\textbf{Redirezione stdin:} è possibile redirigere l'input di un programma da un file invece che dalla tastiera, utilizzando l'operatore \texttt{<} in bash:
+\begin{verbatim}
+$ ./programma < input.txt
+\end{verbatim}
+In questo modo, l'input del programma verrà letto dal file \texttt{input.txt} invece che dalla tastiera.\\
+\textbf{Redirezione combinata:} è possibile redirigere sia l'output che l'input di un programma, utilizzando entrambi gli operatori:
+\begin{verbatim}
+$ ./programma < input.txt > output.txt
+\end{verbatim}
+In questo modo, l'input del programma verrà letto dal file \texttt{input.txt} e l'output verrà scritto nel file \texttt{output.txt}.\\
+Per gestire gli stream da codice ho due opzioni:
+\begin{itemize}
+    \item utilizzo le libc
+    \item utilizzo le syscall POSIX
+\end{itemize}
+Le libc sono più semplici da utilizzare, ma le syscall POSIX sono più efficienti. 
+Vediamo ora le funzioni per la gestione degli stream presenti nella libreria \textbf{stdio.h}:
+\begin{verbatim}
+FILE *fopen(const char *path, const char *mode); // apre un file e restituisce un puntatore di tipo FILE
+                        |                    |
+                        |                    |____ mode è una stringa che rappresenta le operazioni 
+                        |                         da svolgere sul file: 
+                        |                          r -> leggi, w -> scrivi, a -> aggiungi
+                        |
+                        |_____ percorso sul file system (disco) attraverso cui raggiungere il file
+                               Esempio: "/home/studente/a.txt"       
+
+int ferrore(FILE *f); // restituisce un valore diverso da 0 
+                         se si è verificato un errore durante l'operazione di I/O su f
+                        
+void clearerr(FILE *f) // pone pari a 0 il flagi di errore
+
+int fclose(FILE *stream); // chiude lo stream associato al file
+
+int fprintf(FILE *stream, const char *format, ...); // scrive su stream una stringa formattata
+
+int fscanf(FILE *stream, const char *format, ...); // legge da stream una stringa formattata
+
+
+
+char *fgets(char *str, int n, FILE *stream); // legge da stream una stringa di al massimo n-1 caratteri 
+                                            e la salva in str.  Restituisce str in caso di successo,
+                                            e NULL in caso di errore o fine file
+
+int feof(FILE *f); // restituisce un valore diverso da 0 se si è raggiunta la fine del file 
+
+size_t fread(void *ptr, size_t size, size_t numitems, FILE *f); // legge da 'f' 'numitems' blocchi di 
+                                                                elementi da leggere di
+                                                                dimensione 'size' e 
+                                                                li salva in 'ptr'. 
+                                                                Restituisce il numero di elementi 
+                                                                letti con successo
+
+size_t fwrite(const void *ptr, size_t size, size_t numitems, FILE *f); // scrive su 'f' 'numitems' 
+                                                                    blocchi di 
+                                                                    elementi da scrivere di
+                                                                    dimensione 'size' e 
+                                                                    li legge da 'ptr'. 
+                                                                    Restituisce il numero di elementi 
+                                                                    scritti con successo.
+
+int fseek(FILE *f, long offset, int whence); // sposta il puntatore al prossimo byte da 
+                        |             |         leggere/scrivere in 'f'
+                        |             |   
+                        |             |
+                        |             |________ SEEK_SET -> inizio del file
+                        |                       SEEK_CUR -> posizione attuale
+                        |                       SEEK_END -> fine del file
+                        |
+                        |_____ spostamento da applicare al puntatore espresso in byte
+                                rispoetto alla posizione indicata da 'whence'         
+\end{verbatim}
+Esempi per capire meglio \textbf{fseek}:
+\begin{verbatim}
+fseek(f,10,SEEK_CUR); // sposta il puntatore di 10 byte in avanti rispetto alla posizione attuale
+fseek(f,5,SEEK_SET); // sposta il puntatore al 5 byte dall'inizio del file
+fseek(f,-2,SEEK_END); // sposta il puntatore a 2 byte prima della fine del file
+\end{verbatim}
+Continuiamo con l'ultima funzione:
+\begin{verbatim}
+long ftell(FILE *f); // restituisce la posizione attuale del puntatore in byte rispetto all'inizio del file
+\end{verbatim}
+\textbf{\textcolor{red}{ATTENZIONE:}} bisogna sempre ricordarsi di effettuare i controlli di errore su tutte queste funzioni, 
+poichè possono fallire per vari motivi (file non esistente, permessi insufficienti, ecc...).\\
+Vediamo qualche esempio di utilizzo:
+\begin{verbatim}
+// La funzione read_file deve allocare dinamicamente un buffer
+// e caricarci dentro il contenuti di un file
+int read_file(char *filename, void **buffer, size_t *size){
+    FILE *fd = NULL;
+    int res;
+    long len;
+    *buffer = NULL;
+
+    fd = fopen(filename, "r");
+    if(fd == NULL) goto cleanup;
+
+    res = fseek(fd, 0, SEEK_END); // sposto il puntatore alla fine del file
+    if(res == -1) goto cleanup;
+
+    len = ftell(fd); // ottengo la lunghezza del file
+    if(len == -1) goto cleanup;
+    size_t *size = (size_t)len; // salvo la lunghezza del file in size
+    
+    *buffer = malloc(len); // alloco un buffer di dimensione len
+    if(*buffer == NULL) goto cleanup;
+
+    res = fseek(fd, 0, SEEK_SET); // sposto il puntatore all'inizio del file
+    if(res == -1) goto cleanup;
+
+    res = fread(*buffer, 1, *size, fd); // leggo il contenuto del file nel buffer
+    if(res != *size) goto cleanup; // controllo che abbia letto tutto il file
+
+    res = fclose(fd); // chiudo il file
+    if(res == -1) goto cleanup;
+    return 0; // successo
+    
+    cleanup:
+    if(fd != NULL) fclose(fd);
+    if(*buffer != NULL) free(*buffer);
+    return -1;
+}
+\end{verbatim}
