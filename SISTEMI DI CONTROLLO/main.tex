@@ -1,0 +1,131 @@
+\documentclass{report}
+\usepackage{graphicx} % Required for inserting images
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage[a4paper, left=2cm, right=2cm, top=2cm, bottom=2cm]{geometry}
+\usepackage[table]{xcolor} % Necessario per colorare righe/colonne
+\usepackage{pifont}
+\definecolor{SALZO}{rgb}{0.9,0.9,0.9}
+\definecolor{lightblue}{rgb}{0.78, 0.94, 1.00}
+\setcounter{secnumdepth}{1}
+\usepackage{tikz} % Per disegnare il diagramma
+\usepackage{hyperref}
+\usepackage{bm}
+\usepackage{cancel}
+\usepackage[italian]{babel}
+\usepackage{authblk}
+\usepackage{pgfplots} % Pacchetto per i grafici
+\pgfplotsset{compat=1.18} % Compatibilità con la versione
+\usepackage{subcaption}
+\usepackage{footnote}
+\usepackage{listings}
+\usepackage{tcolorbox}
+\tcbuselibrary{listings}
+\newtheoremstyle{nostyle}
+  {0pt} % Spazio sopra
+  {0pt} % Spazio sotto
+  {\normalfont} % Corpo normale (non corsivo)
+  {} % Nessuna indentazione
+  {\bfseries} % Titolo in grassetto
+  {.} % Punto dopo il titolo
+  { } % Spazio dopo il titolo
+  {} % Formato del titolo
+% Per fare le matrici utilizzare \begin{pmatrix} a & b \\
+%\usepackage{colortbl} % Per colorare celle e righe
+\theoremstyle{nostyle}
+\newtheorem{lemma}{Lemma}[section]
+\newtheorem{theorem}{Teorema}[section]
+\newtheorem{definition}{Definizione}[section]
+\usepackage{enumerate}
+\usepackage{nicematrix}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{float}
+\usepackage{xcolor}
+\definecolor{verdeScuro}{RGB}{0, 100, 80}
+
+\title{Sistemi di controllo - Formulario} % chktex 8
+\author{Giovanni Esposito, Danilo Di Primio, Cristian Amendola} 
+\affil{Università degli studi La Sapienza}
+\affil{Ingegneria Informatica e Automatica - 2 anno} % chktex 8
+\date{Febbraio - Maggio 2026} % chktex 8
+
+
+
+\begin{document}
+\maketitle
+\tableofcontents
+
+\section{Processo di un ingegnere automatico}
+METTERE IMMAGINE
+\subsection{Modellizzazione lineare:}
+\[ \begin{cases}
+    \dot{x}(t) = Ax(t) + Bu(t) + Pz(t) \\
+    y(t) = Cx(t) + Du(t) + Qz(t)
+\end{cases} \]
+
+\subsection{Modellizzazione non lineare:}
+\[ \begin{cases}
+    x(t) = f\Big( x(t), u(t), z(t)   \Big) \\
+    y(t) = g\Big( x(t), u(t), z(t)   \Big) 
+\end{cases} \]
+
+\subsection{Modellizzazione nel dominio di Laplace:}
+\[  \begin{cases}
+    x(s) = \left(sI-A \right)\left( Bu(s)+Pz(s)  \right) \\
+    y(s) = P(s)u(s) + M(s)z(s)
+\end{cases}   
+\]
+dove:
+\begin{itemize}
+    \item $P(s) = C(sI-A)^{-1} B +D$ 
+    \item $M(s) = C(sI-A)^{-1} P+ Q$
+\end{itemize}
+
+
+
+\subsection{Modellizzazione nel dominio z:}
+
+\section{Sistemi di controllo a controreazione}
+METTERE IMMAGINE
+
+\section{Funzioni di trasferimento}
+Dato $\displaystyle F = PG$:
+\subsection{Funzione di trasferimento del sistema complessivo}
+\[ W(s) =  \frac{F}{1+F}  = \frac{N_F}{N_F + D_F}\]
+\subsection{Funzione di trasferimento relativa al disturbo}
+\[ W_z(s) = \frac{M}{1+ F} = \frac{N_M}{D_M} \ \frac{D_F}{N_F+D_F} \]
+\subsection{Funzione di trasferimento relativa all'errore}
+\[ W_e(s)  = \frac{1}{1+F} = \frac{D_F}{N_F+D_F}  \]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\end{document}
+
+
