@@ -1,0 +1,310 @@
+\chapter{Grafi}
+Un grafo è una generalizzazione del concetto di albero, infatti questo è un tipo speciale di grafo.
+In particolare, un albero è un grafo connesso e aciclico. Questo significa che in un albero non
+ci sono cicli (percorsi che iniziano e finiscono nello stesso nodo) e che tutti i nodi sono collegati
+da esattamente un percorso. Se nei grafi da ogni vertice possono partire e giungere più archi,
+negli alberi ogni nodo ha al massimo un padre. Un grafo viene definito come una struttura
+matematica in grado di rappresentare relazioni tra oggetti.
+E composto da un insieme di nodi
+(o vertici) e un insieme di archi che collegano coppie di nodi. I nodi rappresentano entit`a,
+mentre gli archi rappresentano le relazioni tra di esse.
+\subsection{Definzioni sui Grafi}
+\begin{definition}
+    Un grafo $G=(V,E)$ è costituito da un insisme di vertivi $V$ ed un insieme di archi $E$ ciascuno dei quali connette due vertici $V$ detti estremi dell'arco.\\
+\end{definition}
+\begin{definition}
+Un grafo è \textbf{orientato} quando esiste una relazione d’ordine tra gli estremi degli
+archi, ovvero gli archi hanno un verso e una direzione definita, espressi tramite una freccia.
+Immaginiamo un arco come una freccia che va dalla coda alla testa, infatti il primo estremo si
+dice coda ed il secondo testa\\
+\end{definition}
+\begin{definition}
+    Un grafo si dice \textbf{denso} se il numero di archi presenti è molto vicino al numero totale di possibili archi\\
+\end{definition}
+\begin{definition}
+    Un \textbf{cappio} è un arco icui estremi coincidono\\
+\end{definition}
+\begin{definition}
+Un grafo orientato è \textbf{semplice} se non ci sono cappi e non ci sono due archi con gli
+stessi estremi. Se esistessero due archi con gli stessi estremi si definirebbe \textbf{multigrafo}.\\
+\end{definition}
+\begin{definition}
+Se un grafo è semplice possiamo identificare un arco con la coppia dei suoi estremi:
+$e= uv \in E$, in questo caso diciamo che l’arco $e$ è \texttt{incidente} in $u$ e in $v$.
+Se il grafo è orientato, la coppia $uv$ è ordinata. In questo caso diciamo che l’arco $e$ \texttt{esce} da
+$u$ ed \texttt{entra} in $v$.
+Se $e = uv \in E$ diciamo che il vertice $v$ è \texttt{adiacente} al vertice $u$. Se il grafo non è orientato
+la relazione di adiacenza è simmetrica\\
+\end{definition}
+\begin{definition}
+    Il \textbf{grado $\delta(v)$} del vertice $v$ è il numero di archi incidenti in $v$\\
+    Se il grafo è orientato abbiamo:
+    \begin{itemize}
+        \item grado entrante $\delta^-(v)$ che rappresenta il numero di archi entranti in $v$
+        \item grado uscente $\delta^+(v)$ che rappresenta il numero di archi uscenti in $v$
+    \end{itemize}
+    \noindent Un nodo \textbf{pozzo} è un nodo che ha grado uscente pari a zero, $\delta^+(v)=0$.\\
+\end{definition}
+\begin{definition}
+Un \textbf{percorso} $\Pi$ di lunghezza $k$ dal vertice $u$ al vertice $v$ in un grafo $G = (V, E)$ è
+una sequenza di $k+1$ vertici $\Pi= x_0, x_1, x_2,···, x_k$ tali che $x_0 = u, xk = v$ e $x_{i-1}x_i \in E$ per $i
+= 1, . . . , k$.
+Il percorso $\Pi = x_0$ ha lunghezza $k = 0$.
+Se $k>0$ e $x_0 = x_k$ diciamo che il percorso è \textbf{chiuso}\\
+\end{definition}
+\begin{definition}
+Un cammino è un percorso i cui vertici $x_0, x_1,···, x_k$ sono tutti diversi con la
+possibile eccezione di $x_0 = x_k$, nel qual caso esso è un \textbf{ciclo}.\\
+Un ciclo di lunghezza $k=1$ è un \textbf{cappio}\\
+Un \textbf{grafo aciclico} è un grafo che non contiene cicli\\
+Quando esiste almeno un cammino dal vertice $u$ al vertice $v$ diciamo che il vertice v è
+\textbf{accessibile} o raggiungibile da $u$.\\
+\end{definition}
+\begin{definition}
+Un grafo non orientato si dice \textbf{connesso} se esiste almeno un cammino tra ogni
+coppia di vertici.\\
+Le componenti connesse di un grafo sono le classi di equivalenza dei suoi vertici rispetto
+alla relazione di accessibilità. Quando si parla di componente connessa di un grafo, si fa
+riferimento ad un gruppo di nodi del grafo in cui esiste un percorso da qualsiasi nodo del gruppo
+verso qualsiasi altro nodo del gruppo. La ”relazione di accessibilità” a cui si fa riferimento è
+semplicemente la possibilità di raggiungere un nodo da un altro attraverso uno o più archi nel
+grafo. Le ”classi di equivalenza” a cui si fa riferimento sono insiemi di nodi che sono considerati
+equivalenti in termini di accessibilità. Dunque, due nodi appartengono alla stessa classe di
+equivalenza se e solo se sono raggiungibili tra loro attraverso archi nel grafo. Nei grafi orientati
+la proprietà di raggiungibilità non è simmetrica, quindi va verificata in entrambi gli estremi del
+cammino.\\
+\end{definition}
+\begin{definition}
+    Un grafo orientato si dice \textbf{fortemente connesso} se esiste almeno un cammino da ogni vertice $u$ ad ogni altro vertice $v$.\\
+\end{definition}
+\begin{definition}
+    Un \textbf{sottografo} del grafo $G = (V, E)$ è un grafo $G’ = (V’, E’)$ tale che $V' \subseteq V$ e
+$E' \subseteq E$.
+Il sottografo di $G = (V, E)$ indotto da $V' \subseteq V$ è il grafo $G’ = (V’, E’)$ tale che $E'
+= {uv : uv \in 
+E \text{ e } u,v \in V'}$\\.
+\end{definition}
+\section{Rappresentazione di un grafo}
+Ci sono due modi per rappresentare un grafo $G= (V, E)$: con le liste di adiacenza oppure con
+la matrice di adiacenza. La rappresentazione di tale grafo mediante le liste delle adiacenza
+utilizza liste $Adj[u]$ con $u \in V$, in cui vengono memorizzati i vertici adiacenti al vertice $u$.\\
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.5\linewidth]{../images/rappresentazione_grafo.png}
+    \caption{caption}
+    %\label{label}
+\end{figure}
+\noindent Nella rappresentazione di $G= (V, E)$ mediante la matrice di adiacenza assumiamo che i vertici
+siano numerati da $1$ fino a $|V|$, la rappresentazione è costituita da una matrice booleana $A$ tale
+che:\\
+$
+\begin{cases}
+1 \text{ se } ij \in E\\
+0 \text{ se } ij \notin E   
+\end{cases}
+$
+\noindent Esempio con il grafo precedente:\\
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.25\linewidth]{../images/esempio_grafo.png}
+    \caption{caption}
+    %\label{label}
+\end{figure}
+\noindent Una matrice di adiacenza di un grafo non orientato è sempre simmetrica. Per quanto
+concerne l’efficienza di queste due rappresentazioni, bisogna considerare che la lista di adiacenza
+richiede spazio in memoria pari a $|V|+ |E|$, dove $|V|$ indica la cardinalità di $V$ (il numero di
+vertici $=$ il numero di puntatori alle liste collegate), mentre $|E|$ indica il numero degli elementi
+delle liste. La rappresentazione mediante matrice di adiacenza invece richiede spazio per una
+matrice di dimensione $|V|^2$ questo significa che se un grafo è denso converrà utilizzare la matrice
+delle adiacenze.
+\section{Visita in ampiezza BFS}
+Dato un grafo $G = (V, E)$ e un vertice distinto $s$, detto sorgente la visita in ampiezza BFS
+(breadth-first search) ispeziona gli archi di $G$ per visitare tutti i vertici che sono raggiungibili
+da $s$.\\
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.25\linewidth]{../images/bfs.png}
+    \caption{caption}
+    %\label{label}
+\end{figure}
+\noindent Si parte dal nodo sorgente, la cui scelta è arbitraria, per poi
+propagarsi in ampiezza; dunque, preso $1$ gli attribuisco la distanza 
+da sè stesso, ovvero zero. Al secondo passo allargo l’area
+fino ad includere i nodi $2$ e $3$, che inserisco in una coda ed 
+incremento di uno la distanza dalla sorgente. Dopodichè espando
+l’area ai vicini di questi ultimi nodi visitati, così via fino a visitare tutto il grafo.\\
+Produce l'albero di visita in ambiezza i cui rami sono cammini di lunghezza minima.\bigskip\\
+Si espande uniformemente la frontiera tra i vertici e quelli non ancora scoeprti, 
+in altre parole, scopre tutti i vertici a distanza $k$ da $s$ prima di scoprire quelli a distanza $k+1$\\
+Per mantenere traccia del punto a cui si è arrivati nell'esecuzione dell'algoritmo, i vertici sono oclorati:
+\begin{itemize}
+    \item bianco (vertici non ancora raggiunti)
+    \item grigio (vertici raggiunti che stanno sulla frontiera)
+    \item nero (vertici raggiunti che non stanno sulla frontiera)
+\end{itemize}
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.5\linewidth]{../images/percorso_bfs.png}
+    \caption{caption}
+    %\label{label}
+\end{figure}
+\subsection{Pseudocodice BFS}
+\begin{verbatim}
+1   BFS (G, S)  // S = sorgente, G = grafo
+2   foreach u in G.V = {S} // per ogni nodo appartenente al grafo, escludendo la sorgente
+3       u.color = ”BIANCO”
+4       u.d = infinity
+5       u.p = nil
+6   end     
+7   s. color = ”GRIGIO”
+8   s.d = 0
+9   s.p = nil // il padre della sorgente non e’ nessuno
+10  Q = 0
+11  ENQUEUE (Q, S) // inserisco nella coda la sorgente
+12  while Q != 0
+13      u = DEQUEUE (Q) // visito il nodo u e lo tolgo dalla frontiera
+14      foreach v in G.adj[u] // scansiono la lista delle adiacenze del vertice u
+15          if v.color = ”BIANCO”
+16              v.color = ”GRIGIO” // aggiungo alla frontiera ogni vertice v della lista di u
+17              v.d = u.d +1
+18              v.p = u
+19              ENQUEUE (Q, v) // metto v in coda
+20          end
+21      end
+22      u.color = ”NERO”
+23  end
+\end{verbatim}
+\subsection{Analisi}
+La visita viene detta in ampiezza perchè l’algoritmo espande uniformemente la frontiera; infatti,
+scopre tutti i vertici a distanza $k$ dalla sorgente $s$ prima di scoprire quelli a distanza $k+1$. Per
+mantenere traccia dell’esecuzione dell’algoritmo i vertici vengono colorati di bianco (vertici
+non raggiunti), grigio (vertici raggiunti nella frontiera) e nero (vertici raggiunti che non sono
+nella frontiera). Inizialmente l’algoritmo effettua un ciclo preliminare su ogni vertice esclusa la
+sorgente del grafo, modificandone il colore in ”BIANCO”, ponendo la distanza di ogni vertice
+dalla sorgente ad infinity e assegnando come predecessore null. Dopodichè vengono modificati
+i campi della sorgente, ponendo il colore a ”GRIGIO” in quanto dobbiamo visitarlo e quindi
+inserendolo nella frontiera e ponendo la sua distanza dalla sorgente pari a 0 ed infine aggiungo il
+vertice sorgente alla coda, perchè, come detto, è stato aggiunto alla frontiera. In seguito, viene
+svolto un ciclo while sulla coda $Q$ dove si itera su ogni nodo. Inizialmente viene richiamata la
+funzione $DEQUEUE$ che restituisce il nodo appena rimosso dalla coda, questo sta a significare
+che sto visitando il nodo appena rimosso. Dopodichè effettuo un ciclo su tutti i nodi della lista
+delle adiacenze del nodo $u$ (ovvero tutti i nodi che sono collegati al nodo u) aggiungendoli in
+lista solo se essi sono colorati di ”BIANCO” ovvero che non sono presenti in coda e quindi nella
+frontiera, incrementando la loro distanza dalla sorgente e ponendo il loro colore a ”GRIGIO”
+in quanto li inserisco nella frontiera. Procedendo con questo ragionamento si vanno a visitare
+per ampiezza tutti i vertici del grafo. La complessità dell’algoritmo BFS è $O(|V|+ |E|)$, dove
+$|V|$ è il numero di vertici del grafo e $|E|$ è il numero di archi del grafo.\\
+\noindent Per dimostrare la correttezza di BFS ci occorre prima dimostrare $3$ proprietà intermedie dell'algoritmo:
+\begin{itemize}
+    \item proprietà delle distanze
+    \item proprietà del limite superiore
+    \item proprietà della coda
+\end{itemize} 
+\subsection{Proprietà delle distanze}
+Sia $G = (V, E)$, un grafo e $s \in V$ un vertice arbitrario. Allora per ogni arco $(u,v) \in E$ si ha
+che:\\
+$$d(s,v) \le d(s,u) + 1$$\\
+Dimostrazione:\\
+Per dimostrare questa proprietà dobbiamo considerare due casi:
+\begin{enumerate}
+    \item $u$ non è raggiungibile da $s$
+    \item $u$ è raggiungibile da $s$
+\end{enumerate}
+\noindent \textbf{Caso 1}\\
+E’ noto come nell’algoritmo BFS vengono inizializzate ad $\infty$ le distanze di tutti i nodi dalla
+sorgente. Se $u$ non è raggiungibile da $s$, significa che non verrà mai aggiunto alla coda e la sua
+distanza $u.d$ da $s$ rimarrà $\infty$. Se $u$ non è raggiungibile da $s$, non lo è neanche v allora $v.d =
+\infty$, che verifica la diseguaglianza.\\
+\textbf{CAso 2}\\
+Se $u$ è raggiungibile da $s$, significa che $u.d$ viene aggiornato con la distanza da $u$ ad $s$ che 
+chiameremo $d(s, u)$, se questo cammino passa già per $v$, allora banalmente è verificata $d(s,v) < d(s,u)$,
+se invece il cammino non passa per $v$, allora aggiungendo l’arco $(u, v)$ si ha che $d(s,v) = d(s,u) + 1$,
+da cui segue la diseguaglianza
+\subsection{Proprietà del limite superiore}
+Sia $G = (V, E)$ un grafo e supponiamo che BFS venga eseguita da un nodo $s \in V$ arbitrario
+(sorgente). Allora per ogni vertice $v \in V$, la distanza $v.d$ calcolata da BFS è sempre tale che:\\
+$$v.d \ge d(s,v)$$\\
+\begin{proof}
+    Per dimostrare questa proprietà dobbiamo farlo per induzione\\
+    \textbf{Passo base:}\\
+    Il passo base è rappresentato dall’inizializzazione della BFS nella quale tutte le distanze dei
+    vertici del grafo dalla sorgente sono poste ad $\infty$, quindi si ha banalmente che per ogni nodo $u$
+    diverso da $s$:\\
+    $$u.d= \infty \ge d(s,u)$$\\
+    Per quanto riguarda la sorgente viene posta $s.d= 0$ che banalmente è uguale a $d(s, s)$. Quindi
+    possiamo concludere dicendo che il passo base verifica la propriet`a del limite superiore.
+    \textbf{Passo induttivo:}\\
+    Supponiamo che la diseguaglianza $u.d \ge d(s,u)$ sia vera fino a prima della riga
+    $$v.d= u.d + 1$$
+    dopo essere stata eseguita per ipotesi induttiva sappiamo che $u.d + 1 \ge d(s,u) + 1$, dalla proprietà 
+    delle distanze abbiamo che $d(s,u) + 1 \ge d(s,v)$, allora mettendo insieme tutte le disuguaglianze 
+    si ha: $v.d= u.d + 1 \ge d(s,u) + 1 \ge d(s,v)$, ottenendo così $v.d \ge d(s,v)$.
+\end{proof}
+\subsection{Proprietà della coda}
+Si considera l’esecuzione di BFS su un grafo $G = (V, E)$ e supponiamo che la coda $Q$ contenga
+i vertici $<v_1,v_2,...,v_r >$ (con $v_1$ inizio e $v_r$ fine della coda), allora si ha che:
+\begin{enumerate}
+    \item $v_r .d \le v1.d+ 1$ 
+    \item $v_i .d \le v_{i+1}.d \text {per ogni }i in 1,2,...,r-1$
+\end{enumerate}
+\begin{proof}
+Per dimostrare questa propriteà dobbiamo farlo per induzione\\
+\textbf{Passo base:}\\
+Dopo l’inizializzazione la coda contiene solo $s$, allora la proprietà è verificata.\\
+\textbf{Passo induttivo:}\\
+\textbf{1.} Assumiamo che sia vera la seguente disuguaglianza:\\
+$$v_r .d \le v_1 .d+ 1 \le v_2 .d+ 1$$
+Quando $v_1$, viene estratto dalla coda, $v_2$ diventa la nuova testa e si ha banalmente\\
+$$v_r .d \le v_2 .d+ 1$$
+\textbf{2}. Sia $v_r$ l’ultimo elemento in coda, prima di essere stato inserito in coda è stato posto
+$v.d= u.d + 1$, con $u$ il primo elemento della coda ovvero $v_1$, quindi $v_r .d= v_1 .d + 1$. 
+Ipotizziamo venga aggiunto un altro vertice tale per cui l’ultimo elemento è $v_{r+1}$. Si ha che
+$v_{r+1} .d= v_1 .d + 1$. Per ipotesi induttiva, inoltre, si ha che $v_r .d \le v_1 .d + 1$ ma allora:
+$v_r .d \le v_1 .d+ 1 = v_{r+1} .d$\\
+da cui:\\
+$$v_r .d \le v_{r+1} .d$$
+\end{proof}
+\subsection{Correttezza della BFS}
+L’algoritmo BFS visita tutti i vertici raggiungibili da $s$ e quando termina $v.d = d(s, v)$ per
+ogni vertice $v$ del grafo. Inoltre per ogni vertice $v \neq s$ raggiungibile da s:
+\begin{itemize}
+    \item $u=v.p \neq nil$
+    \item $(u,v) \in E$
+    \item $d(s,v) = d(s,u)+1$
+\end{itemize}
+\noindent \textbf{Dimostrazione}
+\begin{proof}
+Se $v$ non è raggiungibile da $s$ allora dalla proprietà dellimite superiore si ha che\\
+$$v.d=d(s,v)=\infty$$\\
+Questo valore rimarrà invariato per tutta l’esecuzione dell’algoritmo, questo significa che il
+vertice $v$ non verrà mai aggiunto in coda e quindi i vertici non raggiungibili non vengono visitati
+da BFS.\\
+Se $v$ è raggiungibile da $s$, per ogni vertice $v \in V$ raggiungibile da $s$ i seguenti punti vengono
+effettuati una ed una sola volta:
+\begin{enumerate}
+    \item a $v.color$ viene assegnato il colore "GRIGIO"
+    \item a $v.d$ viene assegnato il valore $d(v,s)$
+    \item se $v$ è diverso da $s$, a $v.p$ viene assegnato un vertice $u$ tale che $d(s,v)=d(s,u)+1$, se $v=s$ a $s.p$ è assegnato nil
+    \item il vertice $v$ viene aggiunto alla coda $Q$
+\end{enumerate}
+\noindent Se consideriamo la sorgente banalmente l'inizializzazione avviene una sola volta quindi:
+\begin{itemize}
+    \item $s.color="GRIGI"O"$
+    \item $s.d=0$
+    \item $s.p=nil$
+    \item $ENQUEUE(Q, S)$
+\end{itemize}
+\noindent Si considera poi un insieme di vertici\\
+$$V_k={v \in V : d(s,v)=k}$$\\
+ovvero l’insieme di vertici posti a distanza $k$ da $s$. Sia $v \in V_k$, durante l’esecuzione del ciclo
+while la coda $Q$ non è mai vuota e non appena il vertice $v$ viene messo in coda i valori $v.d$ e
+$v.p$ non possono più cambiare in quanto a $v.color$ viene assegnato il colore ”GRIGIO” e per
+entrare nell’if è richiesto che $v.color$ sia ”BIANCO”, di conseguenza se l’ordine di inserimento
+in coda è\\
+$${s=v_0, v_1,...,v_t}$$\\
+banalmente si ha che\\
+$$v_i .d \le v_{i+1} .d$$\\
+che corrisponde alla proprietà della coda. Il vertice $v$ a distanza $k$ non può essere scoperto
+prima, in quanto non è adiacente a nessun vertice a distanza minore $k-1$, infatti a tale distanza
+è presente $u$ distante da $s$ $k-1$, a cui $s$ è adiacente.
+\end{proof}
