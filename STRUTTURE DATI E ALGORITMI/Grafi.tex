@@ -10,7 +10,7 @@ E composto da un insieme di nodi
 mentre gli archi rappresentano le relazioni tra di esse.
 \subsection{Definzioni sui Grafi}
 \begin{definition}
-    Un grafo $G=(V,E)$ è costituito da un insisme di vertivi $V$ ed un insieme di archi $E$ ciascuno dei quali connette due vertici $V$ detti estremi dell'arco.\\
+    Un grafo \textbf{$G=(V,E)$} è costituito da un insisme di vertivi $V$ ed un insieme di archi $E$ ciascuno dei quali connette due vertici $V$ detti estremi dell'arco.\\
 \end{definition}
 \begin{definition}
 Un grafo è \textbf{orientato} quando esiste una relazione d’ordine tra gli estremi degli
@@ -22,7 +22,7 @@ dice coda ed il secondo testa\\
     Un grafo si dice \textbf{denso} se il numero di archi presenti è molto vicino al numero totale di possibili archi\\
 \end{definition}
 \begin{definition}
-    Un \textbf{cappio} è un arco icui estremi coincidono\\
+    Un \textbf{cappio} è un arco i cui estremi coincidono\\
 \end{definition}
 \begin{definition}
 Un grafo orientato è \textbf{semplice} se non ci sono cappi e non ci sono due archi con gli
@@ -46,10 +46,10 @@ la relazione di adiacenza è simmetrica\\
     \noindent Un nodo \textbf{pozzo} è un nodo che ha grado uscente pari a zero, $\delta^+(v)=0$.\\
 \end{definition}
 \begin{definition}
-Un \textbf{percorso} $\Pi$ di lunghezza $k$ dal vertice $u$ al vertice $v$ in un grafo $G = (V, E)$ è
-una sequenza di $k+1$ vertici $\Pi= x_0, x_1, x_2,···, x_k$ tali che $x_0 = u, xk = v$ e $x_{i-1}x_i \in E$ per $i
+Un \textbf{percorso} $\pi$ di lunghezza $k$ dal vertice $u$ al vertice $v$ in un grafo $G = (V, E)$ è
+una sequenza di $k+1$ vertici $\pi= x_0, x_1, x_2,···, x_k$ tali che $x_0 = u, x_k = v$ e $x_{i-1}x_i \in E$ per $i
 = 1, . . . , k$.
-Il percorso $\Pi = x_0$ ha lunghezza $k = 0$.
+Il percorso $\pi = x_0$ ha lunghezza $k = 0$.
 Se $k>0$ e $x_0 = x_k$ diciamo che il percorso è \textbf{chiuso}\\
 \end{definition}
 \begin{definition}
@@ -102,7 +102,7 @@ $
 1 \text{ se } ij \in E\\
 0 \text{ se } ij \notin E   
 \end{cases}
-$
+$\medskip\\
 \noindent Esempio con il grafo precedente:\\
 \begin{figure}[H]
     \centering  
@@ -134,9 +134,9 @@ fino ad includere i nodi $2$ e $3$, che inserisco in una coda ed
 incremento di uno la distanza dalla sorgente. Dopodichè espando
 l’area ai vicini di questi ultimi nodi visitati, così via fino a visitare tutto il grafo.\\
 Produce l'albero di visita in ambiezza i cui rami sono cammini di lunghezza minima.\bigskip\\
-Si espande uniformemente la frontiera tra i vertici e quelli non ancora scoeprti, 
+Si espande uniformemente la frontiera tra i vertici scoperti e quelli non ancora scoeprti, 
 in altre parole, scopre tutti i vertici a distanza $k$ da $s$ prima di scoprire quelli a distanza $k+1$\\
-Per mantenere traccia del punto a cui si è arrivati nell'esecuzione dell'algoritmo, i vertici sono oclorati:
+Per mantenere traccia del punto a cui si è arrivati nell'esecuzione dell'algoritmo, i vertici sono colorati:
 \begin{itemize}
     \item bianco (vertici non ancora raggiunti)
     \item grigio (vertici raggiunti che stanno sulla frontiera)
@@ -193,7 +193,7 @@ lista solo se essi sono colorati di ”BIANCO” ovvero che non sono presenti in
 frontiera, incrementando la loro distanza dalla sorgente e ponendo il loro colore a ”GRIGIO”
 in quanto li inserisco nella frontiera. Procedendo con questo ragionamento si vanno a visitare
 per ampiezza tutti i vertici del grafo. La complessità dell’algoritmo BFS è $O(|V|+ |E|)$, dove
-$|V|$ è il numero di vertici del grafo e $|E|$ è il numero di archi del grafo.\\
+$|V|$ è il numero di vertici del grafo e $|E|$ è il numero di archi del grafo.\bigskip\\
 \noindent Per dimostrare la correttezza di BFS ci occorre prima dimostrare $3$ proprietà intermedie dell'algoritmo:
 \begin{itemize}
     \item proprietà delle distanze
@@ -204,7 +204,8 @@ $|V|$ è il numero di vertici del grafo e $|E|$ è il numero di archi del grafo.
 Sia $G = (V, E)$, un grafo e $s \in V$ un vertice arbitrario. Allora per ogni arco $(u,v) \in E$ si ha
 che:\\
 $$d(s,v) \le d(s,u) + 1$$\\
-Dimostrazione:\\
+\begin{proof}
+\leavevmode\\
 Per dimostrare questa proprietà dobbiamo considerare due casi:
 \begin{enumerate}
     \item $u$ non è raggiungibile da $s$
@@ -220,11 +221,13 @@ Se $u$ è raggiungibile da $s$, significa che $u.d$ viene aggiornato con la dist
 chiameremo $d(s, u)$, se questo cammino passa già per $v$, allora banalmente è verificata $d(s,v) < d(s,u)$,
 se invece il cammino non passa per $v$, allora aggiungendo l’arco $(u, v)$ si ha che $d(s,v) = d(s,u) + 1$,
 da cui segue la diseguaglianza
+\end{proof}
 \subsection{Proprietà del limite superiore}
 Sia $G = (V, E)$ un grafo e supponiamo che BFS venga eseguita da un nodo $s \in V$ arbitrario
 (sorgente). Allora per ogni vertice $v \in V$, la distanza $v.d$ calcolata da BFS è sempre tale che:\\
 $$v.d \ge d(s,v)$$\\
 \begin{proof}
+    \leavevmode\\
     Per dimostrare questa proprietà dobbiamo farlo per induzione\\
     \textbf{Passo base:}\\
     Il passo base è rappresentato dall’inizializzazione della BFS nella quale tutte le distanze dei
@@ -232,7 +235,7 @@ $$v.d \ge d(s,v)$$\\
     diverso da $s$:\\
     $$u.d= \infty \ge d(s,u)$$\\
     Per quanto riguarda la sorgente viene posta $s.d= 0$ che banalmente è uguale a $d(s, s)$. Quindi
-    possiamo concludere dicendo che il passo base verifica la propriet`a del limite superiore.
+    possiamo concludere dicendo che il passo base verifica la proprietà del limite superiore.\\
     \textbf{Passo induttivo:}\\
     Supponiamo che la diseguaglianza $u.d \ge d(s,u)$ sia vera fino a prima della riga
     $$v.d= u.d + 1$$
@@ -244,10 +247,11 @@ $$v.d \ge d(s,v)$$\\
 Si considera l’esecuzione di BFS su un grafo $G = (V, E)$ e supponiamo che la coda $Q$ contenga
 i vertici $<v_1,v_2,...,v_r >$ (con $v_1$ inizio e $v_r$ fine della coda), allora si ha che:
 \begin{enumerate}
-    \item $v_r .d \le v1.d+ 1$ 
-    \item $v_i .d \le v_{i+1}.d \text {per ogni }i in 1,2,...,r-1$
+    \item $v_r .d \le v_1 .d+ 1$ 
+    \item $v_i .d \le v_{i+1}.d \text{ per ogni }i \text{ in } 1,2,...,r-1$
 \end{enumerate}
 \begin{proof}
+    \leavevmode\\
 Per dimostrare questa propriteà dobbiamo farlo per induzione\\
 \textbf{Passo base:}\\
 Dopo l’inizializzazione la coda contiene solo $s$, allora la proprietà è verificata.\\
@@ -272,9 +276,9 @@ ogni vertice $v$ del grafo. Inoltre per ogni vertice $v \neq s$ raggiungibile da
     \item $(u,v) \in E$
     \item $d(s,v) = d(s,u)+1$
 \end{itemize}
-\noindent \textbf{Dimostrazione}
 \begin{proof}
-Se $v$ non è raggiungibile da $s$ allora dalla proprietà dellimite superiore si ha che\\
+    \leavevmode\\
+Se $v$ non è raggiungibile da $s$ allora dalla proprietà del limite superiore si ha che\\
 $$v.d=d(s,v)=\infty$$\\
 Questo valore rimarrà invariato per tutta l’esecuzione dell’algoritmo, questo significa che il
 vertice $v$ non verrà mai aggiunto in coda e quindi i vertici non raggiungibili non vengono visitati
@@ -287,9 +291,11 @@ effettuati una ed una sola volta:
     \item se $v$ è diverso da $s$, a $v.p$ viene assegnato un vertice $u$ tale che $d(s,v)=d(s,u)+1$, se $v=s$ a $s.p$ è assegnato nil
     \item il vertice $v$ viene aggiunto alla coda $Q$
 \end{enumerate}
-\noindent Se consideriamo la sorgente banalmente l'inizializzazione avviene una sola volta quindi:
+\noindent Dopo l'inizializzazione nessun vertice viene più colorato di $BIANCO$, 
+un vertice può essere colorato di $GRIGIO$ soltanto se era $BIANCO$\\ 
+Se consideriamo la sorgente banalmente l'inizializzazione avviene una sola volta quindi:
 \begin{itemize}
-    \item $s.color="GRIGI"O"$
+    \item $s.color="GRIGIO"$
     \item $s.d=0$
     \item $s.p=nil$
     \item $ENQUEUE(Q, S)$
