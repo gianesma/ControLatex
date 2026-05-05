@@ -515,3 +515,49 @@ off_t lseek(int fd, off_t offset, int whence); // Invece di ftell si può usare
                                                   lseek(fd, 0, SEEK_CUR) per ottenere 
                                                   la posizione attuale del file descriptor
 \end{verbatim}
+\newpage
+\section{Esecuzione dei programmi}
+\subsection{Processi}
+Un processo è un'istanza di un programma in esecuzione. Ogni processo ha un proprio spazio di 
+indirizzamento, che include il codice del programma, i dati, lo stack e l'heap. Ogni processo ha anche un proprio stato, che può essere:
+\begin{itemize}
+    \item \textbf{Running} $\rightarrow$ il processo è in esecuzione
+    \item \textbf{Ready} $\rightarrow$ il processo è pronto per essere eseguito, ma non è ancora stato assegnato a una CPU
+    \item \textbf{Blocked} $\rightarrow$ il processo è in attesa di un evento (ad esempio, l'input dell'utente o la fine di un'operazione di I/O)
+    \item \textbf{Terminated} $\rightarrow$ il processo ha terminato la sua esecuzione
+\end{itemize}
+Più istante dello stesso programma in \texttt{esecuzione concorrente}, ovvero che nel mentre è già in esecuzione un processo, ne viene avviato un altro che esegue lo stesso programma; 
+sono rappresentate da processi distinti, con spazi di indirizzamento separati, e possono essere eseguiti in parallelo su più CPU o in modo interleaved su una singola CPU.
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.9\linewidth]{../images/Interleaved 2.png}
+    \caption{Programmi in esecuzione concorrente}
+    %\label{label}
+\end{figure}
+\noindent Nei processi abbiamo la presenza del \textbf{Loader}, che prepara la memoria al fine di eseguire il processo, caricando il codice del programma, i dati, lo stack e l'heap. 
+Il loader è responsabile anche di risolvere le dipendenze dinamiche (ad esempio, le librerie condivise) e di inizializzare il processo prima di avviarlo.
+\\ Un processo è costituito dai seguenti elementi informativi:
+\begin{itemize}
+    \item \texttt{Immagine di Memoria} $\rightarrow$ contiene il codice del programma, i dati definiti dal programmatore, lo stack, l'heap, ecc\dots
+    \item \texttt{Stato della CPU} $\rightarrow$ indica se il processo è in esecuzione, pronto, bloccato o terminato. Contiene quindi registri, ecc\dots
+    \item \texttt{Risorse in uso} $\rightarrow$ indica le risorse che il processo sta utilizzando, come file aperti, socket, ecc\dots
+    \item \texttt{Metadati} $\rightarrow$ contiene informazioni sul processo, come il PID (Process ID), il PPID (Parent Process ID), la priorità, 
+    user, ora di avvio, linea di comando, ecc\dots. Questi metadati si possono trovare nel \textit{file system}
+    all'interno di una directory speciale chiamata \texttt{/proc}, che contiene un file per ogni processo in esecuzione, con il nome del file 
+    corrispondente al PID del processo. Ad esempio, il file \texttt{/proc/1234} contiene i metadati del processo con PID 1234.
+\end{itemize}
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.9\linewidth]{../images/Processi Funzionamento yea.png}
+    \caption{Processi Funzionamento}
+    %\label{label}
+\end{figure}
+\noindent I processi per lavorare nella loro immagine di memoria non accedono direttamente
+alla memoria fisica (RAM), ma utilizzano un meccanismo chiamato \textbf{memoria virtuale}, gestita dal sistema operativo;
+che permette di mappare la memoria virtuale del processo alla memoria fisica del sistema. 
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.9\linewidth]{../images/Memoria Virtuale.png}
+    \caption{Memoria Virtuale}
+    %\label{label}
+\end{figure}
