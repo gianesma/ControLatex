@@ -314,3 +314,20 @@ che corrisponde alla proprietà della coda. Il vertice $v$ a distanza $k$ non pu
 prima, in quanto non è adiacente a nessun vertice a distanza minore $k-1$, infatti a tale distanza
 è presente $u$ distante da $s$ $k-1$, a cui $s$ è adiacente.
 \end{proof}
+
+
+\section{Shortest Path (Percorsi minimi)}
+Il problema dei cammini minimi prende in input un grafo orientato pesato 
+$G(V,E)$ con una funzione peso $\omega:E \to \mathbb{R}$ che associa ad ogni arco un numero reale 
+che rappresenta il suo peso. $V$ è l'insieme di vertici $v_1,v_2,\dots, v_n$. Il problema 
+restituisce il cammino minimo (sequenza di nodi) partendo da un nodo sorgente fino ad un nodo destinazione di un grafo. Nel caso di 
+grafi non pesati il cammino minimo è rappresentato da  \smallskip\\
+Esistono numerose varianti:
+\begin{itemize}
+    \item \textbf{SSPS (Single Pair Shortest Path)}: Viene fornito in input una coppia di sorgente e destinazione, e viene restituito
+    il percorso minimo tra sorgente e destinazione.
+    \item \textbf{SSPS (Single Source Shortest Path)}: Viene fornito in input solo la sorgente e viene restituito il percorso minimo per visitare tutti i vertici del grafo.
+    \item \textbf{SDSP (Single Destination Shortest Path)}: Viene fornito in input solo la destinazione e vengono restituiti i percorsi minimi da ogni vertice del grafo.
+    \item \textbf{APSP (All Pairs Shortest Path)}: Vengono restituiti tutti percorsi minimi per ogni coppia di vertici del grafo. 
+\end{itemize}
+

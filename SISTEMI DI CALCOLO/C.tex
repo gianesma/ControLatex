@@ -293,7 +293,8 @@ Ricordiamo che:
 \end{itemize}
 Altra funzione:
 \begin{verbatim}
-void bsearch (const void* key, const void *base, size_t numelem, size_t sizeelem, int (*compar)(const void *, const void *));
+void bsearch (const void* key, const void *base, size_t numelem, 
+             size_t sizeelem, int (*compar)(const void *, const void *));
 \end{verbatim}
 Cerca l'elemento \texttt{key} nell'array \textbf{\textcolor{red}{ordinato}} \texttt{base} di \texttt{numelem} elementi, ciascuno di dimensione \texttt{sizeelem}, utilizzando la funzione di confronto \texttt{compar}.
 Restituisce un puntatore all'elemento trovato o \texttt{NULL} se l'elemento non è presente nell'array.\\
@@ -369,7 +370,8 @@ Per gestire gli stream da codice ho due opzioni:
 Le libc sono più semplici da utilizzare, ma le syscall POSIX sono più efficienti. 
 Vediamo ora le funzioni per la gestione degli stream presenti nella libreria \textbf{stdio.h}:
 \begin{verbatim}
-FILE *fopen(const char *path, const char *mode); // apre un file e restituisce un puntatore di tipo FILE
+FILE *fopen(const char *path, const char *mode); // apre un file e restituisce un puntatore 
+                        |                    |      di tipo FILE
                         |                    |
                         |                    |____ mode è una stringa che rappresenta le operazioni 
                         |                         da svolgere sul file: 
@@ -431,7 +433,8 @@ fseek(f,-2,SEEK_END); // sposta il puntatore a 2 byte prima della fine del file
 \end{verbatim}
 Continuiamo con l'ultima funzione:
 \begin{verbatim}
-long ftell(FILE *f); // restituisce la posizione attuale del puntatore in byte rispetto all'inizio del file
+long ftell(FILE *f); // restituisce la posizione attuale del puntatore 
+                        in byte rispetto all'inizio del file
 \end{verbatim}
 \textbf{\textcolor{red}{ATTENZIONE:}} bisogna sempre ricordarsi di effettuare i controlli di errore su tutte queste funzioni, 
 poichè possono fallire per vari motivi (file non esistente, permessi insufficienti, ecc...).\\
@@ -479,12 +482,12 @@ int read_file(char *filename, void **buffer, size_t *size){
 Passiamo ora alle syscall POSIX per la gestione degli stream, che sono più efficienti ma anche più complesse da utilizzare:
 \begin{verbatim}
 #include <fcntl.h>
-int open(const char *pathname, int flags, mode_t mode); // apre un file e restituisce un file descriptor
-                        |           |         |
-                        |           |         |____ mode è un intero che rappresenta i permessi del file (solo se si usa O_CREAT)
-                        |           |    
-                        |           |_________ flags è un intero che rappresenta la modalità di apertura 
-                        |                      del file:
+int open(const char *pathname, int flags, mode_t mode); // apre un file e restituisce 
+                        |           |       |              un file descriptor
+                        |           |       |____ mode è un intero che rappresenta i permessi 
+                        |           |             del file (solo se si usa O_CREAT)
+                        |           |_________ flags è un intero che rappresenta la modalità di 
+                        |                      apertura del file:
                         |                      O_RDONLY -> leggi, O_TRUNC -> tronca il file a 0 byte
                         |                      O_CREAT -> crea il file se non esiste
                         |                     
@@ -497,17 +500,309 @@ Il file descriptor 0 è riservato per stdin, 1 per stdout e 2 per stderr. I file
 Esempio di utilizzo:
 \begin{verbatim}
 int fd = open("file.txt",O_CREAT|O_RDONLY|O_TRUNC, 0644); // apre il file file.txt in modalità lettura 
-                                                            e scrittura, se il file non esiste lo crea, 
-                                                            se esiste lo tronca a 0 byte
+                                                            e scrittura, se il file non esiste 
+                                                            lo crea, se esiste lo tronca a 0 byte
 \end{verbatim}
 Abbiamo inoltre una funzione apposita per la scrittura e lettura:
 \begin{verbatim}
 ssize_t write(int fd, const void *buf, size_t count); // scrive su 'fd' 'count' byte da buf. 
-                                                        Restituisce il numero di byte scritti con successo
+                                                        Restituisce il numero di byte scritti 
+                                                        con successo
 
 ssize_t read(int fd, void *buf, size_t count); // legge da 'fd' 'count' byte
 
 off_t lseek(int fd, off_t offset, int whence); // Invece di ftell si può usare
                                                   lseek(fd, 0, SEEK_CUR) per ottenere 
                                                   la posizione attuale del file descriptor
+\end{verbatim}
+\newpage
+\section{Esecuzione dei programmi}
+\subsection{Processi}
+Un processo è un'istanza di un programma in esecuzione. Ogni processo ha un proprio spazio di 
+indirizzamento, che include il codice del programma, i dati, lo stack e l'heap. Ogni processo ha anche un proprio stato, che può essere:
+\begin{itemize}
+    \item \textbf{Running} $\rightarrow$ il processo è in esecuzione
+    \item \textbf{Ready} $\rightarrow$ il processo è pronto per essere eseguito, ma non è ancora stato assegnato a una CPU
+    \item \textbf{Blocked} $\rightarrow$ il processo è in attesa di un evento (ad esempio, l'input dell'utente o la fine di un'operazione di I/O)
+    \item \textbf{Terminated} $\rightarrow$ il processo ha terminato la sua esecuzione
+\end{itemize}
+Più istante dello stesso programma in \texttt{esecuzione concorrente}, ovvero che nel mentre è già in esecuzione un processo, ne viene avviato un altro che esegue lo stesso programma; 
+sono rappresentate da processi distinti, con spazi di indirizzamento separati, e possono essere eseguiti in parallelo su più CPU o in modo interleaved su una singola CPU.
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.9\linewidth]{../images/Interleaved 2.png}
+    \caption{Programmi in esecuzione concorrente}
+    %\label{label}
+\end{figure}
+\noindent In questo esempio B e C sono due processi concorrenti, ovvero "concorrono" per l'utilizzo delle risorse, il cui accesso è gestito dal sistema operativo. \medskip\\
+\noindent Nei processi abbiamo la presenza del \textbf{Loader}, che prepara la memoria al fine di eseguire il processo, caricando il codice del programma, i dati, lo stack e l'heap. 
+Il loader è responsabile anche di risolvere le dipendenze dinamiche (ad esempio, le librerie condivise) e di inizializzare il processo prima di avviarlo.
+\\ Un processo è costituito dai seguenti elementi informativi:
+\begin{itemize}
+    \item \texttt{Immagine di Memoria} $\rightarrow$ contiene il codice del programma, i dati definiti dal programmatore, lo stack, l'heap, ecc\dots
+    \item \texttt{Stato della CPU} $\rightarrow$ indica se il processo è in esecuzione, pronto, bloccato o terminato. Contiene quindi registri, ecc\dots
+    \item \texttt{Risorse in uso} $\rightarrow$ indica le risorse che il processo sta utilizzando, come file aperti, socket, ecc\dots
+    \item \texttt{Metadati} $\rightarrow$ contiene informazioni sul processo, come il PID (Process ID), il PPID (Parent Process ID), la priorità, 
+    user, ora di avvio, linea di comando, ecc\dots. Questi metadati si possono trovare nel \textit{file system}
+    all'interno di una directory speciale chiamata \texttt{/proc}, che contiene un file per ogni processo in esecuzione, con il nome del file 
+    corrispondente al PID del processo. Ad esempio, il file \texttt{/proc/1234} contiene i metadati del processo con PID 1234.
+\end{itemize}
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.9\linewidth]{../images/Processi Funzionamento yea.png}
+    \caption{Processi Funzionamento}
+    %\label{label}
+\end{figure}
+\noindent I processi per lavorare nella loro immagine di memoria non accedono direttamente
+alla memoria fisica (RAM), ma utilizzano un meccanismo chiamato \textbf{memoria virtuale}, gestita dal sistema operativo;
+che permette di mappare la memoria virtuale del processo alla memoria fisica del sistema. 
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.9\linewidth]{../images/Memoria Virtuale.png}
+    \caption{Memoria Virtuale}
+    %\label{label}
+\end{figure}
+\noindent Consideriamo come è organizzata l'immagine di memoria di un processo dopo il caricamento di un file eseguibile (ad esempio in formato ELF).
+Ogni processo vede il proprio spazio di memoria come un array lineare di byte, i cui indirizzi partono da 0 e arrivano fino a $2^b - 1$, dove $b$ rappresenta il numero di bit utilizzati per i puntatori (tipicamente 32 o 64).
+I sistemi operativi garantiscono l'isolamento tra i processi attraverso il meccanismo della \textit{memoria virtuale}. Questo impedisce a un processo di accedere allo spazio di memoria di un altro processo, sia in modo malevolo 
+sia a causa di errori di programmazione (bug).
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.9\linewidth]{../images/Immagine Processo.png}
+    \caption{Immagine di un Processo}
+    %\label{label}
+\end{figure}
+\noindent Imaginiamo di avere un codice del tipo:
+\begin{verbatim}
+int i[10000],  j = 10;
+int main(int argc, char *argv[]){
+    static char *k = "hello";
+    char *p = malloc(sizeof(int) * 10000); // alloca un array di 10000 interi nell'heap
+    free(p);
+    printf(...);
+}
+\end{verbatim}
+Immaginando di eseguire questo programma, l'immagine di memoria del processo sarà organizzata in questo modo:
+\begin{itemize}
+    \item \textbf{i} $\rightarrow$ si trova in \texttt{.bss} poiché è un array globale non inizializzato
+    \item \textbf{j} $\rightarrow$ si trova in \texttt{.data} poiché è una variabile globale inizializzata
+    \item \textbf{k} $\rightarrow$ si trova in \texttt{.data} poiché è una variabile statica inizializzata
+    \item \textbf{"hello"} $\rightarrow$ si trova in \texttt{.rodata} poiché è una stringa letterale (read-only)
+    \item \textbf{p} $\rightarrow$ la variabile si trova nello stack, mentre la memoria allocata con \texttt{malloc} si trova nell'heap
+    \item \textbf{main} $\rightarrow$ si trova in \texttt{.text} poiché è codice eseguibile
+    \item \textbf{argc} e \textbf{argv} $\rightarrow$ si trovano nello stack poiché sono parametri della funzione \texttt{main}
+\end{itemize}
+\section{Multiprogrammazione}
+La \texttt{multiprogrammazione} è una tecnica che permette ai programmi di avere più processi residenti in memoria contemporaneamente, condividendo le risorse del sistema (CPU, memoria, I/O).\\
+Il sistema operativo per gestire le multiple richieste di accesso alla CPU da parte dei processi concorrenti utilizza un sistema di \textbf{Time-Sharing}. Nel \texttt{Time-Sharing} tutti i processi sono "sospesi" fino a quando
+non gli viene assegnato dal Sistema Operativo l'uso della CPU per un intervallo di tempo (\textbf{time slice}) durante il quale possono eseguire. Al termine del time slice, il processo 
+viene nuovamente sospeso e viene assegnato un nuovo time slice a un altro processo, e così via in modo ciclico.\\
+Gli stati pricnipali di un processo in un sistema multiprogrammato sono in genere tre:
+\begin{itemize}
+    \item \textbf{ready} $\rightarrow$ il processo è pronto per l'esecuzione, ma è tenuto fermo poiché tutti i core 
+    della CPU disponibili sono impegnati nell'esecuzione di altri processi;
+    \item \textbf{running} $\rightarrow$ il processo è attualmente in esecuzione su un core della CPU;
+    \item \textbf{waiting/sleeping} $\rightarrow$ il processo è in attesa di un evento, come il completamento di un'operazione di I/O. Ad esempio, un processo entra nello stato waiting quando esegue una chiamata a sistema 
+    che richiede la lettura di un blocco di dati da disco. Quando un processo entra in stato waiting, libera il core su cui era in esecuzione in modo che diventi disponibile per un altro processo ready.
+\end{itemize}
+\noindent Un processo entra tipicamente nello stato di \textit{attesa} (\textit{waiting} o \textit{sleeping}) in modo volontario, eseguendo una \textit{system call} che può richiedere tempi di completamento non trascurabili, come ad esempio operazioni di accesso alla rete o al disco.
+Al termine di tali operazioni, il processo viene risvegliato e passa nello stato di \textit{ready}, ovvero pronto per essere eseguito. A questo punto interviene lo \textit{scheduling}, ovvero il meccanismo con cui il sistema operativo seleziona uno dei processi nello stato \textit{ready} per assegnargli la CPU.
+Nei sistemi operativi moderni è presente il meccanismo di \textbf{preemption}, che consente di interrompere l'esecuzione di un processo in stato \textit{running} per assegnare la CPU a un altro processo. Questo meccanismo è fondamentale per garantire equità nell'uso delle risorse.
+In particolare, la preemption aiuta a prevenire il fenomeno della \textbf{starvation}, in cui un processo rischia di rimanere indefinitamente in attesa senza poter progredire, a causa di altri processi che monopolizzano la CPU.
+La preemption è una caratteristica tipica dei sistemi operativi \textit{time-sharing}, come \textit{Linux}, \textit{macOS} e \textit{Windows}. Tali sistemi permettono di eseguire un numero di processi superiore rispetto ai core disponibili, creando l'illusione di un'esecuzione simultanea 
+grazie alla rapida alternanza dei processi sulla CPU. \\
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.6\linewidth]{../images/Stati Processi CPU.png}
+    \caption{Stati dei processi e CPU}
+    %\label{label}
+\end{figure}
+\noindent Per evitare la \texttt{starvation}, possiamo adoperare:
+\begin{enumerate}
+    \item \textbf{Preemption} 
+    \item \textbf{Scheduler} con algoritmo di tipo \textit{fair time sharing} (esempio round-robin).
+\end{enumerate}
+\noindent Per consentire a tutti i processi ready di progredire uniformemente nell'esecuzione, un popolare algoritmo di 
+schedulazione è il \textbf{round-robin}, che assegna un core a rotazione a ciascun processo ready per la durata di una time slice.\\
+Il sistema operativo può anche implementare un sistema di \textbf{priorità} per i processi, in modo che alcuni processi vengano eseguiti più frequentemente di altri.
+In pratica è spesso possibile assegnare una priorità a un processo in modo che venga schedulato per l'esecuzione più frequentemente degli altri. 
+Il funzionamento dell'algoritmo di schedulazione round-robin è illustrato nel seguente diagramma a tre processi con la stessa priorità:
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.7\linewidth]{../images/round-robin.png}
+    \caption{Round-Robin}
+    %\label{label}
+\end{figure}
+\noindent Come si vede, l'algoritmo round-robin non genera starvation nei processi, che hanno tutti l'opportunità di progredire nella computazione. Il sistema operativo 
+tiene tipicamente i PCB dei processi organizzati in liste separate per ciascuno stato.
+\subsection{Funzioni per la gestione dei processi}
+Vediamo ora le funzioni per la gestione dei processi presenti nella libreria \textbf{unistd.h}:
+\begin{verbatim}
+fork () ->  Genera un nuovo processo (chiamato processo figlio) che è una copia del processo chiamante 
+            (chiamato processo padre). Il processo figlio ha un proprio PID (Process ID) e 
+            PPID (Parent Process ID), ma condivide con il processo padre lo stesso codice, dati, 
+            stack e heap (inizialmente). La funzione fork restituisce 0 al processo figlio 
+            e il PID del processo figlio. Una volta generata la copia del processo, vengono
+            messi in stato di READY entrambi i processi (padre e figlio) e il sistema 
+            operativo decide quale dei due eseguire per primo.
+\end{verbatim}
+\textbf{\textcolor{red}{ATTENZIONE:}} in questo momento i due processi possono essere distinti
+solo perchè hanno PID diversi, ma condividono lo stesso spazio di memoria, quindi se uno dei 
+due processi modifica una variabile, anche l'altro processo vedrà la modifica.
+\begin{verbatim}
+pid_t fork(); 
+\end{verbatim}
+Restituisce:
+$\begin{cases}
+    \textbf{-1}  \text{ in caso di errore} \\
+    \textbf{0}  \text{  restituisce il PID del nuovo processo creato (figlio)} \\
+    \textbf{$>$0} \text{  restituito al processo che ha invocato fork()
+    (processo padre) e rappresenta il PID del processo creato}. \\
+\end{cases}$
+\medskip\\ \noindent Per distinguiere il codice che va eseguito nel processo padre/figlio si usa la seguente struttura:
+\begin{verbatim}
+#include <stdlib.h>
+#include <unistd.h>
+int main(){
+    pid_t pid = fork();
+    if(pid == -1){
+        // gestione errore
+        exit(-1);   
+    } else if(pid == 0){
+        // codice eseguito dal processo figlio
+        printf("sono il processo figlio\n");
+    } else {
+        // codice eseguito dal processo padre
+        printf("sono il processo padre\n");
+    }
+    return 0;
+}
+\end{verbatim}
+Vediamo ora \textbf{Fork Multiple}:
+\begin{verbatim}
+int main(){
+    pid_t p1 = fork();
+    pid_t p2 = fork();
+    pid_t p3 = fork();
+    // In totale si ottengono 8 processi (2^3)
+    if(p3 == 0){
+        // eseguito dai processi figli dell'ultima fork()
+        printf("*");
+        // 4 processi stampano "*"
+    } else if(p2 == 0){
+        // eseguito dai processi che sono figli della seconda fork()
+        // ma NON figli della terza
+        printf("+");
+        // 2 processi stampano "+"
+    } else if(p1 == 0){
+        // eseguito dai processi che sono figli della prima fork()
+        // ma NON figli della seconda e terza
+        printf("-");
+        // 1 processo stampa "-"
+    } else {
+        // processo padre originale (non figlio di nessuna fork)
+        printf("0");
+        // 1 processo stampa "0"
+    }
+}
+\end{verbatim}
+\begin{figure}[H]
+    \centering  
+    %\includegraphics[width=0.8\linewidth]{../images/Esempio Fork Multiple.png}
+    \caption{Fork Multipli}
+    %\label{label}
+\end{figure}
+Quale codice genera il seguente albero di processi?
+\begin{figure}[H]
+    \centering  
+    %\includegraphics[width=0.8\linewidth]{../images/}
+    \caption{Fork Multipli}
+    %\label{label}
+\end{figure}
+\begin{verbatim}
+int main(){
+    pid_t p1 = fork();
+    if(p1 == 0) pid_t p2 = fork();
+    if(p2 == 0) pid_t p3 = fork();
+    if(p3 == 0) printf("*");
+    // abbiamo 1 solo processo che stampa * dato che solo 1 processo
+    // avrà come padre p3 e quindi eseguirà il codice che stampa "*"
+}
+\end{verbatim}
+FARE ESERCIZIO !="£="£=")£"=£"\\
+Altri comandi utili:
+\begin{verbatim}
+pid_t getpid();     -> restituisce il PID del processo chiamante (PID processo figlio)
+pid_t getppid();    -> restituisce il PPID del processo chiamante (PPID processo padre)
+_exit(int status);  -> funziona come exit() ma non esegue l'eventuale gestione della
+                       terminazine
+\end{verbatim}
+\subsection{Sincronizzazione dei processi}
+La sincronizzazione dei processi è un aspetto fondamentale nei sistemi operativi, poiché permette di coordinare l'accesso alle risorse condivise tra più processi concorrenti.
+In un sistema multiprogrammato, più processi possono accedere contemporaneamente a risorse condivise, come ad esempio file, memoria, dispositivi di I/O, ecc\dots
+Senza un meccanismo di sincronizzazione, si potrebbero verificare situazioni di \textbf{race condition}, in cui il risultato di un'operazione dipende dall'ordine di esecuzione dei processi, 
+portando a comportamenti imprevedibili e potenzialmente dannosi. Il processo padre può quindi voler sapere quando i suoi processi figli terminano la loro esecuzione.\\
+\textbf{\textcolor{red}{IMPORTANTE:}} non possiamo mai far alcuna assunzione sui tempi e sull'ordine con cui
+verranno eseguite le istruzioni nei processi concorrenti, poiché dipende dallo scheduler del sistema operativo, che può decidere di eseguire i processi in modo interleaved o in parallelo su più CPU.
+\begin{verbatim}
+#include <sys/types.h>
+#include <sys/wait.h>
+pid_t wait(int *status);    ->  restisce il PID del processo figlio che è terminato, e salva lo stato 
+                                di terminazione del processo figlio in status. 
+                                Se non ci sono processi figli, restituisce -1. Wait è bloccante 
+                                fino alla terminazione di un processo figlio.
+\end{verbatim}
+Quando invoco wait sono possibili due casi:
+\begin{enumerate}
+    \item \textbf{Il processo figlio è già terminato} $\rightarrow$ in questo caso wait restituisce immediatamente il PID 
+    del processo figlio terminato e lo stato di terminazione.
+    \item \textbf{Il processo figlio non è ancora terminato} $\rightarrow$ in questo caso wait rimane bloccato fino 
+    a quando il processo figlio non termina, momento in cui restituisce il PID del processo figlio terminato e lo stato di terminazione.
+\end{enumerate}
+\textbf{\textcolor{red}{ATTENZIONE:}} se il processo padre termina prima del processo figlio, il processo figlio diventa un processo \textit{orfano} 
+e viene adottato dal processo \texttt{init} (PID 1), che si occupa di gestire i processi orfani.\\
+Per leggere il valore di uscita del processo figlio, possiamo utilizzare le seguenti macro:
+\begin{verbatim}
+wifextied(status_ptr) ->    restituisce il valore 1 se il processo figlio è terminato normalmente 
+                            (ad esempio, chiamando exit() o return dalla funzione main)
+                             altrimenti restituisce 0
+wexitstatus(status_ptr) ->  restituisce il codice di terminaazione ottenuto dal figlio
+\end{verbatim}
+\subsection{Caricamento di programmi}
+Il caricamento di un programma è il processo mediante il quale un file eseguibile viene caricato in memoria e preparato per l'esecuzione.
+\begin{verbatim}
+#include <unistd.h>
+int execvp(const char *filename, char *argv[]);
+|               |                      |                               
+|               |                      |_____ array di stringhe terminato con NULL che contiene gli  
+|               |                             argomentida passare al main del programma, 
+|               |                             dove argv[0] deve essere il nome del programma eseguibile.
+|               |
+|               |____ percorso su disco del programma           
+|                     da eseguire (esempio: "/bin/ls")          
+|                                                               
+|____ restituisce - 1 in caso di errore
+\end{verbatim}
+execvp sostituisce integralmente l'immagine di memoria del processo che la invoca con quella del
+programma da eseguire:
+\begin{figure}[H]
+    \centering  
+    %\includegraphics[width=0.5\linewidth]{../images}
+    \caption{Esecuzione di un programma con execvp}
+    %\label{label}
+\end{figure}
+\begin{verbatim}
+int main(){
+    if(pid == -1){
+        perror("fork");
+        return EXIT_FAILURE;
+    }
+    if(pid == 0){
+        char* argv[] = {"ls", "-l", NULL};
+        execvp("ls", argv); 
+        perror("execvp");
+        _exit(EXIT_FAILURE);
+    }
+    return EXIT_SUCCESS;
+}
 \end{verbatim}
