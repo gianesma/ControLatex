@@ -330,4 +330,42 @@ Esistono numerose \textbf{varianti} ma queste sono le più importanti:
     \item \textbf{SDSP (Single Destination Shortest Path)}: Viene fornito in input solo la destinazione e vengono restituiti i percorsi minimi da ogni vertice del grafo.
     \item \textbf{APSP (All Pairs Shortest Path)}: Vengono restituiti tutti percorsi minimi per ogni coppia di vertici del grafo. 
 \end{itemize}
+In generale, indichiamo il \textbf{peso di un cammino minimo} dal vertice $u$ al vertice $v$ 
+con questa notazione:
+\[ \omega (p) = \delta (u,v)    \]
+Se un nodo \textbf{non è raggiungibile} in alcun modo allora il peso sarà:
+\[  \delta (u,v) = +\infty    \]
+
+
+
+\subsection{Proprietà}
+Gli algoritmi per cammini minimi godono delle seguenti proprietà:
+\begin{itemize}
+    \item \textbf{Sottostruttura ottima}: ogni sotto-percorso del cammino minimo è a sua volta minimo (ottimo).
+    Questa proprietà è molto importante in quanto consente l'utilizzo di algoritmi \textbf{greedy} (vd. \href{greedy}{greedy}).
+    \item \textbf{Cicli}: nel caso in cui non ci sono cicli di peso negativo all'interno del grafo
+    il peso del cammino minimo è ben definito. Invece nel caso in cui ci sono cicli di peso negativo
+    il peso del cammino minimo non è definito e diciamo che il peso di tale cammino è $\delta(s,v) = -\infty$.
+    Vediamo un esempio:
+    \begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.5\linewidth]{../images/ciclo_negativo.jpg}
+    %\label{label}
+\end{figure}
+    
+    \item \textbf{(Non) Unicità}: I cammini minimi non sono necessariamente unici, nè lo sono gli alberi dei cammini minimi.
+
+\end{itemize}
+
+\subsection{Rappresentazione dei cammini minimi}
+Gli algoritmi per i cammini minimi non solo calcolano il peso del cammino minimo, ma permettono di sapere 
+i vertici che compongono tale cammino. Dato un grafo $G= (V,E)$ per ogni vertice $v \in V$ manteniamo 
+un \textbf{predecessore} $\bm{v.\pi}$ che può essere un altro vertice o il valore \textsc{nil}. Gli algoritmi
+per i cammini minimi impostano $\pi$ in modo che la catena di predecessori che inizia da un vertice $v$
+percorra all'indietro un cammino minimo da $s$ a $v$. Quindi, per ogni vertice $v \neq$ \textsc{nil},
+possiamo stampare un cammino minimo da $s$ a $v$.
+
+\subsection{Rilassamento}
+\subsection{Algoritmo di Bellman-Ford}
+\subsection{Algoritmo di Dijkstra}
 
