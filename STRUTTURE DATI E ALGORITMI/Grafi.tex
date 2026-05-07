@@ -342,7 +342,7 @@ Se un nodo \textbf{non è raggiungibile} in alcun modo allora il peso sarà:
 Gli algoritmi per cammini minimi godono delle seguenti proprietà:
 \begin{itemize}
     \item \textbf{Sottostruttura ottima}: ogni sotto-percorso del cammino minimo è a sua volta minimo (ottimo).
-    Questa proprietà è molto importante in quanto consente l'utilizzo di algoritmi \textbf{greedy} (vd. \href{greedy}{greedy}).
+    Questa proprietà è molto importante in quanto consente l'utilizzo di algoritmi \textbf{greedy} (vd. \ref{greedy}).
     \item \textbf{Cicli}: nel caso in cui non ci sono cicli di peso negativo all'interno del grafo
     il peso del cammino minimo è ben definito. Invece nel caso in cui ci sono cicli di peso negativo
     il peso del cammino minimo non è definito e diciamo che il peso di tale cammino è $\delta(s,v) = -\infty$.
@@ -366,6 +366,59 @@ percorra all'indietro un cammino minimo da $s$ a $v$. Quindi, per ogni vertice $
 possiamo stampare un cammino minimo da $s$ a $v$.
 
 \subsection{Rilassamento}
+Gli algoritmi che vedremo usano la tecnica del \textbf{rilassamento}. Per ogni vertice $v \in V$, gli algoritmi per i cammini minimi da sorgente unica (single source) 
+mantengono un attributo $v.d$ che rappresenta la \textbf{stima del cammino minimo}, ovvero il percorso provvisorio minimo che va dalla sorgente fino al vertice che stiamo analizzando.
+Il processo di rilassamento di un arco $(u,v)$ consiste nel verificare se passando per $u$, è possibile migliorare il cammino minimo per $v$ precedentemente trovato.
+Arrivati alla fine di questo processo quindi avremo un percorso minimo che parte da $s$ e visita tutti i vertici del grafo.\smallskip\\
+Vediamo un esempio:
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.9\linewidth]{../images/esempio_rilassamento}
+    %\label{label}
+\end{figure}
+\noindent Creiamo un tabella in costante aggiornamento dove teniamo traccia dei predecessori e delle stime delle distanze. All'inizio le stime delle distanze sono impostate tutte a $\infty$
+tranne la sorgente la cui distanza da se stessa è ovviamente 0. Successivamente procediamo in questa maniera:
+\begin{enumerate}
+    \item Seleziono la distanza stimata minima, ovvero seleziono il vertice la cui distanza stimata è minima rispetto a tutte quelle nella colonna, nel primo caso la distanza minima è 0, quindi 
+    selezioniamo il vertice $A$.
+    \item Una volta selezionato il vertice, verifichiamo quali vertici posso raggiungere a partire dal vertice selezionato e con che peso avviene tale raggiungimento. Nel nostro caso, abbiamo selezionato il vertice
+    $A$, da $A$ possiamo arrivare a $F$ con costo 1, possiamo arrivare a $B$ con costo 3 e possiamo arrivare a $E$ con costo 2.
+    \item Infine dobbiamo aggiornare la tabella con i valori che abbiamo trovato, impostando $A$ come predecessore di $A,B,E$ e aggiornando la stima delle distanze nella prossima colonna con i costi del raggiungimento di ogni vertice.
+    Nella colonna successiva, quindi, ci saranno le distanze aggiornate e ora continuiamo il processo ripartendo il con lo step (1.) (selezionando la distanza minima ecc...), mentre il nodo che avevamo in precedenza selezionato
+    lo abbiamo segnato con una barra rossa. Quando aggiorniamo i dati, seguiamo il criterio principale di trovare il percorso minimo, quindi aggiorneremo un valore se e solo se è minore di quello attuale.
+\end{enumerate}
+Il processo di rilassamento sarà concluso quando tutta la colonna delle distanza stimate sarà composta da barre rosse, questo vorrà dire che abbiamo visitato tutti i vertici e che abbiamo delineato il cammino minimo.
+
+
 \subsection{Algoritmo di Bellman-Ford}
-\subsection{Algoritmo di Dijkstra}
+L'algortmo di \textbf{Bellman-Ford} risolve il problema dei cammini minimi da sorgente unica nel caso generale in cui i  pesi degli archi \textbf{possono essere negativi}.
+Dato un grafo orientato pesato $G = (V,E)$ con vertice sorgente $s$ e funzione peso $w : E \rightarrow \mathbb{R}$ (ovvero che a ogni arco viene assegnato un numero reale rappresentate il suo peso), 
+l'algoritmo di Bellman-Ford restituisce un valore booleano che indica se esiste un ciclo di peso negativo che
+è raggiungibile dalla sorgente. Se un tale ciclo esiste, l'algoritmo indica che il problema non ha soluzione. 
+Se un tale ciclo non esiste, l'algoritmo fornisce i cammini minimi e i loro pesi.
+La procedura \texttt{BELLMAN-FORD} \textbf{rilassa} gli archi, riducendo progressivamente il valore stimato $v.d$ per il peso di un cammino minimo dalla sorgente $s$ a ciascun vertice $v \in V$,
+fino a raggiungere il peso effettivo $\delta(s, v)$ di un cammino minimo.\smallskip\\
+Ecco lo \textbf{pseudocodice}:
+\begin{verbatim}
+    BELLMAN-FORD(G, w, s)
+    INITIALIZE-SINGLE-SOURCE(G, s)    
+    for i = 1 to |G.V| - 1
+        for ogni arco (u, v) in G.E
+            RELAX(u, v, w)     // applica il rilassamento
+    for ogni arco (u, v) in G.E
+        if v.d > u.d + w(u, v)
+            return FALSE
+    return TRUE
+\end{verbatim}
+L'algoritmo restituisce \textsc{true} se e soltanto se il grafo non contiene cicli di peso negativo che sono raggiungibili dalla sorgente.\smallskip\\
+Vediamo un esempio:
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=1\linewidth]{../images/Bellman_Ford}
+\end{figure}
+
+
+\noindent Invece, per quanto riguarda problemi di cammino minimo da un unica sorgente con archi che \textbf{non sono mai positivi}, esiste \textbf{l'algoritmo di} \textbf{Dijkstra}, anch'esso basato sulla tecnica del rilassamento ma che non abbiamo approfondito.
+
+
 
