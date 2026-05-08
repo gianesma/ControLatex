@@ -319,7 +319,7 @@ prima, in quanto non è adiacente a nessun vertice a distanza minore $k-1$, infa
 \section{Shortest Path (Percorsi minimi)}
 Il problema dei cammini minimi prende in input un grafo orientato pesato 
 $G(V,E)$ con una funzione peso $\omega:E \to \mathbb{R}$ che associa ad ogni arco un numero reale 
-che rappresenta il suo peso. $V$ è l'insieme di vertici $v_1,v_2,\dots, v_n$. Il problema 
+che rappresenta il suo peso. $V$ è l'insieme dei vertici $v_1,v_2,\dots, v_n$. Il problema 
 restituisce il cammino minimo (sequenza di nodi) partendo da un nodo sorgente fino ad un nodo destinazione di un grafo. Nel caso di 
 grafi non pesati il cammino minimo è rappresentato dal cammino più corto, mentre nel caso di grafi pesati il cammino minimo è quello che ha peso totale minimo.\smallskip\\
 Esistono numerose \textbf{varianti} ma queste sono le più importanti:
@@ -328,7 +328,7 @@ Esistono numerose \textbf{varianti} ma queste sono le più importanti:
     il percorso minimo tra sorgente e destinazione.
     \item \textbf{SSPS (Single Source Shortest Path)}: Viene fornito in input solo la sorgente e viene restituito il percorso minimo per visitare tutti i vertici del grafo.
     \item \textbf{SDSP (Single Destination Shortest Path)}: Viene fornito in input solo la destinazione e vengono restituiti i percorsi minimi da ogni vertice del grafo.
-    \item \textbf{APSP (All Pairs Shortest Path)}: Vengono restituiti tutti percorsi minimi per ogni coppia di vertici del grafo. 
+    \item \textbf{APSP (All Pairs Shortest Path)}: Vengono restituiti tutti percorsi minimi per ogni coppia di vertici (sorgente, destinazione) del grafo. 
 \end{itemize}
 In generale, indichiamo il \textbf{peso di un cammino minimo} dal vertice $u$ al vertice $v$ 
 con questa notazione:
@@ -384,14 +384,14 @@ tranne la sorgente la cui distanza da se stessa è ovviamente 0. Successivamente
     \item Una volta selezionato il vertice, verifichiamo quali vertici posso raggiungere a partire dal vertice selezionato e con che peso avviene tale raggiungimento. Nel nostro caso, abbiamo selezionato il vertice
     $A$, da $A$ possiamo arrivare a $F$ con costo 1, possiamo arrivare a $B$ con costo 3 e possiamo arrivare a $E$ con costo 2.
     \item Infine dobbiamo aggiornare la tabella con i valori che abbiamo trovato, impostando $A$ come predecessore di $A,B,E$ e aggiornando la stima delle distanze nella prossima colonna con i costi del raggiungimento di ogni vertice.
-    Nella colonna successiva, quindi, ci saranno le distanze aggiornate e ora continuiamo il processo ripartendo il con lo step (1.) (selezionando la distanza minima ecc...), mentre il nodo che avevamo in precedenza selezionato
+    Nella colonna successiva, quindi, ci saranno le distanze aggiornate e continueremo il processo ripartendo il con lo step (1.) (selezionando la distanza minima ecc...), mentre il nodo che avevamo in precedenza selezionato
     lo abbiamo segnato con una barra rossa. Quando aggiorniamo i dati, seguiamo il criterio principale di trovare il percorso minimo, quindi aggiorneremo un valore se e solo se è minore di quello attuale.
 \end{enumerate}
 Il processo di rilassamento sarà concluso quando tutta la colonna delle distanza stimate sarà composta da barre rosse, questo vorrà dire che abbiamo visitato tutti i vertici e che abbiamo delineato il cammino minimo.
 
 
 \subsection{Algoritmo di Bellman-Ford}
-L'algortmo di \textbf{Bellman-Ford} risolve il problema dei cammini minimi da sorgente unica nel caso generale in cui i  pesi degli archi \textbf{possono essere negativi}.
+L'algoritmo di \textbf{Bellman-Ford} risolve il problema dei cammini minimi da sorgente unica nel caso generale in cui i  pesi degli archi \textbf{possono essere negativi}.
 Dato un grafo orientato pesato $G = (V,E)$ con vertice sorgente $s$ e funzione peso $w : E \rightarrow \mathbb{R}$ (ovvero che a ogni arco viene assegnato un numero reale rappresentate il suo peso), 
 l'algoritmo di Bellman-Ford restituisce un valore booleano che indica se esiste un ciclo di peso negativo che
 è raggiungibile dalla sorgente. Se un tale ciclo esiste, l'algoritmo indica che il problema non ha soluzione. 
