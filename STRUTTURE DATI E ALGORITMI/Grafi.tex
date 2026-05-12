@@ -314,12 +314,169 @@ che corrisponde alla proprietà della coda. Il vertice $v$ a distanza $k$ non pu
 prima, in quanto non è adiacente a nessun vertice a distanza minore $k-1$, infatti a tale distanza
 è presente $u$ distante da $s$ $k-1$, a cui $s$ è adiacente.
 \end{proof}
+<<<<<<< HEAD
+\section{DFS}
+L’algoritmo DFS (deep-first search) visita in profondità un grafo, ispezionando gli archi uscenti
+a partire dall’ultimo vertice $v$ scoperto. Quando tutti gli archi di $v$ sono stati ispezionati ”torna
+indietro” per ispezionare i restanti archi del vertice da cui $v$ era stato scoperto
+\subsection{Pseudocodice}
+\begin{verbatim}
+    DFS(G,s){
+        foreach u in G.V
+            u.color = "BIANCO"
+            u.p = nil
+            time = 0
+        foreach u in G.v
+            if u.color = "BIANCO"
+                DFS_VISIT(G, u)
+    }
+    DFS_VISIT{
+        time = time + 1
+        u.d = time // istante di scoperta
+        u.color = "GRIGIO"
+        foreach v in G.adj[u]
+            if v.color = "BIANCO"
+                v.p = u
+                DFS_VISIT(G, v) // chiamo ricorsivamente sul primo sul primo nodo non ancora scoperto
+        time = time + 1
+        u.f = time // istante di completamento
+        u.color = "NERO"
+    }
+\end{verbatim}
+\noindent FOTOOOOOOOOOOOOOOOOOOOOOO
+\subsection{Analisi}
+DFS pone due marcatempi su ogni vertice $u$, in particolare il primo identifica il tempo di scoperta 
+$(u.d)$ e viene assegnato quando $u$ diventa \textbf{grigio}, mentre il secondo marcatempo identifica
+il tempo di completamento $(u.f)$ ossia quando il vertice è completato e colorato di \textbf{nero}. DFS
+inizializza il colore di tutti i vertici a \textbf{bianco} e inizializza una variabile globale che identifica il
+tempo. Successivamente chiama \textbf{$DFS_VISIT$} sui vertici $u$ che non sono stati ancora visitati.
+All’interno di $DFS_VISIT$ viene incrementata la variabile tempo e viene assegnato al primo
+marcatore di $u$, indicandone l’istante in cui viene colorato di $"GRIGIO"$. Dopodichè si prende
+la lista di adiacenza del nodo $u$ e si scorre richiamando \textbf{ricorsivamente} $DFS_VISIT$ sul nodo $v$
+facente parte della lista di $u$. Infine viene incrementata nuovamente la variabile tempo e viene
+assegnata al marcatore di completamento di $u$. La complessità di DFS è \textbf{$O(|V|+ |E|)$}, dove
+\textbf{$|V|$} è il numero di vertici del grafo e \textbf{$|E|$} è il numero di archi del grafo.
+\subsection{Teorema delle Parentesi}
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{theorem}
+In una qualsiasi DFS di un grafo $G = (V, E)$ (orientato o non orientato), per ogni coppia di
+nodi $u, v$ è soddisfatta una e una sola delle seguenti tre condizioni:
+\begin{enumerate}
+    \item Gli intervalli $[u.d, u.f]$ e $[v.d, v.f]$ sono completamente disgiunti; $u$ e $v$ non sono discendenti
+uno dell’altro nella foresta della visita in profondità
+    \item L’intervallo $[u.d, u.f]$ è interamente contenuto nell’intervallo $[v.d, v.f]$ e $u$ è un discendente
+di $v$ in un albero di visita in profondità
+    \item L’intervallo $[v.d, v.f]$ è interamente contenuto nell’intervallo $[u.d, u.f]$ e $v$ è un discendente
+di $u$ in un albero di visita in profondità. 
+\end{enumerate}   
+\end{theorem}}}
+\begin{proof}
+    \textbf{Caso $u.f < v.d$}\\
+    Sapendo che $u.d < u.f < v.f$ ne segeu che:\\
+    $$ u.d < u.f < v.d < v.f $$\\
+    e si decide che i due intervalli non hanno intersezione e quindi sono disgiunti. Bisogna notare che essendo 
+    i due intervalli disgiunti si ha che il vertice $v$ viene scoperto dopo che il nodo $u$ è stato visitato, 
+    segue che non esiste un cammino che congiunge $u$ e $v$.
+    \textbf{Caso $u.f > v.d$}\\
+    In questo caso si ha che il vertice $v$ viene scoperto quando $u$ è grigio (in esplorazione), quindi
+    la lista delle adiacenze di $v$ viene completamente esplorata prima di riprendere l’esplorazione
+    di $u$ e pertanto $v$ viene completato prima di $u$.
+\end{proof}
+\subsection{Teorema del cammino bianco}
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{theorem}
+In una foresta di visita in profondità di un grafo $G = (V, E)$ (orientato o non orientato), il
+vertice $v$ è discendente del vertice $u$ se e solo se, al tempo $u.d$ quando $u$ viene scoperto il vertice
+$v$ può essere raggiunto da $u$ lungo un cammino che è formato esclusivamente da vertici bianchi.
+\end{theorem}}}
+\begin{proof}
+    $\Rightarrow )$ Sia $v$ un discendente di $u$, sia $P=x_0, x_1,....,x_k$ (con $x_0=u e x_k=v$) la sequenza 
+    dei vertici da $u$ a $v$. Sapendo che $x_{i+1}$ viene scoperto dalla lista delle adiacenze di $x_i$, esiste 
+    l'arco ($x_i, x_{i+1}$) e banalmente $x_i$ viene visitato prima di $x_{i+1}$. Quindi nel cammino P quando 
+    $x_0 = u$ viene scoperto, tutti i nodi sucessivi ancora non sono stati scoeprti e quindi sono bianchi.\\
+    $\Leftarrow )$ Supponiamo che quando u viene scoperto esista un cammino bianco da $u$ a $v$, allora essendo
+    che $v$ viene scoperto dopo $u$, dalla proprietà delle parentesi si ha che\\
+    $$(u...u)...(v...v)$$\\
+    quindi sono disgiunti, oppure\\
+    $$ (u...(v...v)...u)$$\\
+    quindi sono discendenti.        
+    Supponiamo per assurdo che\\
+    $$(u...u)...(v...v)$$
+    e che quindi $v$ non sia discendete di $u$. Si può assumere che $v$ sia il primo vertice del cammino
+    bianco che non è discendete di $u$. Sia $w = x_{k-1}$, il vertice che precede $v$ nel cammino bianco.
+    Siccome $w$ è discendente di $u$ per la proprietà delle parentesi si ha che\\
+    $$(u...(w...w)...u)...(v...v)$$\\
+    ma questo è assurdo in quanto $v$ è nella lista delle adiacenze di $w$ e quindi deve essere scoperto
+    prima che $w$ sia completato. Quindi si conclude che $v$ è discendete di $u$.    
+\end{proof}
+\subsection{Tipi di archi DFS}
+Sia $uv \in E$ un arco, qeusto può essere classificato in:
+\begin{itemize}
+    \item \textbf{Archi d'albero:} $v$ è scoperto di $u$ quindi ($v.status = UNEXPLORED$)
+    \item \textbf{Archi all'indietro:} $u=v$, oppure v è ascendente di $u$ ($v.status = EXPLORING $)
+    \item \textbf{Archi in avanti:} $v$ discendente di $u$ ($v.status=EXPLORED AND v.timestamp > u.timestamp$)
+    \item \textbf{Archi trasversali:} $u$ e $v$ appartengono a rami diversi ($v.status=EXPLORED AND v.timestamp < u.timestamp$) 
+\end{itemize}
+\noindent Il timestamp a cui fanno riferimento è quello di scoeprta dei nodi.
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{theorem}
+   In una DFS di un grafo $G=(V,E)$ non orientato, gli archi di G possono essere solo archi dell'albero (T) o archi all'indietro.
+\end{theorem}}}
+\subsection{Ordinamento Topologico}
+Un Ordinamento Topologico di un DAG (Directed Acyclic Graph) $G =(V, E)$ è un ordinamento
+totale di tutti i suoi vertici tale che, se $G$ contiene un arco $(u, v)$, allora $u$ appare prima di $v$
+nell’ordinamento.\\
+\textbf{Topological-Sort(G)}
+\begin{enumerate}
+    \item Chiama DFS(G) per calcolare i tempi di completamento $v.f$ per ciascun vertice $v$
+    \item Una volta completata la visita di un vertice, inserisce il vertice in testa a una lista concatenata
+    \item return la lista concatenata dei vertici
+\end{enumerate}
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{theorem}
+   Un grafo orientato è aciclico (un DAG) se, e solo se, nella visita in profondità non si trova nessun arco all'indietro
+\end{theorem}}}
+\begin{proof}
+    $\Rightarrow )$ Se in una visita in profondità si trova un arco all’indietro $vu$, allora tale arco aggiunto al
+cammino da $u$ a $v$ (che esiste in quanto $v$ è discendente di $u$) forma un ciclo.
+    $\Leftarrow )$ Viceversa, supponiamo che il grafo abbia un ciclo. Sia $v$ il primo vertice del ciclo ad essere
+scoperto e sia $uv$ l’arco del ciclo che entra in $v$. Quando $v$ viene scoperto, esiste un cammino
+bianco da $v$ ad $u$ e quindi, per la proprietà del cammino bianco, $u$ è discendente di $v$. Di
+conseguenza $uv$ è un arco all’indietro.
+\end{proof}
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{theorem}
+   TOPOLOGICAL-SORT produce un ordinamento topologico del DAG che gli viene fornito in input
+\end{theorem}}}
+\begin{proof}
+    Basta dimostrare che per ogni arco $uv$ il vertice $v$ viene finito prima del vertice $u$.
+Quando l’arco $uv$ viene esplorato, il vertice $u$ è grigio mentre il vertice $v$ non può
+essere grigio, altrimenti $uv$ sarebbe un arco all’indietro.\\
+Se $v$ è nero, allora è già stato completato, mentre $u$ non lo è ancora.\\
+Se $v$ è bianco, allora è discendente di $u$ per la proprietà del cammino bianco e
+viene completato prima di $u$ per la proprietà delle parentesi.
+\end{proof}
+\subsection{Componenti fortemente connesse}
+\begin{definition}
+    Una componente fortemente connessa (CFC) di un grafo orientato $G = (V,E)$ è un insieme
+    massimale di vertici $U \subseteq V$ tale che, $ \forall u,v \in U$ esiste un cammino da $u$ a $v$ ed un cammino
+    da $v$ ad $u$.  
+\end{definition}
+\noindent Per trovare le componenti fortemente connesse di un grafo è sufficiente seguire questi passi:
+\begin{enumerate}
+    \item Chiamare DFS sul grafo e calcolare i tempi di completamento per ciascun vertice;
+    \item Creare il grafo trasposto di G, ottenuto invertendo il verso di tutti gli archi;
+    \item Chiamare DFS sul grafo trasposto considerando i vertici in ordine decrescente di tempo
+            di completamento calcolato al punto 1.;
+    \item Restituire o stampare le componenti fortemente connesse del grafo.
+\end{enumerate}
+\subsection{Grafo Trasposto $G^T$}
+Dato un grafo $G=(V,E)$, il grafo trasposto $G^T=(V,E^T)$ è il grafo avente gli stessi vertici di G 
+e un insieme di archi definiti come\\
+$E^T={(u,v):(v,u) \ in E}$
+\noindent AGGIUNGI FOTO ESEMPIO
+=======
 
 
 \section{Shortest Path (Percorsi minimi)}
 Il problema dei cammini minimi prende in input un grafo orientato pesato 
 $G(V,E)$ con una funzione peso $\omega:E \to \mathbb{R}$ che associa ad ogni arco un numero reale 
-che rappresenta il suo peso. $V$ è l'insieme di vertici $v_1,v_2,\dots, v_n$. Il problema 
+che rappresenta il suo peso. $V$ è l'insieme dei vertici $v_1,v_2,\dots, v_n$. Il problema 
 restituisce il cammino minimo (sequenza di nodi) partendo da un nodo sorgente fino ad un nodo destinazione di un grafo. Nel caso di 
 grafi non pesati il cammino minimo è rappresentato dal cammino più corto, mentre nel caso di grafi pesati il cammino minimo è quello che ha peso totale minimo.\smallskip\\
 Esistono numerose \textbf{varianti} ma queste sono le più importanti:
@@ -328,7 +485,7 @@ Esistono numerose \textbf{varianti} ma queste sono le più importanti:
     il percorso minimo tra sorgente e destinazione.
     \item \textbf{SSPS (Single Source Shortest Path)}: Viene fornito in input solo la sorgente e viene restituito il percorso minimo per visitare tutti i vertici del grafo.
     \item \textbf{SDSP (Single Destination Shortest Path)}: Viene fornito in input solo la destinazione e vengono restituiti i percorsi minimi da ogni vertice del grafo.
-    \item \textbf{APSP (All Pairs Shortest Path)}: Vengono restituiti tutti percorsi minimi per ogni coppia di vertici del grafo. 
+    \item \textbf{APSP (All Pairs Shortest Path)}: Vengono restituiti tutti percorsi minimi per ogni coppia di vertici (sorgente, destinazione) del grafo. 
 \end{itemize}
 In generale, indichiamo il \textbf{peso di un cammino minimo} dal vertice $u$ al vertice $v$ 
 con questa notazione:
@@ -384,14 +541,14 @@ tranne la sorgente la cui distanza da se stessa è ovviamente 0. Successivamente
     \item Una volta selezionato il vertice, verifichiamo quali vertici posso raggiungere a partire dal vertice selezionato e con che peso avviene tale raggiungimento. Nel nostro caso, abbiamo selezionato il vertice
     $A$, da $A$ possiamo arrivare a $F$ con costo 1, possiamo arrivare a $B$ con costo 3 e possiamo arrivare a $E$ con costo 2.
     \item Infine dobbiamo aggiornare la tabella con i valori che abbiamo trovato, impostando $A$ come predecessore di $A,B,E$ e aggiornando la stima delle distanze nella prossima colonna con i costi del raggiungimento di ogni vertice.
-    Nella colonna successiva, quindi, ci saranno le distanze aggiornate e ora continuiamo il processo ripartendo il con lo step (1.) (selezionando la distanza minima ecc...), mentre il nodo che avevamo in precedenza selezionato
+    Nella colonna successiva, quindi, ci saranno le distanze aggiornate e continueremo il processo ripartendo il con lo step (1.) (selezionando la distanza minima ecc...), mentre il nodo che avevamo in precedenza selezionato
     lo abbiamo segnato con una barra rossa. Quando aggiorniamo i dati, seguiamo il criterio principale di trovare il percorso minimo, quindi aggiorneremo un valore se e solo se è minore di quello attuale.
 \end{enumerate}
 Il processo di rilassamento sarà concluso quando tutta la colonna delle distanza stimate sarà composta da barre rosse, questo vorrà dire che abbiamo visitato tutti i vertici e che abbiamo delineato il cammino minimo.
 
 
 \subsection{Algoritmo di Bellman-Ford}
-L'algortmo di \textbf{Bellman-Ford} risolve il problema dei cammini minimi da sorgente unica nel caso generale in cui i  pesi degli archi \textbf{possono essere negativi}.
+L'algoritmo di \textbf{Bellman-Ford} risolve il problema dei cammini minimi da sorgente unica nel caso generale in cui i  pesi degli archi \textbf{possono essere negativi}.
 Dato un grafo orientato pesato $G = (V,E)$ con vertice sorgente $s$ e funzione peso $w : E \rightarrow \mathbb{R}$ (ovvero che a ogni arco viene assegnato un numero reale rappresentate il suo peso), 
 l'algoritmo di Bellman-Ford restituisce un valore booleano che indica se esiste un ciclo di peso negativo che
 è raggiungibile dalla sorgente. Se un tale ciclo esiste, l'algoritmo indica che il problema non ha soluzione. 
@@ -422,3 +579,4 @@ Vediamo un esempio:
 
 
 
+>>>>>>> 16d05b0675fd351fa4ad45098c100dc6fb390d02
