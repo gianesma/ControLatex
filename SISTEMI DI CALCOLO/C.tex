@@ -806,3 +806,126 @@ int main(){
     return EXIT_SUCCESS;
 }
 \end{verbatim}
+\newpage
+\section{Thread}
+I thread nascono per ridurre il costo computazionale (\textit{overhead}) dovuto alla multiprogrammazione.  
+Un processo può essere composto da una o più unità di esecuzione chiamate \texttt{thread}.\\
+Un \textbf{thread} è un'unità di esecuzione più leggera rispetto a un processo.  
+I thread appartenenti allo stesso processo condividono:
+\begin{itemize}
+    \item lo stesso codice del programma;
+    \item la gran parte dei dati in memoria (costanti, variabili globali,
+    variabili statiche, heap, ecc\dots);
+    \item file aperti;
+    \item segnali e le loro routine di gestione;
+    \item directory di lavoro corrente;
+    \item diritti dell'utente proprietario del processo;
+    \item lo stesso spazio di memoria;
+    \item le stesse risorse del processo padre;
+\end{itemize}
+Ovvero la \texttt{sezione dati}, \textbf{\textcolor{red}{TUTTI}} i thread associati ad uno stesso processo ne condividono l'immagine di memoria.\\
+Grazie a questa condivisione, i thread possono collaborare ed eseguire più attività contemporaneamente 
+all'interno dello stesso processo, migliorando efficienza e reattività del programma.\\
+In pratica, un thread può essere visto come una sequenza di istruzioni che viene 
+eseguita in modo indipendente rispetto agli altri thread dello stesso programma.\\
+Ciascun thread gestisce in modo indipendente le seguenti informazioni:
+\begin{enumerate}
+   \item Un identificatore univoco \textbf{(Thread ID)};
+   \item \textbf{Stack}
+   \item \textbf{Stato} della CPU (registri, IP, ecc\dots)
+   \item alcune variabili \textbf{globali} (ad esempio, errno)
+   \item \textbf{Metadati} (proprietà specifiche di ogni thread, come priorità, stato, ecc\dots)
+\end{enumerate}
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.85\linewidth]{../images/Thread Multipli REAL.png}
+    \caption{Thread}
+    %\label{label}
+\end{figure}
+Come possiamo vedere nei thread multipli in ogni stack il sistema operativo inserisce il \textbf{guard page} ovvero uno
+spazio di memoria non accessibile che serve a rilevare eventuali overflow dello stack, evitando così che un thread possa sovrascrivere lo stack di un altro thread.\\
+\textbf{\textcolor{red}{ATTENZIONE:}} se un thread va in \texttt{crash} a causa di un errore di segmentazione (ad esempio, accedendo a una posizione di memoria non valida),
+tutti i thread dello stesso processo vanno in crash, poiché condividono lo stesso spazio di memoria.\\
+Riassumendo:
+\begin{enumerate}
+    \item Un thread esiste all'interno di un processo e ne condivide le risorse;
+    \item Ogni thread ha un controllo del flusso di esecuzione del codice indipendentemente dagli altri;
+    \item Un thread duplica le risorse minime necessarie per il suo funzionamento;
+    \item Un thread condivide le risorse del processo con gli altri thread dello stesso processo;
+\end{enumerate}
+
+\subsection{Posix Thread}
+I Posix Thread (Pthread) sono una specifica standard per la gestione dei thread nei sistemi operativi Unix-like.\\
+\textbf{\textcolor{red}{IMPORTANTE}}: per usaere i posix thread bisogna compilare con switch "-lpthread" per linkare la libreria pthread.\\
+\noindent Vediamo una prima funzione di \texttt{pthread.h}:
+\begin{verbatim}
+#include <pthread.h>
+int pthread_create(pthread *threadID, const pthread_attr_t *attr, 
+                    void *(*start_routine)(void *), void *arg);
+\end{verbatim}
+Questa funzione restituisce 0 in caso di successo, altrimenti restituisce un codice di errore, mentre per quanto riguarda i parametri:
+\begin{itemize}
+    \item \textbf{pthread *threadID} $\rightarrow$ puntatore a una variabile di tipo pthread che in caso
+    di successo contiene l'identificatore del thread creato
+    \item \textbf{const pthread\_attr\_t *attr} $\rightarrow$ struct con cui specificare attributi del thread
+    \item \textbf{void *(*start\_routine)(void *)} $\rightarrow$ puntatore alla funzione che il thread dovrà eseguire
+    \item \textbf{void *arg} $\rightarrow$ eventuali parametri per la funzione eseguita nel thread
+\end{itemize}
+Nei thread la funzione exit non è la funzione giusta da utilizzare, ma dovremmo usare:
+\begin{verbatim}
+void pthread_exit(void *retval)
+\end{verbatim}
+L'istruzione termina il thread corrente restituendo \texttt{retval}, ovvero il parametro che abbiamo passato.
+Vediamo un esempio:
+\begin{verbatim}
+void  *PrintHello(void *threadid){
+    long tid;
+    tid = (long) threadid;
+    printf("Hello Word! Sono il thread #%ld!\n", tid);
+    pthread_exit(NULL);
+}
+int main(int argc, char *argv[]){
+    pthread_t threads[NUM_THREADS];
+    int rc;
+    long t;
+    for(t = 0; t < NUM_THREADS; t++){
+        printf("Funzione main: creo il thread %ld\n", t);
+        rc = pthread_create(&threads[t], NULL, PrintHello, (void*) t);
+        pthread_detach(threads[t]);
+        if(rc){
+            printf("ERRORE: codice %d\n", rc);
+            exit(-1);
+        }
+    }
+    sleep(2);
+}
+\end{verbatim}
+\noindent Abbiamo poi:
+\begin{verbatim}
+int pthread_join(pthread_t threadID, void ** retval);
+                        |               |
+                        |               |____ puntatore a variabile in cui sarà memorizzato 
+                        |                     il valore di ritorno
+                        |
+                        |_____ ID del thread di cui si vuole attendere
+                               la terminazione
+\end{verbatim}
+La funzione \texttt{pthread\_join} permette a un thread di aspettare la terminazione di un altro thread esclusivamente se "joinable" al thread che li ha creati.\\
+\noindent Un thread può essere:
+\begin{itemize}
+    \item \textbf{joinable} $\rightarrow$ il thread che lo ha creato può aspettarne la fine usando \texttt{pthread\_join};
+    \item \textbf{detached} $\rightarrow$ termina in modo indipendente e nessun altro thread può aspettarlo con \texttt{pthread\_join}.
+\end{itemize}
+\noindent Quindi, quando un thread è \textbf{joinable}, il thread creatore può:
+\begin{itemize}
+    \item fermarsi in attesa della sua terminazione;
+    \item recuperare il valore restituito dal thread;
+    \item liberare correttamente le risorse utilizzate.
+\end{itemize}
+\noindent Per rendere un thread detached, si può usare la funzione:
+\begin{verbatim}
+int pthread_detach(pthread_t threadID);
+\end{verbatim}
+\textbf{\textcolor{red}{ATTENZIONE:}} se un thread è detached, non è possibile aspettarne la terminazione con \texttt{pthread\_join}. Si dice
+che "distacca" il threadID dal thread che lo ha creato, rendendolo indipendente.\\
+\noindent 
