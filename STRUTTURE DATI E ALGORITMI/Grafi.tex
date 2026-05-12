@@ -314,6 +314,7 @@ che corrisponde alla proprietà della coda. Il vertice $v$ a distanza $k$ non pu
 prima, in quanto non è adiacente a nessun vertice a distanza minore $k-1$, infatti a tale distanza
 è presente $u$ distante da $s$ $k-1$, a cui $s$ è adiacente.
 \end{proof}
+<<<<<<< HEAD
 \section{DFS}
 L’algoritmo DFS (deep-first search) visita in profondità un grafo, ispezionando gli archi uscenti
 a partire dall’ultimo vertice $v$ scoperto. Quando tutti gli archi di $v$ sono stati ispezionati ”torna
@@ -469,3 +470,113 @@ Dato un grafo $G=(V,E)$, il grafo trasposto $G^T=(V,E^T)$ è il grafo avente gli
 e un insieme di archi definiti come\\
 $E^T={(u,v):(v,u) \ in E}$
 \noindent AGGIUNGI FOTO ESEMPIO
+=======
+
+
+\section{Shortest Path (Percorsi minimi)}
+Il problema dei cammini minimi prende in input un grafo orientato pesato 
+$G(V,E)$ con una funzione peso $\omega:E \to \mathbb{R}$ che associa ad ogni arco un numero reale 
+che rappresenta il suo peso. $V$ è l'insieme dei vertici $v_1,v_2,\dots, v_n$. Il problema 
+restituisce il cammino minimo (sequenza di nodi) partendo da un nodo sorgente fino ad un nodo destinazione di un grafo. Nel caso di 
+grafi non pesati il cammino minimo è rappresentato dal cammino più corto, mentre nel caso di grafi pesati il cammino minimo è quello che ha peso totale minimo.\smallskip\\
+Esistono numerose \textbf{varianti} ma queste sono le più importanti:
+\begin{itemize}
+    \item \textbf{SSPS (Single Pair Shortest Path)}: Viene fornito in input una coppia di sorgente e destinazione, e viene restituito
+    il percorso minimo tra sorgente e destinazione.
+    \item \textbf{SSPS (Single Source Shortest Path)}: Viene fornito in input solo la sorgente e viene restituito il percorso minimo per visitare tutti i vertici del grafo.
+    \item \textbf{SDSP (Single Destination Shortest Path)}: Viene fornito in input solo la destinazione e vengono restituiti i percorsi minimi da ogni vertice del grafo.
+    \item \textbf{APSP (All Pairs Shortest Path)}: Vengono restituiti tutti percorsi minimi per ogni coppia di vertici (sorgente, destinazione) del grafo. 
+\end{itemize}
+In generale, indichiamo il \textbf{peso di un cammino minimo} dal vertice $u$ al vertice $v$ 
+con questa notazione:
+\[ \omega (p) = \delta (u,v)    \]
+Se un nodo \textbf{non è raggiungibile} in alcun modo allora il peso sarà:
+\[  \delta (u,v) = +\infty    \]
+
+
+
+\subsection{Proprietà}
+Gli algoritmi per cammini minimi godono delle seguenti proprietà:
+\begin{itemize}
+    \item \textbf{Sottostruttura ottima}: ogni sotto-percorso del cammino minimo è a sua volta minimo (ottimo).
+    Questa proprietà è molto importante in quanto consente l'utilizzo di algoritmi \textbf{greedy} (vd. \ref{greedy}).
+    \item \textbf{Cicli}: nel caso in cui non ci sono cicli di peso negativo all'interno del grafo
+    il peso del cammino minimo è ben definito. Invece nel caso in cui ci sono cicli di peso negativo
+    il peso del cammino minimo non è definito e diciamo che il peso di tale cammino è $\delta(s,v) = -\infty$.
+    Vediamo un esempio:
+    \begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.5\linewidth]{../images/ciclo_negativo.jpg}
+    %\label{label}
+\end{figure}
+    
+    \item \textbf{(Non) Unicità}: I cammini minimi non sono necessariamente unici, nè lo sono gli alberi dei cammini minimi.
+
+\end{itemize}
+
+\subsection{Rappresentazione dei cammini minimi}
+Gli algoritmi per i cammini minimi non solo calcolano il peso del cammino minimo, ma permettono di sapere 
+i vertici che compongono tale cammino. Dato un grafo $G= (V,E)$ per ogni vertice $v \in V$ manteniamo 
+un \textbf{predecessore} $\bm{v.\pi}$ che può essere un altro vertice o il valore \textsc{nil}. Gli algoritmi
+per i cammini minimi impostano $\pi$ in modo che la catena di predecessori che inizia da un vertice $v$
+percorra all'indietro un cammino minimo da $s$ a $v$. Quindi, per ogni vertice $v \neq$ \textsc{nil},
+possiamo stampare un cammino minimo da $s$ a $v$.
+
+\subsection{Rilassamento}
+Gli algoritmi che vedremo usano la tecnica del \textbf{rilassamento}. Per ogni vertice $v \in V$, gli algoritmi per i cammini minimi da sorgente unica (single source) 
+mantengono un attributo $v.d$ che rappresenta la \textbf{stima del cammino minimo}, ovvero il percorso provvisorio minimo che va dalla sorgente fino al vertice che stiamo analizzando.
+Il processo di rilassamento di un arco $(u,v)$ consiste nel verificare se passando per $u$, è possibile migliorare il cammino minimo per $v$ precedentemente trovato.
+Arrivati alla fine di questo processo quindi avremo un percorso minimo che parte da $s$ e visita tutti i vertici del grafo.\smallskip\\
+Vediamo un esempio:
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.9\linewidth]{../images/esempio_rilassamento}
+    %\label{label}
+\end{figure}
+\noindent Creiamo un tabella in costante aggiornamento dove teniamo traccia dei predecessori e delle stime delle distanze. All'inizio le stime delle distanze sono impostate tutte a $\infty$
+tranne la sorgente la cui distanza da se stessa è ovviamente 0. Successivamente procediamo in questa maniera:
+\begin{enumerate}
+    \item Seleziono la distanza stimata minima, ovvero seleziono il vertice la cui distanza stimata è minima rispetto a tutte quelle nella colonna, nel primo caso la distanza minima è 0, quindi 
+    selezioniamo il vertice $A$.
+    \item Una volta selezionato il vertice, verifichiamo quali vertici posso raggiungere a partire dal vertice selezionato e con che peso avviene tale raggiungimento. Nel nostro caso, abbiamo selezionato il vertice
+    $A$, da $A$ possiamo arrivare a $F$ con costo 1, possiamo arrivare a $B$ con costo 3 e possiamo arrivare a $E$ con costo 2.
+    \item Infine dobbiamo aggiornare la tabella con i valori che abbiamo trovato, impostando $A$ come predecessore di $A,B,E$ e aggiornando la stima delle distanze nella prossima colonna con i costi del raggiungimento di ogni vertice.
+    Nella colonna successiva, quindi, ci saranno le distanze aggiornate e continueremo il processo ripartendo il con lo step (1.) (selezionando la distanza minima ecc...), mentre il nodo che avevamo in precedenza selezionato
+    lo abbiamo segnato con una barra rossa. Quando aggiorniamo i dati, seguiamo il criterio principale di trovare il percorso minimo, quindi aggiorneremo un valore se e solo se è minore di quello attuale.
+\end{enumerate}
+Il processo di rilassamento sarà concluso quando tutta la colonna delle distanza stimate sarà composta da barre rosse, questo vorrà dire che abbiamo visitato tutti i vertici e che abbiamo delineato il cammino minimo.
+
+
+\subsection{Algoritmo di Bellman-Ford}
+L'algoritmo di \textbf{Bellman-Ford} risolve il problema dei cammini minimi da sorgente unica nel caso generale in cui i  pesi degli archi \textbf{possono essere negativi}.
+Dato un grafo orientato pesato $G = (V,E)$ con vertice sorgente $s$ e funzione peso $w : E \rightarrow \mathbb{R}$ (ovvero che a ogni arco viene assegnato un numero reale rappresentate il suo peso), 
+l'algoritmo di Bellman-Ford restituisce un valore booleano che indica se esiste un ciclo di peso negativo che
+è raggiungibile dalla sorgente. Se un tale ciclo esiste, l'algoritmo indica che il problema non ha soluzione. 
+Se un tale ciclo non esiste, l'algoritmo fornisce i cammini minimi e i loro pesi.
+La procedura \texttt{BELLMAN-FORD} \textbf{rilassa} gli archi, riducendo progressivamente il valore stimato $v.d$ per il peso di un cammino minimo dalla sorgente $s$ a ciascun vertice $v \in V$,
+fino a raggiungere il peso effettivo $\delta(s, v)$ di un cammino minimo.\smallskip\\
+Ecco lo \textbf{pseudocodice}:
+\begin{verbatim}
+    BELLMAN-FORD(G, w, s)
+    INITIALIZE-SINGLE-SOURCE(G, s)    
+    for i = 1 to |G.V| - 1
+        for ogni arco (u, v) in G.E
+            RELAX(u, v, w)     // applica il rilassamento
+    for ogni arco (u, v) in G.E
+        if v.d > u.d + w(u, v)
+            return FALSE
+    return TRUE
+\end{verbatim}
+L'algoritmo restituisce \textsc{true} se e soltanto se il grafo non contiene cicli di peso negativo che sono raggiungibili dalla sorgente.\smallskip\\
+Vediamo un esempio:
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=1\linewidth]{../images/Bellman_Ford}
+\end{figure}
+
+
+\noindent Invece, per quanto riguarda problemi di cammino minimo da un unica sorgente con archi che \textbf{non sono mai positivi}, esiste \textbf{l'algoritmo di} \textbf{Dijkstra}, anch'esso basato sulla tecnica del rilassamento ma che non abbiamo approfondito.
+
+
+
+>>>>>>> 16d05b0675fd351fa4ad45098c100dc6fb390d02
