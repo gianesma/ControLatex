@@ -314,7 +314,7 @@ che corrisponde alla proprietà della coda. Il vertice $v$ a distanza $k$ non pu
 prima, in quanto non è adiacente a nessun vertice a distanza minore $k-1$, infatti a tale distanza
 è presente $u$ distante da $s$ $k-1$, a cui $s$ è adiacente.
 \end{proof}
-<<<<<<< HEAD
+\newpage
 \section{DFS}
 L’algoritmo DFS (deep-first search) visita in profondità un grafo, ispezionando gli archi uscenti
 a partire dall’ultimo vertice $v$ scoperto. Quando tutti gli archi di $v$ sono stati ispezionati ”torna
@@ -343,19 +343,42 @@ indietro” per ispezionare i restanti archi del vertice da cui $v$ era stato sc
         u.color = "NERO"
     }
 \end{verbatim}
-\noindent FOTOOOOOOOOOOOOOOOOOOOOOO
+
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.90\linewidth]{../images/dfs.png}
+\end{figure}
+
 \subsection{Analisi}
 DFS pone due marcatempi su ogni vertice $u$, in particolare il primo identifica il tempo di scoperta 
 $(u.d)$ e viene assegnato quando $u$ diventa \textbf{grigio}, mentre il secondo marcatempo identifica
 il tempo di completamento $(u.f)$ ossia quando il vertice è completato e colorato di \textbf{nero}. DFS
 inizializza il colore di tutti i vertici a \textbf{bianco} e inizializza una variabile globale che identifica il
-tempo. Successivamente chiama \textbf{$DFS_VISIT$} sui vertici $u$ che non sono stati ancora visitati.
-All’interno di $DFS_VISIT$ viene incrementata la variabile tempo e viene assegnato al primo
+tempo. Successivamente chiama \textbf{DFS\_VISIT} sui vertici $u$ che non sono stati ancora visitati.
+All’interno di DFS\_VISIT viene incrementata la variabile tempo e viene assegnato al primo
 marcatore di $u$, indicandone l’istante in cui viene colorato di $"GRIGIO"$. Dopodichè si prende
-la lista di adiacenza del nodo $u$ e si scorre richiamando \textbf{ricorsivamente} $DFS_VISIT$ sul nodo $v$
+la lista di adiacenza del nodo $u$ e si scorre richiamando \textbf{ricorsivamente} DFS\_VISIT sul nodo $v$
 facente parte della lista di $u$. Infine viene incrementata nuovamente la variabile tempo e viene
 assegnata al marcatore di completamento di $u$. La complessità di DFS è \textbf{$O(|V|+ |E|)$}, dove
 \textbf{$|V|$} è il numero di vertici del grafo e \textbf{$|E|$} è il numero di archi del grafo.
+\subsection{Proprietà delle parentesi}
+Se si rappresenta:
+\begin{itemize}
+    \item la scoperta di ogni vertice $u$ con una parentesi aperta $(_u$ e 
+    \item il completamento con una parentesi chiusa $_u)$
+\end{itemize}
+\noindent si ottiene una sequenza bilanciata di parentesi.\\
+Ossia, per ogni coppia di vertici $u$ e $v$, ci sono quattro possibilità:
+\begin{enumerate}
+    \item $(_u ... _u)...(_v ... _v)$
+    \item $(_v ... _v)...(_u ... _u)$
+    \item $(_u ...(_v ... _v)... _u)$
+    \item $(_v ...(_u ... _u)... _v)$
+\end{enumerate}
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=1\linewidth]{../images/proprietà parentesi.png}
+\end{figure}
 \subsection{Teorema delle Parentesi}
 \colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{theorem}
 In una qualsiasi DFS di un grafo $G = (V, E)$ (orientato o non orientato), per ogni coppia di
@@ -371,11 +394,11 @@ di $u$ in un albero di visita in profondità.
 \end{theorem}}}
 \begin{proof}
     \textbf{Caso $u.f < v.d$}\\
-    Sapendo che $u.d < u.f < v.f$ ne segeu che:\\
+    Sapendo che $u.d < u.f < v.f$ ne segue che:\\
     $$ u.d < u.f < v.d < v.f $$\\
     e si decide che i due intervalli non hanno intersezione e quindi sono disgiunti. Bisogna notare che essendo 
     i due intervalli disgiunti si ha che il vertice $v$ viene scoperto dopo che il nodo $u$ è stato visitato, 
-    segue che non esiste un cammino che congiunge $u$ e $v$.
+    segue che non esiste un cammino che congiunge $u$ e $v$.\\
     \textbf{Caso $u.f > v.d$}\\
     In questo caso si ha che il vertice $v$ viene scoperto quando $u$ è grigio (in esplorazione), quindi
     la lista delle adiacenze di $v$ viene completamente esplorata prima di riprendere l’esplorazione
@@ -388,7 +411,7 @@ vertice $v$ è discendente del vertice $u$ se e solo se, al tempo $u.d$ quando $
 $v$ può essere raggiunto da $u$ lungo un cammino che è formato esclusivamente da vertici bianchi.
 \end{theorem}}}
 \begin{proof}
-    $\Rightarrow )$ Sia $v$ un discendente di $u$, sia $P=x_0, x_1,....,x_k$ (con $x_0=u e x_k=v$) la sequenza 
+    $\Rightarrow )$ Sia $v$ un discendente di $u$, sia $P=x_0, x_1,....,x_k$ (con $x_0=u$ e $x_k=v$) la sequenza 
     dei vertici da $u$ a $v$. Sapendo che $x_{i+1}$ viene scoperto dalla lista delle adiacenze di $x_i$, esiste 
     l'arco ($x_i, x_{i+1}$) e banalmente $x_i$ viene visitato prima di $x_{i+1}$. Quindi nel cammino P quando 
     $x_0 = u$ viene scoperto, tutti i nodi sucessivi ancora non sono stati scoeprti e quindi sono bianchi.\\
@@ -408,39 +431,43 @@ $v$ può essere raggiunto da $u$ lungo un cammino che è formato esclusivamente 
     prima che $w$ sia completato. Quindi si conclude che $v$ è discendete di $u$.    
 \end{proof}
 \subsection{Tipi di archi DFS}
-Sia $uv \in E$ un arco, qeusto può essere classificato in:
+Sia $uv \in E$ un arco, questo può essere classificato in:
 \begin{itemize}
-    \item \textbf{Archi d'albero:} $v$ è scoperto di $u$ quindi ($v.status = UNEXPLORED$)
+    \item \textbf{Archi d'albero:} $v$ è scoperto dalle adiacenze di $u$ quindi ($v.status = UNEXPLORED$)
     \item \textbf{Archi all'indietro:} $u=v$, oppure v è ascendente di $u$ ($v.status = EXPLORING $)
-    \item \textbf{Archi in avanti:} $v$ discendente di $u$ ($v.status=EXPLORED AND v.timestamp > u.timestamp$)
-    \item \textbf{Archi trasversali:} $u$ e $v$ appartengono a rami diversi ($v.status=EXPLORED AND v.timestamp < u.timestamp$) 
+    \item \textbf{Archi in avanti:} $v$ discendente di $u$ ($v.status=EXPLORED$ $AND$ $v.timestamp > u.timestamp$)
+    \item \textbf{Archi trasversali:} $u$ e $v$ appartengono a rami diversi ($v.status=EXPLORED$ $AND$ $v.timestamp < u.timestamp$) 
 \end{itemize}
-\noindent Il timestamp a cui fanno riferimento è quello di scoeprta dei nodi.
+\noindent Il timestamp a cui fanno riferimento è quello di scoperta dei nodi.\medskip\\
 \colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{theorem}
    In una DFS di un grafo $G=(V,E)$ non orientato, gli archi di G possono essere solo archi dell'albero (T) o archi all'indietro.
 \end{theorem}}}
 \subsection{Ordinamento Topologico}
 Un Ordinamento Topologico di un DAG (Directed Acyclic Graph) $G =(V, E)$ è un ordinamento
 totale di tutti i suoi vertici tale che, se $G$ contiene un arco $(u, v)$, allora $u$ appare prima di $v$
-nell’ordinamento.\\
+nell’ordinamento.\medskip\\
 \textbf{Topological-Sort(G)}
 \begin{enumerate}
     \item Chiama DFS(G) per calcolare i tempi di completamento $v.f$ per ciascun vertice $v$
     \item Una volta completata la visita di un vertice, inserisce il vertice in testa a una lista concatenata
     \item return la lista concatenata dei vertici
 \end{enumerate}
-\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{theorem}
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=1\linewidth]{../images/ordinamento_topologico.png}
+\end{figure}
+\noindent \colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{theorem}
    Un grafo orientato è aciclico (un DAG) se, e solo se, nella visita in profondità non si trova nessun arco all'indietro
 \end{theorem}}}
 \begin{proof}
     $\Rightarrow )$ Se in una visita in profondità si trova un arco all’indietro $vu$, allora tale arco aggiunto al
-cammino da $u$ a $v$ (che esiste in quanto $v$ è discendente di $u$) forma un ciclo.
+cammino da $u$ a $v$ (che esiste in quanto $v$ è discendente di $u$) forma un ciclo.\\
     $\Leftarrow )$ Viceversa, supponiamo che il grafo abbia un ciclo. Sia $v$ il primo vertice del ciclo ad essere
 scoperto e sia $uv$ l’arco del ciclo che entra in $v$. Quando $v$ viene scoperto, esiste un cammino
 bianco da $v$ ad $u$ e quindi, per la proprietà del cammino bianco, $u$ è discendente di $v$. Di
 conseguenza $uv$ è un arco all’indietro.
 \end{proof}
-\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{theorem}
+\noindent \colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{theorem}
    TOPOLOGICAL-SORT produce un ordinamento topologico del DAG che gli viene fornito in input
 \end{theorem}}}
 \begin{proof}
@@ -465,13 +492,18 @@ viene completato prima di $u$ per la proprietà delle parentesi.
             di completamento calcolato al punto 1.;
     \item Restituire o stampare le componenti fortemente connesse del grafo.
 \end{enumerate}
+\noindent \begin{figure}[H]
+    \centering  
+    \includegraphics[width=1\linewidth]{../images/componenti fortemente connesse.png}
+\end{figure}
 \subsection{Grafo Trasposto $G^T$}
 Dato un grafo $G=(V,E)$, il grafo trasposto $G^T=(V,E^T)$ è il grafo avente gli stessi vertici di G 
 e un insieme di archi definiti come\\
-$E^T={(u,v):(v,u) \ in E}$
-\noindent AGGIUNGI FOTO ESEMPIO
-=======
-
+$E^T=\{(u,v):(v,u) \in E\}$\\
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.80\linewidth]{../images/grafo_trasposto.png}
+\end{figure}
 
 \section{Shortest Path (Percorsi minimi)}
 Il problema dei cammini minimi prende in input un grafo orientato pesato 
@@ -506,7 +538,7 @@ Gli algoritmi per cammini minimi godono delle seguenti proprietà:
     Vediamo un esempio:
     \begin{figure}[H]
     \centering  
-    \includegraphics[width=0.5\linewidth]{../images/ciclo_negativo.jpg}
+    \includegraphics[width=0.70\linewidth]{../images/ciclo_negativo.jpg}
     %\label{label}
 \end{figure}
     
@@ -576,6 +608,36 @@ Vediamo un esempio:
 
 
 \noindent Invece, per quanto riguarda problemi di cammino minimo da un unica sorgente con archi che \textbf{non sono mai positivi}, esiste \textbf{l'algoritmo di} \textbf{Dijkstra}, anch'esso basato sulla tecnica del rilassamento ma che non abbiamo approfondito.
+
+
+\subsection{Algoritmo di Bellman Ford versione distribuita}
+L'algoritmo di Bellman Ford \textbf{distribuito} si differenzia da quello che abbiamo visto in 
+precedenza per queste tre caratteristiche:
+\begin{enumerate}
+    \item \textbf{Conoscenza locale}: ogni nodo conosce solo i per raggiungere i nodi adiacenti
+    \item \textbf{Messaggistica}: i nodi si scambiano messaggi informativi contenenti i propri \textbf{distance vector},
+    ovvero il vettore che contiene le distanze dagli altri nodi.
+    \item \textbf{Asincronicità}: calcolo del risultato finale alla ricezione di un aggiornamento
+\end{enumerate}
+
+\noindent Questa è l'equazione con cui aggiorniamo le distanze del cammino minimo, siano $x$ e $y$ due nodi di un grafo,
+l'equazione è la seguente:
+\[ d_x (y) = \underset{v \in N(x)}{\min} \{ c(x, v)+ d_v (y)\}  \]
+dove:
+\begin{itemize}
+    \item $N(x)$ è l'insieme dei vicini del nodo $x$, ovvero tutti i nodi che hanno un collegamento (arco) diretto a $x$.
+    \item $v$ è un singolo nodo vicino.
+    \item $y$ è il nodo di destinazione finale.
+    \item $d_x(y)$ è il costo stimato da $x$ a $y$.
+    \item $c(x,y)$ è il costo del link diretto verso il vicino $v$.
+    \item $d_v(y)$ è la distanza da $v$ a $y$ dichiarata dal vicino. 
+\end{itemize}
+
+\noindent L'equazione con cui aggiorniamo il risultato quindi funziona così: ad ogni nodo visitato vengono analizzati 
+tutti i suoi vicini, e viene scelto il cammino che minimizza la somma per arrivare a $y$.
+
+
+
 
 
 
