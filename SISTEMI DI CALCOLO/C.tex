@@ -930,134 +930,206 @@ int pthread_detach(pthread_t threadID);
 che "distacca" il threadID dal thread che lo ha creato, rendendolo indipendente.
 \noindent 
 \subsection{Come la CPU esegue le istruzioni}
-Fino ad ora abbiamo assunto che ogni istruzione ASM sia eseguita in modo "atomico".
-Ma all'interno della CPU la sua esecuzione richiede diversi passi intermedi.
+
+Fino ad ora abbiamo assunto che ogni istruzione Assembly venga eseguita in modo ``atomico''.
+In realtà, all'interno della CPU, l'esecuzione di un'istruzione richiede diversi passaggi intermedi.
+
 \begin{figure}[H]
     \centering  
-    %\includegraphics[width=0.9\linewidth]{../images}
+    \includegraphics[width=0.9\linewidth]{../images/CPU ISTRUZIONI.png}
     \caption{CPU}
     %\label{label}
 \end{figure}
-\noindent Ogni istruzione viene eseguita dalla CPU attivando in una corretta
-sequenza diversi componenti elettronici interni. Ciascuno di questi componenti deve essere
-attivato nel giusto momento per implementare la corretta semantica dell'istruzione.\\
-L'attività dei vari componenti è gestita dall'unità di controllo e deve essere attentamente temporizzata.
-Questo passaggio avviene per "stadi" di durata predeterminata.\\
-Immaginando come una CPU RISC fittizia potrebbe eseguire un'istruzione, vediamo le varie fasi:
+
+\noindent
+Ogni istruzione viene eseguita dalla CPU attivando, in una precisa sequenza temporale,
+diversi componenti elettronici interni. 
+Ciascun componente deve essere attivato nel momento corretto affinché venga rispettata
+la semantica dell'istruzione.
+
+\noindent L'attività dei vari componenti è coordinata dall'unità di controllo (\textit{Control Unit})
+e deve essere accuratamente temporizzata.
+L'esecuzione avviene quindi per stadi (\textit{stages}) di durata prefissata.
+
+\noindent Supponendo di considerare una CPU RISC semplificata, l'esecuzione di un'istruzione
+può essere suddivisa nelle seguenti fasi:
+
 \begin{enumerate}
-    \item Fetch(F) $\rightarrow$ la cpu preleva dalla memoria la prossima istruzione da eseguire. 
-    Poi aggiorna l'IR (instruction register) in modo che punti all'istruzione successiva.
-    \item Decode (D) $\rightarrow$ in questa fase viene interpretata l'istruzione letta (si valuta il suo opcode),
-    legge gli operandi immediati, legge gli eventuali operandi presenti nei registri.
-    \item Execute (E) $\rightarrow$ se l'istruzione lo prevede, l'ALU viene attivata per calcolare il risultato.
-    \item Memory (M) $\rightarrow$ se l'istruzione lo richiede, la memoria viene acceduta in lettura o scrittura.
-    \item Write-Back (W) $\rightarrow$ se l'istruzione lo richiede, i registri vengono aggiornati con i valori in 
-    output.
+    \item \textbf{Fetch (F)} $\rightarrow$ la CPU preleva dalla memoria la prossima istruzione da eseguire. 
+    Successivamente viene aggiornato il \textit{Program Counter} (PC), in modo che punti
+    all'istruzione successiva.
+
+    \item \textbf{Decode (D)} $\rightarrow$ l'istruzione appena letta viene interpretata analizzandone
+    l'opcode. In questa fase vengono inoltre letti gli eventuali operandi immediati
+    e i valori contenuti nei registri coinvolti.
+
+    \item \textbf{Execute (E)} $\rightarrow$ se previsto dall'istruzione, l'ALU
+    (\textit{Arithmetic Logic Unit}) esegue l'operazione richiesta e calcola il risultato.
+
+    \item \textbf{Memory (M)} $\rightarrow$ se necessario, viene effettuato un accesso alla memoria
+    in lettura o scrittura.
+
+    \item \textbf{Write-Back (W)} $\rightarrow$ il risultato finale viene scritto nei registri
+    di destinazione, se richiesto dall'istruzione.
 \end{enumerate}
+
 \begin{figure}[H]
     \centering  
-    %\includegraphics[width=0.9\linewidth]{../images}
-    \caption{Esempio}
+    \includegraphics[width=0.9\linewidth]{../images/Esecuzione a STATI .png}
+    \caption{Esempio di esecuzione a stadi}
     %\label{label}
 \end{figure}
-Per evitare questi passaggi e semplificarne l'esecuzione utilizza
-\texttt{ALSC}, che:
+
+\noindent
+Le architetture \textbf{RISC} (\textit{Reduced Instruction Set Computer})
+semplificano l'esecuzione delle istruzioni mantenendo un numero limitato di operazioni semplici.
+
 \begin{itemize}
-    \item mantiene gli stadi ma semplifica l'esecuzione (20-25)
-    \item - programmi più lunghi
-    \item + istruzioni eseguite più velocemente.
-\end{itemize} 
-\texttt{CISC}
+    \item numero elevato di registri e istruzioni semplici;
+    \item esecuzione più rapida delle istruzioni;
+    \item pipeline più semplice ed efficiente;
+    \item programmi generalmente più lunghi.
+\end{itemize}
+
+\noindent
+Le architetture \textbf{CISC} (\textit{Complex Instruction Set Computer}),
+invece, utilizzano istruzioni più complesse e potenti.
 \begin{itemize}
-    \item pochi stati molto complessi (5-10)
-    \item molti istruzioni anche complesse
-    \item  - istruzioni più lente nell'esecuzione
-    \item + programmi più brevi
+    \item numero ridotto di istruzioni, ma più sofisticate;
+    \item istruzioni spesso più lente da eseguire;
+    \item hardware di controllo più complesso;
+    \item programmi generalmente più compatti.
 \end{itemize}
 \begin{figure}[H]
     \centering  
-    %\includegraphics[width=0.9\linewidth]{../images}
+    \includegraphics[width=0.9\linewidth]{../images/CISC.png}
     \caption{Graficamente}
     %\label{label}
 \end{figure}
 La temporizzazione di attivazione dei circuiti è dal clock di sistema.
-\begin{figure}[H]
-    \centering  
-    %\includegraphics[width=0.9\linewidth]{../images}
-    \caption{Clock di Sistema}
-    %\label{label}
-\end{figure}
 \subsection{Esecuzione con Pipelining}
-Immaginiamo di eseguire tre istruzioni:
+Supponiamo di dover eseguire tre istruzioni consecutive.
+
 \begin{figure}[H]
     \centering  
-    %\includegraphics[width=0.9\linewidth]{../images}
-    \caption{caption}
+    \includegraphics[width=0.9\linewidth]{../images/Pipilenie.png}
+    \caption{Esempio di pipeline}
     %\label{label}
 \end{figure}
-\noindent\textbf{\textcolor{red}{ATTENZIONE:}} avere la pipeline sempre "peina" massimizza il throughput.\\
-Non sempre è possibile tenere pien tutti gli stati della pipeline a cusa della presenza di \textbf{Hazard}.
+
+\noindent
+Nel \textbf{pipelining}, l'esecuzione delle istruzioni viene suddivisa in più stadi,
+che possono lavorare in parallelo su istruzioni differenti.
+In questo modo, mentre un'istruzione si trova in una certa fase, un'altra può trovarsi
+in una fase successiva o precedente.
+
+\medskip
+
+\noindent
+\textbf{\textcolor{red}{Attenzione:}} mantenere la pipeline sempre ``piena''
+consente di massimizzare il \textit{throughput}, cioè il numero di istruzioni completate
+nell'unità di tempo.
+
+\noindent Tuttavia, non è sempre possibile occupare tutti gli stadi della pipeline a causa
+della presenza degli \textbf{hazard}, ovvero situazioni che impediscono la corretta
+esecuzione parallela delle istruzioni.
+
+\subsubsection*{Hazard strutturali}
+
+Gli \textbf{hazard strutturali} si verificano quando due o più istruzioni richiedono
+contemporaneamente la stessa risorsa hardware della CPU.
+
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.9\linewidth]{../images/Hazard Strutturali.png}
+    \caption{Esempio di hazard strutturale}
+    %\label{label}
+\end{figure}
+
+\noindent
+Possibili soluzioni:
+
 \begin{itemize}
-    \item \texttt{Hazard Strutturali} $\rightarrow$ due o più istruzioni richiedono l'uso contemporaneo di una stessa 
-    risorsa della CPU
+    \item utilizzare cache separate per dati e istruzioni;
+    \item duplicare le risorse hardware coinvolte;
+    \item introdurre uno \textbf{stallo} (\textit{stall}) della pipeline.
 \end{itemize}
+
+\noindent
+\textbf{Tecnica dello stallo:}
+la CPU blocca temporaneamente la pipeline, impedendo l'ingresso di nuove istruzioni,
+per il numero minimo di cicli di clock necessario a risolvere l'hazard.
+
 \begin{figure}[H]
     \centering  
-    %\includegraphics[width=0.9\linewidth]{../images}
-    \caption{Esempio Hazard Strutturali}
+    \includegraphics[width=0.9\linewidth]{../images/Stallo Pipe.png}
+    \caption{Pipeline in stallo}
     %\label{label}
 \end{figure}
-\noindent Soluzione: 
-\begin{itemize}
-    \item Usare cache separate per dati e istruzioni
-    \item Duplicare l'HW
-    \item Utilizzo la tecnica dello "stallo"
-\end{itemize}
-\noindent\textbf{Tecnica dello stallo:} la CPU tiene la pipeline in "stallo"
-("non accetta nuove istruzioni") per il numero minimo di cicli di clock necessari a risolvere
-l'hazard.
+
+\noindent
+L'introduzione di ``bolle'' (\textit{bubbles}) nella pipeline consente di risolvere
+qualsiasi hazard, ma comporta una riduzione del throughput.
+
+\subsubsection*{Hazard sui dati}
+
+Gli \textbf{hazard sui dati} si verificano quando esistono dipendenze tra i dati
+utilizzati da istruzioni differenti.
+
 \begin{figure}[H]
     \centering  
-    %\includegraphics[width=0.9\linewidth]{../images}
-    \caption{caption}
+    \includegraphics[width=0.9\linewidth]{../images/Hazard sui dati.png}
+    \caption{Esempio di hazard sui dati}
     %\label{label}
 \end{figure}
-\noindent L'introduzione di blle nella pipeline per indurre lo stallo risolve sempre qualsiasi
-Hazard, al costo di una riduzione del throughtput
-\begin{itemize}
-    \item \texttt{Hazard sui Dati} $\rightarrow$ si verifica quando esistono dipendenze tra i dati
-    su cui operano istruzioni diverse
-\end{itemize}
-\begin{figure}[H]
-    \centering  
-    %\includegraphics[width=0.9\linewidth]{../images}
-    \caption{caption}
-    %\label{label}
-\end{figure}
-\textbf{Riordinamento del codice:} cambio l'ordine di esecuzione delle istruzioni per evitare l'hazard sui dati, senza alterare la semantica del programma.\medskip\\
-\begin{minipage}{0.2\textwidth}
-    \begin{verbatim}
+
+\noindent
+Una possibile soluzione consiste nel \textbf{riordinamento del codice},
+cioè modificare l'ordine delle istruzioni senza alterare la semantica del programma,
+in modo da evitare conflitti tra i dati.
+
+\medskip
+
+\begin{minipage}{0.35\textwidth}
+\begin{verbatim}
 movl $4, %eax
-movl %eax, %ecx // sposto alla fine poichè non influenzato
-                   dagli altri comandi
+movl %eax, %ecx
 movl $2, %ebx
 movl $3, %edi
 movl $4, %esi
-    \end{verbatim}
+\end{verbatim}
 \end{minipage}
 \hfill
-$\longrightarrow$
+$\Longrightarrow$
 \hfill
-\begin{minipage}{0.2\textwidth}
-    \begin{verbatim}
+\begin{minipage}{0.35\textwidth}
+\begin{verbatim}
 movl $4, %eax
 movl $2, %ebx
 movl $3, %edi
 movl $4, %esi
 movl %eax, %ecx
-    \end{verbatim}
-\end{minipage}\medskip\\
-\noindent \textbf{Hazard sul controllo di flusso} $\rightarrow$ l'esecuzione di una istruzione dipende dalla valutazione di una precedente condzione.
+\end{verbatim}
+\end{minipage}
+
+\medskip
+
+\noindent
+Nell'esempio precedente, l'istruzione
+
+\begin{verbatim}
+movl %eax, %ecx
+\end{verbatim}
+
+\noindent
+viene spostata alla fine poiché non influenza le altre istruzioni
+e può quindi essere eseguita successivamente senza modificare il comportamento del programma.
+
+\subsubsection*{Hazard sul controllo di flusso}
+
+Gli \textbf{hazard sul controllo di flusso} si verificano quando l'esecuzione di un'istruzione
+dipende dal risultato di una precedente istruzione di salto condizionato.
+
 \begin{verbatim}
 testl %eax, %eax
 je L1
@@ -1067,28 +1139,70 @@ L1:
 .
 .
 \end{verbatim}
-\textbf{Branch Prediction:} la CPU cerca di "predire" quale sarà la prossima istruzione da eseguire,
-prima che la relativa condizione di salto venga valutata.\\
-\textbf{Uso di codice alternativo:} preferire seguenze di istruzioni che non generano hazard sul controllo
+
+\noindent
+In questo caso, la CPU non può sapere immediatamente quale sarà la prossima istruzione
+da eseguire finché la condizione del salto non viene valutata.
+
+\medskip
+
+\noindent
+\textbf{Branch Prediction:}
+la CPU tenta di predire quale sarà il prossimo ramo di esecuzione,
+così da continuare a riempire la pipeline senza attendere il risultato effettivo del salto.
+
+\medskip
+
+\noindent
+\textbf{Uso di codice alternativo:}
+in alcuni casi è possibile sostituire salti condizionati con istruzioni che non alterano
+il flusso di controllo, riducendo così gli hazard.
+
 \begin{verbatim}
 testl %eax, %eax
 cmovl %eax, %edx
 \end{verbatim}
+
+\noindent
+L'istruzione \texttt{cmovl} (\textit{conditional move}) esegue il trasferimento
+solo se la condizione specificata risulta verificata, evitando un salto esplicito.
 \subsection{Interruzioni}
-Un "interrupt" è una notifica generata dalla CPU via HW e attraverso
-opportune istruzioni SW. La notifica di queste interruzioni rappresenta un evento asincrono che
-richiede l'attenzione del sistema. In caso di interrupt, l'esecuzione del processo
-RUNNING viene sospesa (-> READY) e al suo posto il SO esegue una routine di gestione dell'evento
-detta \texttt{INTERRUPT HANDLER}.\\
-EVenti diversi sono gestiti da handler distinti. La mappatura tra interrupt e handler è gestita dal SO
-attraverso la struttura dati che si chiama \texttt{Interrupt Vector Table} (IUT).
+
+Un \textbf{interrupt} è una segnalazione generata dall'hardware oppure tramite
+specifiche istruzioni software, che richiede l'attenzione immediata del sistema.
+
+La notifica di un interrupt rappresenta un evento asincrono rispetto al normale
+flusso di esecuzione del programma.
+Quando si verifica un interrupt, l'esecuzione del processo nello stato
+\texttt{RUNNING} viene sospesa e il processo passa tipicamente nello stato
+\texttt{READY}. Successivamente, il sistema operativo esegue una particolare
+routine di gestione dell'evento detta \textbf{interrupt handler}.
+
+\medskip
+
+\noindent
+Eventi differenti vengono gestiti da handler differenti.
+La corrispondenza tra interrupt e relativo handler è mantenuta dal sistema operativo
+attraverso una struttura dati chiamata
+\textbf{Interrupt Vector Table (IVT)}.
+
 \begin{figure}[H]
     \centering  
-    %\includegraphics[width=0.9\linewidth]{../images}
-    \caption{caption}
+    \includegraphics[width=0.9\linewidth]{../images/IVT.png}
+    \caption{Interrupt Vector Table}
     %\label{label}
 \end{figure}
-\textbf{Abort:} interrupt normalente non intenzionale e non recuperabile
-\textbf{Fault:} generati dalla CPU al verificarsi di diversi errori. Sono spesso recuperabili.\\
-Dopo l'esecuzione dell'handler il processo interrotto riprende dall'istruzione che ha generato il fault.\\
 
+\subsubsection*{Tipologie di interrupt}
+
+\begin{itemize}
+    \item \textbf{Abort} $\rightarrow$ interrupt generalmente non intenzionale e non recuperabile.
+    Solitamente provoca la terminazione del processo corrente.
+
+    \item \textbf{Fault} $\rightarrow$ interrupt generato dalla CPU al verificarsi di errori
+    durante l'esecuzione di un'istruzione. 
+    I fault sono spesso recuperabili.
+    
+    Dopo l'esecuzione dell'handler, il processo interrotto può riprendere
+    dall'istruzione che ha generato il fault.
+\end{itemize}
