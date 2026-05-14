@@ -377,7 +377,7 @@ Ossia, per ogni coppia di vertici $u$ e $v$, ci sono quattro possibilità:
 \end{enumerate}
 \begin{figure}[H]
     \centering  
-    \includegraphics[width=1\linewidth]{../images/proprietà_parentesi}
+    \includegraphics[width=1\linewidth]{../images/proprieta_parentesi.png}
 \end{figure}
 \subsection{Teorema delle Parentesi}
 \colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{theorem}
@@ -610,7 +610,7 @@ Vediamo un esempio:
 \noindent Invece, per quanto riguarda problemi di cammino minimo da un unica sorgente con archi che \textbf{non sono mai positivi}, esiste \textbf{l'algoritmo di} \textbf{Dijkstra}, anch'esso basato sulla tecnica del rilassamento ma che non abbiamo approfondito.
 
 
-\subsection{Algoritmo di Bellman Ford versione distribuita}
+\subsection{Algoritmo di Bellman Ford versione distribuita*}
 L'algoritmo di Bellman Ford \textbf{distribuito} si differenzia da quello che abbiamo visto in 
 precedenza per queste tre caratteristiche:
 \begin{enumerate}
@@ -636,4 +636,11 @@ dove:
 \noindent L'equazione con cui aggiorniamo il risultato quindi funziona così: ad ogni nodo visitato vengono analizzati 
 tutti i suoi vicini, e viene scelto il cammino che minimizza la somma per arrivare a $y$.
 
-
+\subsection{Routing Loop}
+Se uno dei nodi "fallisce", ovvero per qualche motivo il nodo non è più utilizzabile o raggiungibile, possono accadere quelli che si chiamano i \textbf{routing loop}, che accadono quando 
+dei nodi si scambiano informazioni obsolete crendo un ciclo infinito. Per evitare questo problema possiamo utlizzare 3 soluzioni:
+\begin{itemize}
+    \item \textbf{Split Horizon}: Se $X$ raggiunge $Z$ tramite $Y$, allora $X$ non deve inviare a $Y$ alcun aggiornamento relativo a $Z$
+    \item \textbf{Poison Reverse}: Se $X$ raggiunge $Z$ tramite $Y$, allora $X$ dichiara a $Y$ che la sua distanza per $Z$ è infinito ($\infty$)
+    \item \textbf{Soluzione Pratica (RIP)}: Viene utilizzato il valore 16 come infinito per terminare i loop circolari.
+\end{itemize} 
