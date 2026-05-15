@@ -620,8 +620,30 @@ precedenza per queste tre caratteristiche:
     \item \textbf{Asincronicità}: calcolo del risultato finale alla ricezione di un aggiornamento
 \end{enumerate}
 
-<<<<<<< HEAD
->>>>>>> 16d05b0675fd351fa4ad45098c100dc6fb390d02
+\noindent Questa è l'equazione con cui aggiorniamo le distanze del cammino minimo, siano $x$ e $y$ due nodi di un grafo,
+l'equazione è la seguente:
+\[ d_x (y) = \underset{v \in N(x)}{\min} \{ c(x, v)+ d_v (y)\}  \]
+dove:
+\begin{itemize}
+    \item $N(x)$ è l'insieme dei vicini del nodo $x$, ovvero tutti i nodi che hanno un collegamento (arco) diretto a $x$.
+    \item $v$ è un singolo nodo vicino.
+    \item $y$ è il nodo di destinazione finale.
+    \item $d_x(y)$ è il costo stimato da $x$ a $y$.
+    \item $c(x,y)$ è il costo del link diretto verso il vicino $v$.
+    \item $d_v(y)$ è la distanza da $v$ a $y$ dichiarata dal vicino. 
+\end{itemize}
+
+\noindent L'equazione con cui aggiorniamo il risultato quindi funziona così: ad ogni nodo visitato vengono analizzati 
+tutti i suoi vicini, e viene scelto il cammino che minimizza la somma per arrivare a $y$.
+
+\subsection{Routing Loop}
+Se uno dei nodi "fallisce", ovvero per qualche motivo il nodo non è più utilizzabile o raggiungibile, possono accadere quelli che si chiamano i \textbf{routing loop}, che accadono quando 
+dei nodi si scambiano informazioni obsolete crendo un ciclo infinito. Per evitare questo problema possiamo utlizzare 3 soluzioni:
+\begin{itemize}
+    \item \textbf{Split Horizon}: Se $X$ raggiunge $Z$ tramite $Y$, allora $X$ non deve inviare a $Y$ alcun aggiornamento relativo a $Z$
+    \item \textbf{Poison Reverse}: Se $X$ raggiunge $Z$ tramite $Y$, allora $X$ dichiara a $Y$ che la sua distanza per $Z$ è infinito ($\infty$)
+    \item \textbf{Soluzione Pratica (RIP)}: Viene utilizzato il valore 16 come infinito per terminare i loop circolari.
+\end{itemize} 
 
 \section{Alberi di connessione minimi MST}
 \subsection{Il problema degli alberi di connessione minimi}
@@ -674,29 +696,156 @@ Sia A un sottoinsieme di E, che è contenuto in qualche albero di connessione mi
 (S, V\S) un taglio qualsiasi di $G$ che rispetta $A$ e sia $a= (u, v)$ un arco leggero per il taglio
 (S, V\S). Allora l’arco a è sicuro.
 \end{theorem}}}
-=======
-\noindent Questa è l'equazione con cui aggiorniamo le distanze del cammino minimo, siano $x$ e $y$ due nodi di un grafo,
-l'equazione è la seguente:
-\[ d_x (y) = \underset{v \in N(x)}{\min} \{ c(x, v)+ d_v (y)\}  \]
-dove:
+\begin{proof}
+Sia $T$ un albero di connessione minimo che contiene $A$. Se $T$ contiene anche l’arco $a$, allora il
+teorema è dimostrato in quando $a$ è un arco sicuro per $A$.
+Sia quindi $T$ l’albero di connessione minima in figura, se $T$
+non contiene l’arco $a= (u, v)$, aggiungendo tale arco si genera un
+ciclo (banalmente in un albero non può esserci un ciclo).
+Essendo $T$ un albero, deve esistere necessariamente un percorso 
+$p$ che congiunga i vertici $u$ e $v$. In aggiunta dato che $u$
+e $v$ si trovano su lati opposti del taglio (S, V\S) c'è almeno un
+altro arco $b= (x, y)$ tale che intersechi il taglio. L’arco $b$ non
+appartiene ad $A$, in quanto come ipotesi del Teorema deve essere
+che il taglio (S, V \ S) rispetta A.
+Sia $T’$ l’albero di connessione minimo ottenuto da $T$ togliendo
+l’arco $b$ e aggiungendo l’arco $a$. Dato che a come ipotesi è un
+arco leggero, si ha che il costo di $T’$ è minore o uguale di $T$. Per
+definizione $T$ è un albero di connessione minimo, ma allora anche
+$T’$ lo è. Infine essendo che $T’$ contiene sia $A$ che $a$, si ottiene che $a$ rispetta $A$, 
+in quanto aggiungendo questo arco ad $A$, questo è ancora un sottoinsieme di albero 
+di connessione minimo
+\end{proof}
+\subsection{Algoritmo di Kruskal}
+\begin{verbatim}
+MST-KRUSKAL(G){
+A=0
+foreach v in in G.V
+    Make-Set(v)
+l = converti_in_lista (G, E) //crea una lista di archi di G
+sort_decreasing(l, w) //ordina la lista in ordine monotono crescente rispetto al peso
+foreach (u, v) in l 
+    if Find-Set(u) != Find-Set(v)
+    A = A U (u, v)
+    Union(u, v)
+return A
+}
+\end{verbatim}
+\noindent Esempio:
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.9\linewidth]{../images/esempio_kruskal.png}
+\end{figure}
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.9\linewidth]{../images/esempio_kruskal2.png}
+\end{figure}
+\subsection{Analisi}
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.9\linewidth]{../images/analisi_kruskal.png}
+\end{figure}
+\noindent Per procedere con questo algoritmo è necessario definire una struttura dati che definisce una
+collezione di insiemi disgiunti (l’intersezione tra i vari insiemi è vuota), in cui ogni insieme è
+individuato da un rappresentante che è uno degli elementi dell’insieme. In questo algoritmo si
+è fatto uso di tre funzioni principali:
 \begin{itemize}
-    \item $N(x)$ è l'insieme dei vicini del nodo $x$, ovvero tutti i nodi che hanno un collegamento (arco) diretto a $x$.
-    \item $v$ è un singolo nodo vicino.
-    \item $y$ è il nodo di destinazione finale.
-    \item $d_x(y)$ è il costo stimato da $x$ a $y$.
-    \item $c(x,y)$ è il costo del link diretto verso il vicino $v$.
-    \item $d_v(y)$ è la distanza da $v$ a $y$ dichiarata dal vicino. 
+    \item \textbf{Make-Set(x):} aggiunge alla struttura dati un nuovo insieme contenente solo l'elemento x
+        (si richiede x non compaia in nessun altro insieme della struttura). Ha costo \textbf{O(1)}.
+    \item \textbf{Find-Set(x):} restituisce il rappresentante dell'insieme che contiene x. Ha costo \textbf{O(1)}.
+    \item \textbf{Union(x,y):} unisce i due insiemi contenti x ed y. Ha costo che dipende dalla dimensione di y e tende ad n 
 \end{itemize}
+Il costo dell’algoritmo di Kruskal è $O(n^2)$, il costo dipende principalmente dall’andamento della
+funzione \textbf{Union}. Quindi per migliorare il costo di questo algoritmo è necessario modificare
+l’implementazione della funzione.
+Questo algoritmo può essere implementato con un’altra struttura dati per rappresentare gli
+insiemi disgiunti: \textbf{le foreste di insiemi disgiunti}, in cui ogni insieme è rappresentato da un
+albero i cui nodi, oltre al campo data che contiene l’informazione, hanno un campo $p$ che punta
+al predecessore.
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.9\linewidth]{../images/analisi_kruskal2.png}
+\end{figure}
+\noindent In questo caso possiamo implementare le tre funzioni in questo modo:\\
+\begin{verbatim}
+    Make-Set(x){
+        x.p = x
+    }
 
-\noindent L'equazione con cui aggiorniamo il risultato quindi funziona così: ad ogni nodo visitato vengono analizzati 
-tutti i suoi vicini, e viene scelto il cammino che minimizza la somma per arrivare a $y$.
+    Find-Set(x){
+        if x.p != x 
+            Find-Set(x.p)
+        return x.p
+    }
 
-\subsection{Routing Loop}
-Se uno dei nodi "fallisce", ovvero per qualche motivo il nodo non è più utilizzabile o raggiungibile, possono accadere quelli che si chiamano i \textbf{routing loop}, che accadono quando 
-dei nodi si scambiano informazioni obsolete crendo un ciclo infinito. Per evitare questo problema possiamo utlizzare 3 soluzioni:
-\begin{itemize}
-    \item \textbf{Split Horizon}: Se $X$ raggiunge $Z$ tramite $Y$, allora $X$ non deve inviare a $Y$ alcun aggiornamento relativo a $Z$
-    \item \textbf{Poison Reverse}: Se $X$ raggiunge $Z$ tramite $Y$, allora $X$ dichiara a $Y$ che la sua distanza per $Z$ è infinito ($\infty$)
-    \item \textbf{Soluzione Pratica (RIP)}: Viene utilizzato il valore 16 come infinito per terminare i loop circolari.
-\end{itemize} 
->>>>>>> d175847bff11c5b1ad039c467b2376e0e3fff9a7
+    Union(x,y){
+        x = Find-Set(x)
+        y = Find-Set(y)
+        x.p = y
+    }
+\end{verbatim}
+\noindent Si può notare che il costo della \textbf{Union} è uguale al costo della \textbf{Find-Set}, ovvero $O(\log n)$, in
+quanto devo scorrere da $x$ alla radice dell’albero. Anche in questo caso il costo dell’algoritmo
+di Kruskal implementando quest’altro tipo di struttura dati è $O(n^2)$.
+\subsection{Algoritmo di Prim}
+A differenza dell’algoritmo di Kruskal che iterava sul costo degli archi in ordine crescente,
+l’algoritmo di Prim, per generare un albero di connessione minima, ragiona con una coda di
+min proprietà (come può essere ad esempio un min-Heap) le cui chiavi dei nodi indicano il peso
+minimo di un arco qualsiasi che collega il nodo ad un altro vertice nel grafo.
+\textbf{Pseudocodice algoritmo di Prim}
+\begin{verbatim}
+MST-Prim(G,s){
+    foreach u in. G.v
+        u.key = infinity
+        u.p = nil
+    s.key = 0
+    Q = 0
+
+    foreach u in G.V
+        Insert(Q,u)
+    
+    while Q != 0
+        u = Extract_Min(Q)
+        foreach v in G.Adj[u]
+            if v in Q and w(u, v) < v.key
+                v.p = u
+                v.key = w(v, u)
+                Decrease_key(Q,v,w(u, v))
+}
+\end{verbatim}
+\noindent Esempio:
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.9\linewidth]{../images/esempio_prim.png}
+\end{figure}
+Innanzitutto si sceglie un nodo da cui partire che fungerà da sorgente, in questo caso il nodo $a$.
+Successivamente l’algoritmo inizializza tutte le chiavi dei nodi ad infinito e i predecessori a $nil$,
+mentre per quanto riguarda la sorgente pone la chiave a $0$ e aggiunge tutti i nodi al $min-heap$.
+Quindi la coda adesso è formata da:\\
+$$ Q=[(a,0),(b,\infty),(c,\infty),(d,\infty),(e,\infty),(f,\infty),(g,\infty),(h,\infty),(i,\infty)] $$\\
+Successivamente l’esecuzione entra nel $while$, che scansione l’intera coda svuotando man mano
+il $min-heap$. L’algoritmo prende il primo nodo (in questo caso il vertice $a$) e scansiona la sua 
+lista di adiacenza (contenente i vertici $b$ ed $h$). Si valuta quindi se il costo dell’arco (prima $(a,
+b)$ e poi $(a, h)$) è minore della chiave del nodo e successivamente se la condizione è verificata
+va ad aggiornare la chiave del vertice nel $min-heap$. Quindi la coda adesso diventa:\\
+$$ Q=[(b,4),(h,8),(c,\infty),(d,\infty),(e,\infty),(f,\infty),(g,\infty),(i,\infty)] $$\\
+Si procede con il nodo $b$ e vengono valutati gli archi $(b, c)$, $(b, h)$, aggiornando il valore della
+chiave del nodo $c$, ma non quello del nodo $h$ in quanto $h.key < \omega(b.h)$, quindi la condizione non
+è verificata. In questo caso nel $min-heap$, dato che $c$ ed $h$ hanno lo stesso valore di chiave, si
+può decidere se visitare prima il nodo $c$ o prima il nodo $h$, in entrambi i casi avremo un albero
+di connessione a costo minimo.\\
+$$ Q=[(c,8),(h,8),(d,\infty),(e,\infty),(f,\infty),(g,\infty),(i,\infty)] $$\\
+Si procede in seguito con il nodo c e si valutano gli archi $(c, i)$, $(c, f)$, $(c, d)$ e la coda diventa:\\
+$$ Q=[(i,2),(f,4),(d,7),(h,8),(e,\infty),(g,\infty)]$$\\
+Dopodiché si procede con il vertice $i$ e vengono valutati gli archi $(i, h)$, $(i, g)$ e la coda diventa:\\
+$$ Q=[(f,4),(g,6),(d,7),(h,7),(e,\infty)] $$\\
+Dopo è il turno del nodo $f$ e vengono valutati gli archi $(f, g)$, $(f, d)$, $(f, e)$, la coda diventa:\\
+$$ Q=[(g,2),(d,7),(h,7),(e,10)] $$\\
+Si estrae il nodo $g$ e viene valutato l’arco $(g, h)$:\\
+$$ Q= [(h,1),(d,7),(e,10)] $$\\
+Si procede con il nodo $h$ e non vengono valutati archi in quanto nessun vertice a cui è connesso
+$h$ è nella coda:\\
+$$ Q= [(d,7),(e,10)] $$\\
+Si rimuove $d$ dalla coda e viene valutato l’arco $(d, e)$:\\
+$$ Q=[(e,9)] $$\\
+Infine, non ci sono più archi da valutare e si svuota la coda.
