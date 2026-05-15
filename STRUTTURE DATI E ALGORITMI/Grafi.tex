@@ -612,3 +612,55 @@ Vediamo un esempio:
 
 
 >>>>>>> 16d05b0675fd351fa4ad45098c100dc6fb390d02
+
+\section{Alberi di connessione minimi MST}
+\subsection{Il problema degli alberi di connessione minimi}
+Sia un grafo non orientato $G=(V, E)$ connesso e i cui archi hanno associato un peso $\omega(e)$. Il
+problema di definire un albero di connessione minimo è quello di trovare un sottoinsieme T di
+archi tali che:
+\begin{enumerate}
+    \item T rappresenta un albero
+    \item il peso $\omega(T)=\sum_{e \in T} \omega(e)$ sia minimo 
+\end{enumerate}
+Un qualsiasi albero di connessione ha essattamente $|V|-1$ archi.\\
+FOTOOOOO
+\subsection{Definizioni preliminari}
+FOTO\\
+\begin{definition}
+    Un \textbf{taglio} in un grafo non orientato $G=(V,E)$ è una partizione dell'insieme di vertici V
+    in due sottoinsiemi non vuoti $(S, V \ S)$
+\end{definition}
+\begin{definition}
+    Un arco \textbf{interseca} il taglio $(S, V \ S)$ se uno dei suoi estremi è in S e l'altro in V/S
+\end{definition}
+\begin{definition}
+    Un taglio (S, V\S) rispetta un isnieme di archi A se nessun arco in A interseca il taglio
+\end{definition}
+\begin{definition}
+    Un arco \textbf{leggero} per il taglio è un arco di costo minimo tra tutti quelli che intersecano 
+    il taglio 
+\end{definition}
+\subsection{Algoritmo greedy per generare un albero di connessione minimo}
+Gli algoritmi avidi sono una particolare classe di algoritmi che risolvono i problemi di ottimizzazione 
+adottando ad ogni passo la strategia migliore, ossia ragionano su un ottimo locale. Un
+metodo per generare un albero di connessione minimo da un grafo è il seguente:
+\begin{verbatim}
+GENERIC-MST(G){
+    while "A non forma un albero di connessione"
+        trova un arco (u, v) che è sicuro per A 
+        A = A U (u, v)
+    return A
+}
+\end{verbatim}
+\noindent Questo metodo fa crescere l’albero di connessione un arco alla volta. Si nota come vengono
+aggiunti solo \textbf{archi sicuri} per A, ovvero quegli archi che consentono al metodo di conservare la
+seguente invariante di ciclo: \textbf{di ogni iterazione, A è un sottoinsieme di qualche albero
+di connessione minimo}.
+
+\subsection{Teorema: Caratterizzazione degli archi scuri}
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{theorem}
+Sia $G=(V,E)$ un grafo connesso non orientato con una funzione $\Omega$ a valori reali definita in E.
+Sia A un sottoinsieme di E, che è contenuto in qualche albero di connessione minimo per $G$, sia
+(S, V\S) un taglio qualsiasi di $G$ che rispetta $A$ e sia $a= (u, v)$ un arco leggero per il taglio
+(S, V\S). Allora l’arco a è sicuro.
+\end{theorem}}}
