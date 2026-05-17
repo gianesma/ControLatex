@@ -921,5 +921,5 @@ $$ Q=[(e,9)] $$\\
 Infine, non ci sono più archi da valutare e si svuota la coda.
 \subsubsection{Analisi della complessità}
 Il tempo totale dell'algoritmo di Prim è $O(|V| \log |V| + |E| \log |V|) \rightarrow O(|E| \log |V|)$.\\
-Se usiamo un Hap di Fibonacci ottengo un incremento di performance nel caso medio con una complessità di $O(|E|+|V| \log |V|)$ in quanto 
+Se usiamo un Heap di Fibonacci ottengo un incremento di performance nel caso medio con una complessità di $O(|E|+|V| \log |V|)$ in quanto 
 $Extrac\_Min$ ha un costo ammortizzato di $O(\log |V|)$ e ogni operazione $Insert$ e $Decrease\_Key$ ha un costo ammortizzato di $O(1)$.
