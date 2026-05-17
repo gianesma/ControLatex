@@ -655,18 +655,24 @@ archi tali che:
     \item il peso $\omega(T)=\sum_{e \in T} \omega(e)$ sia minimo 
 \end{enumerate}
 Un qualsiasi albero di connessione ha essattamente $|V|-1$ archi.\\
-FOTOOOOO
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.9\linewidth]{../images/mst.png}
+\end{figure}
 \subsection{Definizioni preliminari}
-FOTO\\
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.6\linewidth]{../images/archi-vertici-mst.png}
+\end{figure}
 \begin{definition}
     Un \textbf{taglio} in un grafo non orientato $G=(V,E)$ è una partizione dell'insieme di vertici V
-    in due sottoinsiemi non vuoti $(S, V \ S)$
+    in due sottoinsiemi non vuoti $(S, V \backslash S)$
 \end{definition}
 \begin{definition}
-    Un arco \textbf{interseca} il taglio $(S, V \ S)$ se uno dei suoi estremi è in S e l'altro in V/S
+    Un arco \textbf{interseca} il taglio $(S, V \backslash S)$ se uno dei suoi estremi è in $S$ e l'altro in $V \backslash S$
 \end{definition}
 \begin{definition}
-    Un taglio (S, V\S) rispetta un isnieme di archi A se nessun arco in A interseca il taglio
+    Un taglio $(S, V\backslash S)$ rispetta un isnieme di archi A se nessun arco in A interseca il taglio
 \end{definition}
 \begin{definition}
     Un arco \textbf{leggero} per il taglio è un arco di costo minimo tra tutti quelli che intersecano 
@@ -678,6 +684,7 @@ adottando ad ogni passo la strategia migliore, ossia ragionano su un ottimo loca
 metodo per generare un albero di connessione minimo da un grafo è il seguente:
 \begin{verbatim}
 GENERIC-MST(G){
+    A=0
     while "A non forma un albero di connessione"
         trova un arco (u, v) che è sicuro per A 
         A = A U (u, v)
@@ -691,10 +698,10 @@ di connessione minimo}.
 
 \subsection{Teorema: Caratterizzazione degli archi scuri}
 \colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{theorem}
-Sia $G=(V,E)$ un grafo connesso non orientato con una funzione $\Omega$ a valori reali definita in E.
+Sia $G=(V,E)$ un grafo connesso non orientato con una funzione $\omega$ a valori reali definita in E.
 Sia A un sottoinsieme di E, che è contenuto in qualche albero di connessione minimo per $G$, sia
-(S, V\S) un taglio qualsiasi di $G$ che rispetta $A$ e sia $a= (u, v)$ un arco leggero per il taglio
-(S, V\S). Allora l’arco a è sicuro.
+$(S, V \backslash S)$ un taglio qualsiasi di $G$ che rispetta $A$ e sia $a= (u, v)$ un arco leggero per il taglio
+$(S, V \backslash S)$. Allora l’arco $a$ è sicuro.
 \end{theorem}}}
 \begin{proof}
 Sia $T$ un albero di connessione minimo che contiene $A$. Se $T$ contiene anche l’arco $a$, allora il
@@ -716,15 +723,22 @@ $T’$ lo è. Infine essendo che $T’$ contiene sia $A$ che $a$, si ottiene che
 in quanto aggiungendo questo arco ad $A$, questo è ancora un sottoinsieme di albero 
 di connessione minimo
 \end{proof}
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.9\linewidth]{../images/teorema-mst.png}
+\end{figure}
 \subsection{Algoritmo di Kruskal}
+L'algoritmo di Kruskal trova un arco sicuro da aggiungere alla foresta in costruzione 
+scegliendo, fra tutti gli archi che collegano due alberi qualsiasi nella foresta, un 
+arco $(u, v)$ con il minimo peso.
 \begin{verbatim}
 MST-KRUSKAL(G){
 A=0
-foreach v in in G.V
+foreach v in G.V
     Make-Set(v)
 l = converti_in_lista (G, E) //crea una lista di archi di G
-sort_decreasing(l, w) //ordina la lista in ordine monotono crescente rispetto al peso
-foreach (u, v) in l 
+sort_decreasing(l, w)       //ordina la lista in ordine monotono crescente rispetto al peso
+foreach (u, v) in l         //per ogni arco (u,v) preso nell'ordine dalla lista
     if Find-Set(u) != Find-Set(v)
     A = A U (u, v)
     Union(u, v)
@@ -740,10 +754,10 @@ return A
     \centering  
     \includegraphics[width=0.9\linewidth]{../images/esempio_kruskal2.png}
 \end{figure}
-\subsection{Analisi}
+\subsubsection{Analisi}
 \begin{figure}[H]
     \centering  
-    \includegraphics[width=0.9\linewidth]{../images/analisi_kruskal.png}
+    \includegraphics[width=0.9\linewidth]{../images/analisi_kruskal3.png}
 \end{figure}
 \noindent Per procedere con questo algoritmo è necessario definire una struttura dati che definisce una
 collezione di insiemi disgiunti (l’intersezione tra i vari insiemi è vuota), in cui ogni insieme è
@@ -755,16 +769,24 @@ individuato da un rappresentante che è uno degli elementi dell’insieme. In qu
     \item \textbf{Find-Set(x):} restituisce il rappresentante dell'insieme che contiene x. Ha costo \textbf{O(1)}.
     \item \textbf{Union(x,y):} unisce i due insiemi contenti x ed y. Ha costo che dipende dalla dimensione di y e tende ad n 
 \end{itemize}
-Il costo dell’algoritmo di Kruskal è $O(n^2)$, il costo dipende principalmente dall’andamento della
-funzione \textbf{Union}. Quindi per migliorare il costo di questo algoritmo è necessario modificare
-l’implementazione della funzione.
+\noindent Il costo dell’algoritmo di Kruskal è $O(n^2)$, il costo dipende principalmente dall’andamento della
+funzione \textbf{Union}.\\ 
+Per migliorare le performance, modifichiamo UNION attraverso l'euristica dell'unione pesata, scegliendo 
+sempre la lista più corta per aggiornare i puntatori al rappresentante, memorizzando la lunghezza della lista 
+in un nuovo campo L del rappresentante.\\
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{theorem}
+   Utilizzando la rappresentazione degli insiemi disgiunti tramite liste concatenate e l'euristica dell'unione 
+   pesata, una sequenza di $m$ operazioni $MAKE-SET$, $UNION$ e $FIND-SET$, $n$ delle quali sono operazioni 
+   $MAKE-SET$, impiega un tempo $O(m + n \log n)$
+\end{theorem}}}\medskip\\
+Per migliorare il costo di questo algoritmo è necessario modificare l’implementazione della funzione.\\
 Questo algoritmo può essere implementato con un’altra struttura dati per rappresentare gli
 insiemi disgiunti: \textbf{le foreste di insiemi disgiunti}, in cui ogni insieme è rappresentato da un
 albero i cui nodi, oltre al campo data che contiene l’informazione, hanno un campo $p$ che punta
 al predecessore.
 \begin{figure}[H]
     \centering  
-    \includegraphics[width=0.9\linewidth]{../images/analisi_kruskal2.png}
+    \includegraphics[width=0.90\linewidth]{../images/euristica2.png}
 \end{figure}
 \noindent In questo caso possiamo implementare le tre funzioni in questo modo:\\
 \begin{verbatim}
@@ -786,12 +808,60 @@ al predecessore.
 \end{verbatim}
 \noindent Si può notare che il costo della \textbf{Union} è uguale al costo della \textbf{Find-Set}, ovvero $O(\log n)$, in
 quanto devo scorrere da $x$ alla radice dell’albero. Anche in questo caso il costo dell’algoritmo
-di Kruskal implementando quest’altro tipo di struttura dati è $O(n^2)$.
+di Kruskal implementando quest’altro tipo di struttura dati è $O(n^2)$.\\
+Possiamo migliorare notevolmente l'efficienza usando due euristiche.\\
+La prima euristica, detta \textbf{unione per rango}, l'idea intuitiva consiste nel fare in modo che la radice dell'albero 
+con meno nodi punti a quella con più nodi. Per ogni nodo manteniamo un \textbf{rango}, che è un limite superiore per l'altezza 
+del nodo. L'unione per rango fa puntare la radice con rango minore alla radice con rango maggiore durante 
+un'operazione $UNION$.
+\begin{verbatim}
+    Make-Set(x)
+        x.p = x 
+        x.rank = 0
+\end{verbatim}
+\noindent La seconda euristica, detta \textbf{compressione del cammino}, in cui l'operazione $Fins-Set$ viene usata per fare in 
+modo che ciascun nodo nel cammino di ricerca punti direttamente alla radice.
+\begin{verbatim}
+    Finnd-Set(x)
+        if x.p != x                 //non è la radice ?
+            x.p = Find-Set(x.p)     //la radice diventa padre
+        return x.p                  //restituisce la radice
+\end{verbatim}
+
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.9\linewidth]{../images/find-set.png}
+\end{figure}
+\noindent L'union invece diventa:\\
+\begin{verbatim}
+    Union(x,y)
+        x = Find-Set(x)
+        y = Find-Set(y)
+        Link(x,y)
+
+    Link(x,y)
+        if x.rank > y.rank
+            y.p = x 
+        else
+            x.p = y 
+            if x.rank == y.rank 
+                y.rank = y.rank + 1
+\end{verbatim}
+\subsubsection{Foreste di Insiemi Disgiunti: complessità}
+\textbf{Euristica del rango}\\
+Una sequenza di $m$ operazioni delle quali $n$ sono $Make-Set$ richiede un tempo \textbf{$O(m \log n)$}
+\textbf{Euristica di compressione dei cammini}\\
+Una sequenza di $m$ operazioni delle quali $n$ sono $Make-Set$ e $k$ sono $Find-Set$ richiede un tempo 
+\textbf{$\Theta(k \log_{(1+k/n)} n)$} se $k \ge n$\\
+Le migliori prestazioni in assoluto si ottengono usando entrambe le euristiche.\\
+Una sequenza di $m$ operazioni delle quali $n$ sono $make-Set$ richiede un tempo \textbf{$O(m \alpha(n))$}, dove $\alpha(n)$ è una funzione che 
+cresce molto lentamente, $\alpha(n) \le 4$ in ogni concepibile uso della struttura dati.\\
+La complessità ammortizzata di una singola operazione risulta quindi $O(\alpha(n))$: praticamente costante.
 \subsection{Algoritmo di Prim}
 A differenza dell’algoritmo di Kruskal che iterava sul costo degli archi in ordine crescente,
 l’algoritmo di Prim, per generare un albero di connessione minima, ragiona con una coda di
 min proprietà (come può essere ad esempio un min-Heap) le cui chiavi dei nodi indicano il peso
-minimo di un arco qualsiasi che collega il nodo ad un altro vertice nel grafo.
+minimo di un arco qualsiasi che collega il nodo ad un altro vertice nel grafo.\\
 \textbf{Pseudocodice algoritmo di Prim}
 \begin{verbatim}
 MST-Prim(G,s){
@@ -809,7 +879,7 @@ MST-Prim(G,s){
         foreach v in G.Adj[u]
             if v in Q and w(u, v) < v.key
                 v.p = u
-                v.key = w(v, u)
+                v.key = w(u, v)
                 Decrease_key(Q,v,w(u, v))
 }
 \end{verbatim}
@@ -818,7 +888,7 @@ MST-Prim(G,s){
     \centering  
     \includegraphics[width=0.9\linewidth]{../images/esempio_prim.png}
 \end{figure}
-Innanzitutto si sceglie un nodo da cui partire che fungerà da sorgente, in questo caso il nodo $a$.
+\noindent Innanzitutto si sceglie un nodo da cui partire che fungerà da sorgente, in questo caso il nodo $a$.
 Successivamente l’algoritmo inizializza tutte le chiavi dei nodi ad infinito e i predecessori a $nil$,
 mentre per quanto riguarda la sorgente pone la chiave a $0$ e aggiunge tutti i nodi al $min-heap$.
 Quindi la coda adesso è formata da:\\
@@ -849,3 +919,7 @@ $$ Q= [(d,7),(e,10)] $$\\
 Si rimuove $d$ dalla coda e viene valutato l’arco $(d, e)$:\\
 $$ Q=[(e,9)] $$\\
 Infine, non ci sono più archi da valutare e si svuota la coda.
+\subsubsection{Analisi della complessità}
+Il tempo totale dell'algoritmo di Prim è $O(|V| \log |V| + |E| \log |V|) \rightarrow O(|E| \log |V|)$.\\
+Se usiamo un Hap di Fibonacci ottengo un incremento di performance nel caso medio con una complessità di $O(|E|+|V| \log |V|)$ in quanto 
+$Extrac\_Min$ ha un costo ammortizzato di $O(\log |V|)$ e ogni operazione $Insert$ e $Decrease\_Key$ ha un costo ammortizzato di $O(1)$.
