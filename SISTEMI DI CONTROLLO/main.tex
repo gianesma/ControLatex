@@ -57,64 +57,113 @@
 \maketitle
 \tableofcontents
 
-\section{Processo di un ingegnere automatico}
-METTERE IMMAGINE
-\subsection{Modellizzazione lineare:}
+\section*{Processo di un ingegnere automatico}
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=1\linewidth]{../images/processo_ing.jpg}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+
+
+
+
+\section*{Modellizzazione lineare}
 \[ \begin{cases}
     \dot{x}(t) = Ax(t) + Bu(t) + Pz(t) \\
     y(t) = Cx(t) + Du(t) + Qz(t)
 \end{cases} \]
 
-\subsection{Modellizzazione non lineare:}
+
+
+\section*{Modellizzazione non lineare}
 \[ \begin{cases}
     x(t) = f\Big( x(t), u(t), z(t)   \Big) \\
     y(t) = g\Big( x(t), u(t), z(t)   \Big) 
 \end{cases} \]
 
-\subsection{Modellizzazione nel dominio di Laplace:}
+\section*{Modellizzazione nel dominio di Laplace}
 \[  \begin{cases}
-    x(s) = \left(sI-A \right)\left( Bu(s)+Pz(s)  \right) \\
+    x(s) = \left(sI-A \right)^{-1}\left( B\ u(s)+P\ z(s)  \right) \\
     y(s) = P(s)u(s) + M(s)z(s)
 \end{cases}   
 \]
 dove:
 \begin{itemize}
-    \item $P(s) = C(sI-A)^{-1} B +D$ 
-    \item $M(s) = C(sI-A)^{-1} P+ Q$
+    \item $P(s) = C(sI-A)^{-1} B +D \to $ funzione di trasferimento \textbf{ingresso - uscita} 
+    \item $M(s) = C(sI-A)^{-1} P+ Q \to $ funzione di trasferimento \textbf{disturbo -uscita} 
 \end{itemize}
 
+\section*{Funzioni di trasferimento in Laplace}
+Dato $F = PG$:\\
+\begin{center}
+\begin{tabular}{c||c|c|c}
+    \textbf{Schema di controllo} & $\displaystyle \bm{W(s)}$ & $\displaystyle \bm{W_z(s)}$  & $\displaystyle \bm{W_e(s)} $ \\
+    \hline
+    \hline
+    & & & \\
+    Anello aperto & $\displaystyle PG$ & $\displaystyle M$ & \\
+    & & & \\
+    \hline
+    &&&\\
+     & $\displaystyle \frac{PG}{1+PG}$ & $\displaystyle \frac{M}{1+PG}  $  & $\displaystyle \frac{1}{1 + PG}  $\\
+    Anello chiuso&&&\\
+    & $\displaystyle  \frac{N_F}{N_F + D_F}$ & $\displaystyle \frac{N_M}{D_M} \cdot \frac{D_F}{N_F+D_F}  $ & $\displaystyle  \frac{D_F}{N_F +D_F }$  \\
+    &&&\\
+    \hline
+    &&&\\
+     & $\displaystyle \frac{PG}{1+PG}$ & $\displaystyle \frac{PGk}{1+PG}  $  & $\displaystyle \frac{1}{1 + PG}  $\\
+    Doppio anello chiuso&&&\\
+    & $\displaystyle  \frac{N_F}{N_F + D_F}$ &  & $\displaystyle  \frac{D_F}{N_F +D_F }$  \\
+    &&&\\
+\end{tabular}
+\end{center}
+
+\section*{Modellizzazione nel dominio z:}
++++++++++++++++++++++++++++++++++++++++++++++++
 
 
-\subsection{Modellizzazione nel dominio z:}
-
-\section{Sistemi di controllo a controreazione}
-METTERE IMMAGINE
-
-\section{Funzioni di trasferimento ad anello chiuso}
-Dato $\displaystyle F = PG$:
-\subsection{Funzione di trasferimento del sistema complessivo}
-\[ W(s) =  \frac{F}{1+F}  = \frac{N_F}{N_F + D_F}\]
-\subsection{Funzione di trasferimento relativa al disturbo}
-\[ W_z(s) = \frac{M}{1+ F} = \frac{N_M}{D_M} \ \frac{D_F}{N_F+D_F} \]
-\subsection{Funzione di trasferimento relativa all'errore}
-\[ W_e(s)  = \frac{1}{1+F} = \frac{D_F}{N_F+D_F}  \]
 
 
-\section{Funzioni di trasferimento a doppio anello chiuso}
 
-\section{Stabilità asintotica}
+
+\section*{Stabilità asintotica}
 \subsection{Tempo continuo}
 \[   Re(\lambda_i) < 0\ \ \ \ \forall \ \lambda_i \text{ autovalori di } A   \]
 \subsection{Tempo discreto}
++++++++++++++++++++++++++++++++++++++++++++++++++
 
-
-\section{Stabilizzabilità}
+\section*{Stabilizzabilità}
 \begin{center}
-    Un sistema è \textbf{stabile} $\Longleftrightarrow$ gli eventuali autovalori nascosti sono tutti a parte reale negativa
+    Un sistema è \textbf{stabilizzabile} $\Longleftrightarrow$ gli eventuali autovalori nascosti sono tutti a parte reale negativa
+\end{center}
+
+\section*{Velocità del transitorio}
+\begin{center}
+Velocità gestita dagli autovalori della matrice dinamica $A$ secondo la legge $\bm{e^{At}}$\\
+$\to$    \\
+Affinchè il transitorio si esaurisca il più velocemente possibile è necessario prendere la radice meno negativa
+\end{center}
+
+\section*{Oscillazione del transitorio}
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+
+\section*{Autovalori raggiungibili}
+\begin{center}
+    $rk(B\ \ AB \ \ A^2 B \ \dots\ A^{n-1}B) = $ numero di autovalori raggiungibili
+\end{center}
+
+\section*{Autovalori osservabili}
+\begin{center}
+    \[rk \begin{pmatrix}
+        C \\ CA \\ CA^2 \\\vdots \\ CA^{n-1}
+    \end{pmatrix} = \text{numero di autovalori osservabili}\]
 \end{center}
 
 
-\section{Forma di Kalmann}
+\section*{Scomposizione di Kalmann}
 \[          
     \begin{pmatrix}
         \dot{x_1} \\ \dot{x_2} \\ \dot{x_3} \\ \dot{x_4}
@@ -152,7 +201,7 @@ D
 \end{center}
 
 
-\section{Test di Hautus}
+\section*{Test di Hautus}
 Sia $A \in \mathbb{R}^n$ e $\overline{\lambda}$ autovalore di A:
 \subsection{Per la raggiungibilità}
 \[
@@ -179,43 +228,82 @@ C
 \]
 
 
-\section{Classificazione autovalori nascosti}
+\section*{Classificazione autovalori nascosti}
 \subsection{Cancellazione Polo-Zero}
+\begin{center}
 Origina un autovalore \textsc{raggiungibile} e \textsc{inosservabile}
+\end{center}
 \subsection{Cancellazione Zero-Polo}
+\begin{center}
 Origina un autovalore \textsc{irragiungibile} e \textsc{osservabile}
+\end{center}
+
+\section*{Proprità autovalori}
+
+    \[  \bigg\{   \text{Autovalori della matrice dinamica}      \bigg\} \subseteq \bigg\{   \text{Poli della funzione di trasferimento}      \bigg\} \]
+    \[  \bigg\{   \text{Autovalori nascosti}      \bigg\} = \bigg\{   \text{Autovalori della matrice dinamica}      \bigg\} \setminus \bigg\{   \text{Poli della funzione di trasferimento}      \bigg\} \]
 
 
-\section{Risposte a regime permanente}
+
+
+
+\section*{Scelta del controllore}
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=1\linewidth]{../images/controllore.jpg}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+
+
+
+\section*{Polinomio caratteristico}
+Il polinomio caratteristico di un sistema è dato dal prodotto del polinomio dal quale risultano gli autovalori non nascosti, ovvero il denominatore della funzione di trasferimento della funzione complessiva, per il polinomio
+da quale risultano gli autovalori nascosti.
+
+
+
+\section*{Assegnazione degli autovalori}
+\subsection{Equazione Diofantina}
+Sia $D_W(s)$ il denominatore della funzione di trasferimento e $d_w$ il suo grado:
+\[    D_W (s) = \prod_{i = 1}^{d_w} (s-s_{ARB_i})      \]
+L'equazione ha soluzione se e solo se vale la seguente regola:
+\[  \text{numero di parametri = } d_w\]
+
+
+
+\section*{Risposte a regime permanente}
 \subsection{Tempo continuo}
-\begin{tabular}{|c||c|c|c|}
-    \hline 
-    zeri in $s=0$ / ingresso & 1 & $t \displaystyle$ & $\displaystyle \frac{t^2}{2}$\\
+\begin{center}
+\begin{tabular}{c||c|c|c}
+    
+    \textbf{zeri in} $\bm{s=0}$ \textbf{/ ingresso} & \textbf{1} & $\displaystyle \bm{t} $ & $\displaystyle \bm{\frac{t^2}{2}}$\\
     \hline
     \hline
     & & & \\
-    0 & $\displaystyle W(0) \neq 0$ & $ \displaystyle W(o)\ t + \frac{d\ W}{d\ s}\bigg|_{s = 0} $ & $ \displaystyle W(0)\  \frac{t^2}{2} + \frac{d \ W}{d\ s}\bigg|_{s=0} \ t + \frac{1}{2}\ \frac{d^2 \ W}{d\ s^2}\bigg|_{s = 0 }$\\
+    0 & $\displaystyle W(0) \neq 0$ & $ \displaystyle W(0)\ t + \frac{d\ W}{d\ s}\bigg|_{s = 0} $ & $ \displaystyle W(0)\  \frac{t^2}{2} + \frac{d \ W}{d\ s}\bigg|_{s=0} \ t + \frac{1}{2}\ \frac{d^2 \ W}{d\ s^2}\bigg|_{s = 0 }$\\
     & & & \\
     \hline
     & & & \\
-    1 & 0 & $ \displaystyle \frac{W(s)}{s}\bigg|_{s = 0} \neq 0$ & $\displaystyle \frac{d \ W}{d \ s}\bigg|_{s = 0} \ t + \frac{d\ W^2}{d \ s^2}\bigg|_{s = 0}  $\\
+    1 & 0 & $ \displaystyle \frac{W(s)}{s}\bigg|_{s = 0} \neq 0$ & $\displaystyle \frac{d \ W}{d \ s}\bigg|_{s = 0} \ + \frac{1}{2}\ \frac{d\ W^2}{d \ s^2}\bigg|_{s = 0}  $\\
     & & & \\
     \hline
     & & & \\
     2 & 0 & 0 & $\displaystyle  \frac{W(s)}{s^2}\bigg|_{s = 0} \neq 0$ \\
     & & & \\
-    \hline 
+   
 \end{tabular}
 \begin{itemize}
     \item Ingresso sinusoidale ($\sin \omega t $ e $\cos\omega t$) $\rightarrow$ $\widetilde{y} = $ $\big|   W(j w)  \big| \cdot \sin\Big( wt  + \angle W(jw) \Big) $
 \end{itemize}
 
-
+\end{center}
+Dove il modulo si calcola $\sqrt{a^2 +b^2}$ e la fase $\arctan{\frac{b}{a}}$
 
 \subsection{Tempo discreto}
-\begin{tabular}{|c||c|c|c|}
-    \hline 
-    zeri in $s=0$ / ingresso &  & $ \displaystyle$ & $\displaystyle $\\
+\begin{center}
+\begin{tabular}{c||c|c|c}
+    \textbf{zeri in} $\bm{s=0}$ \textbf{/ ingresso} &  & $ \displaystyle$ & $\displaystyle $\\
     \hline
     \hline
     & & & \\
@@ -229,20 +317,76 @@ Origina un autovalore \textsc{irragiungibile} e \textsc{osservabile}
     & & & \\
     & & & \\ 
     & & & \\
-    \hline 
+     
 \end{tabular}
+\end{center}
 
 
 
+\section*{Luogo delle radici}                   
+Grafico che descrive nel piano complesso come camminano le $n$ radici del polinomio al denominatore al variare del parametro $k$, da $-\infty$ a $\infty$. Si parte dalla seguente struttura:
+\[  \hat{F} =  k\cdot \ \frac{\displaystyle\prod_{i=1}^{m}(\displaystyle s-z_i)}{\displaystyle\prod_{i=1}^{n}(\displaystyle s-p_i)}   \]
+dove:
+\begin{itemize}
+    \item $\bm{m}$: numero di zeri
+    \item $\bm{n}$: numero di poli
+\end{itemize}
 
-\section{Assegnazione degli autovalori}
-METTERE EQUAZIONE NEOFANTINA E CONDIZIONE PER L'EQUAZIONE
+\subsection{Asintoti}
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=1\linewidth]{../images/asintonti.jpg}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+
+\subsection{Centro asintotico}
+\[  C.A. = \frac{\displaystyle \sum_{i = 1}^{n} \ p_i- \sum_{i = 1}^{m}\ z_i}{n-m}\]
+In base a quanto vale la differenza $n-m$, il centro asintotico si dispone in maniera diversa:
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=1\linewidth]{../images/centro.jpg}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+
+\subsection{Luogo positivo}
+\begin{itemize}
+    \item \textbf{Partenza}: $n$ cammini, da ogni polo parte uno e un solo cammino
+    \item \textbf{Arrivo}: ogni cammino termina o in uno zero o in un punto asintotico positivo
+\end{itemize} 
+
+\subsection{Luogo negativo}
+\begin{itemize}
+    \item \textbf{Partenza}: $n$ cammini che partono dagli zeri o dai punti asintotici
+    \item \textbf{Arrivo}: ogni cammino termina in un polo
+\end{itemize}
+
+\subsection{Punti di singolarità}
+Formula per calcolare il valore preciso dei punti singolari:
+\[      \begin{cases}
+    D_W = 0\\  \displaystyle \frac{d \ D_W}{d\  s} = 0
+\end{cases}          \]
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.8\linewidth]{../images/single.jpg}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\subsection{Esercizio con luogo delle radici}
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.75\linewidth]{../images/luogo.jpg}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
 
 
+\section*{Diagramma di Bode}
+++++++++++++++++++++++++++++++++++++++++++++++
 
-
-
-
+\section*{Diagramma di Nyquist}
+++++++++++++++++++++++++++++++++++++++++++++++
 
 
 
