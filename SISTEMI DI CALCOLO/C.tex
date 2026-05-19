@@ -1206,3 +1206,203 @@ attraverso una struttura dati chiamata
     Dopo l'esecuzione dell'handler, il processo interrotto può riprendere
     dall'istruzione che ha generato il fault.
 \end{itemize}
+\newpage
+\section{Segnali}
+
+Un \textbf{segnale} è una notifica asincrona inviata a un processo per indicare il verificarsi di un evento specifico.  
+I segnali vengono utilizzati dal Sistema Operativo per gestire situazioni come errori, interruzioni, eccezioni o richieste di terminazione.
+Gli \textbf{interrupt}, invece, sono il meccanismo con cui l'hardware comunica al Sistema Operativo la necessità di gestire una particolare condizione.  
+Dal punto di vista concettuale, interrupt e segnali svolgono un ruolo simile: notificare il verificarsi di un evento asincrono.
+
+\medskip
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|l|l|l|l|}
+\hline
+\textbf{Meccanismo} & \textbf{Destinatario} & \textbf{Mittente} & \textbf{Gestore} \\
+\hline
+Interrupt & Kernel 
+          & Periferiche, CPU, programmi 
+          & Interrupt Handler (kernel) \\
+\hline
+Segnale   & Processo 
+          & Kernel, altri processi, processo stesso 
+          & Signal Handler (processo) \\
+\hline
+\end{tabular}
+\caption{Confronto tra interrupt e segnali}
+\end{table}
+
+\medskip
+
+\noindent Gli interrupt sono sempre indirizzati al kernel, unico componente responsabile della gestione dell'hardware.  
+I segnali, invece, possono essere inviati dal Sistema Operativo a processi differenti, permettendo una gestione asincrona degli eventi a livello di processo.
+Ogni segnale è caratterizzato da:
+
+\begin{itemize}
+    \item \textbf{Numero identificativo} $\rightarrow$ identifica il tipo di segnale.  
+    In Linux esistono numerosi segnali standard, generalmente numerati da 1 a 31 (con alcune eccezioni e segnali aggiuntivi real-time).
+
+    \item \textbf{PID destinatario} $\rightarrow$ identifica il processo a cui il segnale è destinato.
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{../images/Ciclo Segnali.png}
+    \caption{Ciclo di vita di un segnale}
+\end{figure}
+
+\noindent
+Il passaggio dallo stato \texttt{Pending} alla consegna del segnale avviene tipicamente:
+
+\begin{itemize}
+    \item al ritorno da una \textit{system call};
+    \item al termine della gestione di un interrupt.
+\end{itemize}
+
+\medskip
+
+\noindent Quando il kernel notifica un segnale a un processo, quest'ultimo può reagire in tre modi differenti:
+
+\begin{enumerate}
+    \item \textbf{Term/Core} $\rightarrow$ il processo viene terminato oppure viene generato un \textit{core dump}, cioè una copia dello stato della memoria e della CPU salvata su disco.  
+    Il \textit{core dump} è utile per attività di debug e analisi post-mortem.
+
+    \item \textbf{Ignora} $\rightarrow$ il processo ignora il segnale e continua normalmente la propria esecuzione.
+
+    \item \textbf{Catch} $\rightarrow$ il processo intercetta il segnale ed esegue una specifica routine di gestione (\textit{signal handler}).  
+    È possibile definire un handler diverso per ciascun segnale oppure utilizzare lo stesso handler per più segnali.  
+    Se non viene definito alcun handler personalizzato, viene utilizzata l'azione di default prevista dal sistema.
+\end{enumerate}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{../images/Tipi di Segnale.png}
+    \caption{Principali segnali Linux}
+\end{figure}
+
+\noindent
+\textbf{\textcolor{red}{Attenzione:}}  
+per ogni coppia \textit{processo-segnale} può esistere al massimo un solo segnale nello stato di \texttt{Pending}.  
+Se lo stesso segnale viene generato più volte prima della consegna, le notifiche aggiuntive vengono perse.
+
+\medskip
+
+\noindent Spesso la generazione di un interrupt comporta successivamente l'invio di un segnale al processo interessato. Ad esempio:
+
+\begin{verbatim}
+UTENTE PREME:
+
+CTRL-C -> interrupt tastiera
+        -> interrupt handler
+        -> invio SIGINT al processo attivo
+        -> gestione del processo
+
+CTRL-Z -> interrupt tastiera
+        -> interrupt handler
+        -> invio SIGTSTP al processo attivo
+        -> gestione del processo
+
+Timer scaduto
+        -> interrupt timer
+        -> interrupt handler
+        -> invio SIGALRM al processo interessato
+        -> gestione del processo
+\end{verbatim}
+\subsection{Gestione dei segnali}
+In linguaggio C esistono diverse funzioni per inviare e gestire i segnali.  
+Una delle principali funzioni utilizzate per inviare un segnale a un processo è \texttt{kill()}:
+\begin{verbatim}
+#include <signal.h>
+int kill(pid_t pid,   // PID del processo destinatario
+         int sig);    // ID del segnale da inviare
+\end{verbatim}
+
+\noindent
+La funzione invia il segnale identificato da \texttt{sig} al processo avente PID uguale a \texttt{pid}.
+\medskip\\
+\noindent Un processo può inviare segnali soltanto:
+\begin{itemize}
+    \item ai propri processi figli;
+    \item ai processi appartenenti allo stesso utente;
+    \item oppure, nel caso del superutente (\texttt{root}), a qualsiasi processo.
+\end{itemize}
+
+\noindent
+L'invio di segnali può essere effettuato anche direttamente da terminale tramite il comando:
+
+\begin{verbatim}
+kill -9 12345
+\end{verbatim}
+
+\noindent
+dove:
+\begin{itemize}
+    \item \texttt{12345} rappresenta il PID del processo destinatario;
+    \item \texttt{-9} indica il segnale \texttt{SIGKILL}.
+\end{itemize}
+
+\noindent
+In generale, il numero associato al comando \texttt{kill} identifica il tipo di segnale da inviare.
+
+\bigskip
+
+\noindent Per gestire un segnale, invece, si utilizza tipicamente la funzione \texttt{sigaction()}:
+
+\begin{verbatim}
+#include <signal.h>
+
+int sigaction(int sign,                    // ID del segnale da gestire
+              const struct sigaction *act, // Nuova configurazione (indica come gestire il segnale)
+              struct sigaction *oldact);   // Vecchia configurazione (se diverso da NULL, 
+                                              permette di salvarla)
+
+La funzione restituisce 0 in caso di successo, altrimenti restituisce -1 e imposta errno.
+\end{verbatim}
+
+\noindent
+I parametri della funzione hanno il seguente significato:
+
+\begin{itemize}
+    \item \texttt{sign} $\rightarrow$ identificativo del segnale da configurare;
+    
+    \item \texttt{act} $\rightarrow$ struttura contenente la nuova modalità di gestione del segnale;
+    
+    \item \texttt{oldact} $\rightarrow$ se diverso da \texttt{NULL}, permette di salvare la precedente configurazione del segnale.
+\end{itemize}
+
+\medskip
+
+\noindent La struttura \texttt{sigaction} è definita nel seguente modo:
+
+\begin{verbatim}
+struct sigaction {
+    void (*sa_handler)(int);
+    void (*sa_sigaction)(int, siginfo_t *, void *);
+    sigset_t sa_mask;
+    int sa_flags;
+    void (*sa_restorer)(void);
+};
+\end{verbatim}
+
+\noindent
+I principali campi della struttura sono:
+
+\begin{itemize}
+    \item \texttt{sa\_handler} $\rightarrow$ definisce il comportamento associato al segnale:
+    \begin{itemize}
+        \item puntatore a una funzione \textit{signal handler};
+        \item \texttt{SIG\_IGN} per ignorare il segnale;
+        \item \texttt{SIG\_DFL} per utilizzare l'azione di default del sistema.
+    \end{itemize}
+
+    \item \texttt{sa\_sigaction} $\rightarrow$ versione avanzata dell'handler che permette di ottenere informazioni aggiuntive sul segnale ricevuto.
+
+    \item \texttt{sa\_mask} $\rightarrow$ insieme di segnali temporaneamente bloccati durante l'esecuzione del signal handler.
+
+    \item \texttt{sa\_flags} $\rightarrow$ insieme di flag che modificano il comportamento dell'handler.  
+    Ad esempio, il flag \texttt{SA\_RESTART} permette di riavviare automaticamente alcune system call interrotte da un segnale.
+
+    \item \texttt{sa\_restorer} $\rightarrow$ campo riservato all'uso interno del kernel e normalmente non utilizzato nei programmi applicativi (non utilizzato).
+\end{itemize}
