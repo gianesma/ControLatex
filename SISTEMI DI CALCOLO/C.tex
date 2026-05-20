@@ -1406,3 +1406,214 @@ I principali campi della struttura sono:
 
     \item \texttt{sa\_restorer} $\rightarrow$ campo riservato all'uso interno del kernel e normalmente non utilizzato nei programmi applicativi (non utilizzato).
 \end{itemize}
+\newpage
+\section{Gestione della memoria}
+Ogni processo vede ed usa la memoria come se fosse uno spazio
+lineare indirizzabile completamente a una disposizone.
+\begin{figure}[H]
+    \centering  
+    %\includegraphics[width=0.9\linewidth]{../images}
+    \caption{Memoria}
+    %\label{label}
+\end{figure}
+\noindent Un problema fondamentale per il Sistema Operativo è come gestire la memoria fisica
+disponnibile nel sistema di calcolo in modo che in la stessa possa essere acceduta 
+concorrentemente da TUTTI i processi attivi:
+\begin{enumerate}
+    \item Deve tenere traccia di tutte lelocazioni della memoria fisica attualemente in uso
+    \item Deve considerare nuove richieste di utilizzo della memoria fisica allocando gli spazi liberi
+\end{enumerate}
+Sono presenti diversi problemi, ma per semplificare ci concentriamo su questi due.\\
+\subsection{Allocazione della memoria}
+Immaginiamo che nel Sistema Operativo sia presente un componente software chiamato
+\textbf{Allocatore di Memoria} rappresentato da una struttura dati che in ogni istante registra quali
+locazioni della memoria fisica sono libere/occupate.\\
+I programmi interagiscono con l'allocatore di memoria attraverso, delle primitive di base
+che per semplificare possiamo immaginare siano tre:
+\begin{enumerate}
+    \item p = alloca(n) $\rightarrow$ restituisce l'indirizzo iniziale p di un blocco di memoria 
+    contiguo di dimensione pari ad almeno n byte, oppure NULL se non è possibile soddisfare la richiesta.
+    In C questa funzione è rappresentata da \texttt{malloc(n)}.
+    \item p' = ridimensiona(p, n) $\rightarrow$ ridimensiona il blocco di memoria precedentemente allocato 
+    a partire da p purchè abbia una nuova dimensione di almeno n byte.\\
+    \textbf{\textcolor{red}{ATTENZIONE:}} il nuovo blocco allocato potrebbe essere raggiungibile 
+    ad un nuovo indirizzo p'.
+    \item dealloca(p) $\rightarrow$ libera lo spazio di memoria che era stato precedentemente allocato. In 
+    C questa funzione è rappresentata da \texttt{free(p)};
+\end{enumerate}
+\subsection{Frammentazione della memoria}
+Indichiamo il problema per cui in memoria nessuno spazio libero contiguo è grande a sufficienza per soddisfare 
+una richiesta di allocazione (anche se la somma degli spazi liberi è più grande della richiesta).
+\begin{figure}[H]
+    \centering  
+    %\includegraphics[width=0.9\linewidth]{../images}
+    \caption{Frammentazione}
+    %\label{label}
+\end{figure}
+\noindent Esistono due tipi di frammentazione:
+\begin{itemize}
+    \item Frammentazione Interna $\rightarrow$ quando sono presenti spazi di memoria 
+    non utilizzati all'interno di blocchi allocati
+    \item Frammentazione Esterna $\rightarrow$ quando una richiesta di allocazione di dimensione
+    n fallisce perchè tutti i blocchi liberi hanno dimensione minore.\\
+    \textbf{\textcolor{red}{ATTENZIONE:}} la frammentazione esterna può verificarsi solo se
+    l'allocatore alloca blocchi di dimensioni variabili.
+\end{itemize}
+\begin{figure}[H]
+    \centering  
+    %\includegraphics[width=0.9\linewidth]{../images}
+    \caption{Frammentazione Esterna}
+    %\label{label}
+\end{figure}
+L'allocatore è tipicamente implementato a due livelli:
+\begin{enumerate}
+    \item Un primo allocatore rende disponibile la memoria fisica ai processi
+    (lavora in kernel space)
+    \item Un secondo allocatore che lavora a livello di singolo processo per
+    rispondere alle richieste di allocazione dinamica della memoria
+    (lavora in user space)
+\end{enumerate}
+\subsection{Memoria Virtuale}
+La memoria virtuale è una astrazione (non esiste realmente) tramite cui
+ogni processo accede ad uno spazio di memoria a lui dedicato caratterizzato
+da indirizzi logici (o virtuali).\\
+Il processo utilizza gli indirizzi logici come se fossero indirizzi fisici. È
+il sistema operativo a preoccuparsi della traduzione "indirizzo logico $<->$ indirizzo fisico"
+\begin{figure}[H]
+    \centering  
+    %\includegraphics[width=0.9\linewidth]{../images}
+    \caption{Memoria Virtuale}
+    %\label{label}
+\end{figure}
+\noindent Riassumento il meccanismo della memoria virtuale permette l'accesso alla memoria fisica
+da parte di un processo attraverso la traduzione automatica di indirizzi logici in
+indirizzi fisici.
+\begin{figure}[H]
+    \centering  
+    %\includegraphics[width=0.9\linewidth]{../images}
+    \caption{caption}
+    %\label{label}
+\end{figure}
+\subsection{Paginazione della memoria}
+Con la paginazione della memoria lo spazio di indirizzamento logico e fisico della memoria
+viene suddiviso in blocchi di dimensione fissata:
+\begin{itemize}
+    \item Pagine se nella memoria virtuale
+    \item Frame se nelle memoria fisica
+\end{itemize}
+\begin{figure}[H]
+    \centering  
+    %\includegraphics[width=0.9\linewidth]{../images}
+    \caption{Paginazione della Memoria}
+    %\label{label}
+\end{figure}
+Quindi qual'è lo schema complessivo con cui la MMU traduce gli indirizzi?\\
+Supponiamo che:
+\begin{itemize}
+    \item Memoria Virtuale mette a disposizione dei processi 2$^v$ byte. (es v = 32 -$>$ 4 GB)
+    \item Memoria fisica con 2$^r$ byte disponibili (es r = 33 -$>$ 8 GB)
+    \item Pagine di dimensione 2$^d$ byte disponibili (es d = 12 -$>$ pagine da 4 KB)
+\end{itemize}
+\noindent Come traduciamo indirizzi logici a V bit in indirizzi fisici a R bit?
+\begin{figure}[H]
+    \centering  
+    %\includegraphics[width=0.9\linewidth]{../images}
+    \caption{caption}
+    %\label{label}
+\end{figure}
+\noindent Per tradurre da x a y si ottiene l'indice di frame corrispondente all'indice
+di pagina attraverso la tabella delle pagine, poi si aggiunge l'offset (che è lo stesso).
+\begin{figure}[H]
+    \centering  
+    %\includegraphics[width=0.9\linewidth]{../images}
+    \caption{Traduzione}
+    %\label{label}
+\end{figure}
+\subsection{Paginazione con bit di validità}
+Ad ogni riga della tabela delle pagine aggiungo un bit di validità con seguente significato:
+\begin{itemize}
+    \item 0 pagina inutilizzata (non valida)
+    \item 1 pagina in uso (valida)
+\end{itemize}
+\begin{figure}[H]
+    \centering  
+    %\includegraphics[width=0.9\linewidth]{../images}
+    \caption{Paginazione bit validità}
+    %\label{label}
+\end{figure}
+\subsection{Memory Swapping}
+A volte i dati presenti in pagine valide rimangono inizializzati a lungo. Se il
+sistema non ha più frame liberi in memoria fisica può trasferire i frame
+meno utilizzati su disco, liberando così spazio in memoria fisica per nuove pagine.
+Questa operazione prende il nome di \texttt{Swap-Out}.\\
+\noindent Quando un processo accede a una pagina che è stata trasferita su disco (soggetta allo Swap-Out), si verifica un \textbf{page fault}.
+In questo caso, il sistema operativo deve caricare nuovamente la pagina in memoria fisica
+attraverso un'operazione di \texttt{Swap-In}, consentendo così al processo di accedere ai dati richiesti. Schematizzando la cosa:
+\begin{enumerate}
+    \item La CPU genera un interrupt detto Page-Fault
+    \item Il kernel seleziona nella memoria fisica una frame "vittima"
+    \item Viene fatto Swap-Out del frame vittima (quindi va a finire su disco)
+    \item Nel frame vittima viene caricata la pagina contenente l'indirizzo
+    a cui tenta di accedere il processo (Swap-In)
+    \item Vengono aggiornate le tabelle delle pagine di entrambi i processi
+    \item Il processo interrotto riprende eseguendo di nuovo l'istruzione che ha
+    causato il Page-Fault
+\end{enumerate}
+Tutto questo processo prende il nome di \textbf{Paginazione della Memoria con Validità e Swap}.
+Presenta come vantaggi e svantaggi:
+\begin{verbatim}
++ tutti i processi usano uno stesso spazio di indirizzamento
++ È possibile sfruttare al meglio la memoria fisica prappando le sue pagine in uso
++ È virtualmente disponibile memoria illimitata
+
+- Trashing
+- Gestione complessa della memoria
+- Non supportato da tutte le piattaforme
+\end{verbatim}
+\subsection{Allocazione della memoria}
+Quando chiamiamo malloc(x) ci viene allocatat memoria dall'heap.
+\begin{figure}[H]
+    \centering  
+    %\includegraphics[width=0.9\linewidth]{../images}
+    \caption{Allocazione}
+    %\label{label}
+\end{figure}
+Il brk rappresenta lo spazio massimo allocabile da malloc. Modificabile con "sbrk".\\
+La primitiva di gestione della memoria partiziona lo spazio dell'heap in tre parti diverse:
+\begin{enumerate}
+    \item Spazio allocato in uso al processo
+    \item Spazio libero allocabile
+    \item Spazio occupato da metadati
+\end{enumerate}
+Tipicamente lo spazio nell'heap viene allocato a blocchi. Ogni blocco contiene
+uno dei tre casi precedenti. I blocchi sono disgiunti tra loro.
+Ogni blocco contiene un header (parte iniziale di metadati) che può essere di due tipi:
+\begin{figure}[H]
+    \centering  
+    %\includegraphics[width=0.9\linewidth]{../images}
+    \caption{Blocchi}
+    %\label{label}
+\end{figure}
+I blocchi liberi invece sono organizzati in una lista puntatori della variabile
+globale free\_list. 
+\begin{verbatim}
+p = malloc(n)   -> cerca a partire da free_list un blocco libero di dimensione S (>= n + 4 >= 12)
+La dimensione minima di un blocco deve essere di 12 byte
+\end{verbatim}
+Se il blocco esiste lo toglie dalla lista. La scelta del blocco può seguire diverse strategie:
+\begin{itemize}
+    \item First-Fit $\rightarrow$ seleziona il primo blocco adatto
+    \item Best-Fit $\rightarrow$ seleziona il blocco più piccolo che soddisfa la richiesta
+    (riduce frammentazione interna)
+\end{itemize}
+Se non esiste un blocco adatto, estende l'heap di n+4 byte e crea di questo spazio un nuovo blocco.
+\begin{verbatim}
+free(p)     -> aggiunge a free_list il blocco puntato da p-4
+\end{verbatim}
+\subsection{Altri miglioramenti}
+\begin{itemize}
+    \item Fusione di blocchi liberi adiaceni 
+    \item Partizionamento dei blocchi liberi
+    \item Liste free separate per blochi di dimensioni diverse
+    \item Allineamento 
+\end{itemize}
