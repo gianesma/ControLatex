@@ -1617,3 +1617,48 @@ free(p)     -> aggiunge a free_list il blocco puntato da p-4
     \item Liste free separate per blochi di dimensioni diverse
     \item Allineamento 
 \end{itemize}
+\subsection{Cache e uso ottimizzato della memoria}
+Consideriamo due operazioni:
+\begin{verbatim}
+movl $1, %eax   -> 1 nsec
+movl $1, (%eax) -> 100 nsec
+\end{verbatim}
+Una cache è una memoria ad accesso rapido che memorizza temporaneamente i dati più frequentemente utilizzati, 
+riducendo così il tempo di accesso rispetto alla memoria principale. È una memoria costituita da righe di dimensione
+fissa (es 64 byte). Ogni riga contiene COPIA di parte dei dati in memoria.
+\begin{figure}[H]
+    \centering  
+    %\includegraphics[width=0.9\linewidth]{../images}
+    \caption{caption}
+    %\label{label}
+\end{figure}
+\noindent Ogni indirizzo X in RAM è associato ad un blocco con identificativo $\left\lfloor X/L \right\rfloor$ dove L è la dimensione delle righe della cache.
+Quando si accede ad X
+\begin{itemize}
+    \item Cache-Hit $\rightarrow$ la cache contiene in una delle sue 
+    \item Cache-Miss $\rightarrow$ il dato non è presente in cache. 
+\end{itemize}
+Se la cache è piena, si seleziona la linea continua. La slezione si basa su principi di località:
+\begin{itemize}
+    \item Localita temporale $\rightarrow$ se un processo accede ad un indirizzo X è molto probabile che accederò di nuovo a X
+    nel prossimo futuro
+    \item Localita Spaziale $\rightarrow$ se un processo accede ad un indirizzo X è molto probabile che accderà all'indirizzo X+1
+\end{itemize}
+Esempio:
+\begin{verbatim}
+int sum(int **m, int n){
+    int i, j, s = 0;
+    for(i = 0, i<n; i++)
+        for(j = 0, j<n; j++)
+            s = s + m[i][j];
+    return s;
+}
+\end{verbatim}
+Immaginiamo che la funzioni finisca in 0,3s 
+Se sostituiamo m[j][i] ci impiegherà 1,5s
+\begin{figure}[H]
+    \centering  
+    %\includegraphics[width=0.9\linewidth]{../images}
+    \caption{caption}
+    %\label{label}
+\end{figure}
