@@ -1408,23 +1408,24 @@ I principali campi della struttura sono:
 \end{itemize}
 \newpage
 \section{Gestione della memoria}
-Ogni processo vede ed usa la memoria come se fosse uno spazio
-lineare indirizzabile completamente a una disposizone.
-\begin{figure}[H]
-    \centering  
-    %\includegraphics[width=0.9\linewidth]{../images}
-    \caption{Memoria}
-    %\label{label}
-\end{figure}
-\noindent Un problema fondamentale per il Sistema Operativo è come gestire la memoria fisica
-disponnibile nel sistema di calcolo in modo che in la stessa possa essere acceduta 
-concorrentemente da TUTTI i processi attivi:
+Ogni processo vede e utilizza la memoria come se disponesse di uno spazio di indirizzamento lineare e dedicato esclusivamente a sé stesso.  
+In realtà, la memoria fisica del sistema è condivisa tra tutti i processi attivi e deve quindi essere gestita dal Sistema Operativo.
+
+\medskip
+
+\noindent Uno dei compiti fondamentali del Sistema Operativo consiste proprio nella gestione della memoria fisica disponibile, garantendo che più processi possano accedervi in modo concorrente, efficiente e sicuro.
+
+\noindent In particolare, il Sistema Operativo deve:
+
 \begin{enumerate}
-    \item Deve tenere traccia di tutte lelocazioni della memoria fisica attualemente in uso
-    \item Deve considerare nuove richieste di utilizzo della memoria fisica allocando gli spazi liberi
+    \item tenere traccia delle locazioni di memoria fisica attualmente utilizzate;
+
+    \item gestire le nuove richieste di memoria, allocando opportunamente gli spazi liberi disponibili.
 \end{enumerate}
-Sono presenti diversi problemi, ma per semplificare ci concentriamo su questi due.\\
-\subsection{Allocazione della memoria}
+
+\noindent
+La gestione della memoria introduce numerosi problemi e aspetti progettuali complessi.  
+Per semplicità, ci concentreremo principalmente su questi due aspetti fondamentali.
 Immaginiamo che nel Sistema Operativo sia presente un componente software chiamato
 \textbf{Allocatore di Memoria} rappresentato da una struttura dati che in ogni istante registra quali
 locazioni della memoria fisica sono libere/occupate.\\
@@ -1442,92 +1443,171 @@ che per semplificare possiamo immaginare siano tre:
     C questa funzione è rappresentata da \texttt{free(p)};
 \end{enumerate}
 \subsection{Frammentazione della memoria}
-Indichiamo il problema per cui in memoria nessuno spazio libero contiguo è grande a sufficienza per soddisfare 
-una richiesta di allocazione (anche se la somma degli spazi liberi è più grande della richiesta).
-\begin{figure}[H]
-    \centering  
-    %\includegraphics[width=0.9\linewidth]{../images}
-    \caption{Frammentazione}
-    %\label{label}
-\end{figure}
-\noindent Esistono due tipi di frammentazione:
+
+La \textbf{frammentazione della memoria} è il fenomeno per cui la memoria disponibile risulta suddivisa in più blocchi sparsi e non contigui.  
+Di conseguenza, può accadere che una richiesta di allocazione non venga soddisfatta anche se la quantità totale di memoria libera sarebbe sufficiente.
+
+\medskip
+\noindent In altre parole, nessuno spazio libero contiguo è abbastanza grande da contenere la nuova allocazione richiesta.
+\noindent
+Esistono due principali tipi di frammentazione:
+
 \begin{itemize}
-    \item Frammentazione Interna $\rightarrow$ quando sono presenti spazi di memoria 
-    non utilizzati all'interno di blocchi allocati
-    \item Frammentazione Esterna $\rightarrow$ quando una richiesta di allocazione di dimensione
-    n fallisce perchè tutti i blocchi liberi hanno dimensione minore.\\
-    \textbf{\textcolor{red}{ATTENZIONE:}} la frammentazione esterna può verificarsi solo se
-    l'allocatore alloca blocchi di dimensioni variabili.
+    \item \textbf{Frammentazione interna} $\rightarrow$ si verifica quando all'interno di un blocco di memoria allocato rimangono porzioni inutilizzate.  
+    Questo accade tipicamente quando l'allocazione avviene in blocchi di dimensione fissa.
+
+    \item \textbf{Frammentazione esterna} $\rightarrow$ si verifica quando una richiesta di allocazione di dimensione \(n\) fallisce perché tutti i blocchi liberi disponibili hanno dimensione inferiore a \(n\), anche se la somma totale della memoria libera sarebbe sufficiente.
 \end{itemize}
+
+\medskip
+
+\noindent
+\textbf{\textcolor{red}{Attenzione:}}  
+la frammentazione esterna può verificarsi soltanto se l'allocatore utilizza blocchi di dimensione variabile.
+
 \begin{figure}[H]
-    \centering  
+    \centering
     %\includegraphics[width=0.9\linewidth]{../images}
-    \caption{Frammentazione Esterna}
-    %\label{label}
+    \caption{Esempio di frammentazione esterna}
 \end{figure}
-L'allocatore è tipicamente implementato a due livelli:
+
+\medskip
+
+\noindent L'allocazione della memoria è tipicamente organizzata su due livelli:
+
 \begin{enumerate}
-    \item Un primo allocatore rende disponibile la memoria fisica ai processi
-    (lavora in kernel space)
-    \item Un secondo allocatore che lavora a livello di singolo processo per
-    rispondere alle richieste di allocazione dinamica della memoria
-    (lavora in user space)
+    \item un primo allocatore, operante in \textit{kernel space}, che gestisce la memoria fisica del sistema e la rende disponibile ai processi;
+
+    \item un secondo allocatore, operante in \textit{user space}, che gestisce la memoria del singolo processo e risponde alle richieste di allocazione dinamica (ad esempio tramite \texttt{malloc()}).
 \end{enumerate}
-\subsection{Memoria Virtuale}
-La memoria virtuale è una astrazione (non esiste realmente) tramite cui
-ogni processo accede ad uno spazio di memoria a lui dedicato caratterizzato
-da indirizzi logici (o virtuali).\\
-Il processo utilizza gli indirizzi logici come se fossero indirizzi fisici. È
-il sistema operativo a preoccuparsi della traduzione "indirizzo logico $<->$ indirizzo fisico"
+\subsection{Memoria virtuale}
+La \textbf{memoria virtuale} è un'astrazione fornita dal Sistema Operativo che consente a ogni processo di utilizzare uno spazio di memoria logico dedicato, indipendente dalla reale disposizione della memoria fisica.
+
+\medskip
+
+\noindent Ogni processo opera utilizzando \textbf{indirizzi logici} (o \textbf{virtuali}), come se avesse a disposizione un'intera memoria privata e continua.  
+La traduzione tra indirizzi logici e indirizzi fisici viene effettuata automaticamente dal sistema tramite appositi meccanismi hardware e software.
+\begin{center}
+\[
+\text{Indirizzo logico} \;\longleftrightarrow\; \text{Indirizzo fisico}
+\]
+\end{center}
+
+\noindent
+Dal punto di vista del processo, l'utilizzo della memoria avviene in modo trasparente: il programma non deve preoccuparsi della reale posizione dei dati nella RAM.
+
 \begin{figure}[H]
-    \centering  
-    %\includegraphics[width=0.9\linewidth]{../images}
-    \caption{Memoria Virtuale}
-    %\label{label}
+    \centering
+    \includegraphics[width=0.9\linewidth]{../images/Gestione Memoria.png}
+    \caption{Traduzione tra memoria virtuale e memoria fisica}
 \end{figure}
-\noindent Riassumento il meccanismo della memoria virtuale permette l'accesso alla memoria fisica
-da parte di un processo attraverso la traduzione automatica di indirizzi logici in
-indirizzi fisici.
+
+\medskip
+
+\noindent In sintesi, il meccanismo della memoria virtuale permette ai processi di accedere alla memoria fisica attraverso una traduzione automatica degli indirizzi virtuali in indirizzi fisici.
+
+\medskip
+
+\noindent Questo approccio offre numerosi vantaggi:
+
+\begin{itemize}
+    \item isolamento tra i processi;
+    \item maggiore sicurezza;
+    \item utilizzo più efficiente della memoria fisica;
+    \item possibilità di eseguire processi più grandi della RAM disponibile;
+    \item semplificazione della gestione della memoria da parte dei programmi.
+\end{itemize}
+
 \begin{figure}[H]
-    \centering  
-    %\includegraphics[width=0.9\linewidth]{../images}
-    \caption{caption}
-    %\label{label}
+    \centering
+    \includegraphics[width=0.9\linewidth]{../images/Allocazione Memoria YEA.png}
+    \caption{Vista logica della memoria di un processo}
 \end{figure}
 \subsection{Paginazione della memoria}
-Con la paginazione della memoria lo spazio di indirizzamento logico e fisico della memoria
-viene suddiviso in blocchi di dimensione fissata:
+La \textbf{paginazione} è una tecnica di gestione della memoria utilizzata nei moderni sistemi operativi per implementare la memoria virtuale.
+
+\medskip
+
+\noindent Con la paginazione, sia lo spazio di indirizzamento logico sia la memoria fisica vengono suddivisi in blocchi di dimensione fissa:
+
 \begin{itemize}
-    \item Pagine se nella memoria virtuale
-    \item Frame se nelle memoria fisica
+    \item \textbf{Pagine} (\textit{pages}) $\rightarrow$ blocchi della memoria virtuale;
+    
+    \item \textbf{Frame} (\textit{page frames}) $\rightarrow$ blocchi della memoria fisica.
 \end{itemize}
+
+\noindent
+Ogni pagina della memoria virtuale può essere caricata in un qualsiasi frame libero della memoria fisica.
+
 \begin{figure}[H]
-    \centering  
-    %\includegraphics[width=0.9\linewidth]{../images}
-    \caption{Paginazione della Memoria}
-    %\label{label}
+    \centering
+    \includegraphics[width=0.9\linewidth]{../images/Paginazione Memoria.png}
+    \caption{Paginazione della memoria}
 \end{figure}
-Quindi qual'è lo schema complessivo con cui la MMU traduce gli indirizzi?\\
-Supponiamo che:
+
+\medskip
+
+\noindent La traduzione degli indirizzi virtuali in indirizzi fisici viene effettuata dalla \textbf{MMU} (\textit{Memory Management Unit}).
+
+\bigskip
+
+\noindent Supponiamo di avere:
+
 \begin{itemize}
-    \item Memoria Virtuale mette a disposizione dei processi 2$^v$ byte. (es v = 32 -$>$ 4 GB)
-    \item Memoria fisica con 2$^r$ byte disponibili (es r = 33 -$>$ 8 GB)
-    \item Pagine di dimensione 2$^d$ byte disponibili (es d = 12 -$>$ pagine da 4 KB)
+    \item una memoria virtuale di dimensione \(2^v\) byte  
+    (ad esempio \(v = 32 \Rightarrow 4\,GB\));
+
+    \item una memoria fisica di dimensione \(2^r\) byte  
+    (ad esempio \(r = 33 \Rightarrow 8\,GB\));
+
+    \item pagine di dimensione \(2^d\) byte  
+    (ad esempio \(d = 12 \Rightarrow 4\,KB\)).
 \end{itemize}
-\noindent Come traduciamo indirizzi logici a V bit in indirizzi fisici a R bit?
+
+\medskip
+
+\noindent Un indirizzo virtuale di \(v\) bit viene suddiviso in due parti:
+
+\begin{itemize}
+    \item \textbf{Numero di pagina} $\rightarrow$ identifica la pagina virtuale;
+    
+    \item \textbf{Offset} $\rightarrow$ identifica la posizione del dato all'interno della pagina.
+\end{itemize}
+
+\noindent
+Anche l'indirizzo fisico è composto da:
+
+\begin{itemize}
+    \item \textbf{Numero di frame} $\rightarrow$ identifica il frame fisico;
+    
+    \item \textbf{Offset} $\rightarrow$ stessa posizione relativa all'interno del frame.
+\end{itemize}
+
 \begin{figure}[H]
-    \centering  
-    %\includegraphics[width=0.9\linewidth]{../images}
-    \caption{caption}
-    %\label{label}
+    \centering
+    \includegraphics[width=0.9\linewidth]{../images/MMU.png}
+    \caption{Traduzione degli indirizzi tramite MMU}
 \end{figure}
-\noindent Per tradurre da x a y si ottiene l'indice di frame corrispondente all'indice
-di pagina attraverso la tabella delle pagine, poi si aggiunge l'offset (che è lo stesso).
+
+\medskip
+
+\noindent La traduzione avviene nel seguente modo:
+
+\begin{enumerate}
+    \item si estrae dall'indirizzo virtuale il numero di pagina;
+    
+    \item tramite la \textbf{tabella delle pagine} si individua il frame fisico corrispondente;
+    
+    \item si concatena il numero di frame con lo stesso offset presente nell'indirizzo virtuale.
+\end{enumerate}
+
+\noindent
+L'offset rimane invariato perché pagina e frame hanno la stessa dimensione.
+
 \begin{figure}[H]
-    \centering  
-    %\includegraphics[width=0.9\linewidth]{../images}
-    \caption{Traduzione}
-    %\label{label}
+    \centering
+    \includegraphics[width=0.9\linewidth]{../images/Traduzione.png}
+    \caption{Schema di traduzione da indirizzo virtuale a indirizzo fisico}
 \end{figure}
 \subsection{Paginazione con bit di validità}
 Ad ogni riga della tabela delle pagine aggiungo un bit di validità con seguente significato:
@@ -1537,128 +1617,220 @@ Ad ogni riga della tabela delle pagine aggiungo un bit di validità con seguente
 \end{itemize}
 \begin{figure}[H]
     \centering  
-    %\includegraphics[width=0.9\linewidth]{../images}
+    \includegraphics[width=0.9\linewidth]{../images/Paginazione validita.png}
     \caption{Paginazione bit validità}
     %\label{label}
 \end{figure}
-\subsection{Memory Swapping}
-A volte i dati presenti in pagine valide rimangono inizializzati a lungo. Se il
-sistema non ha più frame liberi in memoria fisica può trasferire i frame
-meno utilizzati su disco, liberando così spazio in memoria fisica per nuove pagine.
-Questa operazione prende il nome di \texttt{Swap-Out}.\\
-\noindent Quando un processo accede a una pagina che è stata trasferita su disco (soggetta allo Swap-Out), si verifica un \textbf{page fault}.
-In questo caso, il sistema operativo deve caricare nuovamente la pagina in memoria fisica
-attraverso un'operazione di \texttt{Swap-In}, consentendo così al processo di accedere ai dati richiesti. Schematizzando la cosa:
-\begin{enumerate}
-    \item La CPU genera un interrupt detto Page-Fault
-    \item Il kernel seleziona nella memoria fisica una frame "vittima"
-    \item Viene fatto Swap-Out del frame vittima (quindi va a finire su disco)
-    \item Nel frame vittima viene caricata la pagina contenente l'indirizzo
-    a cui tenta di accedere il processo (Swap-In)
-    \item Vengono aggiornate le tabelle delle pagine di entrambi i processi
-    \item Il processo interrotto riprende eseguendo di nuovo l'istruzione che ha
-    causato il Page-Fault
-\end{enumerate}
-Tutto questo processo prende il nome di \textbf{Paginazione della Memoria con Validità e Swap}.
-Presenta come vantaggi e svantaggi:
-\begin{verbatim}
-+ tutti i processi usano uno stesso spazio di indirizzamento
-+ È possibile sfruttare al meglio la memoria fisica prappando le sue pagine in uso
-+ È virtualmente disponibile memoria illimitata
+\subsection{Memory swapping}
+Il \textbf{memory swapping} è una tecnica utilizzata dal Sistema Operativo per gestire situazioni in cui la memoria fisica non è sufficiente a contenere tutte le pagine attive dei processi.
 
-- Trashing
-- Gestione complessa della memoria
-- Non supportato da tutte le piattaforme
+\medskip
+
+\noindent Spesso accade che alcune pagine di memoria, pur essendo valide, rimangano inutilizzate per lunghi periodi di tempo.  
+Quando la memoria fisica è satura, il sistema può trasferire alcune di queste pagine su disco per liberare spazio: questa operazione prende il nome di \textbf{swap-out}.
+
+\medskip
+
+\noindent Quando un processo tenta di accedere a una pagina che è stata precedentemente spostata su disco, si verifica un \textbf{page fault}.  
+In questo caso, il Sistema Operativo deve recuperare la pagina dalla memoria secondaria e riportarla in RAM tramite un’operazione di \textbf{swap-in}, permettendo al processo di proseguire l’esecuzione.
+
+\bigskip
+
+\noindent
+Il funzionamento può essere riassunto nei seguenti passi:
+
+\begin{enumerate}
+    \item la CPU genera un interrupt di tipo \textit{page fault};
+    
+    \item il kernel seleziona un frame “vittima” nella memoria fisica;
+    
+    \item il contenuto del frame vittima viene salvato su disco (\textit{swap-out});
+    
+    \item la pagina richiesta viene caricata nel frame liberato (\textit{swap-in});
+    
+    \item le tabelle delle pagine vengono aggiornate per riflettere la nuova mappatura;
+    
+    \item il processo viene riattivato e ripete l’istruzione che aveva causato il page fault.
+\end{enumerate}
+
+\medskip
+
+\noindent Questo meccanismo viene spesso indicato come \textbf{paginazione con swap e bit di validità}.
+
+\bigskip
+
+\noindent
+I principali vantaggi e svantaggi sono:
+
+\begin{verbatim}
+VANTAGGI:
++ Tutti i processi condividono uno spazio di indirizzamento virtuale
++ Migliore utilizzo della memoria fisica (solo le pagine attive restano in RAM)
++ Possibilità di utilizzare più memoria di quella fisicamente disponibile
+
+SVANTAGGI:
+- Fenomeno di thrashing (continui swap che degradano le prestazioni)
+- Maggiore complessità nella gestione della memoria
+- Dipendenza dalla presenza di memoria secondaria veloce (disco/SSD)
 \end{verbatim}
 \subsection{Allocazione della memoria}
-Quando chiamiamo malloc(x) ci viene allocatat memoria dall'heap.
+Quando viene invocata la funzione \texttt{malloc(x)}, la memoria richiesta viene allocata all’interno dell’\textbf{heap} del processo.
 \begin{figure}[H]
-    \centering  
-    %\includegraphics[width=0.9\linewidth]{../images}
-    \caption{Allocazione}
-    %\label{label}
+    \centering
+    \includegraphics[width=0.5\linewidth]{../images/Allocazione Memoria YEA YEa.jpg}
+    \caption{Struttura dell'heap}
 \end{figure}
-Il brk rappresenta lo spazio massimo allocabile da malloc. Modificabile con "sbrk".\\
-La primitiva di gestione della memoria partiziona lo spazio dell'heap in tre parti diverse:
+
+\medskip
+
+\noindent Il puntatore \textbf{brk} definisce il limite superiore dell’heap, ovvero la massima area attualmente allocata.  
+Questo limite può essere modificato tramite la system call \texttt{sbrk()}.
+
+\bigskip
+
+\noindent La gestione dell’heap suddivide lo spazio disponibile in tre tipologie di aree:
+
 \begin{enumerate}
-    \item Spazio allocato in uso al processo
-    \item Spazio libero allocabile
-    \item Spazio occupato da metadati
+    \item memoria allocata e attualmente utilizzata dal processo;
+    \item memoria libera, disponibile per nuove allocazioni;
+    \item memoria occupata da strutture di gestione (metadati).
 \end{enumerate}
-Tipicamente lo spazio nell'heap viene allocato a blocchi. Ogni blocco contiene
-uno dei tre casi precedenti. I blocchi sono disgiunti tra loro.
-Ogni blocco contiene un header (parte iniziale di metadati) che può essere di due tipi:
+
+\medskip
+
+\noindent Lo spazio dell’heap è organizzato in \textbf{blocchi}, ciascuno dei quali può appartenere a una delle categorie precedenti.  
+I blocchi sono disgiunti tra loro e contengono sempre un’intestazione (\textit{header}) con informazioni di gestione.
+
 \begin{figure}[H]
-    \centering  
-    %\includegraphics[width=0.9\linewidth]{../images}
-    \caption{Blocchi}
-    %\label{label}
+    \centering
+    \includegraphics[width=0.9\linewidth]{../images/bllocchi.png}
+    \caption{Struttura dei blocchi di memoria}
 \end{figure}
-I blocchi liberi invece sono organizzati in una lista puntatori della variabile
-globale free\_list. 
+
+\bigskip
+
+\noindent I blocchi liberi sono organizzati in una struttura dati chiamata \texttt{free\_list}, tipicamente implementata come lista concatenata.
+
 \begin{verbatim}
-p = malloc(n)   -> cerca a partire da free_list un blocco libero di dimensione S (>= n + 4 >= 12)
-La dimensione minima di un blocco deve essere di 12 byte
+p = malloc(n)
+-> cerca nella free_list un blocco libero di dimensione S >= n + overhead
+-> dimensione minima tipica di un blocco: 12 byte
 \end{verbatim}
-Se il blocco esiste lo toglie dalla lista. La scelta del blocco può seguire diverse strategie:
+
+\noindent
+Se viene trovato un blocco adatto, questo viene rimosso dalla \texttt{free\_list}.  
+La scelta del blocco può seguire diverse strategie:
+
 \begin{itemize}
-    \item First-Fit $\rightarrow$ seleziona il primo blocco adatto
-    \item Best-Fit $\rightarrow$ seleziona il blocco più piccolo che soddisfa la richiesta
-    (riduce frammentazione interna)
+    \item \textbf{First-Fit} $\rightarrow$ seleziona il primo blocco sufficientemente grande;
+    
+    \item \textbf{Best-Fit} $\rightarrow$ seleziona il blocco più piccolo tra quelli disponibili che soddisfano la richiesta, riducendo la frammentazione interna.
 \end{itemize}
-Se non esiste un blocco adatto, estende l'heap di n+4 byte e crea di questo spazio un nuovo blocco.
+
+\medskip
+
+\noindent Se non è disponibile alcun blocco adeguato, l’heap viene esteso aumentando il valore di \texttt{brk} e creando un nuovo blocco di dimensione adeguata.
+
 \begin{verbatim}
-free(p)     -> aggiunge a free_list il blocco puntato da p-4
+free(p)
+-> inserisce il blocco puntato da (p - header) nella free_list
 \end{verbatim}
 \subsection{Altri miglioramenti}
 \begin{itemize}
     \item Fusione di blocchi liberi adiaceni 
+    \begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.9\linewidth]{../images/Fusione a blocchi.png}
+    \caption{Fusioni di blocchi liberi adiacenti}
+    %\label{label}
+    \end{figure}
     \item Partizionamento dei blocchi liberi
+    \begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.5\linewidth]{../images/Partizione a bocchi.png}
+    \caption{Partizionamento dei blocchi liberi}
+    %\label{label}
+    \end{figure}
     \item Liste free separate per blochi di dimensioni diverse
     \item Allineamento 
 \end{itemize}
 \subsection{Cache e uso ottimizzato della memoria}
-Consideriamo due operazioni:
+Consideriamo due operazioni a livello di assembly:
 \begin{verbatim}
-movl $1, %eax   -> 1 nsec
-movl $1, (%eax) -> 100 nsec
+movl $1, %eax     -> 1 ns
+movl $1, (%eax)   -> 100 ns
 \end{verbatim}
-Una cache è una memoria ad accesso rapido che memorizza temporaneamente i dati più frequentemente utilizzati, 
-riducendo così il tempo di accesso rispetto alla memoria principale. È una memoria costituita da righe di dimensione
-fissa (es 64 byte). Ogni riga contiene COPIA di parte dei dati in memoria.
-\begin{figure}[H]
-    \centering  
-    %\includegraphics[width=0.9\linewidth]{../images}
-    \caption{caption}
-    %\label{label}
-\end{figure}
-\noindent Ogni indirizzo X in RAM è associato ad un blocco con identificativo $\left\lfloor X/L \right\rfloor$ dove L è la dimensione delle righe della cache.
-Quando si accede ad X
+
+\noindent
+Si nota come l’accesso alla memoria sia significativamente più lento rispetto alle operazioni sui registri.
+
+\medskip
+
+\noindent La \textbf{cache} è una memoria ad alta velocità che conserva temporaneamente i dati utilizzati più frequentemente, riducendo il tempo medio di accesso alla memoria principale.
+
+\noindent Essa è organizzata in \textbf{linee (cache lines)} di dimensione fissa (ad esempio 64 byte).  
+Ogni linea contiene una copia di una porzione della memoria principale.
+
+\bigskip
+
+\noindent Ogni indirizzo di memoria \(X\) è associato a un blocco di cache identificato come:
+
+\[
+\left\lfloor \frac{X}{L} \right\rfloor
+\]
+
+\noindent dove \(L\) rappresenta la dimensione della cache line.
+
+\medskip
+
+\noindent Quando si accede a un indirizzo di memoria, possono verificarsi due casi:
+
 \begin{itemize}
-    \item Cache-Hit $\rightarrow$ la cache contiene in una delle sue 
-    \item Cache-Miss $\rightarrow$ il dato non è presente in cache. 
+    \item \textbf{Cache hit} $\rightarrow$ il dato è già presente in cache e può essere letto rapidamente;
+
+    \item \textbf{Cache miss} $\rightarrow$ il dato non è presente in cache e deve essere caricato dalla memoria principale.
 \end{itemize}
-Se la cache è piena, si seleziona la linea continua. La slezione si basa su principi di località:
+
+\medskip
+
+\noindent Se la cache è piena, è necessario sostituire una linea esistente secondo una politica di rimpiazzo.
+
+\noindent La progettazione della cache si basa sui principi di località:
+
 \begin{itemize}
-    \item Localita temporale $\rightarrow$ se un processo accede ad un indirizzo X è molto probabile che accederò di nuovo a X
-    nel prossimo futuro
-    \item Localita Spaziale $\rightarrow$ se un processo accede ad un indirizzo X è molto probabile che accderà all'indirizzo X+1
+    \item \textbf{Località temporale} $\rightarrow$ se un dato viene acceduto, è probabile che venga riutilizzato nel breve periodo;
+
+    \item \textbf{Località spaziale} $\rightarrow$ se un indirizzo viene acceduto, è probabile che vengano acceduti anche indirizzi vicini.
 \end{itemize}
-Esempio:
+
+\bigskip
+
+\noindent
+\textbf{Esempio:}
+
 \begin{verbatim}
 int sum(int **m, int n){
     int i, j, s = 0;
-    for(i = 0, i<n; i++)
-        for(j = 0, j<n; j++)
+
+    for(i = 0; i < n; i++)
+        for(j = 0; j < n; j++)
             s = s + m[i][j];
+
     return s;
 }
 \end{verbatim}
-Immaginiamo che la funzioni finisca in 0,3s 
-Se sostituiamo m[j][i] ci impiegherà 1,5s
-\begin{figure}[H]
-    \centering  
-    %\includegraphics[width=0.9\linewidth]{../images}
-    \caption{caption}
-    %\label{label}
-\end{figure}
+
+\noindent
+Questa versione sfrutta la località spaziale (accesso per righe) ed è quindi più efficiente.
+
+\medskip
+
+\noindent Se invece si accede agli elementi in ordine trasposto:
+
+\begin{verbatim}
+m[j][i]
+\end{verbatim}
+
+\noindent
+si perde la località spaziale, causando molti più cache miss e un aumento significativo del tempo di esecuzione (ad esempio da 0.3s a 1.5s).
+\newpage
