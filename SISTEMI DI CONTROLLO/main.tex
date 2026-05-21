@@ -69,7 +69,7 @@
 
 
 
-\section*{Modellizzazione lineare}
+\section*{Modellizzazione lineare continua}
 \[ \begin{cases}
     \dot{x}(t) = Ax(t) + Bu(t) + Pz(t) \\
     y(t) = Cx(t) + Du(t) + Qz(t)
@@ -77,7 +77,7 @@
 
 
 
-\section*{Modellizzazione non lineare}
+\section*{Modellizzazione non lineare continua}
 \[ \begin{cases}
     x(t) = f\Big( x(t), u(t), z(t)   \Big) \\
     y(t) = g\Big( x(t), u(t), z(t)   \Big) 
@@ -120,8 +120,16 @@ Dato $F = PG$:\\
 \end{tabular}
 \end{center}
 
-\section*{Modellizzazione nel dominio z:}
-+++++++++++++++++++++++++++++++++++++++++++++++
+\section*{Modellizzazione lineare nel tempo discreto}
+\[      \begin{cases}
+    x(h+1) = Ax(h) + Bu(h) + Pz(h) \\
+    y(h) = Cx(h) + D u (h) + Q z(h)
+\end{cases}    \]
+\section*{Funzioni di trasferimento nel dominio z}
+\begin{itemize}
+    \item $P(z) = C(zI-A)^{-1}B + D$
+    \item $M(z) = C(zI-A)^{-1}P+Q$
+\end{itemize}
 
 
 
