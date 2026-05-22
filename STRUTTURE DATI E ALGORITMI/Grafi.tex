@@ -645,6 +645,76 @@ dei nodi si scambiano informazioni obsolete crendo un ciclo infinito. Per evitar
     \item \textbf{Soluzione Pratica (RIP)}: Viene utilizzato il valore 16 come infinito per terminare i loop circolari.
 \end{itemize} 
 
+
+\subsection{Algoritmo di Floyd-Warshall (APSP con pesi arbitrari)}
+
+L'algoritmo di \textbf{Floyd-Warshall} risolve il problema dell'All-Pairs Shortest Path (APSP) su grafi orientati in cui gli archi possono avere pesi arbitrari (anche negativi), 
+a patto che \textbf{non esistano cicli di peso totale negativo}. Se ci fosse un ciclo negativo, infatti, 
+l'algoritmo continuerebbe a percorrerlo all'infinito per abbassare il costo totale, rendendo impossibile definire un cammino "minimo". Ecco lo pseudocodice:\smallskip\\
+\begin{verbatim}
+    FloydWarshall(Graph G)
+        dist = new n x n matrix of distances          // (all infinite)
+        next = new n x n matrix of vertex indices     // (all zeros)
+        forall (u,v) in E(G)
+            dist[u][v]=w(u,v)
+            next[u][v]=v
+        for k from 1 to n           // primo ciclo
+            for i from 1 to n       //secondo ciclo 
+                for j from 1 to n   //terzo ciclo
+                    if(dist[i][j]>dist[i][k]+dist[k][j])        
+                        dist[i][j]=dist[i][k]+dist[k][j]
+                        next[i][j]=next[i][k]
+\end{verbatim}
+
+\noindent L'algoritmo si basa sul paradigma della \textbf{programmazione dinamica} e ha un costo computazionale temporale pari a $\Theta(n^3)$, dove $n$ è il numero totale dei nodi nel grafo.
+
+\subsubsection*{Output dell'algoritmo}
+L'algoritmo costruisce e restituisce due matrici fondamentali:
+\begin{itemize}
+    \item \textbf{La matrice \texttt{dist}}: Al termine dell'esecuzione, la cella \texttt{dist[i][j]} conterrà il \textbf{costo totale minimo} definitivo per viaggiare dal nodo $i$ al nodo $j$.
+    \item \textbf{La matrice \texttt{next}}: Viene utilizzata per ricostruire passo-passo il percorso fisico. La cella \texttt{next[i][j]} contiene l'indice del nodo immediatamente successivo a 
+    $i$ nel cammino ottimale verso $j$.
+\end{itemize}
+
+\subsubsection*{Analisi dello Pseudocodice}
+\begin{itemize}
+    \item \textbf{Fase di Inizializzazione:} La matrice \texttt{dist} viene popolata inizialmente con i pesi diretti degli archi ($w(u,v)$), oppure con infinito ($\infty$) se non esiste un collegamento diretto tra i nodi. La matrice \texttt{next} viene inizializzata con il nodo di destinazione se l'arco diretto esiste, altrimenti a 0.
+    \item \textbf{I tre cicli annidati (\texttt{k, i, j}):} Rappresentano il nucleo logico dell'algoritmo. L'intuizione alla base è chiedersi: \textit{"Per andare dal nodo $i$ al nodo $j$, mi conviene utilizzare il percorso diretto (o il migliore trovato finora), oppure risulta più economico fare una deviazione passando per un nodo intermedio $k$?"}
+    \begin{itemize}
+        \item La condizione \texttt{if (dist[i][j] > dist[i][k] + dist[k][j])} implementa esattamente questa logica. Se la deviazione passando per $k$ risulta meno costosa, si aggiorna la matrice \texttt{dist} con il nuovo costo ridotto. Parallelamente, si aggiorna \texttt{next[i][j]} affinché punti allo stesso nodo successivo previsto per il percorso $i \to k$.
+    \end{itemize}
+\end{itemize}
+
+\subsection{Chiusura Transitiva e Riflessiva - Variante Booleana di Floyd-Warshall}
+
+Esiste una variante semplificata, di natura booleana, dell'algoritmo di Floyd-Warshall. In questo contesto, non interessa quantificare il costo del cammino minimo o tracciarne le tappe; l'obiettivo è rispondere 
+a una semplice domanda binaria (Vero/Falso): \textbf{"Esiste un qualsiasi percorso (diretto o indiretto) per raggiungere il nodo $\bm{v}$ partendo dal nodo $\bm{u}$?"}
+
+\noindent Questo concetto è noto come \textbf{chiusura transitiva}. L'attributo "riflessiva" indica l'assunzione di base secondo cui ogni nodo è sempre in grado di raggiungere se stesso. Ecco lo pseudocodice:\smallskip\\
+\begin{verbatim}
+    FloydWarshall(Graph G)
+        T[][] = new n×n adjacency matrix 1-based
+        forall i: T[i][i] = 1 riflexive
+        for k from 1 to n
+            for i from 1 to n
+                for j from 1 to n
+                    T[i][j]=T[i][j]||(T[i][k]&&T[k][j])
+        return T[][]
+\end{verbatim}
+
+\subsubsection*{Analisi dello Pseudocodice Booleano}
+\begin{itemize}
+    \item Al posto dei costi, si opera su una \textbf{matrice booleana \texttt{T}} composta da 0 e 1. Nello stato iniziale, \texttt{T} coincide con la matrice di adiacenza del grafo (1 se esiste un arco diretto, 0 altrimenti), alla quale si aggiunge un 1 su tutta la diagonale principale (\texttt{T[i][i] = 1}) per la proprietà riflessiva.
+    \item \textbf{Ciclo di aggiornamento:} L'istruzione chiave è \texttt{T[i][j] = T[i][j] || (T[i][k] \&\& T[k][j])}. \\
+    Questa espressione traduce la seguente logica: il nodo $i$ è in grado di raggiungere il nodo $j$ se:
+    \begin{enumerate}
+        \item Aveva già modo di raggiungerlo in precedenza (\texttt{T[i][j]} è vero), oppure
+        \item Il nodo $i$ può raggiungere il nodo intermedio $k$, e a sua volta il nodo $k$ può raggiungere $j$.
+    \end{enumerate}
+\end{itemize}
+Al termine dell'esecuzione, la matrice di adiacenza iniziale è stata trasformata in una matrice finale in cui la presenza di un 1 certifica l'esistenza di un percorso tra i due nodi.
+
+
 \section{Alberi di connessione minimi MST}
 \subsection{Il problema degli alberi di connessione minimi}
 Sia un grafo non orientato $G=(V, E)$ connesso e i cui archi hanno associato un peso $\omega(e)$. Il
