@@ -148,15 +148,45 @@ Dato $F = PG$:\\
 \end{center}
 
 \section*{Velocità del transitorio}
+\subsection{Tempo Continuo}
 \begin{center}
 Velocità gestita dagli autovalori della matrice dinamica $A$ secondo la legge $\bm{e^{At}}$\\
 $\to$    \\
 Affinchè il transitorio si esaurisca il più velocemente possibile è necessario prendere la radice meno negativa
 \end{center}
 
-\section*{Oscillazione del transitorio}
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+\subsection{Tempo discreto}
+\begin{center}
+Velocità gestita dagli autovalori della matrice dinamica $A$ secondo la legge $\bm{A^t}$\\
+$\to$    \\
+Affinchè il transitorio si esaurisca il più velocemente possibile è necessario prendere la radice più grande avente modulo minore di 1
+\end{center}
 
+\section*{Oscillazione del transitorio}
+\subsection{Tempo continuo}
+\begin{center}
+Il transitorio è privo di oscillazioni\\
+$\to$    \\
+le radici devono essere puramente reali (ovvero avere la parte immaginaria nulla)
+\end{center}
+
+
+\subsection{Tempo discreto}
+\begin{center}
+Il transitorio è privo di oscillazioni\\
+$\to$    \\
+le radici hanno modulo minore stretto di 1 e la parte immaginaria pari a zero, dunque bisogna stare sull'asse reale
+\end{center}
+ 
+
+
+\section*{Criterio di Routh}
+\subsection{tempo continuo}
+
+\subsection{tempo discreto}
+\begin{center}
+    $z\to \displaystyle \frac{1+w}{1-w}$ e procedi come nel tempo continuo.
+\end{center}
 
 
 \section*{Autovalori raggiungibili}
@@ -280,6 +310,21 @@ L'equazione ha soluzione se e solo se vale la seguente regola:
 \[  \text{numero di parametri = } d_w\]
 
 
+\section*{Specifica di annullamento della risposta}
+\[    \begin{cases}
+    N_W = s(z)D_r \\
+    D_W = z^ {\ell-1} N_r
+\end{cases}     \]
+dove:
+\begin{itemize}
+    \item $\bm{s(z)}$ è un polinomio di grado $\le \ell -1$
+    \item $\bm{\ell}$ numero intero
+\end{itemize}
+
+\begin{proof}
+    PAG 84
+\end{proof}
+
 
 \section*{Risposte a regime permanente}
 \subsection{Tempo continuo}
@@ -290,15 +335,15 @@ L'equazione ha soluzione se e solo se vale la seguente regola:
     \hline
     \hline
     & & & \\
-    0 & $\displaystyle W(0) \neq 0$ & $ \displaystyle W(0)\ t + \frac{d\ W}{d\ s}\bigg|_{s = 0} $ & $ \displaystyle W(0)\  \frac{t^2}{2} + \frac{d \ W}{d\ s}\bigg|_{s=0} \ t + \frac{1}{2}\ \frac{d^2 \ W}{d\ s^2}\bigg|_{s = 0 }$\\
+    \textbf{0} & $\displaystyle W(0) \neq 0$ & $ \displaystyle W(0)\ t + \frac{d\ W}{d\ s}\bigg|_{s = 0} $ & $ \displaystyle W(0)\  \frac{t^2}{2} + \frac{d \ W}{d\ s}\bigg|_{s=0} \ t + \frac{1}{2}\ \frac{d^2 \ W}{d\ s^2}\bigg|_{s = 0 }$\\
     & & & \\
     \hline
     & & & \\
-    1 & 0 & $ \displaystyle \frac{W(s)}{s}\bigg|_{s = 0} \neq 0$ & $\displaystyle \frac{d \ W}{d \ s}\bigg|_{s = 0} \ + \frac{1}{2}\ \frac{d\ W^2}{d \ s^2}\bigg|_{s = 0}  $\\
+    \textbf{1} & 0 & $ \displaystyle \frac{W(s)}{s}\bigg|_{s = 0} \neq 0$ & $\displaystyle \frac{d \ W}{d \ s}\bigg|_{s = 0} \ + \frac{1}{2}\ \frac{d\ W^2}{d \ s^2}\bigg|_{s = 0}  $\\
     & & & \\
     \hline
     & & & \\
-    2 & 0 & 0 & $\displaystyle  \frac{W(s)}{s^2}\bigg|_{s = 0} \neq 0$ \\
+    \textbf{2} & 0 & 0 & $\displaystyle  \frac{W(s)}{s^2}\bigg|_{s = 0} \neq 0$ \\
     & & & \\
    
 \end{tabular}
@@ -312,22 +357,29 @@ Dove il modulo si calcola $\sqrt{a^2 +b^2}$ e la fase $\arctan{\frac{b}{a}}$
 \subsection{Tempo discreto}
 \begin{center}
 \begin{tabular}{c||c|c|c}
-    \textbf{zeri in} $\bm{s=0}$ \textbf{/ ingresso} &  & $ \displaystyle$ & $\displaystyle $\\
+    \textbf{zeri in} $\bm{z = 1}$ \textbf{/ ingresso} & $\displaystyle \bm{\eta(h)}  $ & $ \displaystyle  \bm{h}$ & $\displaystyle \bm{\frac{h(h+1)}{2}}  $\\
     \hline
     \hline
     & & & \\
-    & & & \\
-    & & & \\
-    \hline
-    & & & \\
-    & & & \\
+   \textbf{0} & $\displaystyle W(1) \neq 0  $& $\displaystyle  W(1)\ h + \frac{d\ W}{d\ z}\bigg|_{z = 1}$& $\displaystyle  W(1) \ \frac{h^2}{2} +\frac{d \ W}{d\ z}\bigg|_{z = 1} h+ \frac{1}{2} \ \frac{d^2 W}{d\ z^2}\bigg|_{z= 1}   $\\
     & & & \\
     \hline
     & & & \\
-    & & & \\ 
+   \textbf{1} & 0& $\displaystyle \frac{W(z)}{z-1}\bigg|_{z = 1} \neq 0   $& $\displaystyle \frac{d\ W}{d\ z}\bigg|_{z = 1} h + \frac{1}{2} \ \frac{d^2 W}{d \ z^2}\bigg|_{z=1}   $\\
+    & & & \\
+    \hline
+    & & & \\
+   \textbf{2} & 0 & 0 & $\displaystyle \frac{W(z)}{(z-1)^2}\bigg|_{z=1} \neq 0    $\\ 
     & & & \\
      
 \end{tabular}
+
+\begin{itemize}
+    \item Ingresso sinusoidale ($\sin \theta h$ e $\cos \theta h$) $ \displaystyle  \to \ \tilde{y}(h) = \big|W(e^{j\theta})\big|\cdot \sin \Big(   \theta h + \angle W(e^{j\theta})    \Big)  $
+\end{itemize}
+
+
+
 \end{center}
 
 
@@ -566,6 +618,56 @@ In entrambi i casi, la fase è data da:
 
 \subsection{Chiusura all'infinito}
 Se $F(s)$ ha poli con molteplicità $\gamma$ nell'origine, per $\omega\approx 0$, $F(j\omega)$ ha ampiezza infinita. Questo si riflette nel diagramma di Nyquist con una chiusura all'infinito di $\gamma \cdot 180^\circ$ in senso orario tra $0^-$ e $0^+$
+
+
+
+
+\section*{Teorema dell'assegnazione degli autovalori}
+\[       \left|  \lambda I -(A+Bk)   \right|   = \prod_{i = 1}^{m} (\lambda - \lambda_{ARB_i}) \cdot \prod_{j = 1}^{n-m} (\lambda-\lambda_{IRRAG_j})    \]
+\begin{proof}
+    PAG 93
+\end{proof}
+
+\section*{Osservatore asintotico dello stato}
+\[     \dot{\xi} = A\xi + Bu + G(y-C\xi)     \]
+
+\begin{proof}
+    DIMOSTRAZIONE ANNULLAMENTO DELL'ERRORE PAG 97
+\end{proof}
+
+\subsection{Velocità di convergenza a zero}
+
+\subsection{Formula assegnazione autovalori}
+
+
+
+
+
+\section*{Teorema di separazione}
+
+
+
+
+\begin{proof}
+    PAG 99
+\end{proof}
+
+
+
+\section*{Tabella di Recap}
+PAG 100
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
