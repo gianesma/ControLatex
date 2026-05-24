@@ -311,6 +311,7 @@ L'equazione ha soluzione se e solo se vale la seguente regola:
 
 
 \section*{Specifica di annullamento della risposta}
+\subsection{Tempo discreto}
 \[    \begin{cases}
     N_W = s(z)D_r \\
     D_W = z^ {\ell-1} N_r
@@ -322,7 +323,20 @@ dove:
 \end{itemize}
 
 \begin{proof}
-    PAG 84
+    Nel caso di sistemi a tempo dicreto si riesce a far si che l'uscita si annulli a partire da un determinato istante $\ell$ in poi. In particolar modo quell'istante, preso piccolo a piacere, si cerca di renderlo il più piccolo possibile 
+    in modo da annullare nel più breve tempo possibile il transitorio.\smallskip\\
+    Innanzitutto, si trova il valore dell'uscita nel dominio del tempo $h$ per poi calcolare la trasformata $\mathcal{Z}$ e vedere la quantità al numeratore come $s(z)$, ovvero il polinomio generico in $\mathcal{Z}$ di grado minore o uguale 
+    a $\ell -1$:
+    \[        y(h) = A_0 +\tau (h) + A_1 \tau (h-1) + A_2 \tau (h-2)+ \dots + A_{\ell-1} (h -\ell +1)          \]
+    La sua trasformata $\mathcal{Z}$ è:
+    \[       y(z) = A_0 + \frac{A_1}{z} + \frac{A_2}{z^2} + \dots + \frac{A_{\ell -1}}{z^{\ell -1}}  = \frac{A_0 z^{\ell -1} + A_1 z^{\ell -2} + A_2 z ^{\ell -3}+\dots + A_{\ell -1}}{z^{\ell -1}} = \bm{\frac{s(z)}{z^{\ell -1}}}     \]
+    Affinchè sia possibile che l'uscita assuma il valore zero, bisogna uguagliarne la definizione con la trasformata appena trovata, e poter infine costruire il sitema che risolto porta alla conclusione di una specifica di questa tipologia:
+    \[        W(z)r(z) = \frac{s(z)}{z^{\ell -1}} \Longrightarrow  \frac{N_W}{D_W} \cdot \frac{N_r}{D_r} =  \frac{s(z)}{z^{\ell -1}} \Longrightarrow \frac{N_W}{D_W} = \frac{s(z)}{z^{\ell -1}} \cdot \frac{D_r}{N_r}     \]
+    Quindi:
+    \[      \begin{cases}
+        N_W = s(z) D_r \\
+        D_W = z^{\ell -1} N_r
+    \end{cases}       \]
 \end{proof}
 
 
@@ -625,7 +639,7 @@ Se $F(s)$ ha poli con molteplicità $\gamma$ nell'origine, per $\omega\approx 0$
 \section*{Teorema dell'assegnazione degli autovalori}
 \[       \left|  \lambda I -(A+Bk)   \right|   = \prod_{i = 1}^{m} (\lambda - \lambda_{ARB_i}) \cdot \prod_{j = 1}^{n-m} (\lambda-\lambda_{IRRAG_j})    \]
 \begin{proof}
-    PAG 93
+    
 \end{proof}
 
 \section*{Osservatore asintotico dello stato}
