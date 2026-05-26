@@ -781,18 +781,64 @@ Affinchè sia possibile trovare la matrice $G$ tale che gli autovalori di $(A-GC
 
 
 \section*{Teorema di separazione}
-
-
+Il sistema complessivo ha il seguente stato costituito da stato reale e stato stimato:
+\[     \begin{cases}
+    \dot{x} = A x + BK \xi \\
+    \dot{\xi} = A \xi + BK\xi + G(Cx-C\xi) 
+\end{cases}     \]
+che in forma matriciale diventa:
+\[       \begin{pmatrix}
+    \dot{x} \\ \dot{\xi}
+\end{pmatrix}     = \underbrace{\begin{pmatrix}
+    A & BK \\ GC & A+BK-GC
+\end{pmatrix} }_{\text{matrice dinamica}} \begin{pmatrix}
+    x \\ \xi 
+\end{pmatrix}         \]
+dove la matrice dinamica del sistema complessiva, $A_c$, avrà dimensione $2n \times 2n $. L'obiettivo è quello di stabilire le matrici $K$ e $G$ tali da avere i $2n$ autovalori del sistema complessivo a parte reale strettamente negativa.
 
 
 \begin{proof}
-    PAG 99
+Effettuiamo un cambio di coordinate:
+\[   \widetilde{A}_c = T A_c T^{-1} \]
+dove:
+\[       T = \begin{pmatrix}
+    I & 0 \\ I & -I
+\end{pmatrix}    \quad \Longrightarrow \quad T^{-1} = \begin{pmatrix}
+    I & 0 \\ I & -I
+\end{pmatrix}           \]
+Quindi:
+\[      \widetilde{A}_c = \begin{pmatrix}
+    I & 0 \\ I & -I
+\end{pmatrix}     \begin{pmatrix}
+    A & BK \\ GC & A+BK-GC
+\end{pmatrix}    \begin{pmatrix}
+     I & 0 \\ I & -I
+\end{pmatrix}      = \begin{pmatrix}
+    \overbrace{A+BK}^{\text{autovalori}} & -BK \\ 0 & \underbrace{A-GC}_{\text{autovalori}}
+\end{pmatrix} \]
+Il sitema è stabilizzabile se e solo se tutti gli autovalori nascosti sono a parte reale strettamente negativa. Si possono assegnare autovalori ad arbitrio se e solo se non esistono autovalori nascosti.
+Applicando il teorema dell'assegnazione degli autovalori per $A+BK$ e il duale del teorema dell'assegnazione degli autovalori per $A-GC$:
+\[ \left|  \lambda I -(A+BK)   \right|   = \prod_{i = 1}^{m} (\lambda - \lambda_{ARB_i}) \cdot \prod_{j = 1}^{n-m} (\lambda-\lambda_{IRRAG_j}) , \quad \text{con } n = \dim A \text{ e } m = rk \begin{pmatrix}
+    B & AB & \dots & A^{n-1}B
+\end{pmatrix} \]
+\[   \left|  \lambda I -(A+GC)   \right|   = \prod_{i = 1}^{s} (\lambda - \lambda_{ARB_i}) \cdot \prod_{j = 1}^{n-s} (\lambda-\lambda_{INOSS_j}) , \quad \text{con } n = \dim A \text{ e } m = rk \begin{pmatrix}
+    C & CA & \dots & CA^{n-1}
+\end{pmatrix}    \]
+
+
+
+
+
+
+
+
+
 \end{proof}
 
 
 
-\section*{Tabella di Recap}
-PAG 100
+% \section*{Tabella di Recap}
+% PAG 100
 
 
 
