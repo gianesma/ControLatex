@@ -1837,252 +1837,566 @@ si perde la località spaziale, causando molti più cache miss e un aumento sign
 \section{}
 \newpage
 \section{File System}
-È l'insieme degli schemi organizzativi dei dati e delle relative funzionalità attraverso cui il sitema operativo
-si interfaccia con le periferiche di archivazione dati.
+Il \textbf{File System} è l’insieme delle strutture organizzative e delle funzionalità attraverso cui il Sistema Operativo gestisce i dati memorizzati nei dispositivi di archiviazione.
+In altre parole, rappresenta il livello software che consente al Sistema Operativo di interfacciarsi con le periferiche di memoria (dischi, SSD, chiavette USB, ecc.) organizzando i dati in modo strutturato ed efficiente.
+
 \begin{figure}[H]
-    \centering  
+    \centering
     \includegraphics[width=0.9\linewidth]{../images/File Systemm.png}
-    \caption{File Sistem}
-    %\label{label}
+    \caption{Architettura generale del File System}
 \end{figure}
-\noindent Andiamo ad analizzare cosa c'è all'interno del file system.
+
+\bigskip
+
+\noindent
+Analizziamo ora i principali elementi che compongono un file system.
+
 \subsection{File e Directory}
-File : Contenitore di dati (archivio) rappresentati come sequenze di file.
-Oltre ai dati il file è caratterizzato da alcuni metadati necessari per il suo funzionamento, come:
+\subsubsection*{File}
+
+Un \textbf{file} è un contenitore di dati, generalmente rappresentati come una sequenza ordinata di byte.
+Oltre al contenuto vero e proprio, ogni file possiede una serie di \textbf{metadati}, utilizzati dal Sistema Operativo per gestirlo correttamente.
+
+\noindent Tra i principali metadati troviamo:
+
 \begin{itemize}
-    \item nome
-    \item dimensione
-    \item permessi di accesso
-    \item timestamp
+    \item \textbf{Nome} del file;
+    
+    \item \textbf{Dimensione} in byte;
+    
+    \item \textbf{Permessi di accesso};
+    
+    \item \textbf{Timestamp} (creazione, modifica, ultimo accesso).
 \end{itemize}
+
 \begin{figure}[H]
-    \centering  
-    %\includegraphics[width=0.9\linewidth]{../images}
-    \caption{Esempio}
-    %\label{label}
+    \centering
+    \includegraphics[width=0.9\linewidth]{../images/fileeeee.jpg}
+    \caption{Esempio di file con metadati}
 \end{figure}
-\noindent Directory : contenitore logico che permette l'organizzazione dei dati
-in una struttura di qualche forma (tipo albero, ecc\dots) 
+
+\bigskip
+
+\subsubsection*{Directory}
+
+Una \textbf{directory} è un contenitore logico utilizzato per organizzare file e altre directory.
+
+\noindent Le directory permettono di strutturare i dati secondo una gerarchia, tipicamente ad albero, facilitando la navigazione e la gestione delle informazioni all’interno del file system.
+
 \begin{figure}[H]
-    \centering  
-    %\includegraphics[width=0.9\linewidth]{../images}
-    \caption{Directory}
-    %\label{label}
+    \centering
+    \includegraphics[width=0.9\linewidth]{../images/dirrreeeee.jpg}
+    \caption{Organizzazione gerarchica delle directory}
 \end{figure}
 \subsection{Struttura gerarchica dei File System}
-Nel mondo UNIX il contenuto del file system è argomentoato in un unico albero.
-È presente una directory speciale chiamata \textbf{root directory} rappresentata da un 
-singolo "/".
+Nei sistemi UNIX/Linux, il contenuto del file system è organizzato secondo una struttura gerarchica ad albero.
+Alla base di questa struttura si trova una directory speciale chiamata \textbf{root directory}, identificata dal simbolo:
+
+\[
+/
+\]
+
+\noindent
+Tutti i file e le directory presenti nel sistema discendono da questa directory principale.
+
 \begin{figure}[H]
-    \centering  
+    \centering
     \includegraphics[width=0.9\linewidth]{../images/UNIX DIRECTORY.png}
-    \caption{Albero Directory}
-    %\label{label}
+    \caption{Struttura gerarchica del file system UNIX}
 \end{figure}
-\noindent Ogni directory, tranne la directory radice ha una directory genitore. Se una directory è 
-contenuta in un'altra, allora è una directory figlia. Nell'esempio sopra, tom e other sono 
-figlie di home, mentre home è genitore di tom e other. Si noti che i file system *nix sono tipicamente 
-case-sensitive, pertanto, ad esempio, /home/tom/documents/text è diverso da /home/tom/documents/Text.\\
-File System Hierarchy Standard (ESHS) SCRIVERE COS'È BREVEMENTE!\\
-\subsection{Path/Percorso}
-Nel File System ogni file/directory è identificato univocamente dal suo \texttt{Path}. Abbiamo:
+
+\bigskip
+
+\noindent
+Ogni directory, ad eccezione della root directory, possiede una \textbf{directory genitore}.
+
+\noindent Se una directory è contenuta all’interno di un’altra directory, allora viene detta \textbf{directory figlia}.
+
+\noindent Ad esempio, nella figura:
+
 \begin{itemize}
-    \item Path assoluto $\rightarrow$ sequenza di tutte le directory presenti nel ramo del file system che 
-    partendo dalla radice root directory e arriva fino al file/dir considerato.
-    \begin{verbatim}
-    Es: /home/Tom/Documents/Text
-    Text è il file/dir identificato dal path, mentre:
-    home, Tom, Documents rappresenta la sequenza di directory che dalla 
-    radice portano al file/directory.
-    "/" iniziale è la directory radice, mentre le altre "/" sono dei caratteri separatori
-    \end{verbatim}
-    \noindent \textbf{\textcolor{red}{ATTENZIONE:}} "/" è un path valido, "//" non lo è
-    \item Path relativo $\rightarrow$ sequenza di directory nel file sistem che collegano 
-    attraverso un percorso valido il file/directory considerato con una 
-    directory di riferimento passando per la directory "" comune ad entrambi i rami.
+    \item \texttt{tom} e \texttt{other} sono directory figlie di \texttt{home};
+    
+    \item \texttt{home} è la directory genitore di \texttt{tom} e \texttt{other}.
 \end{itemize}
-\noindent Per definire un path routing usiamo dei percorsi speciali:
-\begin{itemize}
-    \item "." indica la directory corrente
-    \item ".." indica la directory padre di quella corrente
-    \item "~" indica la directory home dell'utente
-\end{itemize}
+
+\medskip
+
+\noindent I file system UNIX-like sono generalmente \textbf{case-sensitive}: lettere maiuscole e minuscole vengono considerate differenti.
+
+\noindent Ad esempio:
+
 \begin{verbatim}
-Esempio: per indirizzare "other" partendo da "documents" (prendendo come riferimento la root di prima)
+/home/tom/documents/text
+\end{verbatim}
+
+\noindent
+e
+
+\begin{verbatim}
+/home/tom/documents/Text
+\end{verbatim}
+
+\noindent
+identificano due file distinti.
+
+\bigskip
+
+\noindent
+Il \textbf{Filesystem Hierarchy Standard (FHS)} è uno standard che definisce l’organizzazione e il significato delle principali directory nei sistemi UNIX/Linux, garantendo uniformità tra le diverse distribuzioni.
+
+\bigskip
+\subsection{Path / Percorso}
+
+Nel file system, ogni file o directory è identificato univocamente tramite un \textbf{path} (percorso).
+
+Esistono due tipologie principali di path:
+
+\begin{itemize}
+
+    \item \textbf{Path assoluto} $\rightarrow$ rappresenta il percorso completo che parte dalla root directory e arriva fino al file o directory desiderato.
+
+\begin{verbatim}
+/home/Tom/Documents/Text
+\end{verbatim}
+
+\noindent
+In questo esempio:
+
+\begin{itemize}
+    \item \texttt{Text} è il file/directory identificato;
+    
+    \item \texttt{home}, \texttt{Tom} e \texttt{Documents} rappresentano le directory attraversate;
+    
+    \item il simbolo iniziale \texttt{/} identifica la root directory;
+    
+    \item gli altri caratteri \texttt{/} fungono da separatori.
+\end{itemize}
+
+\medskip
+
+\noindent
+\textbf{\textcolor{red}{Attenzione:}}
+\begin{verbatim}
+/      -> path valido
+//     -> generalmente non considerato un path standard
+\end{verbatim}
+
+\bigskip
+
+    \item \textbf{Path relativo} $\rightarrow$ rappresenta il percorso rispetto a una directory di riferimento (tipicamente la directory corrente).
+    
+\end{itemize}
+
+\medskip
+
+Per costruire path relativi si utilizzano alcuni riferimenti speciali:
+
+\begin{itemize}
+    \item \texttt{.} $\rightarrow$ directory corrente;
+    
+    \item \texttt{..} $\rightarrow$ directory padre;
+    
+    \item \texttt{\textasciitilde} $\rightarrow$ home directory dell’utente corrente.
+\end{itemize}
+
+\bigskip
+
+\noindent
+\textbf{Esempio}
+
+Supponiamo di trovarci nella directory:
+
+\begin{verbatim}
+/home/tom/documents
+\end{verbatim}
+
+\noindent
+Per raggiungere la directory \texttt{other}:
+
+\begin{verbatim}
 ../../other
 \end{verbatim}
-\subsection{Organnizazzione interna File System}
-Per l'organizzazione interna dei file system prenderemo in considerazione solo i file system della 
-famiglia "Ext".\\
-Ogni file/directory è associata ad una struttura dati chiamata \texttt{Inode}, che viene
-caricata in memoria e gestita dal sistema operativo. Attraverso l'Inode ogni "periferica" 
-compatibile può essere utilizzata con le astrazioni proprie del file system.\\
-L'inside associato ad un file contiene esclusivamente metadati. I dati relativi al file
-sono memorizzati separatamente in \textbf{blocchi di dimensione fissa}.\\
-Cosa contiene un Inder:
+
+\noindent
+Il percorso:
 \begin{itemize}
-    \item Numero dell'inode $\rightarrow$ indice numerico nella tabella degli inode
-    \item Tipo di oggetto $\rightarrow$ file, directory, ...
-    \item Permessi di accesso $\rightarrow$ definiscono i diritti con cui i diversi
-    utenti del sistema accedono al file/directory
- \end{itemize}
- diritti utente proprietario: leggere (R), scrivere (W), eseguire (X).\\
- diritti del gruppo proprietario: leggere (R), scrivere (W), eseguire (X).\\
- diritti di tutti gli altri utenti: leggere (R),scrivere (W), eseguire (X).\\
+    \item torna indietro di due livelli tramite \texttt{..};
+    
+    \item entra successivamente nella directory \texttt{other}.
+\end{itemize}
+\subsection{Organizzazione interna del File System}
+Per descrivere l’organizzazione interna di un file system consideriamo i file system della famiglia \texttt{ext} (ad esempio \texttt{ext2}, \texttt{ext3}, \texttt{ext4}), tipici dei sistemi UNIX/Linux.
+\medskip
+
+\noindent In questi file system, ogni file o directory è associato a una struttura dati chiamata \textbf{inode} (\textit{index node}).
+
+\noindent L’inode contiene tutte le informazioni necessarie alla gestione del file, ad eccezione del nome, ed è caricato e gestito dal Sistema Operativo.
+
+\medskip
+
+\noindent I dati effettivi del file non sono memorizzati direttamente nell’inode, ma in blocchi separati di dimensione fissa presenti sul disco.
+
+\bigskip
+
+\subsubsection*{Contenuto di un inode}
+Un inode contiene principalmente metadati relativi al file:
+
+\begin{itemize}
+    \item \textbf{Numero inode} $\rightarrow$ identificatore univoco nella tabella degli inode;
+    
+    \item \textbf{Tipo di oggetto} $\rightarrow$ file regolare, directory, link simbolico, ecc.;
+    
+    \item \textbf{Permessi di accesso};
+    
+    \item \textbf{Numero di hard link};
+    
+    \item \textbf{User ID (UID)} $\rightarrow$ identificativo del proprietario;
+    
+    \item \textbf{Group ID (GID)} $\rightarrow$ identificativo del gruppo proprietario;
+    
+    \item \textbf{Dimensione del file};
+    
+    \item \textbf{Timestamp}:
+    \begin{itemize}
+        \item ultimo accesso;
+        \item ultima modifica del contenuto;
+        \item ultima modifica dell’inode;
+        \item creazione del file.
+    \end{itemize}
+\end{itemize}
+
+\medskip
+
+\noindent Queste informazioni permettono al Sistema Operativo di gestire il file e ricostruirne la cronologia delle operazioni effettuate.
+
+\bigskip
+
+\subsubsection*{Permessi di accesso}
+I permessi definiscono quali operazioni possono essere effettuate sul file.
+Per ciascuna categoria di utenti sono disponibili tre diritti:
+
+\begin{itemize}
+    \item \textbf{R} (\textit{Read}) $\rightarrow$ lettura;
+    
+    \item \textbf{W} (\textit{Write}) $\rightarrow$ scrittura;
+    
+    \item \textbf{X} (\textit{Execute}) $\rightarrow$ esecuzione.
+\end{itemize}
+
+\medskip
+
+\noindent I permessi vengono specificati per:
+
+\begin{enumerate}
+    \item utente proprietario;
+    \item gruppo proprietario;
+    \item tutti gli altri utenti.
+\end{enumerate}
+
 \begin{verbatim}
-RWX, RWX, RWX
-il primo indica i diritti dell'utente proprietario, il secondo i diritti
-del gruppo proprietario e il terzo i diritti di tutti gli altri utenti.
-Esempio: se leggo
-r-x r-x r-x 
+RWX RWX RWX
+ |   |   |
+ |   |   +--> altri utenti
+ |   +------> gruppo
+ +----------> proprietario
+\end{verbatim}
+
+\medskip
+
+\noindent Esempio:
+
+\begin{verbatim}
+r-x r-x r-x
+\end{verbatim}
+
+\noindent
 significa che:
-il proprietario del file ha i permessi per leggere ed eseguire
-il gruppo del file ha i permessi per leggere ed eseguire
-tutti gli altri utenti del file hanno i permessi per leggere ed eseguire
-\end{verbatim}
-\noindent Per modificare i permessi si usa un utility chiamata "\texttt{chmod}". Per modificare utente o gruppo 
-proprietario, invece, dobbiamo utilizzare l'utility chiamata "\texttt{chown}". Esempio:
-\begin{verbatim}
-chmod a + r text.txt
-chmod g - x file.txt
-\end{verbatim}
-\noindent I diritti possono essere rappresentati anche con notazione detta
-\texttt{ottale} (notazione in base 8). Esempio:
-\begin{figure}[H]
-    \centering  
-    %\includegraphics[width=0.9\linewidth]{../images}
-    \caption{Esempio}
-    %\label{label}
-\end{figure}
-\noindent Come faccio a definire i diritti di un file che creo in un programma?
-\begin{verbatim}
-usando la syscall "open"
-\end{verbatim}
+
 \begin{itemize}
-    \item Numero degli hard-link $\rightarrow$ numero di collegamenti esistenti per il file
-    \item User ID $\rightarrow$ identificativo dell'utente proprietario
-    \item Group ID $\rightarrow$ identificativo del gruppo proprietario
-    \item Size $\rightarrow$ dimensione del file in byte
-    \item Timestamp ultimo accesso
-    \item Timestamp ultima modifica
-    \item Timestamp ultima modifica all'inode
-    \item Timestamp di creazione
+    \item il proprietario può leggere ed eseguire;
+    
+    \item il gruppo può leggere ed eseguire;
+    
+    \item tutti gli altri utenti possono leggere ed eseguire.
 \end{itemize}
-\noindent Tutte queste cose ci danno le informazioni necessarie per capire cosa è successo al file.\\
-\noindent Abbiamo all'interno presente anche i puntatori:
+
+\bigskip
+
+\noindent Per modificare i permessi si utilizza il comando:
+
+\begin{verbatim}
+chmod
+\end{verbatim}
+
+\noindent
+mentre per modificare proprietario o gruppo si utilizza:
+
+\begin{verbatim}
+chown
+\end{verbatim}
+
+\medskip
+
+\noindent Esempi:
+
+\begin{verbatim}
+chmod a+r text.txt
+chmod g-x file.txt
+\end{verbatim}
+
+\bigskip
+
+\subsubsection*{Notazione ottale dei permessi}
+I permessi possono essere rappresentati anche in forma ottale (base 8):
+
+\begin{center}
+\begin{tabular}{c|c}
+Permesso & Valore \\ \hline
+R & 4 \\
+W & 2 \\
+X & 1
+\end{tabular}
+\end{center}
+
+\medskip
+
+\noindent Ad esempio:
+
+\begin{verbatim}
+755
+\end{verbatim}
+
+\noindent
+corrisponde a:
+
+\begin{verbatim}
+rwx r-x r-x
+\end{verbatim}
+
+\medskip
+
+\noindent Quando un file viene creato da un programma, i permessi iniziali possono essere specificati tramite la system call:
+
+\begin{verbatim}
+open()
+\end{verbatim}
+
+\bigskip
+
+\subsubsection*{Puntatori ai dati}
+L’inode contiene anche i puntatori ai blocchi dati del file.
+
+\noindent Tipicamente sono presenti:
+
 \begin{itemize}
-    \item riferimenti DIRETTI a blocchi dati (12 presenti)
-    \item riferimento INDIRETTO SINGOLO a blocchi dati
-    \item riferimento INDIRETTO DOPPIO a blocchi dati
+    \item 12 puntatori diretti;
+    
+    \item 1 puntatore indiretto singolo;
+    
+    \item 1 puntatore indiretto doppio.
 \end{itemize}
-\noindent Questi tre sono puntatori ai blocchi contenenti i dati. \\
-\noindent Tutto nel complesso (tranne i puntatori) formano:
+
+\medskip
+
+\noindent I puntatori diretti referenziano direttamente i blocchi contenenti i dati.
+
+\noindent I puntatori indiretti, invece, referenziano blocchi che contengono ulteriori indirizzi di blocchi dati.
+
 \begin{figure}[H]
-    \centering  
-    %\includegraphics[width=0.9\linewidth]{../images}
-    \caption{caption}
-    %\label{label}
+    \centering
+    \includegraphics[width=0.9\linewidth]{../images/Inode.png}
+    \caption{Schema di un inode}
 \end{figure}
-\noindent Tipicamente ogni blocco contiene 4kb.\\
-Qual'è quindi la dimensione massima di un file?
+
+\bigskip
+
+\noindent Assumendo blocchi da \(4\,KB\):
+
 \begin{verbatim}
-MAX = 12 (blocchi) * 4096 (byte) + 1024 * 4096 + 1024^2 * 4096 = 4 GB
+Dimensione massima file =
+12 * 4096
++ 1024 * 4096
++ 1024^2 * 4096
+= 4 GB
 \end{verbatim}
-\noindent Lo spazio per gli indici sarà:
+
+\medskip
+
+\noindent Lo spazio occupato dagli indici è:
+
 \begin{verbatim}
-spazio indici = (12 + 2) * 4 + 4096 + (1024 + 1) * 4096 = 4 MB
+(12 + 2) * 4 + 4096 + (1024 + 1) * 4096
+= 4 MB
 \end{verbatim}
-\noindent Per le directory:
+
+\bigskip
+
+\subsubsection*{Directory}
+Anche le directory sono rappresentate tramite inode.
+I dati contenuti in una directory consistono tipicamente in associazioni:
+
+\[
+\texttt{nome file} \rightarrow \texttt{numero inode}
+\]
+
 \begin{figure}[H]
-    \centering  
-    %\includegraphics[width=0.9\linewidth]{../images}
-    \caption{caption}
-    %\label{label}
+    \centering
+    \includegraphics[width=0.9\linewidth]{../images/aiutttt.png}
+    \caption{Struttura interna di una directory}
 \end{figure}
-\noindent Quanto spazio occupa su disco un file da 265 byte?
+
+\bigskip
+
+\subsubsection*{Esempi di occupazione su disco}
+
+\paragraph{File da 265 byte}
+
 \begin{verbatim}
-occupa 1 blocco -> 4 kb
+Occupa 1 blocco -> 4 KB
 \end{verbatim}
-\noindent Quanto spazio occupa su disco un file da 16000 byte?
+
+\paragraph{File da 16000 byte}
+
 \begin{verbatim}
-occupa 4 blocchi -> 16 kb
+16000 / 4096 = 4 blocchi
+Occupa quindi 16 KB
 \end{verbatim}
-\noindent Quanto spazio occupa su disco un file da 4 Mb?
+
+\paragraph{File da 4 MB}
+
 \begin{verbatim}
-4 Mb = 4194304 byte
-4 Mb / 4 kb = 1024 blocchi
-                |
-                |__ 12 indirizzati direttamente
-                |
-                |__ 1012 indirizzati al livello 1
-                |
-                |__ + 1 blocco di riferimenti indiretti singoli
-per un totale = (12 + 1012 + 1) * 4096
+4 MB = 4194304 byte
+
+4194304 / 4096 = 1024 blocchi
+
+12 blocchi -> indirizzati direttamente
+1012 blocchi -> tramite indirizzamento indiretto singolo
++ 1 blocco aggiuntivo per contenere i puntatori indiretti
+
+Totale spazio occupato:
+(12 + 1012 + 1) * 4096
 \end{verbatim}
 \subsection{Tabella dei descrittori}
-Per ogni processo il sistema operatio mantiene una tabella dei descrittori
-contenente la lista dei file (stream I/O) aperti dal processo.
+Per ogni processo, il sistema operativo mantiene una \textbf{tabella dei descrittori}
+(File Descriptor Table), contenente l’elenco dei file e degli stream di I/O aperti dal processo.
+
+\noindent Ogni voce della tabella associa un \textbf{file descriptor} (intero non negativo)
+a una struttura del kernel che rappresenta un file aperto, includendo:
+\begin{itemize}
+    \item posizione corrente nel file;
+    \item modalità di accesso (lettura, scrittura, append, \dots);
+    \item riferimento all’inode del file.
+\end{itemize}
+
 \begin{figure}[H]
     \centering  
-    \includegraphics[width=0.9\linewidth]{../images/Tabella Dei Descrittori.png}
-    \caption{Tabella descrittori file aperti}
-    %\label{label}
+    \includegraphics[width=0.6\linewidth]{../images/Tabella Dei Descrittori.png}
+    \caption{Tabella dei descrittori dei file aperti}
 \end{figure}
+
 \noindent Esempio:
 \begin{verbatim}
 x = fopen("a.txt");
-if(fork() == 0)
+
+if (fork() == 0)
     y = fopen("b.txt");
 else
     z = fopen("c.txt");
 \end{verbatim}
-\begin{figure}[H]
-    \centering  
-    %\includegraphics[width=0.9\linewidth]{../images}
-    \caption{Esempio}
-    %\label{label}
-\end{figure}
-\noindent \textbf{\textcolor{red}{ATTENZIONE:}} con thread multipli
-la tabella è unica.\\
+
+\noindent Dopo la chiamata a \texttt{fork()}, il processo figlio eredita una copia
+della tabella dei descrittori del padre. Inizialmente, quindi, padre e figlio
+condividono gli stessi file aperti.
+
+\noindent \textbf{\textcolor{red}{ATTENZIONE:}} in presenza di thread multipli,
+la tabella dei descrittori è condivisa tra tutti i thread dello stesso processo.
+
+\vspace{0.3cm}
+
 \subsection{Gestione (Mount) dei Dispositivi}
-L'utility mount rende disponibile il file system di un dispositivo nella struttura gerarchica
-complessiva. 
+L’operazione di \texttt{mount} rende accessibile il file system di un dispositivo
+all’interno della struttura gerarchica unica del file system UNIX.
+
+\noindent In pratica, il contenuto del dispositivo viene associato a una directory detta
+\textbf{punto di mount} (\textit{mount point}).
+
 \begin{figure}[H]
     \centering  
-    %\includegraphics[width=0.9\linewidth]{../images}
-    \caption{caption}
-    %\label{label}
+    \includegraphics[width=0.6\linewidth]{../images/Mount.png}
+    \caption{Operazione di mount}
 \end{figure}
-Immaginiamo il contenuto di immt
-\begin{figure}[H]
-    \centering  
-    %\includegraphics[width=0.9\linewidth]{../images}
-    \caption{caption}
-    %\label{label}
-\end{figure}
+\newpage
+\noindent Esempio:
+\begin{verbatim}
+/dev/sdb1 --> montato su --> /mnt/usb
+\end{verbatim}
+
+\noindent Dopo il mount, i file del dispositivo risultano accessibili tramite il path:
+\begin{verbatim}
+/mnt/usb/...
+\end{verbatim}
+
+\vspace{0.3cm}
+
 \subsection{Link}
-È un collegamento a file o directory ed è di due tipi:
+Un \textbf{link} è un collegamento a un file o a una directory.
+Ne esistono due tipologie principali:
+
 \begin{itemize}
-    \item link simbolico $\rightarrow$ costituito da un file di testo contentente il path del
-    file/directory a cui è collegato. Questo presenta vantaggi e svantaggi:
+    \item \textbf{Link simbolico (symbolic link o symlink)} $\rightarrow$
+    è un file speciale che contiene il path del file o della directory di destinazione.
+    
     \begin{verbatim}
-    VANTAGGI:
-    + è portabile
-    - non supporta spostamento del file
+VANTAGGI
++ portabile
++ può puntare a directory
++ può collegare file system differenti
+
+SVANTAGGI
+- si rompe se il file originale viene spostato o eliminato
     \end{verbatim}
-    \item hard link $\rightarrow$ è un nuovo riferimento ed inonde esistente
+
+    \item \textbf{Hard link} $\rightarrow$
+    è un nuovo riferimento diretto alla stessa inode del file originale.
+
     \begin{verbatim}
-    Vantaggi
-    + robusto a spostamenti
-    - non portabile
+VANTAGGI
++ robusto rispetto a rinomina o spostamento del file
++ accesso diretto alla stessa inode
+
+SVANTAGGI
+- non può attraversare file system differenti
+- normalmente non può riferirsi a directory
     \end{verbatim}
-\end{itemize}
-\textbf{\textcolor{red}{ATTENZIONE:}} una inode e relativi blocchi engono cancellati
-quando non ci sono più link che lo puntino.\\
-\noindent \texttt{Variabili di ambiente}
-\begin{itemize}
-    \item env $\rightarrow$ stampa variabili definite
-    \item export <nome> = valore $\rightarrow$ definisce una variabile
-    \item unset <nome> $\rightarrow$ chiama una variabile
 \end{itemize}
 
+\noindent \textbf{\textcolor{red}{ATTENZIONE:}} un file viene realmente eliminato
+solo quando:
+\begin{itemize}
+    \item tutti gli hard link sono stati rimossi;
+    \item nessun processo mantiene il file aperto.
+\end{itemize}
+
+\vspace{0.3cm}
+
+\subsection{Variabili di ambiente}
+Le \textbf{variabili di ambiente} sono coppie \texttt{nome=valore}
+mantenute dalla shell e utilizzate dai processi per configurare il proprio comportamento.
+
+\begin{itemize}
+    \item \texttt{env} $\rightarrow$ stampa le variabili di ambiente definite;
+    
+    \item \texttt{export NOME=valore} $\rightarrow$
+    crea o modifica una variabile di ambiente;
+    
+    \item \texttt{unset NOME} $\rightarrow$
+    elimina una variabile di ambiente.
+\end{itemize}
+
+\noindent Esempio:
+\begin{verbatim}
+export PATH=/usr/bin
+echo $PATH
+unset PATH
+\end{verbatim}
