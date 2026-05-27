@@ -941,9 +941,71 @@ $$a_n\quad a_{n-1}\quad b_1\quad \dots\quad y_1\quad z_1$$
 
 
 
+\section*{Trasformate di Laplace}
+{
+\renewcommand{\arraystretch}{3.0} 
+\begin{center}
+\begin{tabular}{|c|c|c|}
+    \hline
+    
+    $\bm{f(t)}$ &  $\bm{F(s)}$  &  \textbf{Condizioni} \\
+    
+    \hline
+    \rowcolor{gray!15}
+    $\delta(t)$ & $1$ &     \\
+    
+    $\delta_{-1}(t)$ & $\displaystyle \frac{1}{s}$ & $Re(s)>0$\\
+    
+    \rowcolor{gray!15}
+    $t$   &  $\displaystyle \frac{1}{s^2}$ &   $Re(s)>0$ \\
+    
+    $\displaystyle \frac{t^k}{k!}$  &  $\displaystyle \frac{1}{s^{k+1}}$ & $Re(s)>0$\\
+    
+    \rowcolor{gray!15}
+    $e^{at}$  & $\displaystyle \frac{1}{s-a}$ & $Re(s)>Re(a)$   \\
+    
+    $\sin wt$  & $\displaystyle \frac{w}{s^2+w^2}$  & $Re(s)>0$\\
+    
+    \rowcolor{gray!15}
+    $\cos wt$  &  $\displaystyle \frac{s}{s^2+w^2}$   & $Re(s)>0$\\
+    
+    $f(t-T)\delta_{-1}(t-T)$ &  $e^{-sT}\ F(s)$  &     \\
+    
+    \rowcolor{gray!15}
+    $\displaystyle \frac{t^k}{k!}\ f(t)$ & $\displaystyle \frac{(-1)^k}{k!}\  \frac{d^{(k)}}{ds^{(k)}} F(s)$  & \\   
+    
+    $\displaystyle e^{at}\ f(t)$ & $\displaystyle F(s-a)$ & \\
+    \hline
+\end{tabular}
+\end{center}
+}
 
 
-
+\section*{Z-trasformate}
+{
+\renewcommand{\arraystretch}{3.0} 
+\begin{center}
+\begin{tabular}{|c|c|c|}
+     \hline
+     $\displaystyle \bm{f(t)}$ & $\displaystyle \bm{F(z)}$  &  \textbf{Condizioni}\\
+     \hline
+     \rowcolor{SALZO}
+     $\displaystyle \delta(t)$  & $1$  &  \\
+     $\displaystyle \delta_{-1}(t)$  &  $\displaystyle \frac{z}{z-1}$  & $\displaystyle |z|>1$ \\
+     \rowcolor{SALZO}
+     $ \displaystyle a^t$  &  $\displaystyle  \frac{z}{z-a}$  &  $\displaystyle |z|>|a|$\\
+     $\displaystyle \sin \theta t$ & $\displaystyle \frac{z \sin \theta }{z^2-2z\cos\theta +1}$  & $\displaystyle |z|>1$\\
+     \rowcolor{SALZO}
+     $\displaystyle \cos \theta t$ & $\displaystyle \frac{z^2 -  z \cos \theta }{z^2-2z\cos\theta +1}$  & $\displaystyle |z|>1$\\
+     $\displaystyle \rho^t\sin \theta t$ & $\displaystyle \frac{\frac{z}{p}\ \sin \theta}{(\frac{z}{\rho})^2-2\frac{z}{\rho}\cos \theta +1}$ & $|z|>1,\ |z|>|\rho|$\\
+     \rowcolor{SALZO}
+     $f(t+1)$ & $z\ F(z)-z\ f(0)$ & \\
+     $\displaystyle t\cdot \delta_{-1}$ & $\displaystyle \frac{z}{(z-1)^2}$ & $z\neq 1$\\
+     \hline
+      
+\end{tabular}
+\end{center}
+}
 
 \end{document}
 
