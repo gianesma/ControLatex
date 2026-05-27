@@ -140,7 +140,7 @@ Dato $F = PG$:\\
 \subsection{Tempo continuo}
 \[   Re(\lambda_i) < 0\ \ \ \ \forall \ \lambda_i \text{ autovalori di } A   \]
 \subsection{Tempo discreto}
-+++++++++++++++++++++++++++++++++++++++++++++++++
+$$|\lambda_i| < 1 \quad \forall \lambda_i \text{ autovalori di } A$$
 
 \section*{Stabilizzabilità}
 \begin{center}
@@ -842,7 +842,7 @@ Applicando il teorema dell'assegnazione degli autovalori per $A+BK$ e il duale d
 
 
 
-\section{Criterio di Routh}
+\section*{Criterio di Routh}
 Dato un polinomio:
 $$p(\lambda) = a_n\lambda^n + a_{n-1} \lambda^{n-1}+\dots+a_o = 0$$
 si costruisce la tabella:\bigskip\\
@@ -934,8 +934,8 @@ $$a_n\quad a_{n-1}\quad b_1\quad \dots\quad y_1\quad z_1$$
 
 
 
-
-
+\section*{Determinante matrice 2 per 2}
+\[A^{-1} = \begin{pmatrix} a & b \\ c & d \end{pmatrix}^{-1} = \frac{1}{ad - bc} \begin{pmatrix} d & -b \\ -c & a \end{pmatrix}\]
 
 
 
