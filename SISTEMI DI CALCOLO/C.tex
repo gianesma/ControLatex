@@ -1834,3 +1834,255 @@ m[j][i]
 \noindent
 si perde la località spaziale, causando molti più cache miss e un aumento significativo del tempo di esecuzione (ad esempio da 0.3s a 1.5s).
 \newpage
+\section{}
+\newpage
+\section{File System}
+È l'insieme degli schemi organizzativi dei dati e delle relative funzionalità attraverso cui il sitema operativo
+si interfaccia con le periferiche di archivazione dati.
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.9\linewidth]{../images/File Systemm.png}
+    \caption{File Sistem}
+    %\label{label}
+\end{figure}
+\noindent Andiamo ad analizzare cosa c'è all'interno del file system.
+\subsection{File e Directory}
+File : Contenitore di dati (archivio) rappresentati come sequenze di file.
+Oltre ai dati il file è caratterizzato da alcuni metadati necessari per il suo funzionamento, come:
+\begin{itemize}
+    \item nome
+    \item dimensione
+    \item permessi di accesso
+    \item timestamp
+\end{itemize}
+\begin{figure}[H]
+    \centering  
+    %\includegraphics[width=0.9\linewidth]{../images}
+    \caption{Esempio}
+    %\label{label}
+\end{figure}
+\noindent Directory : contenitore logico che permette l'organizzazione dei dati
+in una struttura di qualche forma (tipo albero, ecc\dots) 
+\begin{figure}[H]
+    \centering  
+    %\includegraphics[width=0.9\linewidth]{../images}
+    \caption{Directory}
+    %\label{label}
+\end{figure}
+\subsection{Struttura gerarchica dei File System}
+Nel mondo UNIX il contenuto del file system è argomentoato in un unico albero.
+È presente una directory speciale chiamata \textbf{root directory} rappresentata da un 
+singolo "/".
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.9\linewidth]{../images/UNIX DIRECTORY.png}
+    \caption{Albero Directory}
+    %\label{label}
+\end{figure}
+\noindent Ogni directory, tranne la directory radice ha una directory genitore. Se una directory è 
+contenuta in un'altra, allora è una directory figlia. Nell'esempio sopra, tom e other sono 
+figlie di home, mentre home è genitore di tom e other. Si noti che i file system *nix sono tipicamente 
+case-sensitive, pertanto, ad esempio, /home/tom/documents/text è diverso da /home/tom/documents/Text.\\
+File System Hierarchy Standard (ESHS) SCRIVERE COS'È BREVEMENTE!\\
+\subsection{Path/Percorso}
+Nel File System ogni file/directory è identificato univocamente dal suo \texttt{Path}. Abbiamo:
+\begin{itemize}
+    \item Path assoluto $\rightarrow$ sequenza di tutte le directory presenti nel ramo del file system che 
+    partendo dalla radice root directory e arriva fino al file/dir considerato.
+    \begin{verbatim}
+    Es: /home/Tom/Documents/Text
+    Text è il file/dir identificato dal path, mentre:
+    home, Tom, Documents rappresenta la sequenza di directory che dalla 
+    radice portano al file/directory.
+    "/" iniziale è la directory radice, mentre le altre "/" sono dei caratteri separatori
+    \end{verbatim}
+    \noindent \textbf{\textcolor{red}{ATTENZIONE:}} "/" è un path valido, "//" non lo è
+    \item Path relativo $\rightarrow$ sequenza di directory nel file sistem che collegano 
+    attraverso un percorso valido il file/directory considerato con una 
+    directory di riferimento passando per la directory "" comune ad entrambi i rami.
+\end{itemize}
+\noindent Per definire un path routing usiamo dei percorsi speciali:
+\begin{itemize}
+    \item "." indica la directory corrente
+    \item ".." indica la directory padre di quella corrente
+    \item "~" indica la directory home dell'utente
+\end{itemize}
+\begin{verbatim}
+Esempio: per indirizzare "other" partendo da "documents" (prendendo come riferimento la root di prima)
+../../other
+\end{verbatim}
+\subsection{Organnizazzione interna File System}
+Per l'organizzazione interna dei file system prenderemo in considerazione solo i file system della 
+famiglia "Ext".\\
+Ogni file/directory è associata ad una struttura dati chiamata \texttt{Inode}, che viene
+caricata in memoria e gestita dal sistema operativo. Attraverso l'Inode ogni "periferica" 
+compatibile può essere utilizzata con le astrazioni proprie del file system.\\
+L'inside associato ad un file contiene esclusivamente metadati. I dati relativi al file
+sono memorizzati separatamente in \textbf{blocchi di dimensione fissa}.\\
+Cosa contiene un Inder:
+\begin{itemize}
+    \item Numero dell'inode $\rightarrow$ indice numerico nella tabella degli inode
+    \item Tipo di oggetto $\rightarrow$ file, directory, ...
+    \item Permessi di accesso $\rightarrow$ definiscono i diritti con cui i diversi
+    utenti del sistema accedono al file/directory
+ \end{itemize}
+ diritti utente proprietario: leggere (R), scrivere (W), eseguire (X).\\
+ diritti del gruppo proprietario: leggere (R), scrivere (W), eseguire (X).\\
+ diritti di tutti gli altri utenti: leggere (R),scrivere (W), eseguire (X).\\
+\begin{verbatim}
+RWX, RWX, RWX
+il primo indica i diritti dell'utente proprietario, il secondo i diritti
+del gruppo proprietario e il terzo i diritti di tutti gli altri utenti.
+Esempio: se leggo
+r-x r-x r-x 
+significa che:
+il proprietario del file ha i permessi per leggere ed eseguire
+il gruppo del file ha i permessi per leggere ed eseguire
+tutti gli altri utenti del file hanno i permessi per leggere ed eseguire
+\end{verbatim}
+\noindent Per modificare i permessi si usa un utility chiamata "\texttt{chmod}". Per modificare utente o gruppo 
+proprietario, invece, dobbiamo utilizzare l'utility chiamata "\texttt{chown}". Esempio:
+\begin{verbatim}
+chmod a + r text.txt
+chmod g - x file.txt
+\end{verbatim}
+\noindent I diritti possono essere rappresentati anche con notazione detta
+\texttt{ottale} (notazione in base 8). Esempio:
+\begin{figure}[H]
+    \centering  
+    %\includegraphics[width=0.9\linewidth]{../images}
+    \caption{Esempio}
+    %\label{label}
+\end{figure}
+\noindent Come faccio a definire i diritti di un file che creo in un programma?
+\begin{verbatim}
+usando la syscall "open"
+\end{verbatim}
+\begin{itemize}
+    \item Numero degli hard-link $\rightarrow$ numero di collegamenti esistenti per il file
+    \item User ID $\rightarrow$ identificativo dell'utente proprietario
+    \item Group ID $\rightarrow$ identificativo del gruppo proprietario
+    \item Size $\rightarrow$ dimensione del file in byte
+    \item Timestamp ultimo accesso
+    \item Timestamp ultima modifica
+    \item Timestamp ultima modifica all'inode
+    \item Timestamp di creazione
+\end{itemize}
+\noindent Tutte queste cose ci danno le informazioni necessarie per capire cosa è successo al file.\\
+\noindent Abbiamo all'interno presente anche i puntatori:
+\begin{itemize}
+    \item riferimenti DIRETTI a blocchi dati (12 presenti)
+    \item riferimento INDIRETTO SINGOLO a blocchi dati
+    \item riferimento INDIRETTO DOPPIO a blocchi dati
+\end{itemize}
+\noindent Questi tre sono puntatori ai blocchi contenenti i dati. \\
+\noindent Tutto nel complesso (tranne i puntatori) formano:
+\begin{figure}[H]
+    \centering  
+    %\includegraphics[width=0.9\linewidth]{../images}
+    \caption{caption}
+    %\label{label}
+\end{figure}
+\noindent Tipicamente ogni blocco contiene 4kb.\\
+Qual'è quindi la dimensione massima di un file?
+\begin{verbatim}
+MAX = 12 (blocchi) * 4096 (byte) + 1024 * 4096 + 1024^2 * 4096 = 4 GB
+\end{verbatim}
+\noindent Lo spazio per gli indici sarà:
+\begin{verbatim}
+spazio indici = (12 + 2) * 4 + 4096 + (1024 + 1) * 4096 = 4 MB
+\end{verbatim}
+\noindent Per le directory:
+\begin{figure}[H]
+    \centering  
+    %\includegraphics[width=0.9\linewidth]{../images}
+    \caption{caption}
+    %\label{label}
+\end{figure}
+\noindent Quanto spazio occupa su disco un file da 265 byte?
+\begin{verbatim}
+occupa 1 blocco -> 4 kb
+\end{verbatim}
+\noindent Quanto spazio occupa su disco un file da 16000 byte?
+\begin{verbatim}
+occupa 4 blocchi -> 16 kb
+\end{verbatim}
+\noindent Quanto spazio occupa su disco un file da 4 Mb?
+\begin{verbatim}
+4 Mb = 4194304 byte
+4 Mb / 4 kb = 1024 blocchi
+                |
+                |__ 12 indirizzati direttamente
+                |
+                |__ 1012 indirizzati al livello 1
+                |
+                |__ + 1 blocco di riferimenti indiretti singoli
+per un totale = (12 + 1012 + 1) * 4096
+\end{verbatim}
+\subsection{Tabella dei descrittori}
+Per ogni processo il sistema operatio mantiene una tabella dei descrittori
+contenente la lista dei file (stream I/O) aperti dal processo.
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.9\linewidth]{../images/Tabella Dei Descrittori.png}
+    \caption{Tabella descrittori file aperti}
+    %\label{label}
+\end{figure}
+\noindent Esempio:
+\begin{verbatim}
+x = fopen("a.txt");
+if(fork() == 0)
+    y = fopen("b.txt");
+else
+    z = fopen("c.txt");
+\end{verbatim}
+\begin{figure}[H]
+    \centering  
+    %\includegraphics[width=0.9\linewidth]{../images}
+    \caption{Esempio}
+    %\label{label}
+\end{figure}
+\noindent \textbf{\textcolor{red}{ATTENZIONE:}} con thread multipli
+la tabella è unica.\\
+\subsection{Gestione (Mount) dei Dispositivi}
+L'utility mount rende disponibile il file system di un dispositivo nella struttura gerarchica
+complessiva. 
+\begin{figure}[H]
+    \centering  
+    %\includegraphics[width=0.9\linewidth]{../images}
+    \caption{caption}
+    %\label{label}
+\end{figure}
+Immaginiamo il contenuto di immt
+\begin{figure}[H]
+    \centering  
+    %\includegraphics[width=0.9\linewidth]{../images}
+    \caption{caption}
+    %\label{label}
+\end{figure}
+\subsection{Link}
+È un collegamento a file o directory ed è di due tipi:
+\begin{itemize}
+    \item link simbolico $\rightarrow$ costituito da un file di testo contentente il path del
+    file/directory a cui è collegato. Questo presenta vantaggi e svantaggi:
+    \begin{verbatim}
+    VANTAGGI:
+    + è portabile
+    - non supporta spostamento del file
+    \end{verbatim}
+    \item hard link $\rightarrow$ è un nuovo riferimento ed inonde esistente
+    \begin{verbatim}
+    Vantaggi
+    + robusto a spostamenti
+    - non portabile
+    \end{verbatim}
+\end{itemize}
+\textbf{\textcolor{red}{ATTENZIONE:}} una inode e relativi blocchi engono cancellati
+quando non ci sono più link che lo puntino.\\
+\noindent \texttt{Variabili di ambiente}
+\begin{itemize}
+    \item env $\rightarrow$ stampa variabili definite
+    \item export <nome> = valore $\rightarrow$ definisce una variabile
+    \item unset <nome> $\rightarrow$ chiama una variabile
+\end{itemize}
+
