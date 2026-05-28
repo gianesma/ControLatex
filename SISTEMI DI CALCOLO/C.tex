@@ -1834,7 +1834,111 @@ m[j][i]
 \noindent
 si perde la località spaziale, causando molti più cache miss e un aumento significativo del tempo di esecuzione (ad esempio da 0.3s a 1.5s).
 \newpage
-\section{}
+\section{Cache e associatività}
+La \textbf{cache} è una memoria ad accesso rapido organizzata in blocchi di dimensione fissa, chiamati \textbf{linee di cache} (\textit{cache lines}).
+Ogni linea contiene una copia di una porzione della memoria principale, permettendo di ridurre significativamente i tempi di accesso ai dati più utilizzati.
+\medskip
+
+\noindent La cache non è gestita direttamente dai programmi applicativi, ma dal sistema hardware e dal Sistema Operativo.
+
+\noindent Ogni linea di cache è associata a un \textbf{tag}, utilizzato per identificare quale blocco di memoria principale è attualmente memorizzato nella linea.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{../images/Cache esempio .png}
+    \caption{Esempio di organizzazione della cache}
+\end{figure}
+
+\bigskip
+
+\subsection*{Tipologie di cache}
+
+\noindent Esistono tre principali modalità di organizzazione della cache.
+
+\begin{itemize}
+
+    \item \textbf{Cache completamente associativa} (\textit{fully associative}) $\rightarrow$
+    ogni blocco di memoria può essere memorizzato in qualsiasi linea della cache.
+
+\begin{verbatim}
+VANTAGGI
++ utilizzo molto efficiente dello spazio in cache
++ riduzione dei conflict miss
+
+SVANTAGGI
+- implementazione complessa
+- costo hardware elevato
+\end{verbatim}
+
+\bigskip
+
+    \item \textbf{Cache associativa a k-vie} (\textit{k-way set associative}) $\rightarrow$
+    ogni blocco di memoria può essere memorizzato solo in un insieme (\textit{set}) specifico di \(k\) linee, determinato tramite una funzione di mapping.
+
+\medskip
+
+    Questo approccio rappresenta un compromesso tra:
+    \begin{itemize}
+        \item efficienza della cache completamente associativa;
+        \item semplicità della cache a mappatura diretta.
+    \end{itemize}
+
+\bigskip
+
+    \item \textbf{Cache a mappatura diretta} (\textit{direct mapped}) $\rightarrow$
+    ogni blocco di memoria può essere memorizzato in una sola linea specifica della cache.
+
+\begin{verbatim}
+VANTAGGI
++ implementazione semplice
++ costo ridotto
++ accesso molto veloce
+
+SVANTAGGI
+- maggiore probabilità di cache miss
+- utilizzo meno efficiente della cache
+\end{verbatim}
+
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{../images/tipi cache.png}
+    \caption{Confronto tra i diversi tipi di cache}
+\end{figure}
+
+\bigskip
+
+\subsection*{Tipologie di cache miss}
+
+A seconda dell’organizzazione della cache e dello stato corrente della memoria,
+durante un accesso possono verificarsi differenti situazioni.
+
+\begin{itemize}
+
+    \item \textbf{Cache hit} $\rightarrow$
+    il dato richiesto è già presente nella cache e può essere letto rapidamente.
+
+\medskip
+
+    \item \textbf{Cache miss} $\rightarrow$
+    il dato richiesto non è presente nella cache e deve essere caricato dalla memoria principale.
+
+\medskip
+
+    \item \textbf{Capacity miss} $\rightarrow$
+    la cache è piena e il caricamento del nuovo dato richiede la sostituzione di una linea esistente (linea vittima).
+
+\medskip
+
+    \item \textbf{Conflict miss} $\rightarrow$
+    il dato non può essere inserito perché la linea di cache assegnata è già occupata da un altro blocco incompatibile.
+
+\medskip
+
+\noindent Questo fenomeno si verifica principalmente nelle cache a mappatura diretta o nelle cache associative con pochi modi.
+\end{itemize}
+
 \newpage
 \section{File System}
 Il \textbf{File System} è l’insieme delle strutture organizzative e delle funzionalità attraverso cui il Sistema Operativo gestisce i dati memorizzati nei dispositivi di archiviazione.
