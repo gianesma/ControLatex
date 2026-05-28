@@ -1007,6 +1007,54 @@ $$a_n\quad a_{n-1}\quad b_1\quad \dots\quad y_1\quad z_1$$
 \end{center}
 }
 
+
+
+\section*{Forma canonica raggiungibile}
+Supponendo che $n < m$ e $p = q = 1$ (un ingresso e un'uscita):
+\begin{itemize}
+    \item $\displaystyle A = \begin{pmatrix}
+        0 & 1 & 0 & \cdots & 0 \\
+        0 & 0 & 1 & \cdots & 0 \\
+        \vdots &  & \ddots & \ddots & 0 \\
+        0 & 0 & 0 & \cdots & 1 \\
+        -a_0 & -a_1 & -a_2 & \cdots & -a_{n-1} 
+    \end{pmatrix}_{np\times np}$
+
+    \item $\displaystyle B = \begin{pmatrix}
+        0 \\ 0 \\ \vdots \\ 0 \\ 1
+    \end{pmatrix}_{np \times p}$
+
+    \item $\displaystyle C_R = \begin{pmatrix}
+        b_0 & b_1 & \cdots & b_n & 0 & \cdots & 0
+    \end{pmatrix}_{q\times np}$
+\end{itemize}
+
+
+
+\section*{Forma canonica osservabile}
+Supponendo che $n < m$ e $p = q = 1$ (un ingresso e un'uscita):
+\begin{itemize}
+    \item $\displaystyle A = \begin{pmatrix}
+        0 & 0 & \cdots & 0 & -a_0 \\
+        1 & 0 & \cdots & 0 & -a_1 \\
+        0 & 1 & \cdots & 0 & -a_2 \\
+        \vdots & \vdots & \ddots & \vdots & \vdots \\
+        0 & 0 & \cdots & 1 & -a_{n-1} 
+    \end{pmatrix}_{nq\times nq}$
+
+    \item $\displaystyle B = \begin{pmatrix}
+        b_0 \\ b_1 \\ \vdots \\ b_n \\ 0 \\ \vdots \\ 0
+    \end{pmatrix}_{nq \times p}$
+
+    \item $\displaystyle C_R = \begin{pmatrix}
+        0 & 0 & 0 & \cdots & 0 & 1
+    \end{pmatrix}_{q\times nq}$
+\end{itemize}
+
+
+
+
+
 \end{document}
 
 
