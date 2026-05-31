@@ -21,6 +21,7 @@
 \usepackage{subcaption}
 \usepackage{footnote}
 \usepackage{listings}
+\usepackage{cancel}
 \usepackage{tcolorbox}
 \tcbuselibrary{listings}
 \newtheoremstyle{nostyle}
@@ -1142,7 +1143,40 @@ Supponendo che $n < m$ e $p = q = 1$ (un ingresso e un'uscita):
 
 
 
+\section{Schema di controllo a doppio anello di controreazione}
+Quando il \textbf{disturbo $\bm{z}$ è misurabile} occorre prelevarlo e farlo passare per un secondo controllore $K(s)$ e sommarlo all'ingresso, in questo modo si ottiene uno schema di controllo a doppio anello chiuso.
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.9\linewidth]{../images/d_controreazione.jpg}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
 
+\noindent Per gestire la presenza di 2 controllori dividiamo le specifiche in 2 insiemi:
+\begin{itemize}
+    \item [\textbf{A.}] $\to$ Specifiche progettuali che non riguardano il disturbo
+    \item [\textbf{B.}] $\to$ Specifiche progettuali che riguardano il disturbo
+\end{itemize}
+Il problema quindi si divide in 2 step:
+\begin{itemize}
+    \item \textbf{Progettazione di $\bm{G(s)}$}: eseguo le specifiche dell'insieme $A$
+    \item \textbf{Progettazione di $\bm{K(s)}$}: eseguo le specifiche dell'insieme $B$
+\end{itemize}
+
+\subsection{Reiezione del disturbo}
+La reiezione del disturbo è la capacità del sistema di ridurre gli effetti dei disturbi esterni sul suo funzionamento. Ciò si traduce in una mancata influenza del disturbo sull'uscita, ottenuto annullando la funzione di 
+trasferimento $W_z(s) = 0$ che si calcola senza considerare $r$:
+\[      y(s) = W_z(s) z(s)    \]
+Quindi considerato uno schema di controllo a doppio anello di controreazione si ha che:
+\[\begin{cases}
+    y = Mz + PGe \\
+    e = Kz -y
+\end{cases}  \quad \Longrightarrow \quad y = Mz + PG(Kz-y) \quad \Longrightarrow \quad y (1+PG) = z (M+PGK) 
+\]
+Quindi:
+\[     W_z(s) = \frac{y}{z} = \frac{M+PGK}{1+PG}  = 0       \]
+La condizione di reiezione del disturbo si traduce nel porre il numeratore a zero:
+\[     M+PGK = 0\quad \Longrightarrow \quad \bm{K = - \frac{M}{PG}}         \]
 
 \end{document}
 
