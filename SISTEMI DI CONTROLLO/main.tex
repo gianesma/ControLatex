@@ -57,9 +57,10 @@
 
 \begin{document}
 \maketitle
+\tableofcontents
 
 
-\section*{Processo di un ingegnere automatico}
+\section{Processo di un ingegnere automatico}
 \begin{figure}[H]
     \centering  
     \includegraphics[width=1\linewidth]{../images/processo_ing.jpg}
@@ -70,7 +71,7 @@
 
 
 
-\section*{Modellizzazione lineare continua}
+\section{Modellizzazione lineare continua}
 \[ \begin{cases}
     \dot{x}(t) = Ax(t) + Bu(t) + Pz(t) \\
     y(t) = Cx(t) + Du(t) + Qz(t)
@@ -78,13 +79,13 @@
 
 
 
-\section*{Modellizzazione non lineare continua}
+\section{Modellizzazione non lineare continua}
 \[ \begin{cases}
     x(t) = f\Big( x(t), u(t), z(t)   \Big) \\
     y(t) = g\Big( x(t), u(t), z(t)   \Big) 
 \end{cases} \]
 
-\section*{Modellizzazione nel dominio di Laplace}
+\section{Modellizzazione nel dominio di Laplace}
 \[  \begin{cases}
     x(s) = \left(sI-A \right)^{-1}\left( B\ u(s)+P\ z(s)  \right) \\
     y(s) = P(s)u(s) + M(s)z(s)
@@ -96,7 +97,7 @@ dove:
     \item $M(s) = C(sI-A)^{-1} P+ Q \to $ funzione di trasferimento \textbf{disturbo -uscita} 
 \end{itemize}
 
-\section*{Funzioni di trasferimento in Laplace}
+\section{Funzioni di trasferimento in Laplace}
 Dato $F = PG$:\\
 \begin{center}
 \begin{tabular}{c||c|c|c}
@@ -121,12 +122,12 @@ Dato $F = PG$:\\
 \end{tabular}
 \end{center}
 
-\section*{Modellizzazione lineare nel tempo discreto}
+\section{Modellizzazione lineare nel tempo discreto}
 \[      \begin{cases}
     x(h+1) = Ax(h) + Bu(h) + Pz(h) \\
     y(h) = Cx(h) + D u (h) + Q z(h)
 \end{cases}    \]
-\section*{Funzioni di trasferimento nel dominio z}
+\section{Funzioni di trasferimento nel dominio z}
 \begin{itemize}
     \item $P(z) = C(zI-A)^{-1}B + D$
     \item $M(z) = C(zI-A)^{-1}P+Q$
@@ -137,10 +138,10 @@ Dato $F = PG$:\\
 
 
 
-\section*{Stabilità asintotica}
-\subsection{Tempo continuo}
+\section{Stabilità asintotica}
+\subsection*{Tempo continuo}
 \[   Re(\lambda_i) < 0\ \ \ \ \forall \ \lambda_i \text{ autovalori di } A   \]
-\subsection{Tempo discreto}
+\subsection*{Tempo discreto}
 $$|\lambda_i| < 1 \quad \forall \lambda_i \text{ autovalori di } A$$
 
 \section*{Stabilizzabilità}
@@ -148,23 +149,23 @@ $$|\lambda_i| < 1 \quad \forall \lambda_i \text{ autovalori di } A$$
     Un sistema è \textbf{stabilizzabile} $\Longleftrightarrow$ gli eventuali autovalori nascosti sono tutti a parte reale negativa
 \end{center}
 
-\section*{Velocità del transitorio}
-\subsection{Tempo Continuo}
+\section{Velocità del transitorio}
+\subsection*{Tempo Continuo}
 \begin{center}
 Velocità gestita dagli autovalori della matrice dinamica $A$ secondo la legge $\bm{e^{At}}$\\
 $\to$    \\
 Affinchè il transitorio si esaurisca il più velocemente possibile è necessario prendere la radice meno negativa
 \end{center}
 
-\subsection{Tempo discreto}
+\subsection*{Tempo discreto}
 \begin{center}
 Velocità gestita dagli autovalori della matrice dinamica $A$ secondo la legge $\bm{A^t}$\\
 $\to$    \\
 Affinchè il transitorio si esaurisca il più velocemente possibile è necessario prendere la radice più grande avente modulo minore di 1
 \end{center}
 
-\section*{Oscillazione del transitorio}
-\subsection{Tempo continuo}
+\section{Oscillazione del transitorio}
+\subsection*{Tempo continuo}
 \begin{center}
 Il transitorio è privo di oscillazioni\\
 $\to$    \\
@@ -172,7 +173,7 @@ le radici devono essere puramente reali (ovvero avere la parte immaginaria nulla
 \end{center}
 
 
-\subsection{Tempo discreto}
+\subsection*{Tempo discreto}
 \begin{center}
 Il transitorio è privo di oscillazioni\\
 $\to$    \\
@@ -181,8 +182,8 @@ le radici hanno modulo minore stretto di 1 e la parte immaginaria pari a zero, d
  
 
 
-\section*{Criterio di Routh}
-\subsection{tempo continuo}
+\section{Criterio di Routh}
+\subsection*{tempo continuo}
 Dato un polinomio:
 $$p(\lambda) = a_n\lambda^n + a_{n-1} \lambda^{n-1}+\dots+a_o = 0$$
 si costruisce la tabella:\bigskip\\
@@ -272,18 +273,18 @@ $$a_n\quad a_{n-1}\quad b_1\quad \dots\quad y_1\quad z_1$$
         \end{center}
 
 
-\subsection{tempo discreto}
+\subsection*{tempo discreto}
 \begin{center}
     $z\to \displaystyle \frac{1+w}{1-w}$ e procedi come nel tempo continuo.
 \end{center}
 
 
-\section*{Autovalori raggiungibili}
+\section{Autovalori raggiungibili}
 \begin{center}
     $rk(B\ \ AB \ \ A^2 B \ \dots\ A^{n-1}B) = $ numero di autovalori raggiungibili
 \end{center}
 
-\section*{Autovalori osservabili}
+\section{Autovalori osservabili}
 \begin{center}
     \[rk \begin{pmatrix}
         C \\ CA \\ CA^2 \\\vdots \\ CA^{n-1}
@@ -291,7 +292,7 @@ $$a_n\quad a_{n-1}\quad b_1\quad \dots\quad y_1\quad z_1$$
 \end{center}
 
 
-\section*{Scomposizione di Kalmann}
+\section{Scomposizione di Kalmann}
 \[          
     \begin{pmatrix}
         \dot{x_1} \\ \dot{x_2} \\ \dot{x_3} \\ \dot{x_4}
@@ -329,9 +330,9 @@ D
 \end{center}
 
 
-\section*{Test di Hautus}
+\section{Test di Hautus}
 Sia $A \in \mathbb{R}^n$ e $\overline{\lambda}$ autovalore di A:
-\subsection{Per la raggiungibilità}
+\subsection*{Per la raggiungibilità}
 \[
 rgo(A-\overline{\lambda}I\quad \vdots \quad B) 
 \rightarrow 
@@ -341,7 +342,7 @@ rgo(A-\overline{\lambda}I\quad \vdots \quad B)
 \end{cases}
 \]
 
-\subsection{Per l'osservabilità}
+\subsection*{Per l'osservabilità}
 \[
 rgo
 \begin{pmatrix}
@@ -356,17 +357,17 @@ C
 \]
 
 
-\section*{Classificazione autovalori nascosti}
-\subsection{Cancellazione Polo-Zero}
+\section{Classificazione autovalori nascosti}
+\subsection*{Cancellazione Polo-Zero}
 \begin{center}
 Origina un autovalore \textsc{raggiungibile} e \textsc{inosservabile}
 \end{center}
-\subsection{Cancellazione Zero-Polo}
+\subsection*{Cancellazione Zero-Polo}
 \begin{center}
 Origina un autovalore \textsc{irragiungibile} e \textsc{osservabile}
 \end{center}
 
-\section*{Proprietà autovalori}
+\section{Proprietà autovalori}
 
     \[  \bigg\{   \text{Autovalori della matrice dinamica}      \bigg\} \subseteq \bigg\{   \text{Poli della funzione di trasferimento}      \bigg\} \]
     \[  \bigg\{   \text{Autovalori nascosti}      \bigg\} = \bigg\{   \text{Autovalori della matrice dinamica}      \bigg\} \setminus \bigg\{   \text{Poli della funzione di trasferimento}      \bigg\} \]
@@ -375,7 +376,7 @@ Origina un autovalore \textsc{irragiungibile} e \textsc{osservabile}
 
 
 
-\section*{Scelta del controllore}
+\section{Scelta del controllore}
 \begin{figure}[H]
     \centering  
     \includegraphics[width=1\linewidth]{../images/controllore.jpg}
@@ -385,13 +386,13 @@ Origina un autovalore \textsc{irragiungibile} e \textsc{osservabile}
 
 
 
-\section*{Polinomio caratteristico}
+\section{Polinomio caratteristico}
 Il polinomio caratteristico di un sistema è dato dal prodotto del polinomio dal quale risultano gli autovalori non nascosti, ovvero il denominatore della funzione di trasferimento della funzione complessiva, per il polinomio
 da quale risultano gli autovalori nascosti.
 
 
 
-\section*{Assegnazione degli autovalori}
+\section{Assegnazione degli autovalori}
 \subsection{Equazione Diofantina}
 Sia $D_W(s)$ il denominatore della funzione di trasferimento e $d_w$ il suo grado:
 \[    D_W (s) = \prod_{i = 1}^{d_w} (s-s_{ARB_i})      \]
@@ -399,8 +400,8 @@ L'equazione ha soluzione se e solo se vale la seguente regola:
 \[  \text{numero di parametri = } d_w\]
 
 
-\section*{Specifica di annullamento della risposta}
-\subsection{Tempo discreto}
+\section{Specifica di annullamento della risposta}
+\subsection*{Tempo discreto}
 \[    \begin{cases}
     N_W = s(z)D_r \\
     D_W = z^ {\ell-1} N_r
@@ -429,8 +430,8 @@ dove:
 \end{proof}
 
 
-\section*{Risposte a regime permanente}
-\subsection{Tempo continuo}
+\section{Risposte a regime permanente}
+\subsection*{Tempo continuo}
 \begin{center}
 \begin{tabular}{c||c|c|c}
     
@@ -457,7 +458,7 @@ dove:
 \end{center}
 Dove il modulo si calcola $\sqrt{a^2 +b^2}$ e la fase $\arctan{\frac{b}{a}}$
 
-\subsection{Tempo discreto}
+\subsection*{Tempo discreto}
 \begin{center}
 \begin{tabular}{c||c|c|c}
     \textbf{zeri in} $\bm{z = 1}$ \textbf{/ ingresso} & $\displaystyle \bm{\eta(h)}  $ & $ \displaystyle  \bm{h}$ & $\displaystyle \bm{\frac{h(h+1)}{2}}  $\\
@@ -487,7 +488,7 @@ Dove il modulo si calcola $\sqrt{a^2 +b^2}$ e la fase $\arctan{\frac{b}{a}}$
 
 
 
-\section*{Luogo delle radici}                   
+\section{Luogo delle radici}                   
 Grafico che descrive nel piano complesso come camminano le $n$ radici del polinomio al denominatore al variare del parametro $k$, da $-\infty$ a $\infty$. Si parte dalla seguente struttura:
 \[  \hat{F} =  k\cdot \ \frac{\displaystyle\prod_{i=1}^{m}(\displaystyle s-z_i)}{\displaystyle\prod_{i=1}^{n}(\displaystyle s-p_i)}   \]
 dove:
@@ -546,7 +547,7 @@ Formula per calcolare il valore preciso dei punti singolari:
 \end{figure}
 
 
-\section*{Diagramma di Bode}
+\section{Diagramma di Bode}
 Data la funzione di trasferimento con la seguente struttura
 \[  W(s) = \frac{N(s)}{D(s)} = \frac{b_m s^m + b_{m-1} s^{m-1}+\dots+b_0}{
     a_n s^n + a_{n-1} s^{n-1} + \dots + a_0
@@ -644,7 +645,7 @@ Margine (verticale) tra il valore nel diagramma e $0 \ dB$ quando la fase è par
 \[    M_G = \frac{1}{|W(jw)|} \bigg|_{\angle W = -\pi}    \]
 
 
-\section*{Funzioni compensatrici}
+\section{Funzioni compensatrici}
 \subsection{Funzione anticipatrice}
 \[  \text{Funzione anticipatrice} \to \begin{cases}
     +\ \text{anticipo della fase}\\
@@ -679,14 +680,14 @@ La funzione è questa:
 \end{figure}
 
 
-\section*{Criterio di Nyquist}
+\section{Criterio di Nyquist}
 Il sistema è stabile se e solo se $N = p_p$, dove:
 \begin{itemize}
     \item $\bm{N}$: numero di giri (positivi se in senso antiorario) del vettore rappresentativo di $F(j\omega)$ intorno al punto critico $(1,0)$
     \item $\bm{p_p}$: è il numero di poli a parte reale positiva di $F(s)$
 \end{itemize}
 
-\section*{Diagramma di Nyquist}
+\section{Diagramma di Nyquist}
 Data la seguente funzione di trasferimento:
 \[      F = \frac{b_n s^n+b_{n-1}s^{n-1}+\dots+b_0}{a_m s^m+ a_{m-1}s^{m-1}+ \dots + a_0}    \]
 
@@ -725,7 +726,7 @@ Se $F(s)$ ha poli con molteplicità $\gamma$ nell'origine, per $\omega\approx 0$
 
 
 
-\section*{Teorema dell'assegnazione degli autovalori}
+\section{Teorema dell'assegnazione degli autovalori}
 \begin{center}
     \textsc{\textbf{condizione necessaria per risolvere il problema}}\\
     $\downarrow $\\
@@ -835,7 +836,7 @@ Le incognite sono:
 \noindent Abbiamo dimostrato che qualsiasi fossero gli autovalori scelti e la matrice di partenza $A$, si possono trovare $K_{11}$ e $K_{12}$ che rendono gli autovalori raggiungibili del processo arbitrari in $A+BK$.
 \end{proof}
 
-\section*{Osservatore asintotico dello stato}
+\section{Osservatore asintotico dello stato}
 Si vuole riuscire a stimare lo stato (non misurabile) partendo dalla possibilità di misurare l'uscita e l'ingresso. Dunque si cerca di fare in modo che la differenza tra lo stato reale $x(t)$ e lo stato stimato $\xi(t)$ converga a zero,
 ovvero cercando di eguagliare stato reale e stimato:
 \[    e(t) = x(t) - \xi(t) \quad \longrightarrow \quad \lim_{t \to \infty} e(t) = 0                          \]
@@ -869,7 +870,7 @@ Affinchè sia possibile trovare la matrice $G$ tale che gli autovalori di $(A-GC
 
 
 
-\section*{Teorema di separazione}
+\section{Teorema di separazione}
 Il sistema complessivo ha il seguente stato costituito da stato reale e stato stimato:
 \[     \begin{cases}
     \dot{x} = A x + BK \xi \\
@@ -931,7 +932,7 @@ Applicando il teorema dell'assegnazione degli autovalori per $A+BK$ e il duale d
 
 
 
-\section*{Criterio di Routh}
+\section{Criterio di Routh}
 Dato un polinomio:
 $$p(\lambda) = a_n\lambda^n + a_{n-1} \lambda^{n-1}+\dots+a_o = 0$$
 si costruisce la tabella:\bigskip\\
@@ -1023,14 +1024,14 @@ $$a_n\quad a_{n-1}\quad b_1\quad \dots\quad y_1\quad z_1$$
 
 
 
-\section*{Determinante matrice 2 per 2}
+\section{Matrice inversa 2 per 2}
 \[A^{-1} = \begin{pmatrix} a & b \\ c & d \end{pmatrix}^{-1} = \frac{1}{ad - bc} \begin{pmatrix} d & -b \\ -c & a \end{pmatrix}\]
 
 
 
 
 
-\section*{Trasformate di Laplace}
+\section{Trasformate di Laplace}
 {
 \renewcommand{\arraystretch}{3.0} 
 \begin{center}
@@ -1070,7 +1071,7 @@ $$a_n\quad a_{n-1}\quad b_1\quad \dots\quad y_1\quad z_1$$
 }
 
 
-\section*{Z-trasformate}
+\section{Z-trasformate}
 {
 \renewcommand{\arraystretch}{3.0} 
 \begin{center}
@@ -1098,7 +1099,7 @@ $$a_n\quad a_{n-1}\quad b_1\quad \dots\quad y_1\quad z_1$$
 
 
 
-\section*{Forma canonica raggiungibile}
+\section{Forma canonica raggiungibile}
 Supponendo che $n < m$ e $p = q = 1$ (un ingresso e un'uscita):
 \begin{itemize}
     \item $\displaystyle A = \begin{pmatrix}
@@ -1121,7 +1122,7 @@ Supponendo che $n < m$ e $p = q = 1$ (un ingresso e un'uscita):
 \newpage
 
 
-\section*{Forma canonica osservabile}
+\section{Forma canonica osservabile}
 Supponendo che $n < m$ e $p = q = 1$ (un ingresso e un'uscita):
 \begin{itemize}
     \item $\displaystyle A = \begin{pmatrix}
