@@ -456,7 +456,6 @@ dove:
 \end{itemize}
 
 \end{center}
-Dove il modulo si calcola $\sqrt{a^2 +b^2}$ e la fase $\arctan{\frac{b}{a}}$
 
 \subsection*{Tempo discreto}
 \begin{center}
@@ -486,6 +485,21 @@ Dove il modulo si calcola $\sqrt{a^2 +b^2}$ e la fase $\arctan{\frac{b}{a}}$
 
 \end{center}
 
+
+\subsection{Calcolo modulo e fase}
+Sia $z = a + ib$:
+\begin{itemize}
+    \item \textbf{Modulo}: $|z|=\sqrt{a^2+b^2}$
+    \item \textbf{Fase}:
+    \[  \angle z=   \begin{cases}
+      \displaystyle  \frac{\pi}{2} \quad \text{se} \quad a = 0,\  b>0\\
+      \displaystyle -\frac{\pi}{2} \quad \text{se} \quad a >0, \ b = 0\\
+      \displaystyle \text{non. def.} \quad \text{se} \quad a = 0,\ b= 0\\
+      \displaystyle \arctan{\frac{b}{a}} \quad \text{se} \quad a>0,\ b \text{ qualsiasi}\\
+      \displaystyle \arctan{\frac{b}{a}}+\pi \quad \text{se} \quad a<0,\ b\ge 0 \\
+      \displaystyle \arctan{\frac{b}{a}} -\pi \quad \text{se} \quad a<0,\ b>0
+    \end{cases}         \]
+\end{itemize}
 
 
 \section{Luogo delle radici}                   
@@ -635,6 +649,9 @@ Al \textbf{numeratore}:
 
 \subsection{Frequenza di taglio}
 $\bm{\omega_t}$: valore di $\omega$ per il quale il modulo si annulla.
+
+\subsection{Parametro k data una frequenza di taglio}
+\[  \left|   F(j \omega_t)       \right| = 1            \]
 
 \subsection{Margine di fase}
 Margine (verticale) tra il valore nel diagramma e $-\pi$ quando il modulo è pari a $1$ ($0 \ dB$):
