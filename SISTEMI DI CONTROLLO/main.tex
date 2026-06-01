@@ -661,6 +661,11 @@ Margine (verticale) tra il valore nel diagramma e $-\pi$ quando il modulo è par
 Margine (verticale) tra il valore nel diagramma e $0 \ dB$ quando la fase è pari a $-\pi$:
 \[    M_G = \frac{1}{|W(jw)|} \bigg|_{\angle W = -\pi}    \]
 
+\subsection{Fase nella frequenza di taglio}
+Valore della fase quando il modulo si annulla (frequenza di taglio):
+\[       \angle F(j\omega_t)       \]
+
+
 
 \section{Funzioni compensatrici}
 \subsection{Funzione anticipatrice}
@@ -741,7 +746,9 @@ In entrambi i casi, la fase è data da:
 Se $F(s)$ ha poli con molteplicità $\gamma$ nell'origine, per $\omega\approx 0$, $F(j\omega)$ ha ampiezza infinita. Questo si riflette nel diagramma di Nyquist con una chiusura all'infinito di $\gamma \cdot 180^\circ$ in senso orario tra $0^-$ e $0^+$
 
 
-
+\subsection{Punto dell'asse reale in cui interseca il grafico}
+Prima trovo l'$\bar{\omega}$ per cui si annulla $F$, e suucessivamente calcolo $F$ in quel punto:
+\[        F(j\omega) = 0 \quad \to \quad F(j\bar{\omega}) = \text{valore sull'asse reale }          \] 
 
 \section{Teorema dell'assegnazione degli autovalori}
 \begin{center}
