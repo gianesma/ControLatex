@@ -1196,6 +1196,53 @@ Quindi:
 La condizione di reiezione del disturbo si traduce nel porre il numeratore a zero:
 \[     M+PGK = 0\quad \Longrightarrow \quad \bm{K = - \frac{M}{PG}}         \]
 
+
+
+
+\section{Risoluzione di ogni tipo di esercizio}
+\subsection{Assegnazione degli autovalori}
+Se la specifica chiede di assegnare gli autovalori o che gli autovalori devono esseere coincidenti bisogna impostare l'equazione diofantina. Il controllore $G(s)$ deve essere già stato
+progettato e deve rispettare la condizione necessaria per fare l'equazione diofantina:
+\[   \text{numero di parametri} = d_w    \]
+
+\subsection{Autovalori nascosti}
+Se la specifica chiede che ci siano degli autovalori nascosti, abbiamo due strade: o l'autovalore nascosto nasce da una semplificazione dal calcolo del processo complessivo, oppure 
+bisogna creare una cancellazione aggiungendo un polo o uno zero nel controllore da progettare.
+
+\subsection{Autovalori minori di un certo valore}
+Se la specifica vuole che tutti gli autovalori siano minori di un certo valore $k$, per controllare questa condizione basterà applicare Routh con la seguente sostituzione:
+\[   s\to s-k   \]
+
+\subsection{Uscita a regime permanente relativa all'errore o al disturbo}
+Se la specifica chiede che l'uscita a regime permanente relativa all'errore o al disturbo abbia un certo valore o sia nulla, basta guardare la tabella delle uscite a regime permanenti 
+e aggiungere oppurtunamente gli zeri/uno in zero tramite la progettazione del controllore.
+
+\subsection{Stabilità asintotica}
+Se la specifica chiede che il sistema debba essere asintoticamente stabile, basta fare Routh sul denominatore della funzione di trasferimento.
+
+\subsection{Luogo delle radici}
+Prima di tutto bisogna fare la tabella dove segnamo i poli e gli zeri. In base alla differenza tra poli e zeri facciamo il luogo delle radici. Dobbiamo fare attenzione a non scordarci 
+eventuali autovalori nascosti o autovalori assegnati che vanno inclusi nel grafico. Successivamente troveremo i vari valori di K in base alle richieste del problema.
+
+\subsection{Bode}
+Per fare il grafico basta seguire alla lettera ciò che è stato scritto nel formulario. Anche tutte le richieste di eventuali margini di fase, guadagno, frequenza di taglio ecc.. sono tutte 
+coperte dal formulario.
+
+\subsection{Nyquist}
+Per fare il grafico di Nyquist basta seguire alla lettera il formulario. Verrà chiesto sicuramente insieme al criterio di Nyquist, la cui sola difficoltà è contare i giri intorno al punto 
+critico $(-1,0)$ del piano.
+
+
+
+
+
+
+
+
+
+
+
+
 \end{document}
 
 
