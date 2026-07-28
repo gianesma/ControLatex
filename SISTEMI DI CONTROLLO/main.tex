@@ -149,134 +149,10 @@ $$|\lambda_i| < 1 \quad \forall \lambda_i \text{ autovalori di } A$$
     Un sistema è \textbf{stabilizzabile} $\Longleftrightarrow$ gli eventuali autovalori nascosti sono tutti a parte reale negativa
 \end{center}
 
-\section{Velocità del transitorio}
-\subsection*{Tempo Continuo}
-\begin{center}
-Velocità gestita dagli autovalori della matrice dinamica $A$ secondo la legge $\bm{e^{At}}$\\
-$\to$    \\
-Affinchè il transitorio si esaurisca il più velocemente possibile è necessario prendere la radice meno negativa
-\end{center}
-
-\subsection*{Tempo discreto}
-\begin{center}
-Velocità gestita dagli autovalori della matrice dinamica $A$ secondo la legge $\bm{A^t}$\\
-$\to$    \\
-Affinchè il transitorio si esaurisca il più velocemente possibile è necessario prendere la radice più grande avente modulo minore di 1
-\end{center}
-
-\section{Oscillazione del transitorio}
-\subsection*{Tempo continuo}
-\begin{center}
-Il transitorio è privo di oscillazioni\\
-$\to$    \\
-le radici devono essere puramente reali (ovvero avere la parte immaginaria nulla)
-\end{center}
-
-
-\subsection*{Tempo discreto}
-\begin{center}
-Il transitorio è privo di oscillazioni\\
-$\to$    \\
-le radici hanno modulo minore stretto di 1 e la parte immaginaria pari a zero, dunque bisogna stare sull'asse reale
-\end{center}
- 
-
-
-\section{Criterio di Routh}
-\subsection*{tempo continuo}
-Dato un polinomio:
-$$p(\lambda) = a_n\lambda^n + a_{n-1} \lambda^{n-1}+\dots+a_o = 0$$
-si costruisce la tabella:\bigskip\\
-
-
-
-\begin{minipage}{0.38\textwidth}
-            \begin{center}
-                \begin{tabular}{c|l}
-                     
-                     $n$ & $a_{n} \quad a_{n-2} \quad a_{n-4} \quad ...$ \\
-                     $n-1$ & $a_{n-1} \quad a_{n-3} \quad a_{n-5} \quad ...$ \\
-                     $n-2$ & \ $b_{1} \quad \quad b_{2} \quad \qquad  ...$ \\
-                     $...$ & $...$ \\
-                     $1$ & $y_{1}$ \\ 
-                     $0$ & $z_{1}$ \\
-                     \hline
-                \end{tabular}
-            \end{center}
-            \end{minipage}
-            \hfill
-            \begin{minipage}{0.38\textwidth}
-            \begin{center}
-                $\begin{array}{l}
-                    b_{1} = \frac{
-                    \begin{vmatrix}
-                    a_{n} & a_{n-2} \\
-                    a_{n-1} & a_{n-3} \\
-                    \end{vmatrix}
-                    }{-a_{n-1}} \\
-                    
-                    b_{2} = \frac{
-                    \begin{vmatrix}
-                    a_{n} & a_{n-4} \\
-                    a_{n-1} & a_{n-5} \\
-                    \end{vmatrix}
-                    }{-a_{n-1}} \\
-                    
-                    \vdots \\
-                    \vdots\\
-
-                    c_{1} = \frac{
-                    \begin{vmatrix}
-                    a_{n-1} & a_{n-3} \\
-                    b_{1} & b_{2} \\
-                    \end{vmatrix}
-                    }{-b_{1}} \\
-                \end{array}$
-            \end{center}
-            \end{minipage}\bigskip\\
-
-
-\noindent
-Le radici del polinomio sono tutte a parte reale negativa se e solo se ci sono permanenze di segno, considerando la prima colonna:
-$$a_n\quad a_{n-1}\quad b_1\quad \dots\quad y_1\quad z_1$$
 
 
 
 
-
-
-
-
-
-
-
-\noindent
-            \textbf{Casi speciali:}
-            \begin{center}
-            \begin{enumerate}
-                \item Primo elemento della riga è nullo:
-                \begin{itemize}
-                    \item[-] togli lo zero
-                    \item[-] sposta tutti i numeri a sx di 1 posto
-                    \item[-] cambia tutti i segni
-                    \item[-] somma la riga originale con quella nuova (spostata)
-                    \item[-] la risultante sarà la riga nuova
-                \end{itemize}
-
-                \item  Intera riga nulla:
-                \begin{itemize}
-                    \item[-] prendi i valori della riga precedente e ci costruisci un polinomio
-                    \item[-] fai la derivata del polinomio
-                    \item[-] i coefficienti della derivata saranno la nuova riga
-                \end{itemize}
-            \end{enumerate}
-        \end{center}
-
-
-\subsection*{tempo discreto}
-\begin{center}
-    $z\to \displaystyle \frac{1+w}{1-w}$ e procedi come nel tempo continuo.
-\end{center}
 
 
 \section{Autovalori raggiungibili}
@@ -400,6 +276,63 @@ L'equazione ha soluzione se e solo se vale la seguente regola:
 \[  \text{numero di parametri = } d_w\]
 
 
+
+
+
+\section{Risposte a regime permanente}
+\subsection*{Tempo continuo}
+\begin{center}
+\begin{tabular}{c||c|c|c}
+    
+    \textbf{zeri in} $\bm{s=0}$ \textbf{/ ingresso} & \textbf{1} & $\displaystyle \bm{t} $ & $\displaystyle \bm{\frac{t^2}{2}}$\\
+    \hline
+    \hline
+    & & & \\
+    \textbf{0} & $\displaystyle W(0) \neq 0$ & $ \displaystyle W(0)\ t + \frac{d\ W}{d\ s}\bigg|_{s = 0} $ & $ \displaystyle W(0)\  \frac{t^2}{2} + \frac{d \ W}{d\ s}\bigg|_{s=0} \ t + \frac{1}{2}\ \frac{d^2 \ W}{d\ s^2}\bigg|_{s = 0 }$\\
+    & & & \\
+    \hline
+    & & & \\
+    \textbf{1} & 0 & $ \displaystyle \frac{W(s)}{s}\bigg|_{s = 0} \neq 0$ & $\displaystyle \frac{d \ W}{d \ s}\bigg|_{s = 0} \ + \frac{1}{2}\ \frac{d\ W^2}{d \ s^2}\bigg|_{s = 0}  $\\
+    & & & \\
+    \hline
+    & & & \\
+    \textbf{2} & 0 & 0 & $\displaystyle  \frac{W(s)}{s^2}\bigg|_{s = 0} \neq 0$ \\
+    & & & \\
+   
+\end{tabular}
+\begin{itemize}
+    \item Ingresso sinusoidale ($\sin \omega t $ e $\cos\omega t$) $\rightarrow$ $\widetilde{y} = $ $\big|   W(j w)  \big| \cdot \sin\Big( wt  + \angle W(jw) \Big) $\smallskip\\
+    Per questo ingresso dobbiamo aggiungere 2 zeri in $\pm j\omega $ per annullare la risposta.
+    
+\end{itemize}
+
+\end{center}
+
+\subsection*{Tempo discreto}
+\begin{center}
+\begin{tabular}{c||c|c|c}
+    \textbf{zeri in} $\bm{z = 1}$ \textbf{/ ingresso} & $\displaystyle \bm{\eta(h)}  $ & $ \displaystyle  \bm{h}$ & $\displaystyle \bm{\frac{h(h+1)}{2}}  $\\
+    \hline
+    \hline
+    & & & \\
+   \textbf{0} & $\displaystyle W(1) \neq 0  $& $\displaystyle  W(1)\ h + \frac{d\ W}{d\ z}\bigg|_{z = 1}$& $\displaystyle  W(1) \ \frac{h^2}{2} +\frac{d \ W}{d\ z}\bigg|_{z = 1} h+ \frac{1}{2} \ \frac{d^2 W}{d\ z^2}\bigg|_{z= 1}   $\\
+    & & & \\
+    \hline
+    & & & \\
+   \textbf{1} & 0& $\displaystyle \frac{W(z)}{z-1}\bigg|_{z = 1} \neq 0   $& $\displaystyle \frac{d\ W}{d\ z}\bigg|_{z = 1} h + \frac{1}{2} \ \frac{d^2 W}{d \ z^2}\bigg|_{z=1}   $\\
+    & & & \\
+    \hline
+    & & & \\
+   \textbf{2} & 0 & 0 & $\displaystyle \frac{W(z)}{(z-1)^2}\bigg|_{z=1} \neq 0    $\\ 
+    & & & \\
+     
+\end{tabular}
+
+\begin{itemize}
+    \item Ingresso sinusoidale ($\sin \theta h$ e $\cos \theta h$) $ \displaystyle  \to \ \tilde{y}(h) = \big|W(e^{j\theta})\big|\cdot \sin \Big(   \theta h + \angle W(e^{j\theta})    \Big)  $
+\end{itemize}
+\end{center}
+
 \section{Specifica di annullamento della risposta}
 \subsection*{Tempo discreto}
 \[    \begin{cases}
@@ -429,63 +362,6 @@ dove:
     \end{cases}       \]
 \end{proof}
 
-
-\section{Risposte a regime permanente}
-\subsection*{Tempo continuo}
-\begin{center}
-\begin{tabular}{c||c|c|c}
-    
-    \textbf{zeri in} $\bm{s=0}$ \textbf{/ ingresso} & \textbf{1} & $\displaystyle \bm{t} $ & $\displaystyle \bm{\frac{t^2}{2}}$\\
-    \hline
-    \hline
-    & & & \\
-    \textbf{0} & $\displaystyle W(0) \neq 0$ & $ \displaystyle W(0)\ t + \frac{d\ W}{d\ s}\bigg|_{s = 0} $ & $ \displaystyle W(0)\  \frac{t^2}{2} + \frac{d \ W}{d\ s}\bigg|_{s=0} \ t + \frac{1}{2}\ \frac{d^2 \ W}{d\ s^2}\bigg|_{s = 0 }$\\
-    & & & \\
-    \hline
-    & & & \\
-    \textbf{1} & 0 & $ \displaystyle \frac{W(s)}{s}\bigg|_{s = 0} \neq 0$ & $\displaystyle \frac{d \ W}{d \ s}\bigg|_{s = 0} \ + \frac{1}{2}\ \frac{d\ W^2}{d \ s^2}\bigg|_{s = 0}  $\\
-    & & & \\
-    \hline
-    & & & \\
-    \textbf{2} & 0 & 0 & $\displaystyle  \frac{W(s)}{s^2}\bigg|_{s = 0} \neq 0$ \\
-    & & & \\
-   
-\end{tabular}
-\begin{itemize}
-    \item Ingresso sinusoidale ($\sin \omega t $ e $\cos\omega t$) $\rightarrow$ $\widetilde{y} = $ $\big|   W(j w)  \big| \cdot \sin\Big( wt  + \angle W(jw) \Big) $
-\end{itemize}
-
-\end{center}
-
-\subsection*{Tempo discreto}
-\begin{center}
-\begin{tabular}{c||c|c|c}
-    \textbf{zeri in} $\bm{z = 1}$ \textbf{/ ingresso} & $\displaystyle \bm{\eta(h)}  $ & $ \displaystyle  \bm{h}$ & $\displaystyle \bm{\frac{h(h+1)}{2}}  $\\
-    \hline
-    \hline
-    & & & \\
-   \textbf{0} & $\displaystyle W(1) \neq 0  $& $\displaystyle  W(1)\ h + \frac{d\ W}{d\ z}\bigg|_{z = 1}$& $\displaystyle  W(1) \ \frac{h^2}{2} +\frac{d \ W}{d\ z}\bigg|_{z = 1} h+ \frac{1}{2} \ \frac{d^2 W}{d\ z^2}\bigg|_{z= 1}   $\\
-    & & & \\
-    \hline
-    & & & \\
-   \textbf{1} & 0& $\displaystyle \frac{W(z)}{z-1}\bigg|_{z = 1} \neq 0   $& $\displaystyle \frac{d\ W}{d\ z}\bigg|_{z = 1} h + \frac{1}{2} \ \frac{d^2 W}{d \ z^2}\bigg|_{z=1}   $\\
-    & & & \\
-    \hline
-    & & & \\
-   \textbf{2} & 0 & 0 & $\displaystyle \frac{W(z)}{(z-1)^2}\bigg|_{z=1} \neq 0    $\\ 
-    & & & \\
-     
-\end{tabular}
-
-\begin{itemize}
-    \item Ingresso sinusoidale ($\sin \theta h$ e $\cos \theta h$) $ \displaystyle  \to \ \tilde{y}(h) = \big|W(e^{j\theta})\big|\cdot \sin \Big(   \theta h + \angle W(e^{j\theta})    \Big)  $
-\end{itemize}
-
-
-
-\end{center}
-
-
 \subsection{Calcolo modulo e fase}
 Sia $z = a + ib$:
 \begin{itemize}
@@ -500,6 +376,103 @@ Sia $z = a + ib$:
       \displaystyle \arctan{\frac{b}{a}} -\pi \quad \text{se} \quad a<0,\ b>0
     \end{cases}         \]
 \end{itemize}
+
+
+\section{Criterio di Routh}
+\subsection*{tempo continuo}
+Dato un polinomio:
+$$p(\lambda) = a_n\lambda^n + a_{n-1} \lambda^{n-1}+\dots+a_o = 0$$
+si costruisce la tabella:\bigskip\\
+
+
+
+\begin{minipage}{0.38\textwidth}
+            \begin{center}
+                \begin{tabular}{c|l}
+                     
+                     $n$ & $a_{n} \quad a_{n-2} \quad a_{n-4} \quad ...$ \\
+                     $n-1$ & $a_{n-1} \quad a_{n-3} \quad a_{n-5} \quad ...$ \\
+                     $n-2$ & \ $b_{1} \quad \quad b_{2} \quad \qquad  ...$ \\
+                     $...$ & $...$ \\
+                     $1$ & $y_{1}$ \\ 
+                     $0$ & $z_{1}$ \\
+                     \hline
+                \end{tabular}
+            \end{center}
+            \end{minipage}
+            \hfill
+            \begin{minipage}{0.38\textwidth}
+            \begin{center}
+                $\begin{array}{l}
+                    b_{1} = \frac{
+                    \begin{vmatrix}
+                    a_{n} & a_{n-2} \\
+                    a_{n-1} & a_{n-3} \\
+                    \end{vmatrix}
+                    }{-a_{n-1}} \\
+                    
+                    b_{2} = \frac{
+                    \begin{vmatrix}
+                    a_{n} & a_{n-4} \\
+                    a_{n-1} & a_{n-5} \\
+                    \end{vmatrix}
+                    }{-a_{n-1}} \\
+                    
+                    \vdots \\
+                    \vdots\\
+
+                    c_{1} = \frac{
+                    \begin{vmatrix}
+                    a_{n-1} & a_{n-3} \\
+                    b_{1} & b_{2} \\
+                    \end{vmatrix}
+                    }{-b_{1}} \\
+                \end{array}$
+            \end{center}
+            \end{minipage}\bigskip\\
+
+
+\noindent
+Le radici del polinomio sono tutte a parte reale negativa se e solo se ci sono permanenze di segno, considerando la prima colonna:
+$$a_n\quad a_{n-1}\quad b_1\quad \dots\quad y_1\quad z_1$$
+
+
+
+
+
+
+
+
+
+
+
+\noindent
+            \textbf{Casi speciali:}
+            \begin{center}
+            \begin{enumerate}
+                \item Primo elemento della riga è nullo:
+                \begin{itemize}
+                    \item[-] togli lo zero
+                    \item[-] sposta tutti i numeri a sx di 1 posto
+                    \item[-] cambia tutti i segni
+                    \item[-] somma la riga originale con quella nuova (spostata)
+                    \item[-] la risultante sarà la riga nuova
+                \end{itemize}
+
+                \item  Intera riga nulla:
+                \begin{itemize}
+                    \item[-] prendi i valori della riga precedente e ci costruisci un polinomio
+                    \item[-] fai la derivata del polinomio
+                    \item[-] i coefficienti della derivata saranno la nuova riga
+                \end{itemize}
+            \end{enumerate}
+        \end{center}
+
+
+\subsection*{tempo discreto}
+\begin{center}
+    $z\to \displaystyle \frac{1+w}{1-w}$ e procedi come nel tempo continuo.
+\end{center}
 
 
 \section{Luogo delle radici}                   
@@ -560,6 +533,37 @@ Formula per calcolare il valore preciso dei punti singolari:
     %\label{label}
 \end{figure}
 
+\section{Velocità del transitorio}
+\subsection*{Tempo Continuo}
+\begin{center}
+Velocità gestita dagli autovalori della matrice dinamica $A$ secondo la legge $\bm{e^{At}}$\\
+$\to$    \\
+Affinchè il transitorio si esaurisca il più velocemente possibile è necessario prendere la radice meno negativa
+\end{center}
+
+\subsection*{Tempo discreto}
+\begin{center}
+Velocità gestita dagli autovalori della matrice dinamica $A$ secondo la legge $\bm{A^t}$\\
+$\to$    \\
+Affinchè il transitorio si esaurisca il più velocemente possibile è necessario prendere la radice più grande avente modulo minore di 1
+\end{center}
+
+\section{Oscillazione del transitorio}
+\subsection*{Tempo continuo}
+\begin{center}
+Il transitorio è privo di oscillazioni\\
+$\to$    \\
+le radici devono essere puramente reali (ovvero avere la parte immaginaria nulla)
+\end{center}
+
+
+\subsection*{Tempo discreto}
+\begin{center}
+Il transitorio è privo di oscillazioni\\
+$\to$    \\
+le radici hanno modulo minore stretto di 1 e la parte immaginaria pari a zero, dunque bisogna stare sull'asse reale
+\end{center}
+ 00
 
 \section{Diagramma di Bode}
 Data la funzione di trasferimento con la seguente struttura
@@ -586,7 +590,7 @@ Ogni generico zero/polo $(s-\alpha), \alpha \neq 0$ può essere riscritto come:
     \frac{1}{\tau} \left(  1 + \tau s  \right)\ \ \ \text{con } \tau = -\frac{1}{\alpha}\ \text{costante di tempo}
 \]
 La \textbf{forma di Bode} quindi è:
-\[   \bm{   k \cdot \frac{\displaystyle \prod_{i = \nu_0 +1}^{m}(s-\tau_i s)}{\displaystyle s^\nu \prod_{j= \nu_0' +1}^{n}(s-\tau_j s)}  } \ \ \ \ \ \text{con } 
+\[   \bm{   k \cdot \frac{\displaystyle \prod_{i = \nu_0 +1}^{m}(1-\tau_i s)}{\displaystyle s^\nu \prod_{j= \nu_0' +1}^{n}(1-\tau_j s)}  } \ \ \ \ \ \text{con } 
         k \ \text{guadagno di Bode} 
 \]
 
@@ -661,6 +665,11 @@ Margine (verticale) tra il valore nel diagramma e $-\pi$ quando il modulo è par
 Margine (verticale) tra il valore nel diagramma e $0 \ dB$ quando la fase è pari a $-\pi$:
 \[    M_G = \frac{1}{|W(jw)|} \bigg|_{\angle W = -\pi}    \]
 
+\subsection{Fase nella frequenza di taglio}
+Valore della fase quando il modulo si annulla (frequenza di taglio):
+\[       \angle F(j\omega_t)       \]
+
+
 
 \section{Funzioni compensatrici}
 \subsection{Funzione anticipatrice}
@@ -700,13 +709,13 @@ La funzione è questa:
 \section{Criterio di Nyquist}
 Il sistema è stabile se e solo se $N = p_p$, dove:
 \begin{itemize}
-    \item $\bm{N}$: numero di giri (positivi se in senso antiorario) del vettore rappresentativo di $F(j\omega)$ intorno al punto critico $(1,0)$
+    \item $\bm{N}$: numero di giri (positivi se in senso antiorario) del vettore rappresentativo di $F(j\omega)$ intorno al punto critico $(-1,0)$
     \item $\bm{p_p}$: è il numero di poli a parte reale positiva di $F(s)$
 \end{itemize}
 
 \section{Diagramma di Nyquist}
 Data la seguente funzione di trasferimento:
-\[      F = \frac{b_n s^n+b_{n-1}s^{n-1}+\dots+b_0}{a_m s^m+ a_{m-1}s^{m-1}+ \dots + a_0}    \]
+\[      F = \frac{b_m s^m+b_{m-1}s^{m-1}+\dots+b_0}{a_n s^n+ a_{n-1}s^{n-1}+ \dots + a_0}    \]
 
 \subsection{Basse frequenze}
 \begin{itemize}
@@ -741,7 +750,9 @@ In entrambi i casi, la fase è data da:
 Se $F(s)$ ha poli con molteplicità $\gamma$ nell'origine, per $\omega\approx 0$, $F(j\omega)$ ha ampiezza infinita. Questo si riflette nel diagramma di Nyquist con una chiusura all'infinito di $\gamma \cdot 180^\circ$ in senso orario tra $0^-$ e $0^+$
 
 
-
+\subsection{Punto dell'asse reale in cui interseca il grafico}
+Prima trovo l'$\bar{\omega}$ per cui si annulla $F$, e suucessivamente calcolo $F$ in quel punto:
+\[        F(j\omega) = 0 \quad \to \quad F(j\bar{\omega}) = \text{valore sull'asse reale }          \] 
 
 \section{Teorema dell'assegnazione degli autovalori}
 \begin{center}
@@ -949,94 +960,6 @@ Applicando il teorema dell'assegnazione degli autovalori per $A+BK$ e il duale d
 
 
 
-\section{Criterio di Routh}
-Dato un polinomio:
-$$p(\lambda) = a_n\lambda^n + a_{n-1} \lambda^{n-1}+\dots+a_o = 0$$
-si costruisce la tabella:\bigskip\\
-
-
-
-\begin{minipage}{0.38\textwidth}
-            \begin{center}
-                \begin{tabular}{c|l}
-                     
-                     $n$ & $a_{n} \quad a_{n-2} \quad a_{n-4} \quad ...$ \\
-                     $n-1$ & $a_{n-1} \quad a_{n-3} \quad a_{n-5} \quad ...$ \\
-                     $n-2$ & \ $b_{1} \quad \quad b_{2} \quad \qquad  ...$ \\
-                     $...$ & $...$ \\
-                     $1$ & $y_{1}$ \\ 
-                     $0$ & $z_{1}$ \\
-                     \hline
-                \end{tabular}
-            \end{center}
-            \end{minipage}
-            \hfill
-            \begin{minipage}{0.38\textwidth}
-            \begin{center}
-                $\begin{array}{l}
-                    b_{1} = \frac{
-                    \begin{vmatrix}
-                    a_{n} & a_{n-2} \\
-                    a_{n-1} & a_{n-3} \\
-                    \end{vmatrix}
-                    }{-a_{n-1}} \\
-                    
-                    b_{2} = \frac{
-                    \begin{vmatrix}
-                    a_{n} & a_{n-4} \\
-                    a_{n-1} & a_{n-5} \\
-                    \end{vmatrix}
-                    }{-a_{n-1}} \\
-                    
-                    \vdots \\
-                    \vdots\\
-
-                    c_{1} = \frac{
-                    \begin{vmatrix}
-                    a_{n-1} & a_{n-3} \\
-                    b_{1} & b_{2} \\
-                    \end{vmatrix}
-                    }{-b_{1}} \\
-                \end{array}$
-            \end{center}
-            \end{minipage}\bigskip\\
-
-
-\noindent
-Le radici del polinomio sono tutte a parte reale negativa se e solo se ci sono permanenze di segno, considerando la prima colonna:
-$$a_n\quad a_{n-1}\quad b_1\quad \dots\quad y_1\quad z_1$$
-
-
-
-
-
-
-
-
-
-
-
-\noindent
-            \textbf{Casi speciali:}
-            \begin{center}
-            \begin{enumerate}
-                \item Primo elemento della riga è nullo:
-                \begin{itemize}
-                    \item[-] togli lo zero
-                    \item[-] sposta tutti i numeri a sx di 1 posto
-                    \item[-] cambia tutti i segni
-                    \item[-] somma la riga originale con quella nuova (spostata)
-                    \item[-] la risultante sarà la riga nuova
-                \end{itemize}
-
-                \item  Intera riga nulla:
-                \begin{itemize}
-                    \item[-] prendi i valori della riga precedente e ci costruisci un polinomio
-                    \item[-] fai la derivata del polinomio
-                    \item[-] i coefficienti della derivata saranno la nuova riga
-                \end{itemize}
-            \end{enumerate}
-        \end{center}
 
 
 
