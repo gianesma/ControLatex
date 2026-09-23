@@ -1,0 +1,45 @@
+\chapter{Modello Relazionale}
+\section{Relazione matematica}
+Siano $D_1,D_2,...,D_n$ n insiemi:\\
+Il \textbf{prodotto cartesiano} $D_1 \times D_2 \times ... \times D_n$ è l'insieme di tutte le n-uple ordinate $(d_1,d_2,..,d_n)$ tali che $d_1 \in D_1, d_2 \in D_2 ,..., d_n \in D_n$. 
+Una relazione matematica sugli insiemi $D_1,D_2,...,D_n$ è un \textbf{sottoinsieme del prodotto cartesiano} $D_1 \times D_2 \times ... \times D_n$.\\
+Se R è una relaziome matematica sugli insiemi $D_1,D_2,...,D_n$ tali insiemi sono detti domini, tale relazione su $n$ domini dice che ha grado $n$. il numero di n-uple (righe) di una relazione è la cardinalità della relazione stessa.\\
+Esempio:
+\begin{itemize}
+
+    \item $D_1 = \{\text{Conti}, \text{Totti}, \text{Maradona}\}$
+
+    \item $D_2 = \{\text{Genoa}, \text{Roma}\}$
+
+    \item prodotto cartesiano $D_1 \times D_2$
+    
+    \[
+    \begin{array}{|l|l|}
+    \hline
+    \text{Conti}    & \text{Genoa} \\
+    \text{Conti}    & \text{Roma}  \\
+    \text{Totti}    & \text{Genoa} \\
+    \text{Totti}    & \text{Roma}  \\
+    \text{Maradona} & \text{Genoa} \\
+    \text{Maradona} & \text{Roma}  \\
+    \hline
+    \end{array}
+    \]
+
+    \item una relazione:
+    $\text{HaGiocato} \subseteq D_1 \times D_2$
+
+    \[
+    \begin{array}{|l|l|}
+    \hline
+    \text{Conti} & \text{Roma}  \\
+    \text{Conti} & \text{Genoa} \\
+    \text{Totti} & \text{Roma}  \\
+    \hline
+    \end{array}
+    \]
+
+\end{itemize}
+
+\noindent La relazione matematica è quindi un insieme di ennuple o tuple ordinate su $D_1,D_2,...,D_n$, dove ogni tupla è una sequenza di valori della forma $(d_1,...,d_n)$.
+Ciascuna tupla è ordinata nel senso che il valore del primo elemento della tupla proviene dal primo domonio, ma non è definito un ordinamento tra le tuple e sono tutte distinte.
