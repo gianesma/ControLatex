@@ -42,4 +42,190 @@ Esempio:
 \end{itemize}
 
 \noindent La relazione matematica è quindi un insieme di ennuple o tuple ordinate su $D_1,D_2,...,D_n$, dove ogni tupla è una sequenza di valori della forma $(d_1,...,d_n)$.
-Ciascuna tupla è ordinata nel senso che il valore del primo elemento della tupla proviene dal primo domonio, ma non è definito un ordinamento tra le tuple e sono tutte distinte.
+Ciascuna tupla è ordinata nel senso che il valore del primo elemento della tupla proviene dal primo domonio, ma non è definito un ordinamento tra le tuple e sono tutte distinte.\\
+Una relazione del modello relazione si può quindi rappresentare come una tabella in cui gli attributi sono usati come intestazioni delle colonne. 
+La struttura non è posizionale cioè l'ordinamento delle colonne nella tabella è irrilevante. 
+Ogni riga della tabella corrisponde ad una tupla della relazione, e siccome la relazione è un insieme di tuple, non ci possono essere due righe uguali nella tabella.
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.7\linewidth]{../../images/tabella_relazionale.png}
+    \caption{caption}
+    %\label{label}
+\end{figure}
+\noindent Gli attributi devono essere atomici cioè non devono essere un array ma un singolo valore, e non ci devono esseredue tuple uguali.\\
+ \subsection{Notazioni}
+ Sia $X$ l'insime degli attributi di una relazione $R$. Se $t$ è una tupla di $R$, cioè una tupla su $X$, e se $A \in X$ è un attributo in $X$, allora $t[A]$ oppure anche $t.A$ indica il valore 
+ che la tupla $t$ ha in corrispondenza dell'attributo A.\\
+ esempio: $t[Fuori]=Lazio \qquad t[Fuori,RetiFuori]= \quad <Lazio, 1> \qquad t[ ]=tupla vuota$.\\
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.5\linewidth]{../../images/tabella_relazionale1.png}
+    \caption{caption}
+    %\label{label}
+\end{figure}
+\subsection{Schema di relazione e tupla etichettata}
+La specifica del nome $R$ di una relazione, degli attributi $A1,A2,...,An$ e dei domini di tali attributi $D1,D2,..,Dn$ forma il cosiddetto schema di relaizone, che si denota come 
+$R(A1:D1, A2:D2,...,An:Dn)$ di conseguenza una tupla di $R$ si può denotare anche come $<A1:a, A2:b,...,An,c>$\\
+Una tupla di una relazione si può rappresentare come \texttt{tupla etichettata}, in cui le etichette sono gli attributi della relazione, ed i valori associati alle 
+etichette sono i valori in corrispondenza dei vari attributi.\\
+\texttt{Esempio su tabella di prima:}\\
+tupla etichettata $t1=$ $<Casa:$ $'Juve',$ $Fuori:$ $'Lazio',$ $RetiCasa:3,$ $RetiFuori:1>$
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.65\linewidth]{../../images/tabelle_collegate.png}
+    \caption{caption}
+    %\label{label}
+\end{figure}
+\subsection{Schemi e istanze}
+\textbf{Schema di relazione}: un nome di relazione $R$ con un insieme non vuoto di attributi $A1,...,An$ ed eventualmente anche i corrispondenti domini $R(A1,...,An)$\\
+\textbf{Istanza di relazione} su uno schema $R(X)$: insieme $r$ delle tuple sull'insieme di attributi X   \\
+\textbf{Relazione}: schea $T$ di relazione $+$ istanza su $T$\\ 
+\textbf{Schema di base di dati}: insieme non vuoto di schemi di relazione $R={R_1 (A_1 A_2 ... A_n),..., R_m (B_1 B_2 ... B_p) }$\\
+\textbf{Istanza di base di dati} su uno schema $R=\{ R_1(X_1),...,R_m(X_m)\}$: insieme di relazioni $r=\{ r_1,...,r_m\}$, dove per ogni $i=1,...,m, r_i $ èuna istanza relazione sullo schema $R_i(X_i)$\\
+\textbf{Base di dati}: schema $S$ di basi di dati $+$ istanza di basi di dati su S
+
+\subsection{Algebra relazionale}
+I suoi operatori sono definiti su relazioni, producono relazioni e possono essere composti.\\
+\textbf{Operatori} dell'algebra relazionale:
+\begin{itemize}
+    \item \textbf{insiemistici}: unione, intersezione, differenza
+    \item \textbf{ridenominazione}
+    \item \textbf{selezione}
+    \item \textbf{proiezione}
+    \item \textbf{join in diverse versioni}: join naturale, prodotto cartesiano, theta-join
+\end{itemize}
+\subsection{Operatori insiemistici}
+Le relazioni sono insiemi di tuple quindi è sensato definire per esse gli operandi insiemistici, sono operaori binari e i risultati dell'applicazione di tali operandi sono a loro volta relazioni.\\
+Si può applicare \textbf{unione}, \textbf{intersezione}, \textbf{differenza} solo a relazioni che hanno uguali definizioni intensionali\\
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.7\linewidth]{../../images/unione.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.7\linewidth]{../../images/intersezione.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.7\linewidth]{../../images/differenza.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\subsection{Ridenominazione}
+Un'unione sensata ma impossibile in algebra: vogliamo i genitori ed i loro figli
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.7\linewidth]{../../images/ridenominazione_tabelle.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent modifica lo schema cambiando il nome di uno o più attributi lasciando inalterata l'istanza dell'operando
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.7\linewidth]{../../images/ridenominazione2_tabelle.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent \textbf{Ridenominazione: sintassi e semantica}  \\
+Sintassi:\\
+$$REN_{A_1,A_2,...,A_n \leftarrow B_1,B_2,...,B_n}(Operando)$$\\
+Semantica:\\
+Lo schema della relazione rappresentata da "Operando" viene modificato sostituendo al nome di attributo $B_1$ il nomedi $A_1$, al nome di attributo $B_2$ il nome $A_2$,..., e al nome di attributo $B_n$ il nome di $A_n$
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.7\linewidth]{../../images/ridenominazione3_tabelle.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+
+\subsection{selezione}
+Operatore monadico (un solo argomento) che prevede la formulazione di condizione, produce un risoltato che:
+\begin{itemize}
+    \item ha lo stesso schema dell'operando
+    \item contiene un sottoinsieme delle tuple dell'operando, quelle che soddisfano la condizione. espressamente indicata nell'operatore
+\end{itemize}
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.5\linewidth]{../../images/tabella_impiegato.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent impiegati che
+\begin{itemize}
+    \item guadagnano più di 50
+    \item guadagnano più di 50 e lavorano a Milano
+    \item hanno lo stesos nome della filiale presso cui lavorano
+\end{itemize}
+\textbf{Selezione: sintassi e semantica}\\
+Sintassi:\\
+$$SEL_{Condizione}(Operando)$$\\
+Condizione: espressione booleana in cui gli operandi utilizzano gli attributi delle relazioni in gioco\\
+Semantica:\\
+la relazione risultato ha gli stessi attributi dell'operando e contiene le tuple dell'operando che soddisfano la condizione specificata\\
+esempio: impiegati che guadagnano più di 50
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.7\linewidth]{../../images/selezione_tabelle.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent $$SEL_{Stipendio>50}(Impiegato)$$
+\noindent impiegati che guadagnano più di 50 e lavorano a Milano
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.65\linewidth]{../../images/selezione2_tabelle.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent $$SEL_{Stipendio>50 \quad AND \quad Filiale='Milano'} \quad (Impiegato)$$
+
+\subsection{Proiezione}
+Operatore monadico, che produce un risultato che:
+\begin{itemize}
+    \item ha parte degli attributi dell'operando
+    \item contiene tuple cui contribuiscono tutte le tuple dell'operando: sono le tuple ottenute dall'operando eliminando gli attributi che non compaiono nella lista espressamnete indicata nell'operatore
+\end{itemize}
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.7\linewidth]{../../images/tabella_impiegato.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent per tutti gli impiegati:
+\begin{itemize}
+    \item matricola e cognome
+    \item cognome e filiale
+\end{itemize}
+
+\noindent \textbf{Proiezione: sintassi e semantica}\\
+Sintassi:\\
+$$PROJ_{ListaAttributi}(Operando)$$\\
+Semantica:\\
+la relaizone risultato ha i soli attributi contenuti in ListaAttributi, e contiene le tuple 
+ottenute da tutte le tuple dell'operando ristrette agli attributi nella lista\\
+\texttt{matricola e cognome di tutti gli impiegati}\\
+
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.35\linewidth]{../../images/proiezione_tabelle.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+
+\noindent $$PROJ_{Matricola, Cognome}(Impiegato)$$
+
+\subsection{Selezione e Proiezione}
+Combinando selezione e proiezione, possiamo estrarre interessanti informazioni da una relazione\\
+\texttt{Restituire matricola e cognome degli impiegati che guadagnano più di 50}
+
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.35\linewidth]{../../images/proiezione_selezione.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent $$PORJ_{MAtricola, Cognome}(SEL_{Stipendio>50}(Impiegato))$$
