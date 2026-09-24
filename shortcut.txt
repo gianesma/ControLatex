@@ -1,7 +1,7 @@
 === DEFINIZIONE ===
-\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{theorem}
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
    
-\end{theorem}}}
+\end{definition}}}
 
 
 

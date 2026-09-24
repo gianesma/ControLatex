@@ -1,0 +1,58 @@
+\chapter{Introduzione}
+\section{Definizioni di base}
+
+\subsection{Alfabeto}
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
+   Un \textbf{alfabeto} $\bm{\Sigma}$ è un insieme finito non vuoto di simboli
+\end{definition}}}\smallskip\\
+\textit{Esempio.} $B = \{ 0,1 \}$ è l'alfabeto binario, $L = \{ a,A,b,B,c,C,\dots, z,Z  \}$ è l'alfabeto latino \smallskip\\
+Una \textbf{stringa} su un alfabeto $\Sigma$ è una sequenza finita di $\Sigma$, dove:
+\begin{itemize}
+    \item Sequenza: collezione ordinata
+    \item Usiamo la notazione $|s|$ per indicare la lunghezza della stringa
+    \item Per convezione la stringa vuota la indichiamo come $\epsilon$
+\end{itemize}
+
+
+\subsection{Linguaggio}
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
+   Sia $\Sigma^*$ l'insieme di tutte le possibili stringhe sull'alfabeto $\Sigma$, il \textbf{linguaggio} $\bm{L}$ su $\Sigma$ è un sottoinsieme di $\Sigma^*$, ovvero:
+   \[  L \subseteq \Sigma^*  \]
+\end{definition}}}\smallskip\\
+Per convenzione un linguaggio vuoto lo rappresentiamo come $\Lambda$, con $\Lambda \neq \epsilon$, ovvero non è equivalente dire linguaggio vuoto e stringa vuota
+
+
+
+\subsection{Problema funzionale su un alfabeto}
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
+   Sia $f$ una funzione $f: \Sigma^* \to \Sigma^*$, il \textbf{problema funzionale} $\bm{P_f}$ di $f$ chiede, per ogni $a \in \Sigma^*$, il valore $f(a)$ 
+\end{definition}}}\smallskip\\
+In pratica un problema funzionale su un alfabeto $\Sigma$ chiede di calcolare i valori di una funzione il cui dominio (input) e codominio (output) sono stringhe di $\Sigma^*$
+
+
+
+
+\subsection{Problema decisionale su un alfabeto}
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
+   Sia $f$ una funzione $f: \Sigma^* \to \{0,1\}$, il \textbf{problema decisionale} $\bm{P_f}$ di $f$ chiede, per ogni $a \in \Sigma^*$, il valore $f(a)$ 
+\end{definition}}}\smallskip\\
+In pratica un problema decisionale su un alfabeto $\Sigma$ chiede di calcolare i valori di una funzione booleana (0 o 1) il cui dominio (input) è l'insieme delle stringhe definibili
+su $\Sigma$  
+
+
+
+\subsection{Encoding e Decoding}
+Fino ad ora abbiamo visto definizioni su problemi che riguardano stringhe, ma come si gestiscono problemi dove gli input sono oggetti come grafi, numeri, reti o persone?\smallskip\\
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
+   (Definizione formale) L' \textbf{encoding } e \textbf{decoding} sono funzioni biettive fra gli oggetti desiderati
+\end{definition}}}\smallskip\\
+Per capire meglio diamo una definizione formale: 
+\begin{itemize}
+    \item L’\textbf{encoding (codifica)} è il processo con cui gli input di un problema computazionale vengono rappresentati tramite stringhe in un formato adatto a essere elaborato da un computer.
+    \item Il \textbf{decoding (decodifica)} è il processo inverso: permette di interpretare le stringhe prodotte come output, associandole agli oggetti o ai risultati che esse rappresentano.
+\end{itemize}
+
+
+
+\subsection{Problema del riconoscimento}
+CONTINUARE
