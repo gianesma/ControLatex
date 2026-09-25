@@ -55,4 +55,47 @@ Per capire meglio diamo una definizione formale:
 
 
 \subsection{Problema del riconoscimento}
-CONTINUARE
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
+   (Definizione formale) Sia $\mathcal{L}$ un linguaggio su un alfabeto $\Sigma$.
+   Il \textbf{problema del riconoscimento} per $\mathcal{L}$ è la funzione booleana
+   $REC_{\ \mathcal{L}}: \Sigma^* \to \{0,1 \}$ tale che:
+   \[  REC_{\ \mathcal{L}} = 1 \text{ se e solo se } x \in \mathcal{L}    \]
+\end{definition}}} \smallskip\\
+Per capire meglio diamo una definizione formale:\\
+Il problema di riconoscimento per un linguaggio $\mathcal{L}$ definito su un
+alfabeto $\Sigma$ chiede se una stringa $s \in \Sigma^*$ fa parte di $\mathcal{L}$,
+se $s$ ne fa parte il valore della funzione è 1, altrimento 0.
+
+
+
+\subsection{Modelli computazionali}
+Per risolvere qualsiasi tipo di problema bisogna sviluppare un \textbf{algoritmo},
+ovvero una sequenza di istruzioni il cui risultato (output) è la soluzione del problema.
+Il nostro obiettivo è quello di far eseguire questa sequenza di istruzioni su una macchina.
+Per fare ciò, è utile la definizione di modello computazionale:\smallskip\\
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
+   Un \textbf{modello computazionale} è un modello matematico che simula un calcolatore, quindi:
+   \begin{itemize}[label= --]
+      \item Definisce il risultato dell'esecuzione di un insieme di istruzioni (programma)
+      \item Definisce tutte le risorse necessarie per l'esecuzione
+   \end{itemize}
+\end{definition}}} \smallskip\\
+\textit{Esempio.} La forma più semplice di modello computazionale è rappresentato dalle \textbf{Look-Up-Table (LUT)}.\\
+Una Look-Up-Table, cioè una tabella di consultazione, può essere vista come una tabella che associa a ogni 
+possibile input memorizzato un determinato output. Formalmente, abbiamo un alfabeto \(\Sigma\) e:
+\[   X \subseteq \Sigma^*     \]
+dove $X$ è un sottoinsieme finito di $\Sigma^*$ e rappresenta tutti i possibili input di un problema.\\
+Ma cosa vuol dire "eseguire" una LUT? Se forniamo una stringa $s$ alla LUT $t$, l'esecuzione è:
+\[      EXEC(f,s) = \begin{cases}
+   t(s) \text{   se } t(s) \text{ è definito} \\
+   \perp \text{   altrimenti}
+\end{cases}   \]
+Quindi l'esecuzione di una LUT è semplice, dato un input $s$, cerca $s$ nella tabella e se lo trova restituisce il valore associato,
+altrimenti $\perp$.\medskip\\
+In questo corso descriveremo gli algoritmi utilizzando solo i modelli computazionali, non calcolatori reali.\\
+Approfondiremo i seguenti modelli comuputazionali:
+\begin{itemize}
+   \item \textbf{Automi a stati finiti}: calcolatori semplici e privi di memoria (se non quella interna)
+   \item \textbf{Automi a pila}: calcolatori semplici con accesso a una forma limitata di memoria
+   \item \textbf{Macchine di Turing}: calcolatori complessi con accesso a memoria illimitata
+\end{itemize}
