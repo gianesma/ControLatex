@@ -233,4 +233,52 @@ Combinando selezione e proiezione, possiamo estrarre interessanti informazioni d
 \noindent Per esprimere nel linguaggio dell'algebra condizioni di negazione è utilizzare l'operatore di differenza. 
 Il corrispettivo logico di questo principio è la seguente regola per scrivere query corrette:\\
 \texttt{l'insieme degli elementi di A che non soddisfano la proprieta B è uguale all'insieme che otteniamo da A togliendo gli elementi che soddisfano la proprietà B:}\\
-$$\{ x | x \in A \wedge \neg B(x) = A - \{ x | B(x) \} \}$$
+$$\{ x | x \in A \wedge \neg B(x) = A - \{ x | B(x) \} \}$$\\
+esempio:\\
+Concerto(idconc, idart, anno, città)\\
+Artista(idart, nome, tipo)\\
+Evento(ideve, idconc, voto)\\
+richiesta: calcolare l'idconc dei concerti che non sono stati svolti nell'ambito di un evento\\
+$PROJ_{idconc}(Concerto)-PROJ_{idconc}(Evento)$
+\subsection{Join}
+Combinando selezione e proiezione, possiamo estrarre informazioni da una relazione, non possiamo però correlare informazioni presenti in relazioni diverse. Esistono diversi tipi di join: join naturale, theta-join, quijoin, join esterno ecc.
+\subsection{join naturale}
+Operatore binario, produce un risultato:
+\begin{itemize}
+    \item il cui schema ha l'unione degli attributi degli operandi
+    \item le cui tuple sono costruite ciascuna a partire da due tuple che si combinano, una di un operando ed una di un altro operando
+\end{itemize}
+\noindent \textbf{Join naturale: sintassi e semantica}\\
+Siano $R_1(X_1),R_2(X_2)$ con $X_1$ e $X_2$ che sono due insiemi, $R_1 \text{ JOIN }R_2$ è una relazione su $X_1X_2$ il cui insieme di tuple è:\\
+$\{ t \text{ su } X_1X_2 | \text{ esistono due tuple } t_1 \in R_1 \text{ e } t_2 \in R2 \text{ tali che } t[X_1]=t_1 \text{ e } t[X_2]=t_2 \}$\\
+$R_1 \text{ JOIN }R_2$ è una relazione il cui insieme di tuple contiene ogni tupla $t$ tale che esistono due tuple $T_1 \in R_1$ e $t2 \in R2$ tali che
+\begin{itemize}
+    \item $t$ negli attributi $X_1$ ha gli stessi valori di $t_1$
+    \item $t$ negli attributi $X_2$ ha gli stessi valori di $t_2$
+\end{itemize}
+\noindent Una tupla $t$ esiste solo se le due tuple $t_1$ e $t_2$ hanno gli stessi valori negli attributi che $R_1$ e $R_2$ hanno in comune.
+Diciamo che $t_1 \in R_1 e t_2 \in R_2$ sono combinabili dala join naturale se $t_1[X_1 \bigcap X_2]=t_2[X_1 \bigcap X_2]$. Dalla definizione segue che ogni tupla 
+nel join tra $R_1$ ed $R_2$ proviene da due tuple combinabili dal join. In effetti $t_1 \ in R_1$ e $t_2 \in R_2$ tali che $t[X_1 \bigcap X_2]=t_2[X_1 \bigcap X_2]$ si combinano 
+per ottrenere la tupla $t$ tale che $t[X_1]=t_1$ e $t[X_2]=t_2$
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.7\linewidth]{../../images/join-naturale1.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent nella tabella con il join non è presente il corso Reti perchè non è in comune 
+\subsection{Join completo}
+Un join completo è un join in cui ogni tupla contribuisce al risultato.
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.6\linewidth]{../../images/join_completo.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent Join il cui risultato è l'insieme vuoto di tuple
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.6\linewidth]{../../images/join_vuoto.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
