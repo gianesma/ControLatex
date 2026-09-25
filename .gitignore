@@ -1,7 +1,7 @@
 
 ## --- REGOLE PERSONALIZZATE ---
 # Ignora tutti i PDF generati da LaTeX
-
+*.pdf
 
 # Ignora la spazzatura di sistema del Mac (per il tuo colleg a santissimo (22))
 .DS_Store
