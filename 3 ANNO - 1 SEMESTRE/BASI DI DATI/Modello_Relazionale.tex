@@ -229,3 +229,8 @@ Combinando selezione e proiezione, possiamo estrarre interessanti informazioni d
     %\label{label}
 \end{figure}
 \noindent $$PORJ_{MAtricola, Cognome}(SEL_{Stipendio>50}(Impiegato))$$
+\subsection{La negazione in algebra relaziionale}
+\noindent Per esprimere nel linguaggio dell'algebra condizioni di negazione è utilizzare l'operatore di differenza. 
+Il corrispettivo logico di questo principio è la seguente regola per scrivere query corrette:\\
+\texttt{l'insieme degli elementi di A che non soddisfano la proprieta B è uguale all'insieme che otteniamo da A togliendo gli elementi che soddisfano la proprietà B:}\\
+$$\{ x | x \in A \wedge \neg B(x) = A - \{ x | B(x) \} \}$$
