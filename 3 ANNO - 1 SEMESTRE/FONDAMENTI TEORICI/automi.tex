@@ -29,7 +29,7 @@ Per rappresentare il funzionamento di una ASFD possiamo usare un \textbf{diagram
 le transizioni di stato, in pratica ci dice che se il simbolo è a, passo ad uno stato, e se il simbolo è b passa ad un altro stato.\smallskip\\
 Compreso il funzionamento pratico di una ASFD, passiamo alle definizioni formali:\smallskip\\
 \colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
-   Un \textbf{automa a stati deterministici (ASFD)} è una quintupla $< \Sigma,Q,\delta,I,F  >$
+   Un \textbf{automa a stati finiti deterministici (ASFD)} è una quintupla $< \Sigma,Q,\delta,I,F  >$
 \end{definition}}}\smallskip\\
 Le componenti della quintupla sono:
 \begin{itemize}
@@ -39,4 +39,215 @@ Le componenti della quintupla sono:
     \item $\mathbf{F \subseteq Q}$: Insieme degli stati accettanti
     \item $\mathbf{\delta: Q\times \Sigma \to Q}$: funzione di transizione, nel pratico è una tabella che indica lo stato successivo a seconda del simbolo analizzato 
 \end{itemize}
-Ecco un esempio:
+Ecco un esempio:\\
+Data la seguente ASFD:
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.7\linewidth]{../../images/grafo_trans.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent La quintupla $< \Sigma,Q,\delta,I,F  >$ che la caratterizza è:
+\[
+\begin{cases}
+    \Sigma = \{  a,b \}\\
+    Q = \{ q_0,q_1,q_2   \}\\
+    I = q_0\\
+    F = \{ q_1 \}\\
+    \delta \text{  funzione definita dalla tabella} \longrightarrow
+\end{cases}
+\begin{array}{|c|c|c|}
+    \hline
+    Q & S & \delta(Q,S)\\
+    \hline
+    q_0 & a & q_0\\
+    q_0 & b & q_1\\
+    q_1 & a & q_2\\
+    q_1 & b & q_2\\
+    q_2 & a & q_2\\
+    q_2 & b & q_2\\
+    \hline
+\end{array}
+\]\medskip\\
+Ora diamo la definizione formale di \textbf{esecuzione}:\smallskip\\
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
+   Sia dato una ASFD $A = <\Sigma, Q, I,F,\delta>$ e una stringa $S = \{ c_1,c_2,\dots,c_n  \} \in \Sigma^*$ con $|S| = n$, una \textbf{esecuzione} di $A$ su $S$ è una sequenza
+   $(q_1,\dots,q_{n+1}) \in Q^{n+1}$ elementi di $Q$ tale che:
+   \begin{itemize}
+    \item $\bm{q_1 = I}$, ovvero il primo stato è quello iniziale
+    \item $\bm{\delta(q_i,c_i) = q_{i+1}} \text{ per } i = 1,\dots, n$, ovvero ogni stato è generato dal precedente applicando $\delta$ al simbolo corrente
+
+   \end{itemize}
+
+\end{definition}}}\smallskip\\
+L'esecuzione $A(S) = \{ q_0,\dots,q_n  \}$ è \textbf{accettante} se il suo stato finale $q_n$ appartiene a $F$ (insieme degli stati accettanti). Come già detto, nel diagramma degli stati
+rappresentiamo gli stati accettanti con il doppio cerchio. Se $A(S)$ è accettante si dice che $S$ è \textbf{accettata}, altrimenti diremo che $S$ è \textbf{rifiutata}.
+
+
+\subsection{Linguaggio riconosciuto da una ASFD}
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
+   Sia $A = <\Sigma, Q, I,F,\delta>$ una ASFD. Il \textbf{linguaggio riconosciuto da} $\bm{A}$ è linguaggio $L(A)$ sull'alfabeto $\Sigma$ tale che:
+   \[  L(A) = \{  x \in \Sigma^* | x \text{ è accettata da } A  \}  \]
+\end{definition}}}\smallskip\\
+Un linguaggio $\mathcal{L}$ è detto \textbf{regolare} se esiste un ASFD $A$ tale che $L(A) = \mathcal{L}$, a parole diremo che un linguaggio è regolare se e solo se esiste una 
+ASFD che lo riconosce.
+
+
+\newpage
+
+\subsection{Esercizi su ASFD}
+\begin{itemize}
+    \item Definire un ASFD che riconosce il linguaggio sull’alfabeto {a, b} delle stringhe il cui
+secondo simbolo è \textbf{b} \underline{oppure} il terzo è \textbf{a}:
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.6\linewidth]{../../images/es1_ASFD.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent La quintupla $< \Sigma,Q,\delta,I,F  >$ che la caratterizza è:
+\[
+\begin{cases}
+    \Sigma = \{  a,b \}\\
+    Q = \{ q_0,q_1,q_2,q_3,q_4   \}\\
+    I = q_0\\
+    F = \{ q_2 \}\\
+    \delta \text{  funzione definita dalla tabella} \longrightarrow
+\end{cases}
+\begin{array}{|c|c|c|}
+    \hline
+    Q & S & \delta(Q,S)\\
+    \hline
+    q_0 & a & q_1\\
+    q_0 & b & q_1\\
+    q_1 & a & q_3\\
+    q_1 & b & q_2\\
+    q_2 & a & q_2\\
+    q_2 & b & q_2\\
+    q_3 & a & q_2\\
+    q_3 & b & q_4\\
+    q_4 & a & q_4\\
+    q_4 & b & q_4\\
+    \hline
+\end{array}
+\]
+
+\item Definire un ASFD che riconosce il linguaggio sull’alfabeto $\{a, b\}$ delle stringhe il cui
+secondo simbolo è \textbf{b} \underline{e} il terzo simbolo è \textbf{a}:
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.6\linewidth]{../../images/es2_ASFD.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent La quintupla $< \Sigma,Q,\delta,I,F  >$ che la caratterizza è:
+\[
+\begin{cases}
+    \Sigma = \{  a,b \}\\
+    Q = \{ q_0,q_1,q_2,q_3,q_4   \}\\
+    I = q_0\\
+    F = \{ q_3 \}\\
+    \delta \text{  funzione definita dalla tabella} \longrightarrow
+\end{cases}
+\begin{array}{|c|c|c|}
+\hline
+Q & S & \delta(Q,S) \\
+\hline
+q_0 & a & q_1 \\
+q_0 & b & q_1 \\
+q_1 & b & q_2 \\
+q_1 & a & q_4 \\
+q_2 & a & q_3 \\
+q_2 & b & q_4 \\
+q_3 & a & q_3 \\
+q_3 & b & q_3 \\
+q_4 & a & q_4 \\
+q_4 & b & q_4 \\
+\hline
+\end{array}
+\]
+
+\item Definire un ASFD che riconosce il linguaggio sull’alfabeto $\{a, b\}$ delle stringhe il cui
+\underline{penultimo carattere} è \textbf{b}:
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.6\linewidth]{../../images/es3_ASFD.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent La quintupla $< \Sigma,Q,\delta,I,F  >$ che la caratterizza è:
+\[
+\begin{cases}
+    \Sigma = \{  a,b \}\\
+    Q = \{ q_0,q_1,q_2,q_3  \}\\
+    I = q_0\\
+    F = \{ q_2, q_3 \}\\
+    \delta \text{  funzione definita dalla tabella} \longrightarrow
+\end{cases}
+\begin{array}{|c|c|c|}
+\hline
+Q & S & \delta(Q,S) \\
+\hline
+q_0 & a & q_0 \\
+q_0 & b & q_1 \\
+q_1 & a & q_2 \\
+q_1 & b & q_3 \\
+q_2 & a & q_0 \\
+q_2 & b & q_1 \\
+q_3 & a & q_2 \\
+q_3 & b & q_3 \\
+\hline
+\end{array}
+\]
+
+
+\newpage
+
+\item Definire un ASFD che riconosce il linguaggio sull’alfabeto $\{a, b\}$ delle stringhe aventi un
+numero pari di \textbf{a} \underline{o} un numero pari di \textbf{b}: la quintupla $< \Sigma,Q,\delta,I,F  >$ che la caratterizza è:
+
+
+\begin{minipage}{0.3\textwidth}
+
+    \begin{figure}[H]
+    % \centering  
+    \includegraphics[width=0.97\linewidth]{../../images/es4_ASFD.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\end{minipage}
+\hfill
+$\longrightarrow$
+\hfill
+\begin{minipage}{0.6\textwidth}
+    \[
+\begin{cases}
+    \Sigma = \{  a,b \}\\
+    Q = \{ q_0,q_1,q_2,q_3  \}\\
+    I = q_0\\
+    F = \{ q_0,q_1, q_2 \}\\
+    \delta \text{  funzione definita dalla tabella} \longrightarrow
+\end{cases}
+\begin{array}{c||c|c}
+\delta & a & b \\
+\hline \hline
+q_0 & q_1 & q_2 \\
+\hline
+q_1 & q_0 & q_3 \\
+\hline
+q_2 & q_3 & q_0 \\
+\hline
+q_3 & q_2 & q_1 \\
+\end{array}
+\]
+\end{minipage}
+\end{itemize}
+
+
+
+
+
+
+
+
+\section{Automi a stati finiti non deterministici (ASFND)}
