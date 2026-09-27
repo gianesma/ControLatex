@@ -84,7 +84,7 @@ L'esecuzione $A(S) = \{ q_0,\dots,q_n  \}$ è \textbf{accettante} se il suo stat
 rappresentiamo gli stati accettanti con il doppio cerchio. Se $A(S)$ è accettante si dice che $S$ è \textbf{accettata}, altrimenti diremo che $S$ è \textbf{rifiutata}.
 
 
-\subsection{Linguaggio riconosciuto da una ASFD}
+\subsection{Linguaggio riconosciuto da una ASFD}\label{linguaggio}
 \colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
    Sia $A = <\Sigma, Q, I,F,\delta>$ una ASFD. Il \textbf{linguaggio riconosciuto da} $\bm{A}$ è linguaggio $L(A)$ sull'alfabeto $\Sigma$ tale che:
    \[  L(A) = \{  x \in \Sigma^* | x \text{ è accettata da } A  \}  \]
@@ -251,3 +251,122 @@ q_3 & q_2 & q_1 \\
 
 
 \section{Automi a stati finiti non deterministici (ASFND)}
+Per comprendere questo tipo di automi bisogna prima capire la proprietà di \textbf{determinismo}: questa proprietà garantisce che:
+\begin{itemize}
+    \item La funzione di transizione determina un \underline{unico} stato successivo
+    \item Esiste una \underline{unica} esecuzione possibile per ogni stringa di input
+\end{itemize}
+Le \textbf{macchine reali} sono intrinsecamente \textbf{deterministiche}, quindi dato un input e uno stato interno, possiamo sempre determinare il prossimo stato interno. Invece le
+computazioni non deterministiche dato un input e uno stato interno possono esserci più stati successivi possibili. \\
+Di conseguenza una \textbf{computazione non deterministica} ha la seguenti carratteristiche:
+\begin{itemize}
+    \item Lo stato successivo non è determinato a priori dallo stato corrente e non è unico 
+    \item Eseguono computazioni in parallelo, quindi non c'è un unica esecuzione
+    \item Fanno delle assunzioni sulle proprietò dell'input 
+\end{itemize}
+Ora che abbiamo compreso la differenza tra una computazione deterministica e non, passiamo alla definizione formale:\smallskip\\
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
+Un \textbf{automa a stati finiti non deterministico (ASFND)} è una quintupla: \[< \Sigma,Q, I,F,\delta  >\]   
+\end{definition}}}\smallskip\\
+I componenti della quintupla sono i medesimi degli ASFD, l'unica che cambia è la funzione $\delta$ che rende questa computazione non deterministica, nel dettaglio abbiamo che 
+\begin{itemize}
+    \item $\mathbf{\Sigma}$: alfabeto (vd \ref{alfabeto}), è l'insieme dei possibili simboli utlizzati nelle stringhe (input).
+    \item \textbf{Q}: insieme dei possibili stati interni $\{ q_0,q_1,\dots  \}$
+    \item $\mathbf{I \in Q}$: stato iniziale dal quale parte la computazione
+    \item $\mathbf{F \subseteq Q}$: Insieme degli stati accettanti
+    \item $\bm{\delta: Q\times \Sigma \to P(Q)}$: funzione di transizione, dove $P(Q)$ è l'insieme delle parti di $Q$ ovvero tutti i possibili sottoinsiemi di Q   
+\end{itemize}
+Anche gli ASFND sono rappresentabili tramite \textbf{diagramma degli stati}, e, a differenza dei diagrammi degli ASFD, gli archi che partono da uno stato possono essere etichettati
+con lo stesso carattere. Questo è proprio dovuto al fatto che da uno stato e un simbolo di input, non esiste un unico stato successivo.
+
+\newpage
+
+\noindent Vediamo un esempio:  
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.7\linewidth]{../../images/es_ASFND.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent La quintupla che caratterizza l'ASFND è:
+\[
+\begin{cases}
+    \Sigma = \{  a,b \}\\
+    Q = \{ q_0,q_1,q_2,q_3  \}\\
+    I = q_0\\
+    F = \{  q_3 \}\\
+    \delta \text{  funzione definita dalla tabella} \longrightarrow
+\end{cases}
+\begin{array}{|c|c|c|}
+    \hline
+\text{Stato } q & \text{Simbolo } s & \delta_D(q,s) \\
+\hline
+q_0 & a & \{q_0\} \\
+q_0 & b & \{q_0, q_1\} \\
+q_1 & a & \{q_2, q_3\} \\
+q_1 & b & \{q_3\} \\
+q_2 & a & \{q_3\} \\
+q_2 & b & \{ \} \\
+q_3 & a & \{ \} \\
+q_3 & b & \{ \} \\
+\hline
+\end{array}
+\]
+Dalla tabella raffigurante la funzione di transizione $\delta$ vediamo che da alcuni stati l'automa può scegliere di andare in diversi stati. Ma quale percorso viene scelto? 
+Un modello non deterministico non deve essere immaginato come una macchina che tira a caso, formalmente consideriamo tutte le possibili evoluzioni.
+Per questo si usa un albero: ogni volta che ci sono più transizioni possibili, la computazione si ramifica.\medskip\\
+Ora diamo la definizione formale di \textbf{esecuzione} di una ASFND:\smallskip\\
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
+   Sia dato una ASFND $A = <\Sigma, Q, I,F,\delta>$ e una stringa $S = \{ c_1,c_2,\dots,c_n  \} \in \Sigma^*$ con $|S| = n$, una \textbf{esecuzione} di $A$ su $S$ è una sequenza
+   $(q_1,\dots,q_{n+1}) \in Q^{n+1}$ elementi di $Q$ tale che:
+   \begin{itemize}
+    \item $\bm{q_0 = I}$, ovvero il primo stato è quello iniziale
+    \item $\bm{q_{i+1}\in \delta(q_i,c_i) } \text{ per } i = 1,\dots, n$, ovvero ogni stato appartiene all'insieme definito dal precedente applicando $\delta$ al simbolo corrente
+
+   \end{itemize}
+
+\end{definition}}}\smallskip\\
+
+
+
+\subsection{Teorema su ASFD e ASFND}
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{theorem}
+   I seguenti sue enunciati sono veri:
+   \begin{itemize}
+    \item Per ogni ASFD $A_D$ esiste un ASFND $A_N$ tale che $L(A_D) = L_(A_N)$
+    \item Per ogni ASFND $A_N$ esiste un ASFD $A_D$ tale che $L(A_N) = L_(A_D)$
+   \end{itemize}
+\end{theorem}}}\smallskip\\
+Le espressioni $L(A_D) = L_(A_N)$ e $L(A_N) = L_(A_D)$ indicano che i due modelli riconoscono esattamente lo stesso linguaggio (vd \ref{linguaggio}), ovvero per ogni automa ASFD esiste un
+automa ASDNF \textbf{equivalente} e viceversa. Questo teorema è molto importante poichè ci dice che nessuno dei due modelli è più potente dell'altro, ma sono solo due modi differenti di rappresentare
+la computazione.
+
+
+\newpage
+
+\subsection{Esercizi su ASFND}
+\begin{itemize}
+    \item Sia $\Sigma = \{ a   \}$. Definire una ASFND che riconosce il linguaggio di $\Sigma$ in cui le stringhe hanno lunghezza multipla di 2 \underline{oppure} multipla di 3:
+    \begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.9\linewidth]{../../images/es2_ASFND.jpeg}
+    % \caption{caption}
+    %\label{label}
+\end{figure}
+
+
+
+
+
+
+    \item Sia $\Sigma = \{ a,b  \}$. Definire una ASFND tale che le stringhe terminano con \textbf{aa} \underline{oppure} con \textbf{bb}: 
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.9\linewidth]{../../images/es1_ASFND.jpeg}
+    % \caption{caption}
+    %\label{label}
+\end{figure}
+
+
+
+\end{itemize}
