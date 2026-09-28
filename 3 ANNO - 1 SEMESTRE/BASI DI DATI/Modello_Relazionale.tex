@@ -257,7 +257,7 @@ $R_1 \text{ JOIN }R_2$ è una relazione il cui insieme di tuple contiene ogni tu
     \item $t$ negli attributi $X_2$ ha gli stessi valori di $t_2$
 \end{itemize}
 \noindent Una tupla $t$ esiste solo se le due tuple $t_1$ e $t_2$ hanno gli stessi valori negli attributi che $R_1$ e $R_2$ hanno in comune.
-Diciamo che $t_1 \in R_1 e t_2 \in R_2$ sono combinabili dala join naturale se $t_1[X_1 \bigcap X_2]=t_2[X_1 \bigcap X_2]$. Dalla definizione segue che ogni tupla 
+Diciamo che $t_1 \in R_1 \text{ e } t_2 \in R_2$ sono combinabili dala join naturale se $t_1[X_1 \bigcap X_2]=t_2[X_1 \bigcap X_2]$. Dalla definizione segue che ogni tupla 
 nel join tra $R_1$ ed $R_2$ proviene da due tuple combinabili dal join. In effetti $t_1 \ in R_1$ e $t_2 \in R_2$ tali che $t[X_1 \bigcap X_2]=t_2[X_1 \bigcap X_2]$ si combinano 
 per ottrenere la tupla $t$ tale che $t[X_1]=t_1$ e $t[X_2]=t_2$
 \begin{figure}[H]
@@ -282,3 +282,12 @@ Un join completo è un join in cui ogni tupla contribuisce al risultato.
     %\caption{caption}
     %\label{label}
 \end{figure}
+\subsection{Theta-join}
+Siano $R_1$ ed $R_2$ due relazioni senza attributi in comune tali quindi che il loro join naturale corrisponda al prodotto 
+cartesiano. Ma nella pratica il prodotto cartesiano ha senso solo se combinato con una relazione:\\
+$$SEL_{condizione}(R_1 \text{ JOIN } R_2)$$\\
+La combinazione delle due operazioni viene chiamata \textbf{theta-join}, richiede appunto che $R_1$ ed $R_2$ non abbiano attributi in comune e viene indicata con\\
+$$R_1 \text{ }JOIN_{condizione} R_2$$\\
+Se il solo operatore di confronto usato nella condizione è l'uguaglianza allora si parla di \textbf{equi-join}.\\
+query su note
+fare capitolo sulla logica solo e non 
