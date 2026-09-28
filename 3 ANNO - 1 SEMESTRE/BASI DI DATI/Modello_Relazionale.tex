@@ -1,8 +1,12 @@
 \chapter{Modello Relazionale}
 \section{Relazione matematica}
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
 Siano $D_1,D_2,...,D_n$ n insiemi:\\
 Il \textbf{prodotto cartesiano} $D_1 \times D_2 \times ... \times D_n$ è l'insieme di tutte le n-uple ordinate $(d_1,d_2,..,d_n)$ tali che $d_1 \in D_1, d_2 \in D_2 ,..., d_n \in D_n$. 
-Una relazione matematica sugli insiemi $D_1,D_2,...,D_n$ è un \textbf{sottoinsieme del prodotto cartesiano} $D_1 \times D_2 \times ... \times D_n$.\\
+\end{definition}}}
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
+Una \textbf{relazione matematica} sugli insiemi $D_1,D_2,...,D_n$ è un \textbf{sottoinsieme del prodotto cartesiano} $D_1 \times D_2 \times ... \times D_n$.
+\end{definition}}}\medskip\\
 Se R è una relaziome matematica sugli insiemi $D_1,D_2,...,D_n$ tali insiemi sono detti domini, tale relazione su $n$ domini dice che ha grado $n$. il numero di n-uple (righe) di una relazione è la cardinalità della relazione stessa.\\
 Esempio:
 \begin{itemize}
@@ -49,10 +53,10 @@ Ogni riga della tabella corrisponde ad una tupla della relazione, e siccome la r
 \begin{figure}[H]
     \centering  
     \includegraphics[width=0.7\linewidth]{../../images/tabella_relazionale.png}
-    \caption{caption}
+   % \caption{caption}
     %\label{label}
 \end{figure}
-\noindent Gli attributi devono essere atomici cioè non devono essere un array ma un singolo valore, e non ci devono esseredue tuple uguali.\\
+\noindent Gli attributi devono essere atomici cioè non devono essere un array ma un singolo valore, e non ci devono esseredue tuple uguali.
  \subsection{Notazioni}
  Sia $X$ l'insime degli attributi di una relazione $R$. Se $t$ è una tupla di $R$, cioè una tupla su $X$, e se $A \in X$ è un attributo in $X$, allora $t[A]$ oppure anche $t.A$ indica il valore 
  che la tupla $t$ ha in corrispondenza dell'attributo A.\\
@@ -60,13 +64,13 @@ Ogni riga della tabella corrisponde ad una tupla della relazione, e siccome la r
 \begin{figure}[H]
     \centering  
     \includegraphics[width=0.5\linewidth]{../../images/tabella_relazionale1.png}
-    \caption{caption}
+   % \caption{caption}
     %\label{label}
 \end{figure}
 \subsection{Schema di relazione e tupla etichettata}
-La specifica del nome $R$ di una relazione, degli attributi $A1,A2,...,An$ e dei domini di tali attributi $D1,D2,..,Dn$ forma il cosiddetto schema di relaizone, che si denota come 
+La specifica del nome $R$ di una relazione, degli attributi $A1,A2,...,An$ e dei domini di tali attributi $D1,D2,..,Dn$ forma il cosiddetto schema di relazione, che si denota come 
 $R(A1:D1, A2:D2,...,An:Dn)$ di conseguenza una tupla di $R$ si può denotare anche come $<A1:a, A2:b,...,An,c>$\\
-Una tupla di una relazione si può rappresentare come \texttt{tupla etichettata}, in cui le etichette sono gli attributi della relazione, ed i valori associati alle 
+Una tupla di una relazione si può rappresentare come \textbf{tupla etichettata}, in cui le etichette sono gli attributi della relazione, ed i valori associati alle 
 etichette sono i valori in corrispondenza dei vari attributi.\\
 \texttt{Esempio su tabella di prima:}\\
 tupla etichettata $t1=$ $<Casa:$ $'Juve',$ $Fuori:$ $'Lazio',$ $RetiCasa:3,$ $RetiFuori:1>$
@@ -77,14 +81,26 @@ tupla etichettata $t1=$ $<Casa:$ $'Juve',$ $Fuori:$ $'Lazio',$ $RetiCasa:3,$ $Re
     %\label{label}
 \end{figure}
 \subsection{Schemi e istanze}
-\textbf{Schema di relazione}: un nome di relazione $R$ con un insieme non vuoto di attributi $A1,...,An$ ed eventualmente anche i corrispondenti domini $R(A1,...,An)$\\
-\textbf{Istanza di relazione} su uno schema $R(X)$: insieme $r$ delle tuple sull'insieme di attributi X   \\
-\textbf{Relazione}: schea $T$ di relazione $+$ istanza su $T$\\ 
-\textbf{Schema di base di dati}: insieme non vuoto di schemi di relazione $R={R_1 (A_1 A_2 ... A_n),..., R_m (B_1 B_2 ... B_p) }$\\
-\textbf{Istanza di base di dati} su uno schema $R=\{ R_1(X_1),...,R_m(X_m)\}$: insieme di relazioni $r=\{ r_1,...,r_m\}$, dove per ogni $i=1,...,m, r_i $ èuna istanza relazione sullo schema $R_i(X_i)$\\
-\textbf{Base di dati}: schema $S$ di basi di dati $+$ istanza di basi di dati su S
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
+   \textbf{Schema di relazione}: un nome di relazione $R$ con un insieme non vuoto di attributi $A1,...,An$ ed eventualmente anche i corrispondenti domini $R(A1,...,An)$
+\end{definition}}}
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
+   \textbf{Istanza di relazione} su uno schema $R(X)$: insieme $r$ delle tuple sull'insieme di attributi X   
+\end{definition}}}
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
+   \textbf{Relazione}: schea $T$ di relazione $+$ istanza su $T$
+\end{definition}}}
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
+   \textbf{Schema di base di dati}: insieme non vuoto di schemi di relazione $R={R_1 (A_1 A_2 ... A_n),..., R_m (B_1 B_2 ... B_p) }$
+\end{definition}}}
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
+   \textbf{Istanza di base di dati} su uno schema $R=\{ R_1(X_1),...,R_m(X_m)\}$: insieme di relazioni $r=\{ r_1,...,r_m\}$, dove per ogni $i=1,...,m, r_i $ èuna istanza relazione sullo schema $R_i(X_i)$
+\end{definition}}}
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
+   \textbf{Base di dati}: schema $S$ di basi di dati $+$ istanza di basi di dati su S
+\end{definition}}}
 
-\subsection{Algebra relazionale}
+\section{Algebra relazionale}
 I suoi operatori sono definiti su relazioni, producono relazioni e possono essere composti.\\
 \textbf{Operatori} dell'algebra relazionale:
 \begin{itemize}
@@ -146,7 +162,7 @@ Lo schema della relazione rappresentata da "Operando" viene modificato sostituen
 Operatore monadico (un solo argomento) che prevede la formulazione di condizione, produce un risoltato che:
 \begin{itemize}
     \item ha lo stesso schema dell'operando
-    \item contiene un sottoinsieme delle tuple dell'operando, quelle che soddisfano la condizione. espressamente indicata nell'operatore
+    \item contiene un sottoinsieme delle tuple dell'operando, quelle che soddisfano la condizione espressamente indicata nell'operatore
 \end{itemize}
 \begin{figure}[H]
     \centering  
@@ -229,7 +245,7 @@ Combinando selezione e proiezione, possiamo estrarre interessanti informazioni d
     %\label{label}
 \end{figure}
 \noindent $$PORJ_{MAtricola, Cognome}(SEL_{Stipendio>50}(Impiegato))$$
-\subsection{La negazione in algebra relaziionale}
+\subsection{La negazione in algebra relazionale}
 \noindent Per esprimere nel linguaggio dell'algebra condizioni di negazione è utilizzare l'operatore di differenza. 
 Il corrispettivo logico di questo principio è la seguente regola per scrivere query corrette:\\
 \texttt{l'insieme degli elementi di A che non soddisfano la proprieta B è uguale all'insieme che otteniamo da A togliendo gli elementi che soddisfano la proprietà B:}\\
@@ -240,9 +256,9 @@ Artista(idart, nome, tipo)\\
 Evento(ideve, idconc, voto)\\
 richiesta: calcolare l'idconc dei concerti che non sono stati svolti nell'ambito di un evento\\
 $PROJ_{idconc}(Concerto)-PROJ_{idconc}(Evento)$
-\subsection{Join}
-Combinando selezione e proiezione, possiamo estrarre informazioni da una relazione, non possiamo però correlare informazioni presenti in relazioni diverse. Esistono diversi tipi di join: join naturale, theta-join, quijoin, join esterno ecc.
-\subsection{join naturale}
+\section{Join}
+Combinando selezione e proiezione, possiamo estrarre informazioni da una relazione, non possiamo però correlare informazioni presenti in relazioni diverse. Esistono diversi tipi di join: join naturale, theta-join, equi-join, join esterno ecc.
+\subsection{Join naturale}
 Operatore binario, produce un risultato:
 \begin{itemize}
     \item il cui schema ha l'unione degli attributi degli operandi
@@ -324,7 +340,10 @@ $$ PROJ_{idart,nome}((Artista \text{ JOIN }SEL_{citta<>'Roma'}(Concerto)) \text{
 \underline{query3}: trovare l'id degli artisti che hanno tenuto almeno due concerti nella stessa città in anni diversi.\\
 \underline{soluzione}: poichè dobbiamo tentare di collegare due tupke della stessa relazione (due concerti tenuti nella stessa città), si deve calcolare il join di Concerto con se stesso, ovviamente stando attenti alle ridenominazioni\\
 $$PROJ_{idart}(REN_{i2 \leftarrow idconc, \text{ }t1\leftarrow idart,\text{ }a1\leftarrow anno,\text{ }c1\leftarrow citta,}(Concerto) \text{ }JOIN_{idart=t1 \text{ and }citta=c1 \text{ and }anno<>a1} Concerto)$$
-\underline{query3}: trovare l'id degli artisti che dopo il 2010 hanno tenuto concerti \textbf{solo} a Roma
+\underline{query4}: trovare l'id degli artisti che dopo il 2010 hanno tenuto concerti \textbf{solo} a Roma\\
 \underline{soluzione}: dobbiamo capire come intendere "solo", "hanno tenuto concerti solo a Roma" ha lo stesso significato di "\textbf{non} hanno tenuto concerti in una città diversa da Roma".\\
 Quindi per calcolare questa query dobbiamo togliere da tutti gli artisti quelli che dopo il 2010 hanno tenuto almeno un concerto in una città diversa da Roma:\\
 $$PROF_{idart}(Artista)-PROJ_{idart}(SEL_{citta<>Roma \text{ and } anno>2000}(Concerto))$$
+\underline{query5}: trovare le coppue $<x,y>$ tali che l'artista con id $x$ non ha mai fatto concerti nella città $y$.\\
+\underline{soluzione}: da tutte le possibili coppie $<x,y>$ tali che $x$ è l'id di un artista e $y$ è una città, leviamo le coppie $<x,y>$ tali che l'artista di id $x$ ha fatto almeno un concerto nella città $y$:\\
+$$(PROJ_{idart} \text{ JOIN }PROJ_{citta}(Concerto))-PROJ_{idart,citta}(Concerto)$$

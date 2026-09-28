@@ -1,1 +1,78 @@
 \chapter{SQL}
+\textbf{S}tructure \textbf{Q}uery \textbf{L}anguage è un linguaggio con varie funzionalità, che contiene:
+\begin{itemize}
+    \item DDL (data definition language)
+    \item DML (data manipulation language)
+\end{itemize}  
+\noindent Una tabella in SQL è definita come un multi insieme di tuple, in particolare, se una tabella non ha una primary key o un insieme di attributi definiti come unique, allora potranno comparire due tuple uguali nella tabella; 
+ne segue che una tabella SQL non è in generale una relazione.
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.7\linewidth]{../../images/database.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent Ogni utente si collega con un database, che si denota con Schema1.Table1 (oppure con solo Table1 se Schema1 è implicito), un utente connesso con Database1 "vede" tutti gli schemi di Database1 e nessuno schema di un altro Database. 
+Un Database Postgres è una collezione di basi di dati, ognuno con il relativo schema e la relativa istanza.
+\section{Istruzioni}
+\begin{itemize}
+    \item Ogni \textbf{tabella} si denota con \texttt{NomeSchema.NomeTabella}
+    \item Ogni \textbf{attributo} di una tabella si denota con \texttt{NomeSchema.NomeTabella.Attributo}
+\end{itemize}
+Quando l'ambiguità sullo schema non sussiste si può omettere \texttt{NomeSchema.} e scrivere semplicemente \texttt{NomeTabella}\\
+Quando l'ambiguità sullo schema non sussiste si può omettere \texttt{NomeSchema.} e scrivere \texttt{NomeTabella.Attributo}\\
+Quando l'ambiguità sulla tabella non sussiste si può omettere \texttt{NomeTabella.} e scrivere semplicemente \texttt{Attributo}
+\newpage 
+\subsection{Select}
+L'Istruzione di interrogazione in SQL è \texttt{select} che definisce una interrogazione (query) e restituisce il risultato della valutazione di quella query sulla base di dati in forma di tabella. La sua forma elementare è:\\
+\begin{verbatim}
+    select  Attributo,...,Attributo
+    from    Tabella
+    where   Condizione
+\end{verbatim}
+\noindent semantica:\\
+ogni tupla $t$ della Tabella è indicato nella clausola \underline{from} viene analizzata. Se $t$ non soddisfa la condizione nella clausola \underline{where}, allora viene ignorata. 
+Altrimenti da $t$ viene prodotta la target list (lista attributi) secondo quanto specificato nella target list che appare dopo \underline{select} e la tupla risultante da tale target list viene inserita nel risultato. 
+Il risultato della esecuzione della query viene restituito nel canale di output del sistema e volendo memorizzarlo nella base di dati.
+La semantica descritta chiarisce che l'istruzione è analoga alla seguente espressione dell'algebra relazionale\\
+$$PROJ_{Attributo,...,Attributo}(SEL_{Condizione}(Tabella))$$\\
+Diciamo analoga e non equivalente perchè in sql la tabella può avere duplicati.\\
+Esempio:
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.7\linewidth]{../../images/sql1.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent Vogliamo il nome e reddito delle persone con meno di 30 anni.\\
+$$PROJ_{nome,reddito}(SEL_{eta<30}(persone))$$
+\begin{figure}[H]
+    \centering
+    \begin{minipage}[c]{0.70\textwidth}
+       \begin{verbatim}
+        select S.persone.nome, S.persone.reddito
+        from S.persone
+        where S.perone.eta<30
+        \end{verbatim}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[c]{0.25\textwidth}
+        \centering
+        \includegraphics[width=0.8\linewidth]{../../images/sql2.png}
+    \end{minipage}
+
+    % \caption{caption}
+    % \label{label}
+\end{figure}
+\noindent Da ora in poi assumiamo di essere nell'ambito dello schema S e quindi possiamo omettere il nome dello schema. In questo caso possiamo quindi scrivere:
+\begin{verbatim}
+    select persone.nome, persone.reddito
+    from persone
+    where persone.eta<30
+\end{verbatim}
+\noindent Nella query non c'è ambiguita su quali sono gli attributi: essi sono certamente quelli della tabella "persone" quindi la query si può scrivere:
+\begin{verbatim}
+    select nome, reddito
+    from persone
+    where eta<30
+\end{verbatim}
