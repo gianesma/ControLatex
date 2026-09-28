@@ -287,7 +287,44 @@ Siano $R_1$ ed $R_2$ due relazioni senza attributi in comune tali quindi che il 
 cartesiano. Ma nella pratica il prodotto cartesiano ha senso solo se combinato con una relazione:\\
 $$SEL_{condizione}(R_1 \text{ JOIN } R_2)$$\\
 La combinazione delle due operazioni viene chiamata \textbf{theta-join}, richiede appunto che $R_1$ ed $R_2$ non abbiano attributi in comune e viene indicata con\\
-$$R_1 \text{ }JOIN_{condizione} R_2$$\\
-Se il solo operatore di confronto usato nella condizione è l'uguaglianza allora si parla di \textbf{equi-join}.\\
-query su note
-fare capitolo sulla logica solo e non 
+$$R_1 \text{ }JOIN_{condizione} R_2$$
+\subsection{Self-join}
+Il \textbf{self-join} è un equi-join in cui cui la stessa relazione compare sia come operando sinistro sia come operando destro, ovvero, quando una operazione di join coinvolge la stessa relazione due volte. 
+Siccome l'equi-join prevede che i due operandi non abbiano attributi in comune, quando si applica un self-join in uno dei due operandi occorre ridenominare tutti gli attributi della relazione.
+\subsection{Riassunto join}
+\begin{itemize}
+    \item \textbf{Join naturale} tra $R_1 \text{ e } R_2$ (si può eseguire sempre)
+    \begin{itemize}
+        \item due tuple si accoppiano se e solo se hanno gli stessi valori negli attributi che $R_1$ ed $R_2$ hanno in comune
+        \item se $R_1 \text{ ed }R_2$ non hanno attributi in comune, il risultato del join naturale è il prodotto cartesiano tra due relazione perchè ogni tupla di $R_1$ 
+        \item si combina con ogni tupla di $R_2$ per dare origine ad una tupla nel risultato
+    \end{itemize}
+    \item \textbf{Theta-join} tra $R_1$ e $R_2$ (richiede che $R_1$ e $R_2$ non abbiano attributi in comune)
+    \begin{itemize}
+        \item due tuple si accoppiano se la condizione di join è soddisfatta dalle due tuple
+    \end{itemize}
+    \item \textbf{Equi-join} tra $R_1$ e $R_2$ (richiede che $R_1$ e $R_2$ non abbiano attributi in comune)
+    \begin{itemize}
+        \item è un theta-join in cui la condizione di join è una uguaglianza tra un attributo di $R_1$ ed un attributo di $R_2$
+    \end{itemize}
+\end{itemize}
+
+\subsection{Esercizi query}
+Tutte le seguenti query sono effettuate sul seguente database:\\
+\texttt{Concerto(idconc, idart, anno, città)}\\
+\texttt{Artista(idart, nome, tipo)}\\
+\texttt{Evento(ideve, idconc, voto)}\medskip\\
+\underline{query1}: trovare nome e tipo degli artisti che hanno tenuto almeno un concerto prima del 2000\\
+\underline{soluzione}: nome e tipo degli artisti li troviamo nella relazione Artista, mentre i concerti dell'artista li troviamo nella relazione Concerto. 
+Ne segue che per rispondere alla richiesta, la query deve esplorare il legame tra Artista e Concerto e questo si realizza attraverso il join naturale tra le sue due relazioni.\\
+$$ PROJ_{nome,tipo}(Artista \text{ JOIN }SEL_{anno<2000}(Concerto))$$
+\underline{query2}: trovare l'id e nome degli artisti che hanno tenuto almeno un concerto svoltosi in una città diversa da Roma nell'ambito di un evento nel quale ha ottenuto un voto maggiore di 4\\
+\underline{soluzione}: eseguo due join naturali, il primo tra Artista e Concerto su attributo comune idart, il secondo tra Concerto e Evento su attributo comune idconc.\\
+$$ PROJ_{idart,nome}((Artista \text{ JOIN }SEL_{citta<>'Roma'}(Concerto)) \text{ JOIN }SEL_{voto>4}(Evento)) $$\\
+\underline{query3}: trovare l'id degli artisti che hanno tenuto almeno due concerti nella stessa città in anni diversi.\\
+\underline{soluzione}: poichè dobbiamo tentare di collegare due tupke della stessa relazione (due concerti tenuti nella stessa città), si deve calcolare il join di Concerto con se stesso, ovviamente stando attenti alle ridenominazioni\\
+$$PROJ_{idart}(REN_{i2 \leftarrow idconc, \text{ }t1\leftarrow idart,\text{ }a1\leftarrow anno,\text{ }c1\leftarrow citta,}(Concerto) \text{ }JOIN_{idart=t1 \text{ and }citta=c1 \text{ and }anno<>a1} Concerto)$$
+\underline{query3}: trovare l'id degli artisti che dopo il 2010 hanno tenuto concerti \textbf{solo} a Roma
+\underline{soluzione}: dobbiamo capire come intendere "solo", "hanno tenuto concerti solo a Roma" ha lo stesso significato di "\textbf{non} hanno tenuto concerti in una città diversa da Roma".\\
+Quindi per calcolare questa query dobbiamo togliere da tutti gli artisti quelli che dopo il 2010 hanno tenuto almeno un concerto in una città diversa da Roma:\\
+$$PROF_{idart}(Artista)-PROJ_{idart}(SEL_{citta<>Roma \text{ and } anno>2000}(Concerto))$$
