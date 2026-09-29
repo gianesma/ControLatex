@@ -1,0 +1,17 @@
+\chapter{Lessico e Logica}
+\section{Non}
+Quando nelle query troviamo la richiesta \textcolor{red}{non}, devo ricavare tale richiesta togliendo dal totale delle tuple tutte le tuple 
+che soddisfano la negazione della condizione.\\
+Esempio:\\
+\texttt{concerto (idconc, idart, anno, città)}\\
+\texttt{Artista (idart, nome, tipo)}\\
+\texttt{Evento (ideve, idconc, voto)}\\
+\underline{query}: Calcolare l'idconc dei concerti che non sono stati svolti nell'ambito di un evento\\
+\underline{soluzione}: $PROJ_{idconc}(Concerto)-PROJ_{idconc}(Evento )$
+\section{Solo}
+Quando nelle query troviamo la richiesta \textcolor{red}{solo}, dobbiamo ricondurla alla negazione \textbf{non}\\
+Esempio (stesso database dell'esempio precedente):\\
+\underline{query}: Trovare l'id degli artisti che dopo il 2010 hanno tenuto concerti solo a Roma\\
+\underline{soluzione}: "hanno tenuto concerti solo a Roma" ha lo stesso significato di "non hanno tenuto concerti in una città diversa da Roma"\\
+$PROJ_{idart(Artista)-PROJ_{idart}(SEL_{citta<>Roma \text{ and }anno>2010}(Concerto ))}$
+
