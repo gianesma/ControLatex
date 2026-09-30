@@ -329,7 +329,7 @@ Ora diamo la definizione formale di \textbf{esecuzione} di una ASFND:\smallskip\
 
 
 
-\subsection{Teorema su ASFD e ASFND}
+\subsection{Equivalenza su ASFD e ASFND}
 \colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{theorem}
    I seguenti sue enunciati sono veri:
    \begin{itemize}
@@ -340,6 +340,152 @@ Ora diamo la definizione formale di \textbf{esecuzione} di una ASFND:\smallskip\
 Le espressioni $L(A_D) = L_(A_N)$ e $L(A_N) = L_(A_D)$ indicano che i due modelli riconoscono esattamente lo stesso linguaggio (vd \ref{linguaggio}), ovvero per ogni automa ASFD esiste un
 automa ASDNF \textbf{equivalente} e viceversa. Questo teorema è molto importante poichè ci dice che nessuno dei due modelli è più potente dell'altro, ma sono solo due modi differenti di rappresentare
 la computazione.
+\begin{proof}
+    I due enunciati vanno dimostrati separatamente:\smallskip\\
+    $\bullet$ Enunciato 1: 
+    \["\textit{Dato un ASFD $A_D$ esiste un ASFND $A_N$ tale che $L(A_D) = L(A_N)$}  "\]
+    Qui la dimostrazione è semplice perchè un automa deterministico è già, di fatto, un caso particolare di automa non deterministico. L'unica cosa da specificare è la funzione di trasferimento $\delta$.\smallskip\\
+    Dato un ASFD $A = < \Sigma, Q, \delta, q_0, F >$, sia $A_N =< \Sigma, Q, \delta_N, q_0, F >$ l’ASFND tale che:
+    \[ \delta_N (q,a)  = \{ \delta (q,a) \}, \text{ per ogni coppia } (q,a)\in Q \times \Sigma\]
+    Questo perchè la funzione di transizione $\delta$ di un modello non deterministico accetta non solo un singolo stato ma un insieme di stati possibili.\medskip\\
+
+    \noindent $\bullet$ Enunciato 2:
+    \["\textit{Dato un ASFND $A_N$ esiste un ASFD $A_D$ tale che $L(A_N) = L(A_D)$}  "\]
+    Qui la situazione si complica poichè la dimostrazione non è banale come l'enunciato 1.\\ 
+    L'\textbf{idea} è quella di costruire esplicitamente un AFSD equivalente a partire da un generico ASFND.\smallskip\\
+    Per fare ciò utlizziamo \textbf{3 intuizioni}:
+    \begin{itemize}[label = --]
+        \item \textbf{Intuizione 1}: dato un ASFND $A_N = <\Sigma, Q_N,\delta_N,q_0,F>$ costruiamo un ASFD $A_D = <\Sigma, Q_D,\delta_D,q_D,F_D>$ in cui:
+        \[   Q_D = P(Q_N)   \]
+        dove $P(Q_N)$ è l'\textbf{insieme delle parti} di $Q_N$, ovvero tutti possibili sottoinsiemi degli stati dell'ASFND iniziale, utilizzeremo questo grande insieme per costruire tutte le possibili esecuzioni di $A_N$
+        \item \textbf{Intuizione 2:} il valore di $\delta_A(q_A,x)$ è l'insieme di tutti gli stati $A_N$ ottenuti applicando $\delta_N$ a $(q,x)$, per ogni stato $q\in q_A$. Ogni passaggio di stato in $A_D$ rappresenta 
+        un insieme di possibili passaggi di stato di $A_N$, quindi nell'ASFD che vogliamo costruire, ogni singolo stato rappresenta in realtà un insieme di stati possibili dell’ASFND.
+
+        \item \textbf{Intuizione 3:} Uno stato di $A_D$ sarà accettante se e solo se conterrà almeno uno stato accettante di $A_N$. Infatti nella costruzione dell'ASFD, siccome lo stato successivo è un insieme di stati (intuizione 2),
+        se in quell'insieme c'è uno degli stati che sono accettanti nell'ASFND, allora l'intero stato è accettante. La medesima cosa succede per lo stato iniziale.
+
+
+
+    \end{itemize}
+
+    \noindent In base a queste tre intuizioni, vediamo un esempio di costruzione di ASFD a partire da una ASFND definità così:
+   
+\begin{minipage}{0.3\textwidth}
+
+    \begin{figure}[H]
+    % \centering  
+    \includegraphics[width=0.97\linewidth]{../../images/creazione.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\end{minipage}
+\hfill
+$\longrightarrow$
+\hfill
+\begin{minipage}{0.6\textwidth}
+    \[
+\begin{cases}
+    \Sigma = \{  a,b \}\\
+    Q = \{ q_0,q_1 \}\\
+    F = \{  q_3 \}\\
+    \delta \text{  funzione definita dalla tabella} \longrightarrow
+\end{cases}
+\begin{array}{|c|c|c|}
+    \hline
+\text{Stato } q & \text{Simbolo } s & \delta_N(q,s) \\
+\hline
+q_0 & a & \{q_0\} \\
+q_0 & b & \{q_0, q_1\} \\
+q_1 & a & \{q_1\} \\
+q_1 & b & \{q_1\} \\
+\hline
+\end{array}   \]
+
+\end{minipage}\medskip\\
+
+
+
+\noindent Applicando le intuizioni l'ASFD equivalente è:\smallskip\\
+\begin{minipage}{0.3\textwidth}
+
+    \begin{figure}[H]
+    % \centering  
+    \includegraphics[width=0.97\linewidth]{../../images/creazione2.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\end{minipage}
+\hfill
+$\longrightarrow$
+\hfill
+\begin{minipage}{0.6\textwidth}
+    \[
+\begin{cases}
+    \Sigma = \{  a,b \}\\
+    Q_D = \bigg\{ \{ \},\{q_0 \},\{q_1 \},\{q_0,q_1 \} \bigg\}\\
+    F = \{  q_3 \}\\
+    \delta \text{  funzione definita dalla tabella} \longrightarrow
+\end{cases}
+\begin{array}{|c|c|c|}
+    \hline
+\text{Stato } q & \text{Simbolo } s & \delta_N(q,s) \\
+\hline
+\emptyset & a & \emptyset \\
+\emptyset & b & \emptyset \\
+\{q_0\} & a & \{q_0\} \\
+\{q_0\} & b & \{q_0, q_1\} \\
+\{q_1\} & a & \{q_1\} \\
+\{q_1\} & b & \{q_1\} \\
+\{q_0, q_1\} & a & \{q_0, q_1\} \\
+\{q_0, q_1\} & b & \{q_0, q_1\} \\
+\hline
+\end{array}   \]
+
+\end{minipage}\medskip\\
+
+\noindent Nel passaggio da ASFND a ASFD il diagramma degli stati viene spezzato, lo stato $\emptyset$ è un \textit{pozzo} da cui è impossibile uscire ($\delta_D(\emptyset,a) = \emptyset$, per ogni $a\in\Sigma$).\\
+La cosa importante è questi due atomi \textbf{riconoscono lo stesso linguaggio}, ovvero le stringhe che contengono almeno una b.\smallskip\\
+Per concludere la dimostrazione dobbiamo dimostrare un \textbf{lemma}, che ci permetterà di definire una proprietà importante che ci permette di concludere la dimostrazione dell'enunciato. Ecco il lemma:\smallskip\\
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{lemma}
+   Sia $\in \Sigma^*$, l'insieme $\bm{Reach_N(Z)}$ è definito come segue:
+\[   Reach_N(Z) = \{ q \in Q_N | \text{ esiste una esecuzione di } A_N \text{ su } z \text{ il cui stato finale è } q  \}   \]
+Per ogni $x\in \Sigma^*$, vale la seguente proprietà: lo stato finale $\mathcal{K}$ di $A_D(x)$ coincide con $Reach_N(x)\ \big( \mathcal{K} = Reach_N(x)  \big)$.\medskip\\
+
+
+\end{lemma}}}
+In parole semplici \(Reach_N(z)\) è l’insieme di tutti gli stati in cui l’automa non deterministico \(A_N\) può trovarsi dopo aver letto la stringa \(z\).
+Per esempio, se leggendo \(z\) l’ASFND può terminare in:
+\[
+q_2,\ q_4,\ q_5
+\]allora:
+\[
+Reach_N(z)=\{q_2,q_4,q_5\}
+\]
+\(Reach_N(x)\) è l’insieme di tutti gli stati raggiungibili dall’ASFND dopo aver letto \(z\). Nella costruzione 
+deterministica equivalente, lo stato raggiunto dall’ASFD dopo aver letto \(z\) è esattamente questo insieme.\medskip\\
+Con Lemma 1, l'enunciato è dimostrato, con \(x, \mathcal{K}\) e \(Reach_N\) come sopra:
+\begin{enumerate}
+    \item \(A_N\) accetta \(x \Leftrightarrow q_{fin} \in Reach_N(x)\) per un \(q_{fin} \in F_N\) ({\textbf{Definizione di ASFND}})
+    \item \(Reach_N(x) = \mathcal{K}\) ({\textbf{Lemma 1}})
+    \item \(A_D\) accetta \(x \Leftrightarrow q_{fin} \in \mathcal{K}\), per qualche \(q_{fin} \in F_N\) ({\textbf{Costruzione di \(A_D\)}})
+\end{enumerate}
+
+
+\end{proof}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 \newpage
