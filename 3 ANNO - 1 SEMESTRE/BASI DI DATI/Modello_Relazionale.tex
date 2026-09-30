@@ -304,6 +304,8 @@ cartesiano. Ma nella pratica il prodotto cartesiano ha senso solo se combinato c
 $$SEL_{condizione}(R_1 \text{ JOIN } R_2)$$\\
 La combinazione delle due operazioni viene chiamata \textbf{theta-join}, richiede appunto che $R_1$ ed $R_2$ non abbiano attributi in comune e viene indicata con\\
 $$R_1 \text{ }JOIN_{condizione} R_2$$
+\subsection{Equi-join}
+Se il solo operatore di confronto usato nella condozione del Theta-join è l'uguaglianza (=), allora si parla di \textbf{equi-join}
 \subsection{Self-join}
 Il \textbf{self-join} è un equi-join in cui cui la stessa relazione compare sia come operando sinistro sia come operando destro, ovvero, quando una operazione di join coinvolge la stessa relazione due volte. 
 Siccome l'equi-join prevede che i due operandi non abbiano attributi in comune, quando si applica un self-join in uno dei due operandi occorre ridenominare tutti gli attributi della relazione.
