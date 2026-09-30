@@ -235,4 +235,205 @@ Il \textbf{Patrimonio Netto} rappresenta la ricchezza di pertinenza dei propriet
 \noindent Lo \textbf{statuto della società} è il documento che contiene le principali regole di funzionamento della società, come 
 l'organizzazione, i poteri degli organi societari e le modalità con cui vengono prese determinate decisioni.
 
+\subsection{Valore attuale e attualizzazione}
+
+Per confrontare somme di denaro disponibili in momenti diversi introduciamo le seguenti grandezze:
+\begin{itemize}
+    \item \(VA\) $\rightarrow$ \textbf{Valore Attuale}, cioè il valore oggi del capitale;
+    \item \(F_n\) $\rightarrow$ \textbf{Valore Futuro}, cioè il capitale che sarà ricevuto o restituito alla scadenza;
+    \item \(n\) $\rightarrow$ \textbf{Scadenza dell'impiego}, cioè il numero di periodi che separano il momento attuale dalla scadenza;
+    \item \(i\) $\rightarrow$ \textbf{Tasso di attualizzazione}, cioè il rendimento che potremmo ottenere investendo oggi il nostro capitale in un investimento alternativo con rischio equivalente.
+\end{itemize}
+
+\noindent Il \textbf{Valore Attuale} indica quanto vale oggi una somma di denaro che riceveremo in futuro e si calcola come:
+\[
+VA = \frac{F_n}{(1+i)^n}
+\]
+
+\noindent Definiamo quindi il \textbf{Fattore di Attualizzazione}:
+\[
+FA_n = \frac{1}{(1+i)^n}
+\]
+
+\noindent da cui:
+\[
+VA = FA_n \cdot F_n
+\]
+
+\noindent Il fattore di attualizzazione permette quindi di ``riportare indietro nel tempo'' un flusso di cassa futuro, determinando quanto vale oggi.
+
+\subsubsection*{Primo principio base della finanza}
+Il primo principio fondamentale della finanza afferma che:
+
+\begin{center}
+    \textbf{Il denaro di oggi vale più del denaro di domani.}
+\end{center}
+
+\noindent Il motivo è che il denaro disponibile oggi può essere immediatamente investito e generare un rendimento.
+
+\noindent Ad esempio, supponiamo di poter investire \(100\) euro oggi a un tasso del \(5\%\). Tra un anno avremo:
+\[
+100 \cdot (1+0{,}05) = 105
+\]
+
+\noindent Quindi, se possiamo scegliere tra:
+\begin{itemize}
+    \item ricevere \(100\) euro oggi;
+    \item ricevere \(100\) euro tra un anno;
+\end{itemize}
+conviene economicamente ricevere i \(100\) euro oggi, perché possiamo investirli e ottenere \(105\) euro tra un anno.
+
+\noindent Possiamo ragionare anche al contrario: se riceveremo \(100\) euro tra un anno e il tasso è del \(5\%\), il loro valore oggi è:
+\[
+VA = \frac{100}{1+0{,}05} \approx 95{,}24
+\]
+
+\noindent Questo significa che \textbf{100 euro tra un anno equivalgono oggi a circa 95,24 euro}, considerando un rendimento alternativo del \(5\%\).
+
+\noindent Il tasso \(i\) rappresenta quindi il \textbf{costo opportunità del capitale}: investendo il denaro in un determinato progetto, 
+rinunciamo infatti al rendimento che avremmo potuto ottenere investendolo in un'alternativa con rischio equivalente.
+
+\noindent In generale:
+\begin{itemize}
+    \item maggiore è \(i\) $\rightarrow$ minore è il valore attuale;
+    \item maggiore è \(n\) $\rightarrow$ minore è il valore attuale;
+    \item maggiore è \(F_n\) $\rightarrow$ maggiore è il valore attuale.
+\end{itemize}
+
 \subsection{Valore Attuale Netto (VAN)}
+Il \textbf{Valore Attuale Netto (VAN)} misura quanto valore viene creato da un investimento, 
+confrontando il valore attuale dei flussi di cassa futuri con l'investimento iniziale richiesto.
+
+\[
+VAN = VA - \text{Investimento iniziale}
+\]
+
+\noindent Nel caso di un unico flusso di cassa futuro:
+\[
+VAN = F_0 + \frac{F_1}{1+i}
+\]
+
+\noindent dove:
+\begin{itemize}
+    \item \(F_0\) $\rightarrow$ investimento iniziale, considerato negativo perché rappresenta un'uscita di denaro;
+    \item \(F_1\) $\rightarrow$ flusso di cassa ricevuto tra un periodo;
+    \item \(i\) $\rightarrow$ costo opportunità del capitale.
+\end{itemize}
+
+\noindent Il criterio decisionale è semplice:
+\[
+VAN > 0 \Rightarrow \text{il progetto crea valore}
+\]
+\[
+VAN < 0 \Rightarrow \text{il progetto distrugge valore}
+\]
+
+\noindent Quindi, maggiore è il VAN, maggiore è il valore creato dall'investimento.
+\noindent Il tasso \(i\), a seconda del contesto, può rappresentare:
+\begin{itemize}
+    \item \textbf{Costo opportunità del capitale} $\rightarrow$ rendimento a cui si rinuncia investendo in un progetto invece che in un'alternativa con lo 
+    stesso livello di rischio;
+    \item \textbf{Tasso di attualizzazione} $\rightarrow$ tasso utilizzato per riportare al valore attuale i flussi di cassa futuri;
+    \item \textbf{Rendimento atteso} $\rightarrow$ rendimento minimo che ci si aspetta di ottenere affinché un investimento sia considerato conveniente.
+\end{itemize}
+
+\noindent Questi concetti sono strettamente collegati: in molti problemi finanziari lo stesso valore di \(i\) viene utilizzato come rendimento richiesto e come tasso 
+con cui attualizzare i flussi di cassa futuri.
+\subsubsection*{Esempio di attualizzazione e VAN}
+
+Supponiamo di acquistare un terreno e costruire un immobile sostenendo oggi un costo complessivo di \(700.000\) euro. Prevediamo di 
+poter vendere l'immobile tra un anno a \(800.000\) euro.
+
+\begin{itemize}
+    \item investimento iniziale: \(F_0 = -700.000\) euro;
+    \item flusso di cassa tra un anno: \(F_1 = 800.000\) euro.
+\end{itemize}
+
+\noindent Il valore \(F_0\) è negativo perché rappresenta un'\textbf{uscita di denaro}, mentre \(F_1\) è positivo perché 
+rappresenta un'\textbf{entrata futura}.
+
+\noindent Supponiamo che investimenti alternativi con lo stesso livello di rischio offrano un 
+rendimento del \(7\%\). Questo rendimento rappresenta il nostro \textbf{costo opportunità del capitale}:
+\[
+i = 7\%
+\]
+
+\noindent Non possiamo confrontare direttamente \(700.000\) euro di oggi con \(800.000\) euro ricevuti tra un anno. 
+Dobbiamo prima calcolare quanto valgono \textbf{oggi} gli \(800.000\) euro futuri:
+\[
+VA = \frac{800.000}{1+0{,}07} = 747.664 \text{ euro}
+\]
+
+\noindent A questo punto possiamo calcolare il \textbf{VAN (Valore Attuale Netto)}, cioè la differenza tra il valore attuale dei 
+flussi di cassa futuri e l'investimento iniziale:
+\[
+VAN = -700.000 + 747.664 = 47.664 \text{ euro}
+\]
+
+\noindent Poiché:
+\[
+VAN > 0
+\]
+il progetto genera \(47.664\) euro di valore in più rispetto a un investimento alternativo con lo stesso rischio.
+
+\noindent In generale:
+\begin{itemize}
+    \item \(VAN > 0\) $\rightarrow$ il progetto crea valore;
+    \item \(VAN = 0\) $\rightarrow$ il progetto rende quanto l'alternativa;
+    \item \(VAN < 0\) $\rightarrow$ il progetto rende meno dell'alternativa.
+\end{itemize}
+\subsection{Rischio e Valore Attuale}
+Il rendimento richiesto a un investimento dipende anche dal suo \textbf{rischio}: maggiore è il rischio, maggiore sarà il 
+rendimento richiesto dagli investitori.
+
+\noindent Di conseguenza:
+\begin{itemize}
+    \item maggiore rischio $\rightarrow$ maggiore tasso di rendimento richiesto;
+    \item maggiore tasso di attualizzazione \(i\) $\rightarrow$ minore Valore Attuale.
+\end{itemize}
+
+\noindent Questo porta al \textbf{secondo principio base della finanza}:
+
+\begin{center}
+    \textbf{Il denaro sicuro vale più del denaro rischioso.}
+\end{center}
+
+\noindent Ad esempio, considerando un flusso futuro di \(800.000\) euro:
+\[
+VA_{7\%} = \frac{800.000}{1+0{,}07} = 747.664
+\]
+\[
+VA_{12\%} = \frac{800.000}{1+0{,}12} = 714.286
+\]
+
+\noindent Il secondo investimento è più rischioso e richiede quindi un rendimento maggiore (\(12\%\)). 
+Di conseguenza, lo stesso flusso futuro di \(800.000\) euro ha oggi un valore inferiore.
+
+\subsection{Regola del tasso di rendimento}
+Un investimento è conveniente se il suo \textbf{tasso di rendimento} è maggiore del costo opportunità del capitale:
+\[
+\text{Rendimento} > \text{Costo opportunità del capitale}
+\]
+
+\noindent Il rendimento di un investimento può essere calcolato come:
+\[
+\text{Rendimento} = \frac{\text{Profitto}}{\text{Investimento}}
+\]
+
+\noindent Riprendendo l'esempio dell'immobile:
+\[
+\text{Rendimento} =
+\frac{800.000-700.000}{700.000}
+= 14{,}28\%
+\]
+
+\noindent Se il costo opportunità del capitale è \(12\%\):
+\[
+14{,}28\% > 12\%
+\]
+
+\noindent quindi il progetto offre un rendimento superiore a quello minimo 
+richiesto per il suo livello di rischio e crea valore.
+
+\noindent In sintesi, un investimento più rischioso deve offrire un \textbf{rendimento maggiore} 
+per compensare l'investitore del rischio aggiuntivo.
