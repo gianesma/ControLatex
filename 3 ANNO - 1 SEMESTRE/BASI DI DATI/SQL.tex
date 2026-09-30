@@ -24,14 +24,14 @@ Quando l'ambiguità sullo schema non sussiste si può omettere \texttt{NomeSchem
 Quando l'ambiguità sulla tabella non sussiste si può omettere \texttt{NomeTabella.} e scrivere semplicemente \texttt{Attributo}
 \newpage 
 \subsection{Select}
-L'Istruzione di interrogazione in SQL è \texttt{select} che definisce una interrogazione (query) e restituisce il risultato della valutazione di quella query sulla base di dati in forma di tabella. La sua forma elementare è:\\
+L'istruzione di interrogazione in SQL è \texttt{select} che definisce una interrogazione (query) e restituisce il risultato della valutazione di quella query sulla base di dati in forma di tabella. La sua forma elementare è:
 \begin{verbatim}
     select  Attributo,...,Attributo
     from    Tabella
     where   Condizione
 \end{verbatim}
 \noindent semantica:\\
-ogni tupla $t$ della Tabella è indicato nella clausola \underline{from} viene analizzata. Se $t$ non soddisfa la condizione nella clausola \underline{where}, allora viene ignorata. 
+ogni tupla $t$ della Tabella è indicata nella clausola \underline{from} viene analizzata. Se $t$ non soddisfa la condizione nella clausola \underline{where}, allora viene ignorata. 
 Altrimenti da $t$ viene prodotta la target list (lista attributi) secondo quanto specificato nella target list che appare dopo \underline{select} e la tupla risultante da tale target list viene inserita nel risultato. 
 Il risultato della esecuzione della query viene restituito nel canale di output del sistema e volendo memorizzarlo nella base di dati.
 La semantica descritta chiarisce che l'istruzione è analoga alla seguente espressione dell'algebra relazionale\\
@@ -79,17 +79,20 @@ $$PROJ_{nome,reddito}(SEL_{eta<30}(persone))$$
 
 \section{Ridenominazione As}
 "as" nella lista degli attributi serve a ridenominare gli attributi, specificando esplicitamente un nome per un attributo del risultato.\\
-Esempio:\\
-\texttt{select nome as name, reddito as salary\\
-from persone\\
-whereeta<30}\\
-restituisce com risultato una tabella con due attributi, il primo nome name ed il secondo salary.\\
+Esempio:
+\begin{verbatim}
+select nome as name, reddito as salary
+from persone
+where eta<30
+\end{verbatim}
+\noindent restituisce com risultato una tabella con due attributi, il primo nome name ed il secondo salary.\\
 "as" serve anche ad assegnare un nuovo nome alle tabelle nel'ambito di una query.\\
-Esempio:\\
-\texttt{select p.nome as name, p.reddito as salary\\
-from persone as p\\
-where p.eta<30}\\
-
+Esempio:
+\begin{verbatim}
+select p.nome as name, p.reddito as salary
+from persone as p
+where p.eta<30
+\end{verbatim}
 \section{Distinct, $<$, *, where, null}
 \subsection{Distinct}
 Per non avere duplicati nella query nella select aggiungiamo distinct\\
@@ -147,7 +150,7 @@ where reddito > 25 and (eta < 30 or eta >60)}\\
 Nelle condizioni nella clausola where si possono usare molti operatori che SQL mette a disposizione.\\
 Ad esempio l'operatore \texttt{like} che consente di verificare che una stringa appartenga al linguaggio definito da una espressione regolare.\\
 Esempio:\\
-se vogliamo conoscere quali sono le persone che hanno un nome che inizia per 'A', ha 'd' come. terza lettera e può continuare con altri caratteri.
+se vogliamo conoscere quali sono le persone che hanno un nome che inizia per 'A', ha 'd' come terza lettera e può continuare con altri caratteri.
 \begin{verbatim}
 select *
 from persone
@@ -163,7 +166,7 @@ from persone
 where eta > 40 or eta is null    
 \end{verbatim}
 \section{Espressioni nella target list}
-In ogni elemnto della target list può essere una espressione che fa uso dei valori memorizzati negli attributi delle tuple del risultato.\\
+Ogni elemento della target list può essere una espressione che fa uso dei valori memorizzati negli attributi delle tuple del risultato.\\
 Esempio:\\
 \texttt{select eta, reddito/2\\
 from persone\\
@@ -231,7 +234,7 @@ Date le tabelle R1(A1, A2) e R2(A3, A4)
 \noindent è equivalente a:
 $REN_{B1,B2 \leftarrow A1,A4}( PROJ_{A1,A4} (SEL_{A2=A3 \text{ and }A4=C1 }( R1 \text{ }JOIN\text{ }R2\text{ }JOIN\text{ }REN_{C1,C2 \leftarrow A1,A2}(R1))))$
 \subsection{Self-join}
-Il self-jin è un join in cui la stessa relazione compare sia come operando sinistro sia come operando destro ed è cruciale quando dobbiamo combinare due tuple della stessa relazione.\\
+Il self-join è un join in cui la stessa relazione compare sia come operando sinistro sia come operando destro ed è cruciale quando dobbiamo combinare due tuple della stessa relazione.\\
 Esempio:\\
 \texttt{persone(nome, eta, reddito)}\\
 \underline{query}: Vogliamo le coppie di persone con lo stesso reddito\\

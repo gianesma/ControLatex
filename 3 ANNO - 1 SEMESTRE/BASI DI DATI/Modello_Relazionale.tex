@@ -7,7 +7,7 @@ Il \textbf{prodotto cartesiano} $D_1 \times D_2 \times ... \times D_n$ è l'insi
 \colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
 Una \textbf{relazione matematica} sugli insiemi $D_1,D_2,...,D_n$ è un \textbf{sottoinsieme del prodotto cartesiano} $D_1 \times D_2 \times ... \times D_n$.
 \end{definition}}}\medskip\\
-Se R è una relaziome matematica sugli insiemi $D_1,D_2,...,D_n$ tali insiemi sono detti domini, tale relazione su $n$ domini dice che ha grado $n$. il numero di n-uple (righe) di una relazione è la cardinalità della relazione stessa.\\
+Se R è una relaziome matematica sugli insiemi $D_1,D_2,...,D_n$ tali insiemi sono detti domini, tale relazione su $n$ domini dice che ha grado $n$. Il numero di n-uple (righe) di una relazione è la cardinalità della relazione stessa.\\
 Esempio:
 \begin{itemize}
 
@@ -56,7 +56,7 @@ Ogni riga della tabella corrisponde ad una tupla della relazione, e siccome la r
    % \caption{caption}
     %\label{label}
 \end{figure}
-\noindent Gli attributi devono essere atomici cioè non devono essere un array ma un singolo valore, e non ci devono esseredue tuple uguali.
+\noindent Gli attributi devono essere atomici cioè non devono essere un array ma un singolo valore, e non ci devono essere due tuple uguali.
  \subsection{Notazioni}
  Sia $X$ l'insime degli attributi di una relazione $R$. Se $t$ è una tupla di $R$, cioè una tupla su $X$, e se $A \in X$ è un attributo in $X$, allora $t[A]$ oppure anche $t.A$ indica il valore 
  che la tupla $t$ ha in corrispondenza dell'attributo A.\\
@@ -76,8 +76,8 @@ etichette sono i valori in corrispondenza dei vari attributi.\\
 tupla etichettata $t1=$ $<Casa:$ $'Juve',$ $Fuori:$ $'Lazio',$ $RetiCasa:3,$ $RetiFuori:1>$
 \begin{figure}[H]
     \centering  
-    \includegraphics[width=0.65\linewidth]{../../images/tabelle_collegate.png}
-    \caption{caption}
+    \includegraphics[width=0.45\linewidth]{../../images/tabelle_collegate.png}
+   % \caption{caption}
     %\label{label}
 \end{figure}
 \subsection{Schemi e istanze}
@@ -88,13 +88,13 @@ tupla etichettata $t1=$ $<Casa:$ $'Juve',$ $Fuori:$ $'Lazio',$ $RetiCasa:3,$ $Re
    \textbf{Istanza di relazione} su uno schema $R(X)$: insieme $r$ delle tuple sull'insieme di attributi X   
 \end{definition}}}
 \colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
-   \textbf{Relazione}: schea $T$ di relazione $+$ istanza su $T$
+   \textbf{Relazione}: schema $T$ di relazione $+$ istanza su $T$
 \end{definition}}}
 \colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
    \textbf{Schema di base di dati}: insieme non vuoto di schemi di relazione $R={R_1 (A_1 A_2 ... A_n),..., R_m (B_1 B_2 ... B_p) }$
 \end{definition}}}
 \colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
-   \textbf{Istanza di base di dati} su uno schema $R=\{ R_1(X_1),...,R_m(X_m)\}$: insieme di relazioni $r=\{ r_1,...,r_m\}$, dove per ogni $i=1,...,m, r_i $ èuna istanza relazione sullo schema $R_i(X_i)$
+   \textbf{Istanza di base di dati} su uno schema $R=\{ R_1(X_1),...,R_m(X_m)\}$: insieme di relazioni $r=\{ r_1,...,r_m\}$, dove per ogni $i=1,...,m, r_i $ è una istanza relazione sullo schema $R_i(X_i)$
 \end{definition}}}
 \colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
    \textbf{Base di dati}: schema $S$ di basi di dati $+$ istanza di basi di dati su S
@@ -111,7 +111,7 @@ I suoi operatori sono definiti su relazioni, producono relazioni e possono esser
     \item \textbf{join in diverse versioni}: join naturale, prodotto cartesiano, theta-join
 \end{itemize}
 \subsection{Operatori insiemistici}
-Le relazioni sono insiemi di tuple quindi è sensato definire per esse gli operandi insiemistici, sono operaori binari e i risultati dell'applicazione di tali operandi sono a loro volta relazioni.\\
+Le relazioni sono insiemi di tuple quindi è sensato definire per esse gli operandi insiemistici, sono operatori binari e i risultati dell'applicazione di tali operandi sono a loro volta relazioni.\\
 Si può applicare \textbf{unione}, \textbf{intersezione}, \textbf{differenza} solo a relazioni che hanno uguali definizioni intensionali\\
 \begin{figure}[H]
     \centering  
@@ -158,7 +158,7 @@ Lo schema della relazione rappresentata da "Operando" viene modificato sostituen
     %\label{label}
 \end{figure}
 
-\subsection{selezione}
+\subsection{Selezione}
 Operatore monadico (un solo argomento) che prevede la formulazione di condizione, produce un risoltato che:
 \begin{itemize}
     \item ha lo stesso schema dell'operando
@@ -174,14 +174,14 @@ Operatore monadico (un solo argomento) che prevede la formulazione di condizione
 \begin{itemize}
     \item guadagnano più di 50
     \item guadagnano più di 50 e lavorano a Milano
-    \item hanno lo stesos nome della filiale presso cui lavorano
+    \item hanno lo stesso nome della filiale presso cui lavorano
 \end{itemize}
 \textbf{Selezione: sintassi e semantica}\\
 Sintassi:\\
 $$SEL_{Condizione}(Operando)$$\\
 Condizione: espressione booleana in cui gli operandi utilizzano gli attributi delle relazioni in gioco\\
 Semantica:\\
-la relazione risultato ha gli stessi attributi dell'operando e contiene le tuple dell'operando che soddisfano la condizione specificata\\
+La relazione risultato ha gli stessi attributi dell'operando e contiene le tuple dell'operando che soddisfano la condizione specificata\\
 esempio: impiegati che guadagnano più di 50
 \begin{figure}[H]
     \centering  
@@ -244,7 +244,7 @@ Combinando selezione e proiezione, possiamo estrarre interessanti informazioni d
     %\caption{caption}
     %\label{label}
 \end{figure}
-\noindent $$PORJ_{MAtricola, Cognome}(SEL_{Stipendio>50}(Impiegato))$$
+\noindent $$PORJ_{Matricola, Cognome}(SEL_{Stipendio>50}(Impiegato))$$
 \subsection{La negazione in algebra relazionale}
 \noindent Per esprimere nel linguaggio dell'algebra condizioni di negazione è utilizzare l'operatore di differenza. 
 Il corrispettivo logico di questo principio è la seguente regola per scrivere query corrette:\\
@@ -267,14 +267,14 @@ Operatore binario, produce un risultato:
 \noindent \textbf{Join naturale: sintassi e semantica}\\
 Siano $R_1(X_1),R_2(X_2)$ con $X_1$ e $X_2$ che sono due insiemi, $R_1 \text{ JOIN }R_2$ è una relazione su $X_1X_2$ il cui insieme di tuple è:\\
 $\{ t \text{ su } X_1X_2 | \text{ esistono due tuple } t_1 \in R_1 \text{ e } t_2 \in R2 \text{ tali che } t[X_1]=t_1 \text{ e } t[X_2]=t_2 \}$\\
-$R_1 \text{ JOIN }R_2$ è una relazione il cui insieme di tuple contiene ogni tupla $t$ tale che esistono due tuple $T_1 \in R_1$ e $t2 \in R2$ tali che
+$R_1 \text{ JOIN }R_2$ è una relazione il cui insieme di tuple contiene ogni tupla $t$ tale che esistono due tuple $t_1 \in R_1$ e $t_2 \in R_2$ tali che
 \begin{itemize}
     \item $t$ negli attributi $X_1$ ha gli stessi valori di $t_1$
     \item $t$ negli attributi $X_2$ ha gli stessi valori di $t_2$
 \end{itemize}
 \noindent Una tupla $t$ esiste solo se le due tuple $t_1$ e $t_2$ hanno gli stessi valori negli attributi che $R_1$ e $R_2$ hanno in comune.
-Diciamo che $t_1 \in R_1 \text{ e } t_2 \in R_2$ sono combinabili dala join naturale se $t_1[X_1 \bigcap X_2]=t_2[X_1 \bigcap X_2]$. Dalla definizione segue che ogni tupla 
-nel join tra $R_1$ ed $R_2$ proviene da due tuple combinabili dal join. In effetti $t_1 \ in R_1$ e $t_2 \in R_2$ tali che $t[X_1 \bigcap X_2]=t_2[X_1 \bigcap X_2]$ si combinano 
+Diciamo che $t_1 \in R_1 \text{ e } t_2 \in R_2$ sono combinabili dal join naturale se $t_1[X_1 \bigcap X_2]=t_2[X_1 \bigcap X_2]$. Dalla definizione segue che ogni tupla 
+nel join tra $R_1$ ed $R_2$ proviene da due tuple combinabili dal join. In effetti $t_1 \in R_1$ e $t_2 \in R_2$ tali che $t[X_1 \bigcap X_2]=t_2[X_1 \bigcap X_2]$ si combinano 
 per ottrenere la tupla $t$ tale che $t[X_1]=t_1$ e $t[X_2]=t_2$
 \begin{figure}[H]
     \centering  
@@ -283,7 +283,7 @@ per ottrenere la tupla $t$ tale che $t[X_1]=t_1$ e $t[X_2]=t_2$
     %\label{label}
 \end{figure}
 \noindent nella tabella con il join non è presente il corso Reti perchè non è in comune 
-\subsection{Join completo}
+\newpage \subsection{Join completo}
 Un join completo è un join in cui ogni tupla contribuisce al risultato.
 \begin{figure}[H]
     \centering  
@@ -307,15 +307,14 @@ $$R_1 \text{ }JOIN_{condizione} R_2$$
 \subsection{Equi-join}
 Se il solo operatore di confronto usato nella condozione del Theta-join è l'uguaglianza (=), allora si parla di \textbf{equi-join}
 \subsection{Self-join}
-Il \textbf{self-join} è un equi-join in cui cui la stessa relazione compare sia come operando sinistro sia come operando destro, ovvero, quando una operazione di join coinvolge la stessa relazione due volte. 
+Il \textbf{self-join} è un equi-join in cui la stessa relazione compare sia come operando sinistro sia come operando destro, ovvero, quando una operazione di join coinvolge la stessa relazione due volte. 
 Siccome l'equi-join prevede che i due operandi non abbiano attributi in comune, quando si applica un self-join in uno dei due operandi occorre ridenominare tutti gli attributi della relazione.
-\subsection{Riassunto join}
+\newpage \subsection{Riassunto join}
 \begin{itemize}
     \item \textbf{Join naturale} tra $R_1 \text{ e } R_2$ (si può eseguire sempre)
     \begin{itemize}
         \item due tuple si accoppiano se e solo se hanno gli stessi valori negli attributi che $R_1$ ed $R_2$ hanno in comune
-        \item se $R_1 \text{ ed }R_2$ non hanno attributi in comune, il risultato del join naturale è il prodotto cartesiano tra due relazione perchè ogni tupla di $R_1$ 
-        \item si combina con ogni tupla di $R_2$ per dare origine ad una tupla nel risultato
+        \item se $R_1 \text{ ed }R_2$ non hanno attributi in comune, il risultato del join naturale è il prodotto cartesiano tra due relazione perchè ogni tupla di $R_1$ si combina con ogni tupla di $R_2$ per dare origine ad una tupla nel risultato
     \end{itemize}
     \item \textbf{Theta-join} tra $R_1$ e $R_2$ (richiede che $R_1$ e $R_2$ non abbiano attributi in comune)
     \begin{itemize}
@@ -340,7 +339,7 @@ $$ PROJ_{nome,tipo}(Artista \text{ JOIN }SEL_{anno<2000}(Concerto))$$
 \underline{soluzione}: eseguo due join naturali, il primo tra Artista e Concerto su attributo comune idart, il secondo tra Concerto e Evento su attributo comune idconc.\\
 $$ PROJ_{idart,nome}((Artista \text{ JOIN }SEL_{citta<>'Roma'}(Concerto)) \text{ JOIN }SEL_{voto>4}(Evento)) $$\\
 \underline{query3}: trovare l'id degli artisti che hanno tenuto almeno due concerti nella stessa città in anni diversi.\\
-\underline{soluzione}: poichè dobbiamo tentare di collegare due tupke della stessa relazione (due concerti tenuti nella stessa città), si deve calcolare il join di Concerto con se stesso, ovviamente stando attenti alle ridenominazioni\\
+\underline{soluzione}: poichè dobbiamo tentare di collegare due tuple della stessa relazione (due concerti tenuti nella stessa città), si deve calcolare il join di Concerto con se stesso, ovviamente stando attenti alle ridenominazioni\\
 $$PROJ_{idart}(REN_{i2 \leftarrow idconc, \text{ }t1\leftarrow idart,\text{ }a1\leftarrow anno,\text{ }c1\leftarrow citta,}(Concerto) \text{ }JOIN_{idart=t1 \text{ and }citta=c1 \text{ and }anno<>a1} Concerto)$$
 \underline{query4}: trovare l'id degli artisti che dopo il 2010 hanno tenuto concerti \textbf{solo} a Roma\\
 \underline{soluzione}: dobbiamo capire come intendere "solo", "hanno tenuto concerti solo a Roma" ha lo stesso significato di "\textbf{non} hanno tenuto concerti in una città diversa da Roma".\\
