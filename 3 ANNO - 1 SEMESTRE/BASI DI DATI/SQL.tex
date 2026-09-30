@@ -90,11 +90,19 @@ Esempio:\\
 from persone as p\\
 where p.eta<30}\\
 
-\section{Distinct, *, where, null}
+\section{Distinct, $<$, *, where, null}
 \subsection{Distinct}
 Per non avere duplicati nella query nella select aggiungiamo distinct\\
 Esmepio:\\
 \texttt{select distinct attributo1,...,attributo2 from tabella1}
+\subsection{$<$}
+La utilizziamo per evitare ridondanze quando stiamo confrontando righe della stessa tabella tra loro, tipicamente in un self join, e vogliamo ottenere ogni coppia una sola volta.\\
+Esempio:
+\begin{verbatim}
+    select p1.nome, p2.nome
+    from persona p1, persona p2
+    where p1.id < p2.id
+\end{verbatim}
 \subsection{*}
 Qunado vogliamo che una query restituisca tutti gli attributi usiamo '*' nella select al posto della lista degli attributi.\\
 Esempio:\\
@@ -139,7 +147,7 @@ where reddito > 25 and (eta < 30 or eta >60)}\\
 Nelle condizioni nella clausola where si possono usare molti operatori che SQL mette a disposizione.\\
 Ad esempio l'operatore \texttt{like} che consente di verificare che una stringa appartenga al linguaggio definito da una espressione regolare.\\
 Esempio:\\
-se vogliamo conoscere quali sono le persone che hanno un nome che inizia per 'A', ha 'd' come. terza lettera e può continuare con altri caratteri.\\
+se vogliamo conoscere quali sono le persone che hanno un nome che inizia per 'A', ha 'd' come. terza lettera e può continuare con altri caratteri.
 \begin{verbatim}
 select *
 from persone
@@ -148,7 +156,7 @@ where nome like 'A_d%'
 \subsection{gestione dei valori nulli - "is null" e "is not null"}
 nelle condizioni che compaiono nella clausola where si possono usare anche i predicati "is null" e "is not null" per gestire i valori nulli\\
 Esempio:\\
-vogliamo le persone la cui eta è o ptrebbe essere maggiore di 40\\
+vogliamo le persone la cui eta è o ptrebbe essere maggiore di 40
 \begin{verbatim}
 select *
 from persone
@@ -174,3 +182,63 @@ Espressione costituita da una costante di tipo stringa che aggiunge un attributo
     %\label{label}
 \end{figure}
 
+\section{Selezione, proiezione e join}
+le istruzioni select che abbiamo visto finora hanno una sola tabella nella clausola from e quindi permettono di realizzare:
+\begin{itemize}
+    \item selezioni
+    \item proiezioni
+    \item ridenominazioni
+\end{itemize}
+\noindent I joni si possono realizzare indicando due o più tabelle nella clausola from, separate da virgola
+\subsection{Select}
+\subsubsection{sintassi e semantica}
+La forma base delle selct in SQL è:
+\begin{verbatim}
+    select <target list>  --> lista attributi
+    from R1,R2,...,Rn
+    where <condizione>
+\end{verbatim}
+\noindent In algebra relazionale: $PROJ_{target list}(SEL_{<condizione>}(R_1 \times R_2 \times ... \times R_n))$\\
+Ogni tupla t del prodotto cartesiano viene analizzata. Se t non verifica la condizione della clausola WHERE, essa viene ignorata. Se invece t verifica la condizione della clausola 
+WHERE, allora da t viene prodotta la target list secondo la proiezione specificata nella clausola SELECT e la tupla risultante da tale target list viene inserita nel risultato\\
+\underline{Attenzione}: questo non significa che il DBMS calcola il prodotto cartesiano di R1,R2,..,Rn. Significa che ilrisultato ottenuto è lo stesso di quello che si ottiene partendo dal prodotto cartesiano.
+\subsection{Join}
+Date due relazioni: R1(A1, A2) e R2(A3, A4)
+\begin{verbatim}
+    select R1.A1, R2.A4
+    from R1, R2
+    where R1.A2 = R2.A3
+\end{verbatim}
+\noindent è analoga a: $PROJ_{A1,A4}(R1 \text{ }JOIN_{A2=A3}\text{ }R2)$\\
+Possono essere necessarie ridenominazioni:
+\begin{itemize}
+    \item nella target list
+    \item nella clausola from (in particolare, introdurre alias consente di riferirsi due o più volte alla stessa tabella)
+\end{itemize}
+\noindent Esempio:
+\begin{verbatim}
+    select X.A1 as B1,...
+    from R1 as X, R2 as Y, R1 as Z
+    where X.A2 = Y.A3 and Y.A4 = Z.A1
+\end{verbatim}
+\noindent Si può anche scireve senza 'as'.\medskip\\
+Date le tabelle R1(A1, A2) e R2(A3, A4)
+\begin{verbatim}
+    select distinct X.A1 as B1, Y.A4 as B2
+    from R1 as X, R2 as Y, R1 as Z
+    where X.A2 = Y.A3 and Y.A4 = Z.A1 
+\end{verbatim}
+\noindent è equivalente a:
+$REN_{B1,B2 \leftarrow A1,A4}( PROJ_{A1,A4} (SEL_{A2=A3 \text{ and }A4=C1 }( R1 \text{ }JOIN\text{ }R2\text{ }JOIN\text{ }REN_{C1,C2 \leftarrow A1,A2}(R1))))$
+\subsection{Self-join}
+Il self-jin è un join in cui la stessa relazione compare sia come operando sinistro sia come operando destro ed è cruciale quando dobbiamo combinare due tuple della stessa relazione.\\
+Esempio:\\
+\texttt{persone(nome, eta, reddito)}\\
+\underline{query}: Vogliamo le coppie di persone con lo stesso reddito\\
+\underline{soluzione}:
+\begin{verbatim}
+    select p1.nome, p1.eta, p1.reddito, p2.nome, p2.eta
+    from persone p1, persone p2
+    where p1.reddito=p2.reddito and p1.nome<p2.nome
+\end{verbatim}
+\noindent utilizziamo p1.nome $<$ p2.nome per eliminare le tuple ridondanti, in quando lascia solo le tuple in cui p1.nome viene prima in ordine alfabetico di p2.nome
