@@ -112,7 +112,7 @@ Le informazioni monetarie possono essere suddivise in quattro categorie:
     imponibile viene determinato apportando specifiche rettifiche al risultato civilistico prima delle imposte.
 \end{enumerate}
 
-\subsection{Contabilità}
+\section{Contabilità}
 La \textbf{contabilità} è il processo di raccolta, misurazione, analisi, interpretazione, sintesi e comunicazione delle 
 informazioni economiche e finanziarie di un'impresa. Queste informazioni permettono ai diversi soggetti interessati di esprimere giudizi e prendere decisioni sull'impresa.
 
@@ -437,3 +437,229 @@ richiesto per il suo livello di rischio e crea valore.
 
 \noindent In sintesi, un investimento più rischioso deve offrire un \textbf{rendimento maggiore} 
 per compensare l'investitore del rischio aggiuntivo.
+
+\subsection{Valutazione delle attività a lungo termine}
+Quando un investimento genera \textbf{più flussi di cassa in periodi diversi}, è necessario calcolare separatamente il valore attuale di ciascun flusso e successivamente sommarli.
+
+\noindent In generale:
+\[
+VA = \frac{F_1}{(1+i_1)^1}
+   + \frac{F_2}{(1+i_2)^2}
+   + \dots
+   + \frac{F_N}{(1+i_N)^N}
+\]
+
+\noindent dove:
+\begin{itemize}
+    \item \(F_n\) $\rightarrow$ flusso di cassa che verrà ricevuto nel periodo \(n\);
+    \item \(i_n\) $\rightarrow$ tasso di attualizzazione relativo al flusso del periodo \(n\);
+    \item \(n\) $\rightarrow$ numero di periodi che separano il flusso dal momento attuale.
+\end{itemize}
+
+\noindent Ogni flusso viene quindi \textbf{attualizzato per il tempo che lo separa da oggi}. Un flusso ricevuto tra due anni, ad esempio, deve essere attualizzato per due periodi.
+
+\subsubsection*{Esempio}
+Supponiamo di ricevere:
+\begin{itemize}
+    \item \(100\) euro tra un anno, con \(i_1=7\%\);
+    \item \(200\) euro tra due anni, con \(i_2=7{,}7\%\).
+\end{itemize}
+
+\noindent Attualizziamo separatamente i due flussi:
+\[
+VA_1 = \frac{100}{1{,}07} = 93{,}46
+\]
+\[
+VA_2 = \frac{200}{(1{,}077)^2} = 172{,}42
+\]
+
+\noindent Il valore attuale complessivo è dato dalla loro somma:
+\[
+VA = 93{,}46 + 172{,}42 = 265{,}88
+\]
+
+\noindent Quindi ricevere \(100\) euro tra un anno e \(200\) euro tra due anni equivale ad avere oggi circa \(265{,}88\) euro.
+
+\subsection{Discounted Cash Flow}
+Il procedimento con cui tutti i flussi di cassa futuri vengono attualizzati prende il nome di \textbf{Discounted Cash Flow (DCF)}.
+
+\noindent In forma compatta:
+\[
+VA = \sum_{n=1}^{N}\frac{F_n}{(1+i_n)^n}
+\]
+
+\noindent Il simbolo \(\sum\) indica semplicemente che dobbiamo \textbf{calcolare e sommare il valore attuale di tutti i flussi}, dal primo periodo fino al periodo \(N\).
+
+\subsection{VAN su più periodi}
+Se consideriamo anche l'investimento iniziale \(F_0\), possiamo calcolare il \textbf{Valore Attuale Netto}:
+\[
+VAN = F_0 + \sum_{n=1}^{N}\frac{F_n}{(1+i_n)^n}
+\]
+
+\noindent dove \(F_0\) è normalmente negativo perché rappresenta l'investimento iniziale.
+
+\noindent In sintesi:
+\begin{itemize}
+    \item \(VA\) $\rightarrow$ somma dei valori attuali dei flussi futuri;
+    \item \(VAN\) $\rightarrow$ valore attuale dei flussi futuri meno l'investimento iniziale.
+\end{itemize}
+
+
+\subsection{Equivalenza finanziaria}
+Due somme di denaro disponibili in momenti diversi non possono essere confrontate direttamente, perché il denaro ha un valore diverso nel tempo.
+
+\noindent Due somme sono dette \textbf{finanziariamente equivalenti} quando, applicando un determinato tasso di interesse \(i\), hanno lo stesso valore se riportate allo stesso istante temporale.
+
+\noindent Il tasso di interesse permette quindi di spostare il valore del denaro nel tempo attraverso due operazioni:
+\begin{itemize}
+    \item \textbf{Capitalizzazione} $\rightarrow$ permette di calcolare quanto varrà in futuro una somma disponibile oggi;
+    \item \textbf{Attualizzazione} $\rightarrow$ permette di calcolare quanto vale oggi una somma che sarà disponibile in futuro.
+\end{itemize}
+Il concetto principale è questo: non significa che, per esempio, 100 € e 110 € 
+siano uguali. Significa che possono essere equivalenti se si trovano in momenti diversi. Con un tasso del 10\%, 
+100 € oggi sono finanziariamente equivalenti a 110 € tra un anno.
+\subsubsection*{Capitalizzazione}
+Con la capitalizzazione conosciamo il capitale presente \(P\) e vogliamo determinare il suo valore futuro \(F\):
+\[
+F = P(1+i)^n
+\]
+
+\noindent dove:
+\begin{itemize}
+    \item \(P\) $\rightarrow$ valore presente;
+    \item \(F\) $\rightarrow$ valore futuro;
+    \item \(i\) $\rightarrow$ tasso di interesse per periodo;
+    \item \(n\) $\rightarrow$ numero di periodi.
+\end{itemize}
+
+\noindent In pratica, con la capitalizzazione ci spostiamo \textbf{dal presente verso il futuro}.
+
+\subsubsection*{Attualizzazione}
+Con l'attualizzazione facciamo l'operazione inversa: conosciamo il valore futuro \(F\) e vogliamo conoscere il suo valore presente \(P\):
+\[
+P = \frac{F}{(1+i)^n}
+\]
+
+\noindent In questo caso ci spostiamo \textbf{dal futuro verso il presente}.
+
+\noindent Quindi possiamo ricordare:
+\[
+\text{Presente} \xrightarrow{\text{Capitalizzazione}} \text{Futuro}
+\]
+\[
+\text{Presente} \xleftarrow{\text{Attualizzazione}} \text{Futuro}
+\]
+
+\subsection{Rendita perpetua costante}
+Una \textbf{rendita perpetua} è una successione di pagamenti dello stesso importo che continua teoricamente per sempre.
+
+\noindent Se viene ricevuto un importo costante \(C\) a ogni periodo, il suo valore attuale può essere calcolato direttamente con:
+\[
+VA = \frac{C}{r}
+\]
+
+\noindent dove:
+\begin{itemize}
+    \item \(VA\) $\rightarrow$ valore attuale della rendita;
+    \item \(C\) $\rightarrow$ flusso di cassa costante ricevuto in ogni periodo;
+    \item \(r\) $\rightarrow$ tasso di rendimento o di attualizzazione.
+\end{itemize}
+
+\noindent Questa formula è una \textbf{scorciatoia} che evita di attualizzare e sommare singolarmente un numero infinito di flussi di cassa.
+
+\noindent Ad esempio, se una rendita paga \(100\) euro ogni anno per sempre e il rendimento richiesto è del \(5\%\):
+\[
+VA = \frac{100}{0{,}05} = 2.000 \text{ euro}
+\]
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.9\linewidth]{../images/Rendimento perpetue costante.png}
+    \caption{Rendimento perpetue costante}
+    %\label{label}
+\end{figure}
+\subsection{Rendite costanti}
+Una \textbf{rendita costante} è una successione di pagamenti dello stesso importo \(C\), effettuati periodicamente per un numero limitato di periodi.
+
+\noindent Il valore attuale della rendita può essere calcolato direttamente tramite:
+\[
+VA = C \left[\frac{1}{r}-\frac{1}{r(1+r)^t}\right]
+\]
+
+\noindent dove:
+\begin{itemize}
+    \item \(C\) $\rightarrow$ pagamento costante effettuato in ogni periodo;
+    \item \(r\) $\rightarrow$ tasso di attualizzazione per periodo;
+    \item \(t\) $\rightarrow$ numero totale di pagamenti.
+\end{itemize}
+
+\noindent Questa formula è una scorciatoia che permette di calcolare il valore attuale di tutti i pagamenti senza attualizzarli singolarmente.
+
+\subsubsection*{Esempio}
+Supponiamo di prendere un'auto in leasing per \(4\) anni pagando \(300\) euro al mese, senza anticipo e senza pagamento finale.
+
+\noindent Il costo opportunità del capitale è dello \(0{,}5\%\) mensile. Abbiamo quindi:
+\[
+C=300, \qquad r=0{,}005, \qquad t=4\cdot12=48
+\]
+
+\noindent Il valore attuale di tutti i pagamenti è:
+\[
+VA=300\left[
+\frac{1}{0{,}005}
+-\frac{1}{0{,}005(1+0{,}005)^{48}}
+\right]
+\]
+
+\[
+VA \approx 12.774{,}10\text{ euro}
+\]
+
+\noindent Quindi, anche se complessivamente verranno pagati:
+\[
+300\cdot48=14.400\text{ euro}
+\]
+il loro \textbf{valore attuale} è di circa \(12.774\) euro, perché i pagamenti 
+avvengono nel futuro e non tutti oggi.
+
+\subsection{Rendite perpetue crescenti}
+Una \textbf{rendita perpetua crescente} è una successione infinita di pagamenti che aumentano ogni periodo a un tasso di crescita costante \(g\).
+
+\noindent Il valore attuale si calcola con:
+\[
+VA_0 = \frac{C_1}{r-g}
+\]
+
+\noindent dove:
+\begin{itemize}
+    \item \(C_1\) $\rightarrow$ primo pagamento, ricevuto alla fine del primo periodo;
+    \item \(r\) $\rightarrow$ tasso di attualizzazione;
+    \item \(g\) $\rightarrow$ tasso di crescita dei pagamenti.
+\end{itemize}
+
+\noindent La formula è valida se:
+\[
+r > g
+\]
+
+\noindent In un generico istante futuro \(t\), possiamo utilizzare:
+\[
+VA_t = \frac{C_{t+1}}{r-g}
+\]
+
+\subsubsection*{Esempio}
+Supponiamo di ricevere \(1\) milione di euro alla fine del primo anno e che questa somma cresca successivamente 
+del \(4\%\) ogni anno, per sempre.
+
+\noindent Con un tasso di attualizzazione del \(10\%\):
+\[
+C_1=1 \text{ milione}, \qquad r=0{,}10, \qquad g=0{,}04
+\]
+
+\noindent Il valore attuale della rendita è:
+\[
+VA_0=\frac{1}{0{,}10-0{,}04}
+=16{,}67\text{ milioni di euro}
+\]
+
+\noindent Il valore è elevato perché 
+non stiamo valutando solamente il primo milione di euro, ma \textbf{tutti i pagamenti futuri, che continuano per sempre e crescono del \(4\%\) ogni anno}.
