@@ -16,10 +16,30 @@ Una \textbf{stringa} su un alfabeto $\Sigma$ è una sequenza finita di $\Sigma$,
 
 \subsection{Linguaggio}
 \colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
-   Sia $\Sigma^*$ l'insieme di tutte le possibili stringhe sull'alfabeto $\Sigma$, il \textbf{linguaggio} $\bm{L}$ su $\Sigma$ è un sottoinsieme di $\Sigma^*$, ovvero:
-   \[  L \subseteq \Sigma^*  \]
+   Sia $\Sigma^*$ l'insieme di tutte le possibili stringhe sull'alfabeto $\Sigma$, il \textbf{linguaggio} $\bm{\mathcal{L}}$ su $\Sigma$ è un sottoinsieme di $\Sigma^*$, ovvero:
+   \[  \mathcal{L} \subseteq \Sigma^*  \]
 \end{definition}}}\smallskip\\
 Per convenzione un linguaggio vuoto lo rappresentiamo come $\Lambda$, con $\Lambda \neq \epsilon$, ovvero non è equivalente dire linguaggio vuoto e stringa vuota
+
+\subsubsection{Operazioni su linguaggi}
+\begin{itemize}
+   \item \textbf{Operazioni Insiemistiche}
+   \begin{itemize}
+      \item \textbf{Unione}: $\mathcal{L}_1 \cup \mathcal{L}_2 = \{ s \ |\  s \in \mathcal{L}_1 \text{ oppure }
+      s \in \mathcal{L}_2 \}$
+      \item \textbf{Intersezione}:$\mathcal{L}_1 \cap \mathcal{L}_2 = \{ s \ |\  s \in \mathcal{L}_1 \text{ e }
+      s \in \mathcal{L}_2 \}$
+      \item \textbf{Completamento}: $\overline{\mathcal{L}_1} = \{ s \ | \ \notin \mathcal{L}_1  \}$ 
+   \end{itemize}
+   \item \textbf{Operazioni su Stringhe}
+   \begin{itemize}
+      \item \textbf{Concatenazione}: $\mathcal{L}_1  \circ \mathcal{L_2} = \{c_1,\dots,c_k,d_1,\dots,d_l   
+      \ | \  c_1,\dots,c_k \in \mathcal{L}_1 \text{ e }  d_1,\dots,d_l \in \mathcal{L}_2 \}$
+      \item \textbf{Star}: $\mathcal{L}_1^* = \{   s_1,\dots,s_k \ | \ \text{con } k \ge 0 \text{ e }  s_1,\dots,s_k \in \mathcal{L}_1 \}$
+   \end{itemize}
+\end{itemize}
+
+
 
 
 

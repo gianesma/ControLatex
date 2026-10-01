@@ -531,23 +531,6 @@ Con la proprietà del Lemma, l'enunciato è dimostrato, con \(x, \mathcal{K}\) e
 
 \end{proof}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-\newpage
-
 \subsection{Esercizi su ASFND}
 \begin{itemize}
     \item Sia $\Sigma = \{ a   \}$. Definire una ASFND che riconosce il linguaggio di $\Sigma$ in cui le stringhe hanno lunghezza multipla di 2 \underline{oppure} multipla di 3:
@@ -574,3 +557,23 @@ Con la proprietà del Lemma, l'enunciato è dimostrato, con \(x, \mathcal{K}\) e
 
 
 \end{itemize}
+
+
+
+
+\newpage
+
+
+\section{Automi Epsilon}
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
+    Un $\epsilon$-ASFND  $A = < \Sigma,Q,\delta,I,F >$ è una quintupla tale che:
+   \begin{enumerate}
+    \item $\bm{\Sigma = \{ a_1,...,a_n  \}}$ è l'alfabeto di input, assumendo che il simbolo $\epsilon$ non sia in $\Sigma$
+    \item $\bm{Q}$ è l'insieme degli stati
+    \item $\bm{I \in Q}$ è lo stato iniziale
+    \item $\bm{F \subseteq Q}$ è l'insieme degli stati finali (accettanti)
+    \item $\bm{\delta:Q \times (\Sigma \cup \{ \epsilon\}) \to P(Q)}$ è la funzione di transizione
+   \end{enumerate} 
+\end{definition}}}
+
+
