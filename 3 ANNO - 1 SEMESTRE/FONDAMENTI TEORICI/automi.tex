@@ -443,9 +443,11 @@ $\longrightarrow$
 
 \end{minipage}\medskip\\
 
-\noindent Nel passaggio da ASFND a ASFD il diagramma degli stati viene spezzato, lo stato $\emptyset$ è un \textit{pozzo} da cui è impossibile uscire ($\delta_D(\emptyset,a) = \emptyset$, per ogni $a\in\Sigma$).\\
-La cosa importante è questi due atomi \textbf{riconoscono lo stesso linguaggio}, ovvero le stringhe che contengono almeno una b.\smallskip\\
-Per concludere la dimostrazione dobbiamo dimostrare un \textbf{lemma}, che ci permetterà di definire una proprietà importante che ci permette di concludere la dimostrazione dell'enunciato. Ecco il lemma:\smallskip\\
+\noindent Nel passaggio da ASFND a ASFD il diagramma degli stati viene spezzato, lo stato $\emptyset$ è un \textit{pozzo} da cui è impossibile uscire ($\delta_D(\emptyset,a) = \emptyset$, per ogni $a\in\Sigma$),
+e Le transizioni di $A_D$ seguono quelle di $A_N$ considerando l’insieme degli stati:
+\[   \delta_D(\{q_i^1, \dots, q_i^k\}, a) = \delta_N(q_i^1, a) \cup \dots \cup \delta_N(q_i^k, a), \text{ per ogni } \{q_i^1, \dots, q_i^k\} \in (P(Q_N) \setminus \emptyset) \text{ e } a \in \Sigma  \]\label{funzione delta}
+La cosa importante è questi due automi \textbf{riconoscono lo stesso linguaggio}, ovvero le stringhe che contengono almeno una b.\newpage
+\noindent Per concludere la dimostrazione dobbiamo dimostrare un \textbf{lemma}, che ci permetterà di definire una proprietà importante che ci consentirà di concludere la dimostrazione dell'enunciato. Ecco il lemma:\smallskip\\
 \colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{lemma}
    Sia $\in \Sigma^*$, l'insieme $\bm{Reach_N(Z)}$ è definito come segue:
 \[   Reach_N(Z) = \{ q \in Q_N | \text{ esiste una esecuzione di } A_N \text{ su } z \text{ il cui stato finale è } q  \}   \]
@@ -462,8 +464,64 @@ q_2,\ q_4,\ q_5
 Reach_N(z)=\{q_2,q_4,q_5\}
 \]
 \(Reach_N(x)\) è l’insieme di tutti gli stati raggiungibili dall’ASFND dopo aver letto \(z\). Nella costruzione 
-deterministica equivalente, lo stato raggiunto dall’ASFD dopo aver letto \(z\) è esattamente questo insieme.\medskip\\
-Con Lemma 1, l'enunciato è dimostrato, con \(x, \mathcal{K}\) e \(Reach_N\) come sopra:
+deterministica equivalente, lo stato raggiunto dall’ASFD dopo aver letto \(z\) è esattamente questo insieme.\smallskip\\
+Dimostriamo questo lemma tramite \textbf{induzione} sulla lunghezza della stringa di
+input $x$, quindi dimostriamo che la proprietà vale per la stringa di lunghezza 0 (passo base),
+e per la stringa di lunghezza n (passo induttivo) assumendo che valga per stringhe di lunghezza $n-1$ (ipotesi induttiva):
+\begin{itemize}[label=--]
+    \item \textbf{Passo base}: $\bm{|x| = 0}$, quindi $x = \epsilon$ (stringa vuota). Non avendo simboli della stringa
+    in input, $A_N$ ha un unica soluzione possibile, ovvero rimane nello stato iniziale $q_0$, quindi
+    \[  Reach_N(\varepsilon)=\{q_0\}   \]
+    L'ASFD costruito sarà quindi: 
+    \[A_D(\epsilon) = \{ q_0  \} = Reach_N(\varepsilon)\]
+    Così il passo base è dimostrato.
+
+    \item \textbf{Passo induttivo}: $\bm{|x|= n}$, sia $x = sa$ dove $s\in \Sigma^*$ contiene tutti i simboli della stringa
+    tranne l'ultimo e $a\in \Sigma$ è l'ultimo simbolo della stringa. Per ipotesi induttiva sappiamo già che la proprietà 
+    vale per stringhe di lunghezza $n-1$, quindi il lemma è vero per $s$. Quindi ci manca da elaborare l'ultimo
+    simbolo $a$. Dopo aver letto $s$ l'insieme $Reach_N (s)$ sarà:
+    \[  Reach_N (s) = Y \]
+    dove $Y$ è un insieme di stati (es. $Y=\{q_1,q_3,q_5\}  $), in pratica dopo aver letto $s$ l'ASFND potrebbe trovarsi in uno 
+    degli stati in $Y$. A partire da uno stato di $Y$ viene letto l'ultimo simbolo $a$, dobbiamo considerare a quale stato può andare l'automa 
+    per ogni possibile stato di $Y$ in cui si potrebbe trovare. Per fare ciò applichiamo la funzione di transizione $\delta_N$ ad ogni stato di $Y$ e uniamo 
+    i risultati:
+    \[ \bigcup_{q \in Y} \delta_N(q,a)   \]
+    
+    \noindent \textit{Esempio.}\\
+    Supponiamo che: $Y=\{q_1,q_3,q_5\}$ e che:
+\[
+\delta_N(q_1,a)=\{q_2,q_4\}
+\]\[
+\delta_N(q_3,a)=\{q_4,q_6\}
+\]\[
+\delta_N(q_5,a)=\{q_7\}
+\]Allora:
+\[
+\bigcup_{q\in Y}\delta_N(q,a)
+=
+\{q_2,q_4\}\cup\{q_4,q_6\}\cup\{q_7\} =\bm{\{q_2,q_4,q_6,q_7\}}
+\]
+Questo è esattamente:
+\[
+Reach_N(sa)=Reach_N(x)
+\]
+perché contiene tutti gli stati in cui l'ASFND potrebbe trovarsi dopo aver letto tutta la stringa \(x\).\smallskip\\
+\noindent Passando alla costruzione dell'ASFD, \textbf{l'esecuzione di una ASFD è proprio} $\bm{\bigcup_{q\in Y}\delta_N(q,a)}$ (vd. \ref{funzione delta}).\\
+Abbiamo quindi trovato che per l'ASFND vale:
+\[
+Reach_N(x)
+=
+\bigcup_{q\in Y}\delta_N(q,a)
+\]mentre per l'ASFD abbiamo:
+\[
+\delta_D(Y,a)
+=
+\bigcup_{q\in Y}\delta_N(q,a)
+\]
+$Reach_N(x)$ e $\delta_D(Y,a)$ sono la stessa cosa, di conseguenza il lemma è dimostrato.
+
+\end{itemize} 
+Con la proprietà del Lemma, l'enunciato è dimostrato, con \(x, \mathcal{K}\) e \(Reach_N\) come sopra:
 \begin{enumerate}
     \item \(A_N\) accetta \(x \Leftrightarrow q_{fin} \in Reach_N(x)\) per un \(q_{fin} \in F_N\) ({\textbf{Definizione di ASFND}})
     \item \(Reach_N(x) = \mathcal{K}\) ({\textbf{Lemma 1}})
