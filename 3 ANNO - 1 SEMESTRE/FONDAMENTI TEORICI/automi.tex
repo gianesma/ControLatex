@@ -566,7 +566,7 @@ Con la proprietà del Lemma, l'enunciato è dimostrato, con \(x, \mathcal{K}\) e
 
 \section{Automi Epsilon}
 \colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
-    Un $\epsilon$-ASFND  $A = < \Sigma,Q,\delta,I,F >$ è una quintupla tale che:
+    Un $\bm{\epsilon}$\textbf{-ASFND}  $A = < \Sigma,Q,\delta,I,F >$ è una quintupla tale che:
    \begin{enumerate}
     \item $\bm{\Sigma = \{ a_1,...,a_n  \}}$ è l'alfabeto di input, assumendo che il simbolo $\epsilon$ non sia in $\Sigma$
     \item $\bm{Q}$ è l'insieme degli stati
@@ -574,6 +574,55 @@ Con la proprietà del Lemma, l'enunciato è dimostrato, con \(x, \mathcal{K}\) e
     \item $\bm{F \subseteq Q}$ è l'insieme degli stati finali (accettanti)
     \item $\bm{\delta:Q \times (\Sigma \cup \{ \epsilon\}) \to P(Q)}$ è la funzione di transizione
    \end{enumerate} 
-\end{definition}}}
+\end{definition}}}\smallskip\\
+La differenza principale (e fondamentale) rispetto ad una normale ASFND è che la $\epsilon$-ASDNF può cambiare stato utilizzando una 
+transizione col simbolo $\epsilon$ \textbf{senza consumare un simbolo} della stringa dell'input.\smallskip\\
 
 
+
+\noindent Prima di dare la definizione di esecuzione degli epsilon automi servono delle definizioni preliminari:
+
+\subsubsection{Restrizione}
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
+   La \textbf{restrizione di s a T} ($s_{|T}$) è la stringa ottenuta eliminando da $s$ tutti i simboli $c\notin T$
+\end{definition}}}\smallskip\\
+\textit{Esempio.} Dati $s = abcabca$ e $T = \{ a,c  \}$, il risultato della restrizione è:
+\[  s_{|T} = acaca \]
+poichè abbiamo eliminato da $s$ tutte le occorrenze di $a$ e $c$.
+
+
+\subsubsection{Epsilon-estensione}
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
+   Una $\bm{\epsilon}$\textbf{-estensione} di $s$ è una stringa $s'$ sull'alfabeto $\Sigma \cup \{\epsilon \}$ tale che:
+   \[   s_{|\Sigma}   \]
+\end{definition}}}\smallskip\\
+In altre parole l'$\epsilon$-estensione restituisce la stringa $s'$ ottenuta inserendo nella stringa originale $s$ un numero arbitrario
+di simboli $\epsilon$.\\
+\textit{Esempio.} Dato l'alfabeto $\Sigma = \{ a,b,c  \}$ e $s = abc$, una possibile $\epsilon$-estensione è:
+\[  s' = a\bm{\epsilon} bc\bm{\epsilon}    \]
+Infatti applicando la definizione si ha che $a\epsilon b c \epsilon  \xrightarrow{|_{\Sigma}} abc$
+
+
+\subsection{Esecuzioni di epsilon automi}
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
+   Una \textbf{esecuzione di A su S} è una sequenza $(q_1,\dots,q_{k+1}) \in Q^{k+1}$ di $k+1$ elementi di $Q$ tale che esiste una 
+   $\epsilon$-estensione $\overline{x} = "x_1x_2\dots x_k"$ di $s$ con le seguenti proprietà:
+   \begin{itemize}
+    \item $\overline{|x|} = k$
+    \item $q_1 = I$, il primo stato è quello iniziale
+    \item $q_{i+1} \in \delta(q_i,x_i)$ per $i = 1,\dots k$, ovvero ogni stato appartiene all'insieme di quelli che possono essere raggiunti
+    consumando il simbolo corrente della $\epsilon$-estensione considerata
+   \end{itemize}
+\end{definition}}}\smallskip\\
+La definizione è praticamente uguale a quella degli ASFND, l'unica differenza è l'aggiunta delle $\epsilon$. Vedremo infatti come 
+$\epsilon$-ASFND e ASFND sono equivalenti.
+
+\newpage
+\subsection{Equivalenza fra $\epsilon$-ASFND e ASFND}
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{theorem}
+   Per ogni $\epsilon$-ASFND $A_\epsilon$ esiste un ASFND $A_N$ tale che $L(A_\epsilon) = L(A_N)$
+\end{theorem}}}\smallskip\\
+Ne consegue che il linguaggio riconosciuto da un $\epsilon$-ASFND è regolare, visto che la stessa proprietà vale per gli ASFND.
+\begin{proof}
+    DIMOSTRAZIONE SLIDE 30
+\end{proof}
