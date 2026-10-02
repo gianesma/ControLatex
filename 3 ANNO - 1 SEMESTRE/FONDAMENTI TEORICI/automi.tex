@@ -624,5 +624,106 @@ $\epsilon$-ASFND e ASFND sono equivalenti.
 \end{theorem}}}\smallskip\\
 Ne consegue che il linguaggio riconosciuto da un $\epsilon$-ASFND è regolare, visto che la stessa proprietà vale per gli ASFND.
 \begin{proof}
-    DIMOSTRAZIONE SLIDE 30
+    L'\textbf{idea} della dimostrazione è quella di \textbf{costruire un ASFND} $\bm{A_N}$ \textbf{equivalente a} $\bm{A_\epsilon}$\smallskip\\
+    Per fare ciò, servono prima delle definizioni:\smallskip\\
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
+   Uno stato $q' \in Q$ è $\bm{\epsilon}$-\textbf{raggiugibile} da $q \in Q$ in $A$ se esiste una sequenza
+   di stati $(q_1,q_2,...,q_n) \in Q^n$ con $n > 0$ tale che:
+   \begin{itemize}[label = --]
+    \item $q = q_1$
+    \item $q' = q_n$
+    \item $q_i \in \delta(q_{i-1},\epsilon)$ per $i = 2,...,n$
+   \end{itemize}
+\end{definition}}} \smallskip\\
+In pratica uno stato $q' \in Q$ è $\epsilon$-raggiungibile da $q \in Q$ se può essere raggiunto \underline{solo}
+con passi $\epsilon$, cioè senza consumare simboli dell'input. Vediamo un esempio:\medskip\\
+\textit{Esempio.} In questo $\epsilon$-ASFND $q_1$ e $q_2$ sono $\epsilon$-raggiungibili da $q_0$:
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.8\linewidth]{../../images/epsilon_automa.png}
+    % \caption{caption}
+    %\label{label}
+\end{figure}
+\noindent Ora vediamo un'altra definizione:\smallskip\\
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
+   La $\bm{\epsilon}$-\textbf{chiusura} $\bm{E(q,a)}$ \textbf{su A} è l'insieme di tutti gli stati $\epsilon$-raggiungibili
+   da $q$ in $A$
+\end{definition}}} \medskip\\
+\noindent Ora possiamo procedere alla costruzione della ASFND. Sia $A_\epsilon = < \Sigma, Q_{\epsilon}, \delta_\epsilon,q_0,F_\epsilon  >$
+un $\epsilon$-ASFND, definiamo l'ASFND $A_N = < \Sigma, Q_\epsilon, \delta_N, q_0, F_n  >$ con:
+\begin{itemize}
+    \item $\delta_N(q,a) = \bigcup_{k \in E(q,A_\epsilon)} \delta_\epsilon(k,a)$ $\longrightarrow$ $\delta_N(q,a)$
+    è quindi l'unione degli insiemi degli stati raggiugibili dalla $\epsilon$-chiusura di $q$ in $A$.
+    \item $F_N = \{ q \in Q_\epsilon | E(q,A_\epsilon \cap F_\epsilon \neq \emptyset)   \}$  $\longrightarrow$ 
+    uno stato è accettante in $A_N$ se nella sua $\epsilon$-chiusura c'è uno stato accettante di $A_\epsilon$.
+\end{itemize}
+Con queste regole possiamo costruire una ASFND equivalente ad una $\epsilon$-ASFND, cioè entrambi gli automi riconoscono 
+lo stesso linguaggio $(L(A_\epsilon) = L(A_N))$ 
 \end{proof}
+
+
+\newpage
+
+
+
+
+\noindent
+Vediamo un esempio di costruzione di un ASFND a partire da un $\epsilon$-ASFND:\\
+\textit{Esempio.} Consideriamo $\epsilon$-ASFND $A$ definito come segue:\\
+\begin{minipage}{0.3\textwidth}
+
+    \begin{figure}[H]
+    % \centering  
+    \includegraphics[width=0.97\linewidth]{../../images/creazione3.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\end{minipage}
+\hfill
+$\longrightarrow$
+\hfill
+\begin{minipage}{0.6\textwidth}
+    \[
+\begin{cases}
+    A = <\Sigma ,Q,\delta,q_0,F>\\
+    \Sigma = \{  a,b \}\\
+    Q = \{ q_0,q_1,q_2,q_3,q_4,q_5\}\\
+    F = \{  q_3,q_4 \}\\
+    \delta \text{  funzione definita dalla tabella} \longrightarrow
+\end{cases}
+\begin{array}{|c|c|c|}
+\hline
+\text{Stato } q & \text{Simbolo } s & \delta(q,s) \\
+\hline
+q_0 & a & \{q_5\} \\
+q_0 & b & \{q_5\} \\
+\rowcolor{SALZO}
+q_0 & \epsilon & \{q_1, q_2\} \\
+q_1 & a & \{q_1\} \\
+q_1 & b & \{q_3\} \\
+\rowcolor{SALZO}
+q_1 & \epsilon & \emptyset \\
+q_2 & a & \{q_4\} \\
+q_2 & b & \{q_2\} \\
+\rowcolor{SALZO}
+q_2 & \epsilon & \emptyset \\
+q_3 & a & \emptyset \\
+q_3 & b & \{q_5\} \\
+\rowcolor{SALZO}
+q_3 & \epsilon & \emptyset \\
+q_4 & a & \{q_5\} \\
+q_4 & b & \{q_4\} \\
+\rowcolor{SALZO}
+q_4 & \epsilon & \emptyset \\
+q_5 & a & \emptyset \\
+q_5 & b & \emptyset \\
+\rowcolor{SALZO}
+q_5 & \epsilon & \emptyset \\
+\hline
+\end{array}   \]
+
+\end{minipage}
+
+
+\noindent Dobbiamo eliminare le righe della tabella dove compare il simbolo $\epsilon$, applicando la nuova
+funzione di transizione $A_N$
