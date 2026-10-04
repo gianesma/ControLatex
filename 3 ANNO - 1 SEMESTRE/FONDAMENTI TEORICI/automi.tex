@@ -89,7 +89,7 @@ rappresentiamo gli stati accettanti con il doppio cerchio. Se $A(S)$ è accettan
    Sia $A = <\Sigma, Q, I,F,\delta>$ una ASFD. Il \textbf{linguaggio riconosciuto da} $\bm{A}$ è linguaggio $L(A)$ sull'alfabeto $\Sigma$ tale che:
    \[  L(A) = \{  x \in \Sigma^* | x \text{ è accettata da } A  \}  \]
 \end{definition}}}\smallskip\\
-Un linguaggio $\mathcal{L}$ è detto \textbf{regolare} se esiste un ASFD $A$ tale che $L(A) = \mathcal{L}$, a parole diremo che un linguaggio è regolare se e solo se esiste una 
+Un linguaggio $\mathcal{L}$ è detto \textbf{regolare} \label{regolare} se esiste un ASFD $A$ tale che $L(A) = \mathcal{L}$, a parole diremo che un linguaggio è regolare se e solo se esiste una 
 ASFD che lo riconosce.
 
 
@@ -722,8 +722,219 @@ q_5 & \epsilon & \emptyset \\
 \hline
 \end{array}   \]
 
-\end{minipage}
-
-
+\end{minipage}\smallskip\\
 \noindent Dobbiamo eliminare le righe della tabella dove compare il simbolo $\epsilon$, applicando la nuova
-funzione di transizione $A_N$
+funzione di transizione $\delta_N$. Come abbiamo visto nella dimostrazione, $\delta_N$ è definita come l'unione 
+degli insiemi degli stati raggiungibili dalla $\epsilon$-chiusura di $q$ in $A$ ( $\cup_{k \in E(q,A_\epsilon)} \delta_\epsilon(k,a)$). 
+Esplicitiamo il ragionamento per lo stato $q_0$: da $q_0$ partono due frecce $\epsilon$ per $q_1$ e $q_2$,
+questo vuol dire che $q_1$ e $q_2 \in E(q_0A_\epsilon)$, ovvero $q_1$ e $q_2$ sono $\epsilon$-raggiungibili.
+Per come abbiamo definito la $\delta_N$, per un input $a$ essa sarà:
+\[  \delta_N(q_0,a) = \delta_\epsilon(q_1,a) \cup \delta_\epsilon(q_2,a)  \]
+Ora basta semplicemente guardare l'immagine e risolvere l'unione. Per un simbolo $a$, $q_1$ rimane in $q_1$, mentre
+$q_2$ passa a $q_4$:
+\[\delta_\epsilon(q_1,a) \cup \delta_\epsilon(q_2,a)  = \{  q_1 \} \cup \{q_4  \} = \{ q_1,q_4 \}    \]
+Inoltre se l'input è un simbolo $a$, $\ q_0$ passa direttamente a $q_5$ e quindi va aggiunto al risultato dell'unione. Pertanto il risultato è:
+\[  \delta_N (q_0,a) = \{ q_1,q_4,q_5  \}   \]
+Stesso ragionamento va fatto per il simbolo $b$. Analogamente i calcoli sono:
+\[   \delta_N (q_0,b) = \delta_\epsilon (q_1,b) \cup \delta_\epsilon (q_2,b) = \{ q_3 \} \cup \{ q_2 \} = \{ q_2,q_3 \} 
+\xrightarrow{\cup \ q_5}  \{ q_2,q_3,q_5  \}  \]
+Questo calcolo va fatto per tutti gli stati da cui parte una freccia $\epsilon$, e vanno modificati la tabella e il diagramma di conseguenza.
+Il risultato finale è:\\
+\begin{minipage}{0.3\textwidth}
+
+    \begin{figure}[H]
+    % \centering  
+    \includegraphics[width=0.97\linewidth]{../../images/creazione4.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\end{minipage}
+\hfill
+$\longrightarrow$
+\hfill
+\begin{minipage}{0.6\textwidth}
+    \[
+\begin{cases}
+    A_N = <\Sigma ,Q,\delta_N,q_0,F>\\
+    \Sigma = \{  a,b \}\\
+    Q = \{ q_0,q_1,q_2,q_3,q_4,q_5\}\\
+    F = \{  q_3,q_4 \}\\
+    \delta \text{  funzione definita dalla tabella} \longrightarrow
+\end{cases}
+\begin{array}{|c|c|c|}
+\hline
+\text{Stato } q & \text{Simbolo } s & \delta'(q,s) \\
+\hline
+q_0 & a & \{q_1, q_4, q_5\} \\
+q_0 & b & \{q_3, q_2, q_5\} \\
+q_1 & a & \{q_1\} \\
+q_1 & b & \{q_3\} \\
+q_2 & a & \{q_4\} \\
+q_2 & b & \{q_2\} \\
+q_3 & a & \emptyset \\
+q_3 & b & \{q_5\} \\
+q_4 & a & \{q_5\} \\
+q_4 & b & \{q_4\} \\
+q_5 & a & \emptyset \\
+q_5 & b & \emptyset \\
+\hline
+\end{array}  \]
+
+\end{minipage}\smallskip\\
+In questo modo abbiamo costruito un ASFND a partire da un $\epsilon$-ASFND.
+\newpage
+
+
+
+
+\section{Teorema su linguaggi regolari}
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{theorem}
+   Dati due linguaggi \textbf{regolari} (vd. \ref{regolare}) $\mathcal{L}_1$ e $\mathcal{L}_2$  tutti i seguenti linguaggi sono regolari:
+   \begin{itemize}
+      \item \textbf{Unione}: $\mathcal{L}_1 \cup \mathcal{L}_2 = \{ s \ |\  s \in \mathcal{L}_1 \text{ oppure }
+      s \in \mathcal{L}_2 \}$
+      \item \textbf{Intersezione}:$\mathcal{L}_1 \cap \mathcal{L}_2 = \{ s \ |\  s \in \mathcal{L}_1 \text{ e }
+      s \in \mathcal{L}_2 \}$
+      \item \textbf{Completamento}: $\overline{\mathcal{L}_1} = \{ s \ | \ \notin \mathcal{L}_1  \}$ 
+   
+      \item \textbf{Concatenazione}: $\mathcal{L}_1  \circ \mathcal{L_2} = \{c_1,\dots,c_k,d_1,\dots,d_l   
+      \ | \  c_1,\dots,c_k \in \mathcal{L}_1 \text{ e }  d_1,\dots,d_l \in \mathcal{L}_2 \}$
+      \item \textbf{Star}: $\mathcal{L}_1^* = \{   s_1,\dots,s_k \ | \ \text{con } k \ge 0 \text{ e }  s_1,\dots,s_k \in \mathcal{L}_1 \}$
+   \end{itemize}
+\end{theorem}}}
+\begin{proof}
+    Bisogna dimostrare le cinque proposizioni separatamente, ma l'idea dimostrativa è la stessa.
+    Sfruttiamo la definizione di linguaggio regolare, la quale afferma che un linguaggio è regolare se esiste una ASDF
+    che riconosce il linguaggio ($L(A) = \mathcal{L}$). Ne consegue che due linguaggi $\mathcal{L}_1$ e $\mathcal{L}_2$ sono regolari se esistono due ASFD $A_1$ e $A_2$ tali che:
+    \[ \mathcal{L}_1  = L(A_1) \text{  e  } \mathcal{L}_2  = L(A_2)\]
+    Dimostriamo la prima proposizione sull'unione, l'\textbf{idea} è quindi \textbf{costruire un} $\bm{\epsilon}$\textbf{-ASFND} $A$ tale che:
+    \[  L(A) = \mathcal{L}_1  \cup \mathcal{L}_2      \] 
+    Per definire l'$\epsilon$-ASFND, assumiamo di avere 2 automi $A_1$ e $A_2$ definiti così:
+    \begin{itemize}
+        \item [$\bm{A_1}$]\(= < \Sigma,Q_1,\delta_1,q_0^1,F_1 > \)
+        \item[$\bm{A_2}$] \(=< \Sigma,Q_2,\delta_2,q_0^2,F_2 > \)
+    \end{itemize}
+    dove $Q_1 \cap Q_2 = \emptyset$, ovvero i due automi non condividono stati.\\ Ora possiamo definire l'$\epsilon$-ASFND
+    $A = < \Sigma, Q,\delta,q_0,F>$ come segue:
+    \begin{itemize}
+        \item $\Sigma$ è l'alfabeto comune a $A_1$ e $A_2$
+        \item $Q = Q_1 \cup Q_2 \cup \{ q_0 \}$, lo stato è l'unione degli stati di $A_1$ e $A_2$ con uno stato iniziale $q_0 \notin Q_1,Q_2$
+        \item $F = F_1 \cup F_2$, gli stati accettanti sono l'unione degli stati accettanti di $A_1$ e $A_2$
+        \item $\delta$ è definita così:\\
+        \begin{minipage}{0.45\textwidth}
+            \begin{itemize}
+            \item $\delta (q,a) = \{ \delta_1(q,a) \} \text{ se } q \in Q_1$
+            \item $\delta (q,a) = \{ \delta_2(q,a) \} \text{ se } q \in Q_2$
+            \item $\delta(q_0,\epsilon) = \{ q_0^1, q_0^2  \}$
+            \item $\delta (q_0, x) = \{ \ \} \text{ per ogni } x \in \Sigma$ 
+            \item $\delta (q, \epsilon) = \{ \ \} \text{ per ogni } q \in Q_1 \cup Q_2$   
+        \end{itemize}
+        \end{minipage}
+        $\longrightarrow$
+        \begin{minipage}{0.45\textwidth}
+        \begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.9\linewidth]{../../images/unione_ASFD.png}
+    % \caption{caption}
+    %\label{label}
+\end{figure}
+    \end{minipage}
+    \end{itemize}
+    
+
+
+
+ \noindent In questo modo abbiamo costruito un $\epsilon$-ASFND che a partire da uno stato $q_0$ esterno può simulare,
+    senza consumare simboli, l'automa $A_1$ o $A_2$.
+    Per concludere la prova, facciamo 2 osservazioni:
+    \begin{enumerate}
+        \item Se esiste un'esecuzione accettante per $A$ su una stringa $s$, tramite una transizione $\epsilon$ ( $\epsilon$-estensione $\epsilon s$),
+        $s$ viene accettata da almeno uno tra $A_1$ e $A_2$ e dunque:
+        \[  s \in L(A_1) \cup L(A_2)  \] 
+
+        \item Viceversa, se esiste un'esecuzione accettante per $A_1$ o $A_2$ sulla stringa $s$ ($s \in L(A_1) \cup L(A_2)$), 
+        tramite una transizione $\epsilon$ ( $\epsilon$-estensione $\epsilon s$), l'automa $A$ può entrare nell'automa $A_1$ o $A_2$ che accetta $s$, dunque:
+        \[   s\in L(A)  \]
+    \end{enumerate}
+
+\noindent Così abbiamo dimostrato la la proposizione sull'unione. Per quanto riguarda gli altri operatori l'idea è identica,
+dato un operatore qualunque $\star$ bisogna costruire un $\epsilon$-ASFND $A$ tale che:
+\[  L(A) \in \mathcal{L}_1 \star \mathcal{L}_2  \]
+\end{proof}
+
+
+\section{Espressioni regolari}
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
+   Sia $\Sigma $ un alfabeto, e sia $\mathcal{O} = \{ +,*,(,), \cdot , \emptyset   \}$ con $\mathcal{O}\cap \Sigma = \emptyset$.
+   Una \textbf{espressione regolare su} $\bm{\Sigma}$ è una stringa $r$ non vuota su $\Sigma \cup \mathcal{O}$ tale che $r$ è uguale 
+   a una delle seguenti:
+   \begin{enumerate}
+    \item $\emptyset$
+    \item $r \in \Sigma$
+    \item $(s+t)$, dove sia $s$ che $t$ sono espressioni regolari su $\Sigma$
+    \item $(s\cdot t)$, dove sia $s$ che $t$ sono espressioni regolari su $\Sigma$
+    \item $(s)^*$, dove $s$ è una espressione regolare su $\Sigma$
+   \end{enumerate}
+\end{definition}}}\smallskip\\
+In pratica una espressione regolare è un modo compatto per esprimere un linguaggio, ovvero un insieme di stringhe.
+Invece di elencare tutte le stringhe possibili, usiamo dei simboli e operatori (nella definizione gli operatori sono quelli dell'insieme $\mathcal{O}$) per dire quali stringhe sono ammesse.
+
+\subsection{Linguaggio definito da un'espressione regolare}
+
+Sia $r$ un'espressione regolare sull'alfabeto $\Sigma$.
+Il linguaggio $L(r)$ associato a $r$ è l'insieme di tutte le stringhe descritte da $r$.
+
+La definizione è ricorsiva:
+
+\begin{itemize}
+    \item Se $r = \varnothing$, allora
+    \[
+    L(r) = \varnothing
+    \]
+    cioè l'espressione non descrive alcuna stringa.
+
+    \item Se $r = a$, con $a \in \Sigma$, allora
+    \[
+    L(r) = \{a\}
+    \]
+    cioè il linguaggio contiene solamente la stringa formata dal simbolo $a$.
+
+    \item Se $r = (s+t)$, allora
+    \[
+    L(r) = L(s) \cup L(t)
+    \]
+    quindi $r$ descrive tutte le stringhe descritte da $s$ oppure da $t$.
+
+    \item Se $r = (s \cdot t)$, allora
+    \[
+    L(r) = L(s) \circ L(t)
+    \]
+    dove $\circ$ indica la concatenazione tra linguaggi.
+    Quindi il linguaggio contiene tutte le stringhe ottenute concatenando
+    una stringa di $L(s)$ con una stringa di $L(t)$.
+
+    \item Se $r = (s)^*$, allora
+    \[
+    L(r) = (L(s))^*
+    \]
+    quindi il linguaggio contiene tutte le stringhe ottenute concatenando
+    zero o più volte stringhe appartenenti a $L(s)$.
+\end{itemize}
+
+\noindent In pratica un'espressione regolare descrive come devono essere costruite le stringhe,
+mentre $L(r)$ è l'insieme effettivo delle stringhe descritte da tale espressione.\smallskip\\
+\textit{Esempio.} Se $\Sigma = \{a,b\}$, allora:
+\[
+L(a+b) = \{a,b\}
+\]
+\[
+L(a \cdot b) = \{ab\}
+\]
+\[
+L(a^*) = \{\varepsilon, a, aa, aaa, \dots\}
+\]
+\noindent e, ad esempio,
+\[
+L((a+b)^*)
+\]
+contiene tutte le stringhe finite costruite usando i simboli $a$ e $b$.
