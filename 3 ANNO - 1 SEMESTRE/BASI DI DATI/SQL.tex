@@ -245,3 +245,16 @@ Esempio:\\
     where p1.reddito=p2.reddito and p1.nome<p2.nome
 \end{verbatim}
 \noindent utilizziamo p1.nome $<$ p2.nome per eliminare le tuple ridondanti, in quando lascia solo le tuple in cui p1.nome viene prima in ordine alfabetico di p2.nome
+\newpage recuperare esercitazione 3 eun esercizio doppio query e join esplicito da slide\\
+Esempio a lezione (estenzione alias):\\
+le coppie di genitori conalmeno un figlio comune che hanno la stessa eta:\\
+\begin{verbatim}
+    select 
+    from (genia g1 join genia g2 on g1.figlio=g2.figlio) J1(fg1, gg1, fg2, gg2)
+        join
+        (perosna p1 join persona p2 on p1.eta=p2.eta and p1.nome<p2.nome) J2(np1, ep1, cp1, np2, ep2, cp2)
+        on J1.gg1=J2.np1 and J1.gg2=J2.np2
+\end{verbatim}
+\noindent da 60 fino a pagina 128 sql\\
+pagina 148 slide modello relazionale fino a 160\\
+
