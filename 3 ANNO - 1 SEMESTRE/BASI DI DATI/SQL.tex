@@ -461,6 +461,113 @@ on F.n1 = S.f1 and F.n2 = S.f2
 \noindent La ridenominazione degli attributi permette quindi di utilizzare senza ambiguità gli attributi dei \textbf{risultati intermedi dei join}, anche
 quando si costruisce un join tra risultati di altri join espliciti.
 
+\subsection{Natural Join}
+SQL mette a disposizione il \textbf{natural join}, che permette di effettuare
+automaticamente un equi-join utilizzando gli attributi che le due tabelle
+hanno in comune, cioè gli attributi con lo stesso nome semplice.\\
+Ad esempio, considerando le tabelle \texttt{maternita} e \texttt{paternita},
+entrambe possiedono l'attributo \texttt{figlio}. Con il join esplicito si
+scriverebbe:
+\begin{verbatim}
+select paternita.figlio, padre, madre
+from maternita join paternita on
+     paternita.figlio = maternita.figlio
+\end{verbatim}
+\noindent Utilizzando il \textbf{natural join}, invece, non è necessario specificare
+esplicitamente la condizione di join:
+\begin{verbatim}
+select paternita.figlio, padre, madre
+from maternita natural join paternita
+\end{verbatim}
+\noindent SQL riconosce automaticamente che \texttt{figlio} è un attributo comune alle
+due tabelle e utilizza la condizione:
+\[
+\texttt{paternita.figlio = maternita.figlio}.
+\]
+Il \texttt{natural join} può quindi essere visto come un \textbf{equi-join
+automatico su tutti gli attributi che hanno lo stesso nome semplice} nelle
+due tabelle.
+Per \textbf{nome semplice} si intende il nome dell'attributo senza considerare
+il nome della relazione o dello schema. 
+
+\subsection{Prodotto cartesiano in SQL}
+In algebra e in sql il join naturale tra due relazioni che non hanno attributi in comune corrisponde al prodotto cartesiano.\\
+Per calcolare il prodotto cartesiano di due relazioni in SQL ci sono anche altre possibilità:
+\begin{itemize}
+    \item esprimendo il prodotto cartesiano in modo implicito, mettendo le due relazioni nella lista dopo la clausola from
+    \item esprimendo il prodotto cartesiano in modo esplicito, usando l'operatore di nome \texttt{cross join} nella clausola from
+\end{itemize}
+Esempio:\\
+Vogliamo il prodotto cartesiano della tabella paternita e della tabella persona
+\begin{itemize}
+    \item Soluzione con il join naturale (visto che le due tabelle non hanno attributi in comune): \begin{verbatim}
+        select * from paternita natural join persona        
+    \end{verbatim}
+    \item Soluzione con il prodotto cartesiano implicito (lista nella form): \begin{verbatim}
+        select * from paternita, perosna
+    \end{verbatim}
+    \item Soluzione con il prodotto cartesiano esplicito (cross join): \begin{verbatim}
+        select * from paternita cross join persona
+    \end{verbatim}
+\end{itemize}
+
+\newpage \subsection{Join esterno}
+Il \textbf{join naturale esterno (outer join)} estende con valori nulli le tuple che non si accoppiano nel join: 
+tali tuple verrebbero tagliate fuori da un join normale ed invece appaiono nel join esterno, accoppiate con valori nulli\\
+esistono tre versioni:
+\begin{itemize}
+    \item \textbf{join esterno sinistro}: mantiene tutte le tuple del primo operando, estendendole con valori nulli, se necessario
+    \item \textbf{join esterno destro}: mantiene tutte le tuple del primo operando, estendendole con valori nulli, se necessario
+    \item \textbf{join esterno completo}: mantiene tutte le tuple sia del primo operando e sia del secondo operando, estendendole con valori nulli, se necessario
+\end{itemize}
+\noindent Esempio:\\
+Padre di ogni persona e, se nota, anche la madre:
+\begin{verbatim}
+    select paternita.figlio, padre, madre
+    from paternita left join maternita
+         on paternita.figlio = maternita.figlio 
+\end{verbatim}
+\noindent Esempio con join completo in cui non perdo alcun figlio:\\
+\begin{verbatim}
+    select paternita.figlio, padre, madre, maternita.figlio 
+    from paternita full outer join maternita 
+         on paternita.figlio = maternita.figlio
+\end{verbatim}
+
+\section{Ordinamento, aggregazione e operazioni sui risultati delle query}
+\subsection{Ordinamento del risultato: order by}
+La clausola \texttt{ORDER BY} permette di \textbf{ordinare le tuple del risultato} di una query in base al valore di uno o più attributi.
+La sintassi è:
+\begin{verbatim}
+order by attributo1, attributo2, ...
+\end{verbatim}
+\noindent Se non viene specificato diversamente, l'ordinamento è \textbf{crescente}.\\
+Ad esempio, vogliamo ottenere il nome e il reddito delle persone con meno di
+30 anni, ordinandole prima in base al reddito e, a parità di reddito, in base al nome:
+\begin{verbatim}
+select nome, reddito
+from persone
+where eta < 30
+order by reddito, nome
+\end{verbatim}
+\noindent L'ordinamento viene applicato seguendo l'ordine degli attributi indicati nella
+clausola \texttt{ORDER BY}
+
+\subsection{Limite alla dimensione del risultato: limit}
+Si può indicare un limite alla dimensione del risultato con la clausola \texttt{limit} in SQL, al fine di avere come risultato al massimo un prefissato numero di tuple
+\begin{verbatim}
+select nome, reddito
+from persone
+where eta < 30
+order by nome
+limit 2
+\end{verbatim}
+\noindent otterremo una tabella con solo 2 tuple.
+
+\subsection{Operatori aggregati}
+Nelle espressioni della target list possiamo avere anche espressioni che calcolano valori a partire da insiemi di tuple:\\
+\texttt{conteggio, minimo, massimo, media, totale}\\
+Sintassi: \texttt{Funzione ([distinct] EspressioneSuAttributi)}
 
 
 \noindent da 60 fino a pagina 128 sql\\
