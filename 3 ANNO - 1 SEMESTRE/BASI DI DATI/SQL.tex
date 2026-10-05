@@ -245,16 +245,223 @@ Esempio:\\
     where p1.reddito=p2.reddito and p1.nome<p2.nome
 \end{verbatim}
 \noindent utilizziamo p1.nome $<$ p2.nome per eliminare le tuple ridondanti, in quando lascia solo le tuple in cui p1.nome viene prima in ordine alfabetico di p2.nome
-\newpage recuperare esercitazione 3 eun esercizio doppio query e join esplicito da slide\\
-Esempio a lezione (estenzione alias):\\
-le coppie di genitori conalmeno un figlio comune che hanno la stessa eta:\\
-\begin{verbatim}
-    select 
-    from (genia g1 join genia g2 on g1.figlio=g2.figlio) J1(fg1, gg1, fg2, gg2)
-        join
-        (perosna p1 join persona p2 on p1.eta=p2.eta and p1.nome<p2.nome) J2(np1, ep1, cp1, np2, ep2, cp2)
-        on J1.gg1=J2.np1 and J1.gg2=J2.np2
-\end{verbatim}
-\noindent da 60 fino a pagina 128 sql\\
-pagina 148 slide modello relazionale fino a 160\\
 
+\subsection{Join multipli}
+
+Quando una query richiede di mettere in relazione informazioni provenienti da più tabelle, è possibile eseguire \textbf{più join nella stessa interrogazione}. L'idea è costruire progressivamente il risultato: ogni join collega una nuova tabella al risultato ottenuto dai join precedenti attraverso una specifica condizione.
+Un primo esempio riguarda la ricerca del \textbf{padre e della madre di ogni persona della quale entrambi i genitori sono noti}. Le tabelle \texttt{paternita} e \texttt{maternita} possiedono entrambe l'attributo \texttt{figlio}, che permette di collegare le informazioni relative alla stessa persona:
+
+\begin{verbatim}
+select paternita.figlio, padre, madre
+from maternita, paternita
+where paternita.figlio = maternita.figlio
+\end{verbatim}
+
+\noindent In questo caso è sufficiente un solo join. Se, però, si vuole anche garantire che il figlio compaia effettivamente nella tabella \texttt{persone}, è necessario introdurre un \textbf{secondo join}:
+
+\begin{verbatim}
+select paternita.figlio, padre, madre
+from maternita, paternita, persone
+where paternita.figlio = maternita.figlio
+  and paternita.figlio = persone.nome
+\end{verbatim}
+
+\noindent Quindi, quando sono presenti più join, nella clausola \texttt{from} vengono indicate tutte le tabelle coinvolte, mentre nella clausola \texttt{where} vengono specificate le condizioni che stabiliscono come collegarle tra loro. Ogni condizione di join permette di associare tuple che rappresentano entità correlate. 
+Un caso più articolato si presenta quando la \textbf{stessa tabella deve essere utilizzata più volte con ruoli differenti}. L'esempio considerato è quello delle persone che guadagnano più dei rispettivi padri, mostrando il nome della persona, il suo reddito e il reddito del padre.
+La tabella \texttt{persone} deve comparire due volte: una volta per rappresentare il \textbf{padre} e una volta per rappresentare il \textbf{figlio}. Per distinguere le due occorrenze si utilizzano degli \textbf{alias}:
+
+\begin{verbatim}
+select f.nome, f.reddito as reddito,
+       p.reddito as redditoPadre
+from persone p, paternita t, persone f
+where p.nome = t.padre
+  and t.figlio = f.nome
+  and f.reddito > p.reddito
+\end{verbatim}
+
+\noindent Gli alias hanno quindi un ruolo fondamentale:
+\begin{itemize}
+    \item \texttt{p} rappresenta la persona nel ruolo di \textbf{padre};
+    \item \texttt{t} rappresenta la tabella \texttt{paternita};
+    \item \texttt{f} rappresenta la persona nel ruolo di \textbf{figlio}.
+\end{itemize}
+
+\noindent I join vengono concettualmente costruiti in più passaggi. Prima si collega \texttt{paternita} alla copia di \texttt{persone} che rappresenta il figlio, mediante la corrispondenza
+
+\[
+\texttt{t.figlio = f.nome}.
+\]
+
+\noindent In questo modo si ottengono insieme le informazioni sulla relazione di paternità e quelle relative al figlio. Successivamente si collega anche la copia di \texttt{persone} che rappresenta il padre:
+
+\[
+\texttt{p.nome = t.padre}.
+\]
+
+\noindent A questo punto ogni tupla contiene le informazioni necessarie sia sul figlio sia sul relativo padre. È quindi possibile applicare la condizione
+
+\[
+\texttt{f.reddito > p.reddito},
+\]
+
+\noindent che mantiene solamente i casi in cui il reddito del figlio è maggiore di quello del padre. Infine, con la \texttt{select} vengono mantenuti solamente gli attributi richiesti: nome del figlio, reddito del figlio e reddito del padre.
+In generale, quindi, una query con \textbf{più join} può essere vista come una costruzione progressiva: si collegano prima due tabelle, il risultato viene poi collegato a un'altra tabella e così via. Se una stessa tabella deve rappresentare entità con ruoli differenti, la si inserisce più volte nella query assegnandole alias diversi. Le condizioni nella clausola \texttt{where} stabiliscono sia i collegamenti tra le varie occorrenze delle tabelle sia gli eventuali ulteriori criteri di selezione.
+
+\subsection{Join esplicito}
+\begin{verbatim}
+select ...
+from Tabella1 join Tabella2 on CondJoin,...
+[where AltraCondizione]
+\end{verbatim}
+
+\noindent La parola chiave \texttt{join} specifica le tabelle da combinare, mentre la clausola \texttt{on} contiene la \textbf{condizione di join}, cioè la condizione che stabilisce quali tuple delle due tabelle devono essere associate. La clausola \texttt{where}, invece, può essere utilizzata per imporre ulteriori condizioni sul risultato del join.\\
+Ad esempio, per ottenere padre e madre delle persone per le quali entrambi i genitori sono noti, invece di scrivere:
+\begin{verbatim}
+select paternita.figlio, padre, madre
+from maternita, paternita
+where paternita.figlio = maternita.figlio
+\end{verbatim}
+\noindent si può utilizzare il join esplicito:
+\begin{verbatim}
+select madre, paternita.figlio, padre
+from maternita join paternita on
+     paternita.figlio = maternita.figlio
+\end{verbatim}
+\noindent In questo caso si tratta di un \textbf{equi-join}, perché la condizione specificata dopo \texttt{on} è un'uguaglianza.
+Il join esplicito può essere applicato \textbf{più volte consecutivamente}. Il risultato di un primo join è infatti una nuova tabella, che può essere utilizzata come operando di un secondo join. Ad esempio:
+\begin{verbatim}
+select f.nome, f.reddito, p.reddito
+from persone p
+     join paternita t on p.nome = t.padre
+     join persone f on t.figlio = f.nome
+where f.reddito > p.reddito
+\end{verbatim}
+\noindent Il primo join:
+\begin{verbatim}
+persone p join paternita t on p.nome = t.padre
+\end{verbatim}
+\noindent collega ogni padre alla relativa informazione nella tabella \texttt{paternita}. Il risultato viene poi utilizzato nel secondo join:
+\begin{verbatim}
+join persone f on t.figlio = f.nome
+\end{verbatim}
+\noindent che associa anche le informazioni relative al figlio. Solo dopo aver costruito questi collegamenti viene applicata la condizione:
+\begin{verbatim}
+where f.reddito > p.reddito
+\end{verbatim}
+\noindent per mantenere i figli che guadagnano più del rispettivo padre.
+È importante osservare che il \textbf{risultato di un join contiene gli attributi di entrambi gli operandi}. Di conseguenza, se si eseguono più join consecutivi, ogni risultato intermedio accumula gli attributi delle tabelle coinvolte.
+Nella query sopra, il primo join esplicito nella clausola fromdà come risultato
+una tabella con gli attributi: \texttt{p.nome, p.eta, p.reddito, t.padre. t.figlio}. Questa
+tabella va in input al secondo join esplicito il cui risultato avrà come attributi:
+\texttt{p.nome, p.eta, p.reddito, t.padre. t.figlio, f.nome, f.eta, ed f.reddito}.\\
+In sintesi, il join esplicito permette di separare chiaramente le \textbf{condizioni che servono a collegare le tabelle}, scritte nella clausola \texttt{on}, dalle \textbf{condizioni che servono a filtrare il risultato}, che possono essere scritte nella clausola \texttt{where}. Inoltre, più join possono essere concatenati, utilizzando ogni risultato intermedio come operando del join successivo.
+\subsection{Ridenominazione del risultato di un join esplicito}
+Poiché il risultato di un join esplicito è una \textbf{tabella}, esso può essere utilizzato direttamente nella clausola \texttt{from} e può anche essere \textbf{ridenominato assegnandogli un alias}.
+Riprendiamo l'esempio precedente. Il primo join era:
+\begin{verbatim}
+persone p join paternita t on p.nome = t.padre
+\end{verbatim}
+\noindent Questo join produce una tabella contenente gli attributi di entrambi gli operandi:
+\[
+p.nome,\ p.eta,\ p.reddito,\ t.padre,\ t.figlio.
+\]
+\noindent È possibile assegnare un alias, ad esempio \texttt{J}, all'intero risultato del join:
+\begin{verbatim}
+from (persone p join paternita t on p.nome = t.padre) as J,
+     persone f
+\end{verbatim}
+\noindent Quando si assegna un alias a un join esplicito è necessario \textbf{racchiudere tra parentesi l'intera espressione di join}.
+Un aspetto importante è la \textbf{visibilità degli alias}. Gli alias \texttt{p} e \texttt{t}, definiti all'interno delle parentesi, non sono più
+referenziabili all'esterno. All'esterno delle parentesi è visibile solamente l'alias \texttt{J}.
+Di conseguenza, invece di riferirsi agli attributi attraverso \texttt{p} e \texttt{t}, bisogna utilizzare \texttt{J}. Ad esempio:
+\begin{verbatim}
+where f.reddito > J.reddito
+  and f.nome = J.figlio
+\end{verbatim}
+\noindent In questo caso:
+\[
+\texttt{J.reddito}
+\]
+
+\noindent indica l'attributo \texttt{reddito} proveniente dalla tabella \texttt{persone p}, mentre
+\[
+\texttt{J.figlio}
+\]
+
+\noindent indica l'attributo \texttt{figlio} proveniente dalla tabella \texttt{paternita t}. La query può quindi essere scritta come:
+\begin{verbatim}
+select f.nome, f.reddito, J.reddito
+from (persone p join paternita t on p.nome = t.padre) as J,
+     persone f
+where f.reddito > J.reddito
+  and f.nome = J.figlio
+\end{verbatim}
+\noindent L'alias \texttt{J} deve quindi essere visto come il \textbf{nome della nuova tabella prodotta dal join}, che eredita gli attributi delle tabelle utilizzate
+per costruirla.
+
+\subsection{Ridenominazione degli attributi del risultato}
+Quando la struttura dei join diventa più complessa, assegnare soltanto un nome
+al risultato può non essere sufficiente. SQL permette quindi di specificare,
+oltre al nome della nuova tabella, anche i \textbf{nomi dei suoi attributi}.\medskip\\
+Ricordando che il database è così composto:\\
+\texttt{
+persone(nome, eta, reddito): contiene le informazioni sulle persone.\\
+paternita(padre, figlio): rappresenta le relazioni padre-figlio.\\
+maternita(madre, figlio): rappresenta le relazioni madre-figlio.\\
+}\\
+\noindent Supponiamo ora di volere le coppie (senza ridondanze) di persone diverse
+che hanno la stessa età e sono figli dello stesso padre.
+Vogliamo utilizzare un join tra due join espliciti, uno per individuare le coppie
+di persone diverse con la stessa eta (alias F) e l’altro per individuare le
+coppie di tuple di paternita con lo stesso valore per “figlio".
+Consideriamo un join tra due occorrenze della tabella \texttt{persone}:
+\begin{verbatim}
+persone r join persone s
+on r.eta = s.eta and r.nome < s.nome
+\end{verbatim}
+
+\noindent Il risultato possiede sei attributi, cioè i tre attributi di \texttt{r} seguiti
+dai tre attributi di \texttt{s}. Possiamo ridenominare l'intero risultato e,
+contemporaneamente, i suoi attributi:
+\begin{verbatim}
+(persone r join persone s
+ on r.eta = s.eta and r.nome < s.nome)
+as F(n1,e1,r1,n2,e2,r2)
+\end{verbatim}
+
+\noindent L'alias non è quindi più soltanto \texttt{F}, ma specifica anche lo schema
+della tabella risultante:
+\[
+F(n1,e1,r1,n2,e2,r2).
+\]
+
+\noindent I nomi vengono assegnati agli attributi rispettando il loro ordine. Quindi,
+ad esempio, il primo attributo \texttt{r.nome} diventa \texttt{F.n1}, mentre
+\texttt{s.nome} diventa \texttt{F.n2}.
+Lo stesso meccanismo può essere applicato a un altro join:
+\begin{verbatim}
+(paternita p join paternita t on p.padre = t.padre)
+as S(p1,f1,p2,f2)
+\end{verbatim}
+
+\noindent A questo punto i risultati dei due join possiedono attributi con nomi
+esplicitamente definiti e possono essere a loro volta messi in join:
+\begin{verbatim}
+select F.n1, F.n2
+from (persone r join persone s
+      on r.eta = s.eta and r.nome < s.nome)
+     as F(n1,e1,r1,n2,e2,r2)
+join
+     (paternita p join paternita t
+      on p.padre = t.padre)
+     as S(p1,f1,p2,f2)
+on F.n1 = S.f1 and F.n2 = S.f2
+\end{verbatim}
+
+\noindent La ridenominazione degli attributi permette quindi di utilizzare senza ambiguità gli attributi dei \textbf{risultati intermedi dei join}, anche
+quando si costruisce un join tra risultati di altri join espliciti.
+
+
+
+\noindent da 60 fino a pagina 128 sql\\
+pagina 148 slide modello relazionale fino a 160
