@@ -567,8 +567,292 @@ limit 2
 \subsection{Operatori aggregati}
 Nelle espressioni della target list possiamo avere anche espressioni che calcolano valori a partire da insiemi di tuple:\\
 \texttt{conteggio, minimo, massimo, media, totale}\\
-Sintassi: \texttt{Funzione ([distinct] EspressioneSuAttributi)}
+Sintassi: \texttt{Funzione ([distinct] EspressioneSuAttributi)}\medskip\\
+Quando un operatore aggregato ALFA compare nella target list di una query del tipo:
+\begin{verbatim}
+    select <... ALFA ...>
+    from R1, R2,...,Rn
+    where <condizione>
+\end{verbatim}
+\noindent L'operatore aggregato viene applicato a tutte le tuple del prodotto cartesiano che soddisfano la condizione della clausola \texttt{where} ed il risultato sarà una 
+singola tupla che conterrà il valore risultante o i valori risultanti dall'applicazione dell'operatore\\
+Esempio:
+\begin{verbatim}
+select count(*)
+from Persone
+where eta > 30
+\end{verbatim}
+\noindent Tale query esegue i seguenti passi:\\
+\begin{itemize}
+    \item viene calcolato il prodotto cartesiano delle tabelle nella clausola \texttt{from}
+    \item vengono selezionate le tuple della tabella che soddisfano la condizione nella clausola \texttt{where}
+    \item viene applicato l'operatore aggregato (in questo caso \texttt{count(*)}) su tutte le tuple selezionate: viene quindi restituita 
+            una tabella con una sola colonna ed una sola riga che contiene il risultato dell'applicazione dell'operatore aggregato, cioè il numero di tuple selezionate.
+\end{itemize}
+\subsubsection{count}
+Sintassi:\\
+\begin{itemize}
+    \item conta il numero di tuple: \begin{verbatim}
+        count(*)
+    \end{verbatim}
+    \item conta i valori di un attributo: \begin{verbatim}
+        count (Attributo)
+    \end{verbatim}
+    \item conta i valori distinti di un attributo: \begin{verbatim}
+        count (distinct Attributo)
+    \end{verbatim}
+\end{itemize}
+\noindent Esempio: Quanti figli ha Franco?\\
+\begin{verbatim}
+select count(*) as NumFigliDiFranco
+from paternita
+where padre='Franco'
+\end{verbatim}
+\begin{center}
+\begin{minipage}{0.45\textwidth}
+    \centering
+    \begin{tabular}{|c|c|}
+        \hline
+        \textbf{padre} & \textbf{figlio} \\ \hline
+        Sergio & Franco \\ \hline
+        Luigi & Olga \\ \hline
+        Luigi & Filippo \\ \hline
+        Franco & Andrea \\ \hline
+        Franco & Aldo \\ \hline
+    \end{tabular}
+\end{minipage}
+\hfil
+\begin{minipage}{0.45\textwidth}
+    \centering
+    \begin{tabular}{|c|}
+        \hline
+        \textbf{NumFigliDiFranco} \\ \hline
+        2 \\ \hline
+    \end{tabular}
+\end{minipage}
+\end{center}
+\noindent Il count applicato su un attributo specifico conta solo tuple in cui quell'attributo ha valore diverso da \texttt{NULL}
+
+\subsubsection{Altri operatori aggregati}
+\texttt{sum, avg, max, min}\\
+Ammettono come argomento un attributo o un espressione (ma non '*'), sum e avg sono argomenti numerici o di tempo, mentre max e min sono argomenti su cui è definito un ordinamento.\\
+Esempio: media dei redditi dei figli di Franco
+\begin{verbatim}
+select avg(reddito)
+from persone join paternita on nome = figlio
+where padre = 'Franco'
+\end{verbatim}
+
+\noindent Le \textbf{funzioni aggregate}, come
+\[
+\texttt{MAX}, \quad \texttt{MIN}, \quad \texttt{AVG}, \quad
+\texttt{SUM}, \quad \texttt{COUNT},
+\]
+considerano un insieme di tuple e producono un \textbf{singolo valore}.
+Consideriamo, ad esempio, la seguente interrogazione:
+\begin{verbatim}
+SELECT nome, MAX(reddito)
+FROM persone;
+\end{verbatim}
+Questa interrogazione presenta un problema.\\
+L'attributo \texttt{nome} viene infatti valutato \textbf{per ogni
+singola tupla} della tabella, mentre
+\[
+\texttt{MAX(reddito)}
+\]
+viene calcolato considerando \textbf{tutte le tuple} della tabella e
+restituisce un solo valore.
+Supponiamo, ad esempio, di avere:
+\begin{center}
+\begin{tabular}{|c|c|}
+\hline
+\textbf{nome} & \textbf{reddito} \\ \hline
+Anna   & 2000 \\ \hline
+Marco  & 3500 \\ \hline
+Luca   & 2500 \\ \hline
+\end{tabular}
+\end{center}
+Il massimo reddito è
+\[
+\texttt{MAX(reddito)} = 3500.
+\]
+Ma quale nome dovrebbe essere restituito?
+\[
+(\text{Anna},3500), \qquad
+(\text{Marco},3500), \qquad
+(\text{Luca},3500)?
+\]
+La query non specifica quale tupla debba fornire il valore di
+\texttt{nome}. Per questo motivo la \textbf{target list non è
+omogenea}.\\
+\noindent
+\textbf{Regola generale.}
+Se utilizziamo funzioni aggregate senza \texttt{GROUP BY}, gli
+elementi della \texttt{SELECT} devono essere omogenei: non possiamo
+mescolare attributi riferiti alle singole tuple con valori aggregati
+calcolati sull'intera tabella.\\
+Ad esempio, la seguente interrogazione è corretta:
+\begin{verbatim}
+SELECT MIN(eta), AVG(reddito)
+FROM persone;
+\end{verbatim}
+In questo caso entrambi gli elementi della target list sono funzioni
+aggregate:
+\[
+\texttt{MIN(eta)}
+\qquad\text{e}\qquad
+\texttt{AVG(reddito)}.
+\]
+Entrambe considerano l'insieme delle tuple e restituiscono un singolo
+valore. La target list è quindi \textbf{omogenea}.
+
+\subsubsection{group by}
+Nei casi visti in precedenza, gli operatori aggregati sono applicati all'insieme di tutte le tuple che formano il risultato di una query.
+In molti casi, vorremmo che le funzioni di aggregazione venissero applicate a \underline{gruppi di tuple} delle relazioni. Per specificare i gruppi di tuple su cui applicare le funzioni, si utilizza la clausola \texttt{group by}:
+\begin{verbatim}group by listaAttributi\end{verbatim}
+
+\noindent Esempio: Supponiamo di avere la seguente tabella:
+
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline
+\textbf{nome} & \textbf{dipartimento} & \textbf{reddito} \\ \hline
+Anna  & Informatica & 2000 \\ \hline
+Luca  & Informatica & 3000 \\ \hline
+Marco & Vendite     & 2500 \\ \hline
+Sara  & Vendite     & 3500 \\ \hline
+\end{tabular}
+\end{center}
+Vogliamo conoscere il reddito medio \textbf{di ogni dipartimento}.
+Scriviamo:
+\begin{verbatim}
+SELECT dipartimento, AVG(reddito)
+FROM persone
+GROUP BY dipartimento;
+\end{verbatim}
+\noindent La clausola \texttt{GROUP BY dipartimento} divide le tuple in gruppi
+in base al valore di \texttt{dipartimento}.
+Si formano quindi due gruppi:
+\[
+G_1 =
+\{
+(\text{Anna},\text{Informatica},2000),
+(\text{Luca},\text{Informatica},3000)
+\}
+\]
+e
+\[
+G_2 =
+\{
+(\text{Marco},\text{Vendite},2500),
+(\text{Sara},\text{Vendite},3500)
+\}.
+\]
+A questo punto \texttt{AVG(reddito)} viene calcolato
+\textbf{separatamente su ciascun gruppo}.
+Per Informatica:
+\[
+\frac{2000+3000}{2}=2500
+\]
+Per Vendite:
+\[
+\frac{2500+3500}{2}=3000.
+\]
+Il risultato finale sarà:
+\begin{center}
+\begin{tabular}{|c|c|}
+\hline
+\textbf{dipartimento} & \textbf{AVG(reddito)} \\ \hline
+Informatica & 2500 \\ \hline
+Vendite & 3000 \\ \hline
+\end{tabular}
+\end{center}
+Quindi possiamo ricordare che:
+\[
+\boxed{\text{GROUP BY crea i gruppi e le funzioni aggregate
+vengono applicate a ciascun gruppo}}
+\]
+\noindent Semantica di una query con GROUP BY\\
+Consideriamo una query della forma:
+\begin{verbatim}
+SELECT <target list>
+FROM R1, ..., Rn
+WHERE <condizione>
+GROUP BY A;
+\end{verbatim}
+Per comprenderne il funzionamento possiamo immaginare l'esecuzione
+in diversi passaggi.\\
+\textbf{1. Selezione delle tuple}
+Per prima cosa consideriamo la parte:
+\begin{verbatim}
+FROM R1, ..., Rn
+WHERE <condizione>
+\end{verbatim}
+Concettualmente, in questa fase possiamo ignorare temporaneamente
+sia la \texttt{SELECT} finale sia la \texttt{GROUP BY}.
+Otteniamo quindi tutte le tuple che soddisfano la condizione
+specificata nella clausola \texttt{WHERE}.\medskip\\
+\textbf{2. Formazione dei gruppi}
+Successivamente entra in gioco:
+\begin{verbatim}
+GROUP BY A
+\end{verbatim}
+Le tuple ottenute al passo precedente vengono divise in gruppi.
+Due tuple appartengono allo stesso gruppo se hanno
+\textbf{lo stesso valore dell'attributo $A$}.\\
+Ad esempio, se scriviamo:
+\begin{verbatim}
+GROUP BY dipartimento
+\end{verbatim}
+tutte le persone appartenenti a Informatica vengono messe nello
+stesso gruppo, tutte quelle appartenenti a Vendite in un altro
+gruppo, e così via.
+Più in generale, se scriviamo:
+\begin{verbatim}
+GROUP BY A, B
+\end{verbatim}
+due tuple appartengono allo stesso gruppo solamente se hanno
+\textbf{lo stesso valore sia di $A$ sia di $B$}.\medskip\\
+\textbf{3. Applicazione delle funzioni aggregate}
+Una volta creati i gruppi, le funzioni aggregate presenti nella
+\texttt{SELECT} vengono calcolate
+\textbf{separatamente all'interno di ciascun gruppo}.\\
+Ad esempio:
+\begin{verbatim}
+SELECT dipartimento, MAX(reddito)
+FROM persone
+GROUP BY dipartimento;
+\end{verbatim}
+calcola
+\[
+\texttt{MAX(reddito)}
+\]
+non sull'intera tabella, ma separatamente per ogni dipartimento.\medskip\\
+\textbf{4. Produzione del risultato}
+In generale, viene prodotta \textbf{una tupla del risultato per ogni
+gruppo}.
+La differenza fondamentale è quindi:
+\[
+\begin{array}{ccl}
+\text{senza GROUP BY}
+&\Rightarrow&
+\text{aggregazione sull'intero insieme di tuple}
+\\[2mm]
+\text{con GROUP BY}
+&\Rightarrow&
+\text{aggregazione separata per ogni gruppo}
+\end{array}
+\]
+\subsubsection*{Idea fondamentale}
+La clausola \texttt{GROUP BY} non calcola direttamente una funzione
+aggregata.
+Il suo compito è \textbf{dividere le tuple in gruppi}.
+Successivamente, funzioni come \texttt{AVG}, \texttt{MAX},
+\texttt{MIN}, \texttt{SUM} e \texttt{COUNT} vengono applicate
+separatamente alle tuple appartenenti a ciascun gruppo.\\
 
 
-\noindent da 60 fino a pagina 128 sql\\
+
+
+\noindent da 128 fino a pagina 128 sql\\
 pagina 148 slide modello relazionale fino a 160
