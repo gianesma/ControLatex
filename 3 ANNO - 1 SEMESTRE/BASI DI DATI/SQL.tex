@@ -37,7 +37,7 @@ Il risultato della esecuzione della query viene restituito nel canale di output 
 La semantica descritta chiarisce che l'istruzione è analoga alla seguente espressione dell'algebra relazionale\\
 $$PROJ_{Attributo,...,Attributo}(SEL_{Condizione}(Tabella))$$\\
 Diciamo analoga e non equivalente perchè in sql la tabella può avere duplicati.\\
-Esempio:
+\textcolor{verdeEsempio}{Esempio:}
 \begin{figure}[H]
     \centering  
     \includegraphics[width=0.7\linewidth]{../../images/sql1.png}
@@ -79,7 +79,7 @@ $$PROJ_{nome,reddito}(SEL_{eta<30}(persone))$$
 
 \section{Ridenominazione As}
 "as" nella lista degli attributi serve a ridenominare gli attributi, specificando esplicitamente un nome per un attributo del risultato.\\
-Esempio:
+\textcolor{verdeEsempio}{Esempio:}
 \begin{verbatim}
 select nome as name, reddito as salary
 from persone
@@ -87,7 +87,7 @@ where eta<30
 \end{verbatim}
 \noindent restituisce com risultato una tabella con due attributi, il primo nome name ed il secondo salary.\\
 "as" serve anche ad assegnare un nuovo nome alle tabelle nel'ambito di una query.\\
-Esempio:
+\textcolor{verdeEsempio}{Esempio:}
 \begin{verbatim}
 select p.nome as name, p.reddito as salary
 from persone as p
@@ -96,11 +96,11 @@ where p.eta<30
 \section{Distinct, $<$, *, where, null}
 \subsection{Distinct}
 Per non avere duplicati nella query nella select aggiungiamo distinct\\
-Esmepio:\\
+\textcolor{verdeEsempio}{Esempio:}\\
 \texttt{select distinct attributo1,...,attributo2 from tabella1}
 \subsection{$<$}
 La utilizziamo per evitare ridondanze quando stiamo confrontando righe della stessa tabella tra loro, tipicamente in un self join, e vogliamo ottenere ogni coppia una sola volta.\\
-Esempio:
+\textcolor{verdeEsempio}{Esempio:}
 \begin{verbatim}
     select p1.nome, p2.nome
     from persona p1, persona p2
@@ -108,7 +108,7 @@ Esempio:
 \end{verbatim}
 \subsection{*}
 Qunado vogliamo che una query restituisca tutti gli attributi usiamo '*' nella select al posto della lista degli attributi.\\
-Esempio:\\
+\textcolor{verdeEsempio}{Esempio:}\\
 Data una tabella R sugli attributi A1,...,An:\medskip\\
 \begin{minipage}[c]{0.40\textwidth}
        \begin{verbatim}
@@ -127,7 +127,7 @@ Data una tabella R sugli attributi A1,...,An:\medskip\\
 \end{minipage}
 \subsection{Condizione while}
 Quando eseguiamo una query in cui non c'è una condizione possiamo scrivere while true o non scrivere proprio where.\\
-Esempio:\\
+\textcolor{verdeEsempio}{Esempio:}\\
 \begin{minipage}[c]{0.40\textwidth}
        \begin{verbatim}
         select A1,...,An
@@ -143,13 +143,13 @@ Esempio:\\
         \end{verbatim}
 \end{minipage}\medskip\\
 Nella clausola where possono comparire espressioni booleane qualunque\\
-Esempio:\\
+\textcolor{verdeEsempio}{Esempio:}\\
 \texttt{select *
 from persone
 where reddito > 25 and (eta < 30 or eta >60)}\\
 Nelle condizioni nella clausola where si possono usare molti operatori che SQL mette a disposizione.\\
 Ad esempio l'operatore \texttt{like} che consente di verificare che una stringa appartenga al linguaggio definito da una espressione regolare.\\
-Esempio:\\
+\textcolor{verdeEsempio}{Esempio:}\\
 se vogliamo conoscere quali sono le persone che hanno un nome che inizia per 'A', ha 'd' come terza lettera e può continuare con altri caratteri.
 \begin{verbatim}
 select *
@@ -158,7 +158,7 @@ where nome like 'A_d%'
 \end{verbatim}
 \subsection{gestione dei valori nulli - "is null" e "is not null"}
 nelle condizioni che compaiono nella clausola where si possono usare anche i predicati "is null" e "is not null" per gestire i valori nulli\\
-Esempio:\\
+\textcolor{verdeEsempio}{Esempio:}\\
 vogliamo le persone la cui eta è o ptrebbe essere maggiore di 40
 \begin{verbatim}
 select *
@@ -167,13 +167,13 @@ where eta > 40 or eta is null
 \end{verbatim}
 \section{Espressioni nella target list}
 Ogni elemento della target list può essere una espressione che fa uso dei valori memorizzati negli attributi delle tuple del risultato.\\
-Esempio:\\
+\textcolor{verdeEsempio}{Esempio:}\\
 \texttt{select eta, reddito/2\\
 from persone\\
 where nome='Luigi'}\\
 reddito/2 $\rightarrow$ espressione aritmetica che fa uso del valore dell'attributo reddito e lo divide per 2\\
 Nella target list può comparire un numero qualunque di espressioni e all'interno di tali espressioni possono ovviamente comparire anche costanti\\
-Esempio:\\
+\textcolor{verdeEsempio}{Esempio:}\\
 \texttt{select 'Gigi' as nomePersona, eta, reddito/2 as redditoSemestrale\\
 from persone\\
 where nome='Luigi'}\\
@@ -218,7 +218,7 @@ Possono essere necessarie ridenominazioni:
     \item nella target list
     \item nella clausola from (in particolare, introdurre alias consente di riferirsi due o più volte alla stessa tabella)
 \end{itemize}
-\noindent Esempio:
+\noindent \textcolor{verdeEsempio}{Esempio:}
 \begin{verbatim}
     select X.A1 as B1,...
     from R1 as X, R2 as Y, R1 as Z
@@ -235,7 +235,7 @@ Date le tabelle R1(A1, A2) e R2(A3, A4)
 $REN_{B1,B2 \leftarrow A1,A4}( PROJ_{A1,A4} (SEL_{A2=A3 \text{ and }A4=C1 }( R1 \text{ }JOIN\text{ }R2\text{ }JOIN\text{ }REN_{C1,C2 \leftarrow A1,A2}(R1))))$
 \subsection{Self-join}
 Il self-join è un join in cui la stessa relazione compare sia come operando sinistro sia come operando destro ed è cruciale quando dobbiamo combinare due tuple della stessa relazione.\\
-Esempio:\\
+\textcolor{verdeEsempio}{Esempio:}\\
 \texttt{persone(nome, eta, reddito)}\\
 \underline{query}: Vogliamo le coppie di persone con lo stesso reddito\\
 \underline{soluzione}:
@@ -315,7 +315,7 @@ from Tabella1 join Tabella2 on CondJoin,...
 \end{verbatim}
 
 \noindent La parola chiave \texttt{join} specifica le tabelle da combinare, mentre la clausola \texttt{on} contiene la \textbf{condizione di join}, cioè la condizione che stabilisce quali tuple delle due tabelle devono essere associate. La clausola \texttt{where}, invece, può essere utilizzata per imporre ulteriori condizioni sul risultato del join.\\
-Ad esempio, per ottenere padre e madre delle persone per le quali entrambi i genitori sono noti, invece di scrivere:
+\textcolor{verdeEsempio}{Esempio} per ottenere padre e madre delle persone per le quali entrambi i genitori sono noti, invece di scrivere:
 \begin{verbatim}
 select paternita.figlio, padre, madre
 from maternita, paternita
@@ -328,7 +328,8 @@ from maternita join paternita on
      paternita.figlio = maternita.figlio
 \end{verbatim}
 \noindent In questo caso si tratta di un \textbf{equi-join}, perché la condizione specificata dopo \texttt{on} è un'uguaglianza.
-Il join esplicito può essere applicato \textbf{più volte consecutivamente}. Il risultato di un primo join è infatti una nuova tabella, che può essere utilizzata come operando di un secondo join. Ad esempio:
+Il join esplicito può essere applicato \textbf{più volte consecutivamente}. Il risultato di un primo join è infatti una nuova tabella, che può essere utilizzata come operando di un secondo join.\\ 
+\textcolor{verdeEsempio}{Esempio:}
 \begin{verbatim}
 select f.nome, f.reddito, p.reddito
 from persone p
@@ -373,7 +374,8 @@ from (persone p join paternita t on p.nome = t.padre) as J,
 \noindent Quando si assegna un alias a un join esplicito è necessario \textbf{racchiudere tra parentesi l'intera espressione di join}.
 Un aspetto importante è la \textbf{visibilità degli alias}. Gli alias \texttt{p} e \texttt{t}, definiti all'interno delle parentesi, non sono più
 referenziabili all'esterno. All'esterno delle parentesi è visibile solamente l'alias \texttt{J}.
-Di conseguenza, invece di riferirsi agli attributi attraverso \texttt{p} e \texttt{t}, bisogna utilizzare \texttt{J}. Ad esempio:
+Di conseguenza, invece di riferirsi agli attributi attraverso \texttt{p} e \texttt{t}, bisogna utilizzare \texttt{J}.\\ 
+\textcolor{verdeEsempio}{Esempio:}
 \begin{verbatim}
 where f.reddito > J.reddito
   and f.nome = J.figlio
@@ -403,12 +405,12 @@ per costruirla.
 Quando la struttura dei join diventa più complessa, assegnare soltanto un nome
 al risultato può non essere sufficiente. SQL permette quindi di specificare,
 oltre al nome della nuova tabella, anche i \textbf{nomi dei suoi attributi}.\medskip\\
-Ricordando che il database è così composto:\\
-\texttt{
-persone(nome, eta, reddito): contiene le informazioni sulle persone.\\
-paternita(padre, figlio): rappresenta le relazioni padre-figlio.\\
-maternita(madre, figlio): rappresenta le relazioni madre-figlio.\\
-}\\
+Ricordando che il database è così composto:
+\begin{verbatim}
+persone(nome, eta, reddito): contiene le informazioni sulle persone.
+paternita(padre, figlio): rappresenta le relazioni padre-figlio.
+maternita(madre, figlio): rappresenta le relazioni madre-figlio.
+\end{verbatim}
 \noindent Supponiamo ora di volere le coppie (senza ridondanze) di persone diverse
 che hanno la stessa età e sono figli dello stesso padre.
 Vogliamo utilizzare un join tra due join espliciti, uno per individuare le coppie
@@ -465,8 +467,8 @@ quando si costruisce un join tra risultati di altri join espliciti.
 SQL mette a disposizione il \textbf{natural join}, che permette di effettuare
 automaticamente un equi-join utilizzando gli attributi che le due tabelle
 hanno in comune, cioè gli attributi con lo stesso nome semplice.\\
-Ad esempio, considerando le tabelle \texttt{maternita} e \texttt{paternita},
-entrambe possiedono l'attributo \texttt{figlio}. Con il join esplicito si
+\textcolor{verdeEsempio}{Esempio:} considerando le tabelle \texttt{maternita} e \texttt{paternita},
+entrambe possiedono l'attributo \texttt{figlio}.\\ Con il join esplicito si
 scriverebbe:
 \begin{verbatim}
 select paternita.figlio, padre, madre
@@ -497,7 +499,7 @@ Per calcolare il prodotto cartesiano di due relazioni in SQL ci sono anche altre
     \item esprimendo il prodotto cartesiano in modo implicito, mettendo le due relazioni nella lista dopo la clausola from
     \item esprimendo il prodotto cartesiano in modo esplicito, usando l'operatore di nome \texttt{cross join} nella clausola from
 \end{itemize}
-Esempio:\\
+\textcolor{verdeEsempio}{Esempio:}\\
 Vogliamo il prodotto cartesiano della tabella paternita e della tabella persona
 \begin{itemize}
     \item Soluzione con il join naturale (visto che le due tabelle non hanno attributi in comune): \begin{verbatim}
@@ -520,14 +522,14 @@ esistono tre versioni:
     \item \textbf{join esterno destro}: mantiene tutte le tuple del primo operando, estendendole con valori nulli, se necessario
     \item \textbf{join esterno completo}: mantiene tutte le tuple sia del primo operando e sia del secondo operando, estendendole con valori nulli, se necessario
 \end{itemize}
-\noindent Esempio:\\
+\noindent \textcolor{verdeEsempio}{Esempio:}\\
 Padre di ogni persona e, se nota, anche la madre:
 \begin{verbatim}
     select paternita.figlio, padre, madre
     from paternita left join maternita
          on paternita.figlio = maternita.figlio 
 \end{verbatim}
-\noindent Esempio con join completo in cui non perdo alcun figlio:\\
+\noindent \textcolor{verdeEsempio}{Esempio} con join completo in cui non perdo alcun figlio:
 \begin{verbatim}
     select paternita.figlio, padre, madre, maternita.figlio 
     from paternita full outer join maternita 
@@ -542,7 +544,7 @@ La sintassi è:
 order by attributo1, attributo2, ...
 \end{verbatim}
 \noindent Se non viene specificato diversamente, l'ordinamento è \textbf{crescente}.\\
-Ad esempio, vogliamo ottenere il nome e il reddito delle persone con meno di
+\textcolor{verdeEsempio}{Esempio} vogliamo ottenere il nome e il reddito delle persone con meno di
 30 anni, ordinandole prima in base al reddito e, a parità di reddito, in base al nome:
 \begin{verbatim}
 select nome, reddito
@@ -554,7 +556,8 @@ order by reddito, nome
 clausola \texttt{ORDER BY}
 
 \subsection{Limite alla dimensione del risultato: limit}
-Si può indicare un limite alla dimensione del risultato con la clausola \texttt{limit} in SQL, al fine di avere come risultato al massimo un prefissato numero di tuple
+Si può indicare un limite alla dimensione del risultato con la clausola \texttt{limit} in SQL, al fine di avere come risultato al massimo un prefissato numero di tuple\\
+\textcolor{verdeEsempio}{Esempio:}
 \begin{verbatim}
 select nome, reddito
 from persone
@@ -567,8 +570,326 @@ limit 2
 \subsection{Operatori aggregati}
 Nelle espressioni della target list possiamo avere anche espressioni che calcolano valori a partire da insiemi di tuple:\\
 \texttt{conteggio, minimo, massimo, media, totale}\\
-Sintassi: \texttt{Funzione ([distinct] EspressioneSuAttributi)}
+Sintassi: \texttt{Funzione ([distinct] EspressioneSuAttributi)}\medskip\\
+Quando un operatore aggregato ALFA compare nella target list di una query del tipo:
+\begin{verbatim}
+select <... ALFA ...>
+from R1, R2,...,Rn
+where <condizione>
+\end{verbatim}
+\noindent L'operatore aggregato viene applicato a tutte le tuple del prodotto cartesiano che soddisfano la condizione della clausola \texttt{where} ed il risultato sarà una 
+singola tupla che conterrà il valore risultante o i valori risultanti dall'applicazione dell'operatore\\
+\textcolor{verdeEsempio}{Esempio:}
+\begin{verbatim}
+select count(*)
+from Persone
+where eta > 30
+\end{verbatim}
+\noindent Tale query esegue i seguenti passi:\\
+\begin{itemize}
+    \item viene calcolato il prodotto cartesiano delle tabelle nella clausola \texttt{from}
+    \item vengono selezionate le tuple della tabella che soddisfano la condizione nella clausola \texttt{where}
+    \item viene applicato l'operatore aggregato (in questo caso \texttt{count(*)}) su tutte le tuple selezionate: viene quindi restituita 
+            una tabella con una sola colonna ed una sola riga che contiene il risultato dell'applicazione dell'operatore aggregato, cioè il numero di tuple selezionate.
+\end{itemize}
+\subsubsection{count}
+Sintassi:\\
+\begin{itemize}
+    \item conta il numero di tuple: \begin{verbatim}
+        count(*)
+    \end{verbatim}
+    \item conta i valori di un attributo: \begin{verbatim}
+        count (Attributo)
+    \end{verbatim}
+    \item conta i valori distinti di un attributo: \begin{verbatim}
+        count (distinct Attributo)
+    \end{verbatim}
+\end{itemize}
+\noindent \textcolor{verdeEsempio}{Esempio:} Quanti figli ha Franco?\\
+\begin{verbatim}
+select count(*) as NumFigliDiFranco
+from paternita
+where padre='Franco'
+\end{verbatim}
+\begin{center}
+\begin{minipage}{0.45\textwidth}
+    \centering
+    \begin{tabular}{|c|c|}
+        \hline
+        \textbf{padre} & \textbf{figlio} \\ \hline
+        Sergio & Franco \\ \hline
+        Luigi & Olga \\ \hline
+        Luigi & Filippo \\ \hline
+        Franco & Andrea \\ \hline
+        Franco & Aldo \\ \hline
+    \end{tabular}
+\end{minipage}
+\hfil
+\begin{minipage}{0.45\textwidth}
+    \centering
+    \begin{tabular}{|c|}
+        \hline
+        \textbf{NumFigliDiFranco} \\ \hline
+        2 \\ \hline
+    \end{tabular}
+\end{minipage}
+\end{center}
+\noindent Il count applicato su un attributo specifico conta solo tuple in cui quell'attributo ha valore diverso da \texttt{NULL}
 
+\subsubsection{Altri operatori aggregati}
+\texttt{sum, avg, max, min}\\
+Ammettono come argomento un attributo o un espressione (ma non '*'), sum e avg sono argomenti numerici o di tempo, mentre max e min sono argomenti su cui è definito un ordinamento.\\
+\textcolor{verdeEsempio}{Esempio:} media dei redditi dei figli di Franco
+\begin{verbatim}
+select avg(reddito)
+from persone join paternita on nome = figlio
+where padre = 'Franco'
+\end{verbatim}
 
-\noindent da 60 fino a pagina 128 sql\\
-pagina 148 slide modello relazionale fino a 160
+\noindent Le \textbf{funzioni aggregate}, come
+\[
+\texttt{MAX}, \quad \texttt{MIN}, \quad \texttt{AVG}, \quad
+\texttt{SUM}, \quad \texttt{COUNT},
+\]
+considerano un insieme di tuple e producono un \textbf{singolo valore}.
+\textcolor{verdeEsempio}{Esempio} consideriamo la seguente interrogazione:
+\begin{verbatim}
+SELECT nome, MAX(reddito)
+FROM persone;
+\end{verbatim}
+Questa interrogazione presenta un problema.\\
+L'attributo \texttt{nome} viene infatti valutato \textbf{per ogni
+singola tupla} della tabella, mentre
+\[
+\texttt{MAX(reddito)}
+\]
+viene calcolato considerando \textbf{tutte le tuple} della tabella e
+restituisce un solo valore.
+\textcolor{verdeEsempio}{Esempio} supponiamo di avere:
+\begin{center}
+\begin{tabular}{|c|c|}
+\hline
+\textbf{nome} & \textbf{reddito} \\ \hline
+Anna   & 2000 \\ \hline
+Marco  & 3500 \\ \hline
+Luca   & 2500 \\ \hline
+\end{tabular}
+\end{center}
+Il massimo reddito è
+\[
+\texttt{MAX(reddito)} = 3500.
+\]
+Ma quale nome dovrebbe essere restituito?
+\[
+(\text{Anna},3500), \qquad
+(\text{Marco},3500), \qquad
+(\text{Luca},3500)?
+\]
+La query non specifica quale tupla debba fornire il valore di
+\texttt{nome}. Per questo motivo la \textbf{target list non è
+omogenea}.\\
+\noindent
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{regola}
+Se utilizziamo funzioni aggregate senza \texttt{GROUP BY}, gli
+elementi della \texttt{SELECT} devono essere omogenei: non possiamo
+mescolare attributi riferiti alle singole tuple con valori aggregati
+calcolati sull'intera tabella.\end{regola}}}\\
+\textcolor{verdeEsempio}{Esempio} la seguente interrogazione è corretta:
+\begin{verbatim}
+SELECT MIN(eta), AVG(reddito)
+FROM persone;
+\end{verbatim}
+In questo caso entrambi gli elementi della target list sono funzioni
+aggregate:
+\[
+\texttt{MIN(eta)}
+\qquad\text{e}\qquad
+\texttt{AVG(reddito)}.
+\]
+Entrambe considerano l'insieme delle tuple e restituiscono un singolo
+valore. La target list è quindi \textbf{omogenea}.
+
+\subsection{group by}
+Nei casi visti in precedenza, gli operatori aggregati sono applicati all'insieme di tutte le tuple che formano il risultato di una query.
+In molti casi, vorremmo che le funzioni di aggregazione venissero applicate a \underline{gruppi di tuple} delle relazioni. Per specificare i gruppi di tuple su cui applicare le funzioni, si utilizza la clausola \texttt{group by}:
+\begin{verbatim}group by listaAttributi\end{verbatim}
+
+\noindent \textcolor{verdeEsempio}{Esempio} Supponiamo di avere la seguente tabella:
+
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline
+\textbf{nome} & \textbf{dipartimento} & \textbf{reddito} \\ \hline
+Anna  & Informatica & 2000 \\ \hline
+Luca  & Informatica & 3000 \\ \hline
+Marco & Vendite     & 2500 \\ \hline
+Sara  & Vendite     & 3500 \\ \hline
+\end{tabular}
+\end{center}
+Vogliamo conoscere il reddito medio \textbf{di ogni dipartimento}.
+Scriviamo:
+\begin{verbatim}
+SELECT dipartimento, AVG(reddito)
+FROM persone
+GROUP BY dipartimento;
+\end{verbatim}
+\noindent La clausola \texttt{GROUP BY dipartimento} divide le tuple in gruppi
+in base al valore di \texttt{dipartimento}.
+Si formano quindi due gruppi:
+\[
+G_1 =
+\{
+(\text{Anna},\text{Informatica},2000),
+(\text{Luca},\text{Informatica},3000)
+\}
+\]
+e
+\[
+G_2 =
+\{
+(\text{Marco},\text{Vendite},2500),
+(\text{Sara},\text{Vendite},3500)
+\}.
+\]
+A questo punto \texttt{AVG(reddito)} viene calcolato
+\textbf{separatamente su ciascun gruppo}.
+Per Informatica:
+\[
+\frac{2000+3000}{2}=2500
+\]
+Per Vendite:
+\[
+\frac{2500+3500}{2}=3000.
+\]
+Il risultato finale sarà:
+\begin{center}
+\begin{tabular}{|c|c|}
+\hline
+\textbf{dipartimento} & \textbf{AVG(reddito)} \\ \hline
+Informatica & 2500 \\ \hline
+Vendite & 3000 \\ \hline
+\end{tabular}
+\end{center}
+Quindi possiamo ricordare che:
+\[
+\boxed{\text{GROUP BY crea i gruppi e le funzioni aggregate
+vengono applicate a ciascun gruppo}}
+\]
+\noindent Semantica di una query con GROUP BY\\
+Consideriamo una query della forma:
+\begin{verbatim}
+SELECT <target list>
+FROM R1, ..., Rn
+WHERE <condizione>
+GROUP BY A;
+\end{verbatim}
+Per comprenderne il funzionamento possiamo immaginare l'esecuzione
+in diversi passaggi.\\
+\textbf{1. Selezione delle tuple}
+Per prima cosa consideriamo la parte:
+\begin{verbatim}
+FROM R1, ..., Rn
+WHERE <condizione>
+\end{verbatim}
+Concettualmente, in questa fase possiamo ignorare temporaneamente
+sia la \texttt{SELECT} finale sia la \texttt{GROUP BY}.
+Otteniamo quindi tutte le tuple che soddisfano la condizione
+specificata nella clausola \texttt{WHERE}.\medskip\\
+\textbf{2. Formazione dei gruppi}
+Successivamente entra in gioco:
+\begin{verbatim}
+GROUP BY A
+\end{verbatim}
+Le tuple ottenute al passo precedente vengono divise in gruppi.
+Due tuple appartengono allo stesso gruppo se hanno
+\textbf{lo stesso valore dell'attributo $A$}.\\
+\textcolor{verdeEsempio}{Esempio} se scriviamo:
+\begin{verbatim}
+GROUP BY dipartimento
+\end{verbatim}
+tutte le persone appartenenti a Informatica vengono messe nello
+stesso gruppo, tutte quelle appartenenti a Vendite in un altro
+gruppo, e così via.
+Più in generale, se scriviamo:
+\begin{verbatim}
+GROUP BY A, B
+\end{verbatim}
+due tuple appartengono allo stesso gruppo solamente se hanno
+\textbf{lo stesso valore sia di $A$ sia di $B$}.\medskip\\
+\textbf{3. Applicazione delle funzioni aggregate}
+Una volta creati i gruppi, le funzioni aggregate presenti nella
+\texttt{SELECT} vengono calcolate
+\textbf{separatamente all'interno di ciascun gruppo}.\\
+\textcolor{verdeEsempio}{Esempio:}
+\begin{verbatim}
+SELECT dipartimento, MAX(reddito)
+FROM persone
+GROUP BY dipartimento;
+\end{verbatim}
+calcola
+\[
+\texttt{MAX(reddito)}
+\]
+non sull'intera tabella, ma separatamente per ogni dipartimento.\medskip\\
+\textbf{4. Produzione del risultato}
+In generale, viene prodotta \textbf{una tupla del risultato per ogni
+gruppo}.
+La differenza fondamentale è quindi:
+\[
+\begin{array}{ccl}
+\text{senza GROUP BY}
+&\Rightarrow&
+\text{aggregazione sull'intero insieme di tuple}
+\\[2mm]
+\text{con GROUP BY}
+&\Rightarrow&
+\text{aggregazione separata per ogni gruppo}
+\end{array}
+\]
+\subsubsection{Idea fondamentale}
+La clausola \texttt{GROUP BY} non calcola direttamente una funzione
+aggregata.
+Il suo compito è \textbf{dividere le tuple in gruppi}.
+Successivamente, funzioni come \texttt{AVG}, \texttt{MAX},
+\texttt{MIN}, \texttt{SUM} e \texttt{COUNT} vengono applicate
+separatamente alle tuple appartenenti a ciascun gruppo.\medskip\\
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{regola}
+In una interrogazione che fa uso di \textbf{group by}, dovrebbero comparire solo target list "omogenee", ovvero target list che comprendono, oltre a funzioni di aggregazione, solamente attributi
+che compaiono nella group by.\end{regola}}}\medskip\\
+\textcolor{verdeEsempio}{Esempio:}\\
+Redditi delle persone, raggrupati per età (\underline{non raggionevole}, perchè la target list è disomogenea: potrebbero esistere più valori di reddito per le persone appartenenti allo stesso gruppo):\\
+\texttt{ select \textcolor{verdeScuro}{eta}, \textcolor{red}{reddito}\\
+from persone\\
+group by \textcolor{verdeScuro}{eta}}\\
+Redditi delle persone, raggruppati per età (\underline{ragionevole}, perchè per ogni gruppo c'è una sola media dei redditi):\\
+\texttt{select \textcolor{verdeScuro}{eta}, \textcolor{verdeScuro}{avg}(reddito)\\
+from persone\\
+group by \textcolor{verdeScuro}{eta}}
+
+\subsection{Condizione sui gruppi: having}
+Si possono anche imporre le condizioni di \textbf{selezione sui gruppi}. Per effettuare la selezione sui gruppi si usa la clausola \texttt{having}, che deve apparire dopo la \texttt{group by} e che di fatto 
+opera un taglio sulle tuple del risultato dalla group by.\\
+\textcolor{verdeEsempio}{Esempio:} i padri i cui figli hanno reddito medio maggiore di 25\\
+Ricordando che il database è così composto:
+\begin{verbatim}
+persone(nome, eta, reddito): contiene le informazioni sulle persone.
+paternita(padre, figlio): rappresenta le relazioni padre-figlio.
+maternita(madre, figlio): rappresenta le relazioni madre-figlio.
+\end{verbatim}
+\begin{verbatim}
+    select padre, avg(f.reddito)
+    from persone f join paternita
+         on figlio = f.nome
+    group by padre
+    having avg(f.reddito) > 25
+\end{verbatim}
+\noindent I padri i cui figli sotto i 30 anni hanno un reddito medio
+maggiore di 20.\\
+\begin{verbatim}
+    select t.padre, avg(f.reddito)
+    from persone f join paternita t
+         on f.nome = t.figlio
+    where f.eta < 30                ----> condizione sulle tuple che vanno a formare i gruppi
+    group by t.padre
+    having avg(f.reddito) > 20      ----> condizione sulle tuple che rappresentano i gruppi 
+\end{verbatim}

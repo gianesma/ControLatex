@@ -348,13 +348,23 @@ $$PROF_{idart}(Artista)-PROJ_{idart}(SEL_{citta<>Roma \text{ and } anno>2000}(Co
 \underline{query5}: trovare le coppue $<x,y>$ tali che l'artista con id $x$ non ha mai fatto concerti nella città $y$.\\
 \underline{soluzione}: da tutte le possibili coppie $<x,y>$ tali che $x$ è l'id di un artista e $y$ è una città, leviamo le coppie $<x,y>$ tali che l'artista di id $x$ ha fatto almeno un concerto nella città $y$:\\
 $$(PROJ_{idart} \text{ JOIN }PROJ_{citta}(Concerto))-PROJ_{idart,citta}(Concerto)$$
+
+\subsection{Join esterno}
+Il join naturale esterno estende, con valori nulli, le tuple che verrebbero tagliate fuori da un join (interno)\\
+esistono tre versioni:
+\begin{itemize}
+    \item \textbf{sinistro}: mantiene tutte le tuple del primo operando, estendendole con valori nulli, se necessario
+    \item \textbf{destro}: mantiene tutte le tuple del secondo operando, estendendole con valori nulli, se necessario
+    \item \textbf{completo}: mantiene tutte le tuple di entrambi gli operandi, estendendole con valori nulli, se necessario
+\end{itemize}
+
 \section{Informazione incompleta}
 Il modello relazionale impone ai dati una struttura rigida:\\
 \begin{itemize}
     \item l'informazione è rappresentata per mezzo di tuple
     \item le tuple ammesse sono dettate dagli schemi di relazione
 \end{itemize}
-\noindent Nella pratica, però, i dati disponibili possono non corrispondere esattamente al formaato previsto, per varie ragioni\\
+\noindent Nella pratica, però, i dati disponibili possono non corrispondere esattamente al formato previsto, per varie ragioni\\
 Esempio:
 \begin{itemize}
     \item di firenze non conosciamo l'indirizzo della predettura
@@ -383,3 +393,28 @@ Esempio:
     \item viene introdotto il cosiddetto \textbf{valore nullo} (NULL): esso è un valore che il sistema riconosce essere particolare e che denota l'assenza di un valore del dominio
     \item il valore nullo non è un valore di un dominio, ma può comparire come valore di qualunque attributo definito su qualunque dominio
 \end{itemize}
+\noindent Formalmente, è sufficiente estendere il concetto di tupla: se t è una tupla, allora t[A], per ogni attributo A, è un valore del dominio dom(A) oppure è il valore nullo NULL\\
+Al momento di definire uno schema di basi di dati, si possono poi imporre restrizioni sulla presenza di valori nulli nei vari attributi delle relazioni.
+\subsubsection{Interpretazioni del valore nullo}
+Tre casi differenti:
+\begin{itemize}
+    \item valore \textbf{sconosciuto}: esiste un valore del dominio, ma non è noto (nel nostro esempio: Firenze)
+    \item valore \textbf{inesistente}: non esiste un valore del dominio (nel nostro esempio: Tivoli)
+    \item valore \textbf{senza informazione}: non è noto se esista o meno un valore del dominio (nel nostro esempio: Prato)
+\end{itemize}
+\noindent I DBMS non distinguono i tipi di valore nullo.\medskip\\
+Una condizione in un'espressione nell'algebra è vera \underline{solo per valori non nulli} - ossia \underline{il valore nullo non soddisfa alcuna condizione}. 
+Per riferirsi ai valori nulli esistono forme apposite di condizioni:
+\begin{center}
+\texttt{\textcolor{red}{IS NULL}}\\
+\texttt{\textcolor{red}{IS NOT NULL}}
+\end{center}
+\noindent Esempio sulla selezione:\\
+$$SEL_{eta>40}(Impiegati)$$\\
+la condizione atomica è vera solo per valori non nulli, invece l'espressione:\\
+$$SEL_{eta>40 \text{ OR eta IS NULL}}$$\\
+è vera anche per le tuple in cui eta contiene il valore nullo.
+
+\section{Osservazioni}
+Due espressioni sono \textbf{equivalenti} se producono lo stesso risultato qualunque sia l'istanza della base di dati sulla quale vengono valutate\\
+L'equivalenza è importante in pratica perchè i DBMS cercano di eseguire espressioni equivalenti a quelle date, ma meno "costose" della espressione originaria (effettuando le selezioni il prima possibile).
