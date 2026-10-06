@@ -649,7 +649,8 @@ VA_t = \frac{C_{t+1}}{r-g}
 \]
 
 \subsubsection*{Esempio}
-Supponiamo di ricevere \(1\) milione di euro alla fine del primo anno e che questa somma cresca successivamente 
+Supponiamo di ricevere \(1\) milione di euro alla fine del primo anno e che questa 
+somma cresca successivamente 
 del \(4\%\) ogni anno, per sempre.
 
 \noindent Con un tasso di attualizzazione del \(10\%\):
@@ -664,5 +665,203 @@ VA_0=\frac{1}{0{,}10-0{,}04}
 \]
 
 \noindent Il valore è elevato perché 
-non stiamo valutando solamente il primo milione di euro, ma \textbf{tutti i pagamenti futuri, che continuano per sempre e crescono del \(4\%\) ogni anno}.
+non stiamo valutando solamente il primo milione di euro, ma \textbf{tutti i 
+pagamenti futuri, che continuano per sempre e crescono del \(4\%\) ogni anno}.
 
+
+\subsection{RIT}
+\subsection*{Trappole}
+\subsection*{Trappola 1: investimento o finanziamento?}
+
+\noindent Nell'utilizzo del \textbf{TIR} bisogna distinguere tra un'operazione
+di investimento e un'operazione di finanziamento.
+
+\noindent Consideriamo i seguenti due progetti:
+
+\begin{center}
+\begin{tabular}{c|c|c|c}
+\textbf{Progetto} & $\mathbf{F_0}$ & $\mathbf{F_1}$ & \textbf{TIR} \\
+\hline
+A & -1.000 & +1.500 & 50\% \\
+B & +1.000 & -1.500 & 50\%
+\end{tabular}
+\end{center}
+
+\noindent Basandoci solamente sul TIR potremmo concludere che i due progetti
+siano ugualmente vantaggiosi, poiché entrambi presentano un TIR del 50\%.
+In realtà, rappresentano due operazioni completamente diverse.
+
+\begin{itemize}
+    \item \textbf{Progetto A:} paghiamo inizialmente 1.000 euro e riceviamo
+    successivamente 1.500 euro. Stiamo quindi \textbf{prestando/investendo denaro}
+    ottenendo un rendimento del 50\%.
+
+    \item \textbf{Progetto B:} riceviamo inizialmente 1.000 euro e successivamente
+    dobbiamo restituire 1.500 euro. Stiamo quindi \textbf{prendendo denaro in prestito}
+    pagando un tasso del 50\%.
+\end{itemize}
+
+\noindent Di conseguenza:
+
+\begin{itemize}
+    \item quando \textbf{investiamo o prestiamo denaro}, preferiamo un tasso di
+    rendimento elevato;
+    \item quando \textbf{prendiamo denaro in prestito}, preferiamo invece un
+    tasso più basso, perché rappresenta il costo del finanziamento.
+\end{itemize}
+
+\noindent Questo spiega perché non possiamo valutare un'operazione solamente
+guardando il valore del TIR: dobbiamo prima capire se si tratta di un
+\textbf{investimento} o di un \textbf{finanziamento}.
+
+\medskip
+\noindent\textbf{Attenzione:} normalmente, all'aumentare del tasso di sconto
+il VAN diminuisce. In alcune operazioni di finanziamento può invece accadere
+il contrario: il VAN può aumentare all'aumentare del tasso di sconto.
+\subsection*{Trappola 2: tassi di rendimento multipli}
+
+\noindent In alcuni casi uno stesso progetto può presentare \textbf{più valori del TIR}.
+Questo accade perché alcuni flussi di cassa possono generare un VAN pari a zero
+in corrispondenza di più tassi di sconto.
+
+\noindent Consideriamo il seguente esempio:
+
+\begin{center}
+\begin{tabular}{c|rrrrrrr}
+\textbf{Periodo} & 0 & 1 & 2 & 3 & 4 & 5 & 6 \\
+\hline
+Flusso prima delle imposte
+& -1000 & +300 & +300 & +300 & +300 & +300 & 0 \\
+
+Imposte
+& 0 & +500 & -150 & -150 & -150 & -150 & -150 \\
+
+\hline
+\textbf{Flusso dopo le imposte}
+& \textbf{-1000} & \textbf{+800} & \textbf{+150}
+& \textbf{+150} & \textbf{+150} & \textbf{+150} & \textbf{-150}
+\end{tabular}
+\end{center}
+
+\noindent Il TIR si determina, come sempre, imponendo il VAN uguale a zero:
+
+\[
+0 =
+-1000
++ \frac{800}{1+\mathrm{TIR}}
++ \frac{150}{(1+\mathrm{TIR})^2}
++ \frac{150}{(1+\mathrm{TIR})^3}
++ \frac{150}{(1+\mathrm{TIR})^4}
++ \frac{150}{(1+\mathrm{TIR})^5}
+- \frac{150}{(1+\mathrm{TIR})^6}
+\]
+
+\noindent In questo caso l'equazione presenta \textbf{due soluzioni}:
+
+\[
+\boxed{\mathrm{TIR}_1=-50\%}
+\qquad
+\boxed{\mathrm{TIR}_2=15,2\%}
+\]
+
+\noindent Quindi lo stesso progetto presenta due diversi tassi di rendimento
+che rendono il VAN uguale a zero.
+
+\subsubsection*{Regola dei segni di Cartesio}
+
+\noindent La presenza di più TIR è legata ai cambiamenti di segno dei flussi
+di cassa.
+
+\noindent Secondo la \textbf{regola dei segni di Cartesio}, il numero delle
+soluzioni positive di un polinomio può essere pari al numero dei cambiamenti
+di segno dei suoi coefficienti oppure inferiore ad esso di un numero pari.
+
+\noindent Nel nostro esempio la sequenza dei flussi è:
+
+\[
+-,\quad +,\quad +,\quad +,\quad +,\quad +,\quad -
+\]
+
+\noindent Sono quindi presenti \textbf{due cambiamenti di segno}:
+
+\[
+- \longrightarrow +
+\qquad\text{e}\qquad
++ \longrightarrow -
+\]
+
+\noindent Questo rende possibile la presenza di \textbf{TIR multipli}.
+
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.9\linewidth]{../images/Grafico VAN-Tasso.png}
+    \caption{Grafico VAN-Tasso di sconto}
+    %\label{label}
+\end{figure}
+
+\noindent Nel grafico la curva del VAN interseca due volte l'asse dei tassi
+di sconto, precisamente in corrispondenza di:
+
+\[
+\mathrm{TIR}=-50\%
+\qquad\text{e}\qquad
+\mathrm{TIR}=15,2\%.
+\]
+
+\noindent\textbf{Attenzione:} il caso dei tassi di rendimento multipli può
+verificarsi quando i flussi di cassa cambiano segno più di una volta, ad
+esempio quando il progetto, dopo aver generato entrate, prevede una
+\textbf{forte uscita di cassa finale}. In queste situazioni il criterio del TIR può risultare ambiguo,
+perché non esiste un unico tasso interno di rendimento con cui valutare
+il progetto.
+\subsection*{Trappola 2bis: inesistenza del TIR}
+
+\noindent Esistono casi in cui il \textbf{TIR non è calcolabile}, mentre il VAN
+rimane positivo.
+
+\noindent Consideriamo il seguente progetto:
+
+\begin{center}
+\begin{tabular}{c|ccc|c|c}
+\textbf{Progetto} & $\mathbf{F_0}$ & $\mathbf{F_1}$ & $\mathbf{F_2}$
+& \textbf{TIR} & $\mathbf{VAN\ (10\%)}$ \\
+\hline
+C & +1000 & +3000 & +2500 & Nessuno & +339
+\end{tabular}
+\end{center}
+
+\noindent Il TIR dovrebbe essere quel tasso che rende il VAN uguale a zero:
+
+\[
+0 =
+F_0
++ \frac{F_1}{1+\mathrm{TIR}}
++ \frac{F_2}{(1+\mathrm{TIR})^2}
+\]
+
+\noindent Tuttavia, in questo caso i flussi di cassa non presentano
+\textbf{alcun cambiamento di segno}:
+
+\[
++\qquad+\qquad+
+\]
+
+\noindent Non esiste quindi un tasso di attualizzazione che permetta al VAN
+di annullarsi. Di conseguenza:
+
+\[
+\boxed{\text{TIR inesistente}}
+\]
+
+\noindent Questo accade quando il progetto presenta un \textbf{VAN positivo
+per qualsiasi tasso di attualizzazione ammissibile}.
+
+\medskip
+
+\noindent\textbf{In sintesi:}
+
+\[
+\boxed{
+\text{Se il VAN non raggiunge mai lo zero, il TIR non esiste.}
+}
+\]
