@@ -938,3 +938,87 @@ L(a^*) = \{\varepsilon, a, aa, aaa, \dots\}
 L((a+b)^*)
 \]
 contiene tutte le stringhe finite costruite usando i simboli $a$ e $b$.
+
+\newpage
+
+\subsection{Relazione tra Espressioni regolari e ASF(N)D}
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{theorem}
+   Un linguaggio $A$ sull'alfabeto è regolare se e solo se esiste una espressione regolare $r$ sull'alfabeto $\Sigma$
+   tale che
+   \[  L(r) = A   \]
+\end{theorem}}}\smallskip\\
+Questo teorema è molto importante perchè ci dice che espressioni regolari e automi a stati finiti sono due 
+modi diversi di rappresentare gli stessi linguaggi:
+L'espressione regolare descrive il linguaggio in forma algebrica, mentre l'automa lo riconosce tramite stati e 
+transizioni.
+
+
+\subsection{Da ASFND a Espressione regolare}
+Esiste un \textbf{algoritmo} che, dato un ASFND costruisce una espressione regolare equivalente tramite una serie
+di passi di semplificazione: vengono eliminati gli stati dell'ASFND uno a uno e vengono rimpiazzati con archi che rappresentano
+espressioni regolari equivalenti. Prima di vedere i passi dell'algoritmo servono le definizioni di \textbf{grafo etichettato} e 
+\textbf{grafo indotto}:\smallskip\\
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
+   Un \textbf{grafo etichettato} sul linguaggio $\mathcal{L}$ è una coppia $\bm{G(N,E)}$ dove:
+   \begin{itemize}[label=--]
+    \item $\bm{N}$ è un insieme, detto \textit{insieme dei nodi di $G$}
+    \item $\bm{E}$ è un insieme di terne ($n_1,n_2,e$) dove $n_1,n_2 \in N$ ed $e \in \mathcal{L}$, $E$ viene detto \textit{insieme degli archi di $G$}
+   \end{itemize}
+\end{definition}}}\smallskip\\
+In altre parole, significa che esiste un arco dal nodo $n_1$ al nodo $n_2$ con etichetta $e$ che fa parte del linguaggio.\\
+\textit{Esempio.} Data una terna ($q_0,q_1,a$), si ha che:
+\[ q_0 \xrightarrow{a} q_1  \]
+Ora possiamo definire anche cosa è il \textbf{grafo indotto}.\smallskip\\
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
+    Sia $A = <\Sigma,Q,\delta,q_0,F>$ un ASFND, il \textbf{grafo indotto da} $\bm{A}$ è il grafo etichettato $Q,E$ tale che
+    \[     E = \Big\{  (q,q',e) | q'\in \delta(q,e)  \Big\}         \]
+\end{definition}}}\smallskip\\
+In pratica il grafico indotto è il diagramma degli stati dell'automa, senza specificare stati iniziali e stati accettanti, ma solo
+nodi e archi etichettati (grafo etichettato).\\
+\textit{Esempio.}\\
+\begin{minipage}{0.45\textwidth}
+    \begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.9\linewidth]{../../images/esempio12.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\end{minipage} 
+$\longrightarrow$
+\begin{minipage}{0.45\textwidth}
+    \begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.9\linewidth]{../../images/esempio13.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\end{minipage} 
+
+\subsubsection{Algoritmo}
+    Sia $r$ un'espressione regolare e $A = <\Sigma,Q,\delta,q_0,F>$ l'ASFND in input, i passi dell'algoritmo sono i seguenti:
+    \begin{enumerate}
+        \item Trasforma l'automa $A$ in un grafo indotto $G=(N,E)$, gli stati diventano nodi e le transizioni diventano archi etichettati.
+        \item \textcolor{cyan}{\textbf{Aggiungi}} a $G$ i nodi $n_{in},n_{out} \notin N$ e gli archi 
+        ($n_{in},q_0,\epsilon$) e ($q_f,n_{out},\epsilon$), per ogni $q_f \in F$, crea un unico nuovo stato iniziale e un unico nuovo stato finale, 
+        collegandoli con transizioni \(\epsilon\).
+        \item Finchè $|N|>2$ oppure $|E|>1$, ovvero $G$ contiente più di due nodi o più di un arco, esegue i seguenti passi:
+        \begin{enumerate}
+            \item Per ogni coppia di nodi $x,y \in N$:
+            \begin{itemize}[label=--]
+                \item Sia $E = \{ e_1,e_2,...,e_k  \}$ l'insieme delle etichette di tutti gli archi da $x$ a $y$
+                \item \textcolor{red}{\textbf{Rimuovi}} tutti gli archi da $x$ a $y$
+                \item \textcolor{cyan}{\textbf{Aggiungi}} un arco da $x$ a $y$ con l'etichetta $(e_1)+(e_2)+...+(e_K)$ se $E \neq \emptyset$ 
+            \end{itemize}
+            \item Scegli un nodo $n\in N$ che non sia $n_{in}$ o $n_{out}$
+            \begin{itemize}[label = --]
+                \item Per ogni coppia di archi $e_{in}^{n} = (x,n,e) \in E$ e $e_{out}^{n} = (n,y,e')\in E$
+                ($ e_{in}^{n} \text{ entrante in } n, \ e_{out}^{n} \text{ uscente da } n $) \textcolor{cyan}{\textbf{aggiungi}} un arco
+                $\Big(  x,y,(e) \circ (e_n)* \circ (e')    \Big)$ dove $e_n$ è l'etichetta del cappio di $n$ (se esiste).
+                \item \textcolor{red}{\textbf{Rimuovi}} $n$ e tutti gli archi che lo nominano da $G$
+            \end{itemize}
+        \end{enumerate}
+
+        \item Restituisci l'etichetta dell'unico arco in $G$, che rappresenta l'espressione regolare equivalente all'automa di partenza.
+    \end{enumerate}
+
+    \noindent Seguendo questi passaggi si può trasformare ogni ASFND in un espressione regolare.

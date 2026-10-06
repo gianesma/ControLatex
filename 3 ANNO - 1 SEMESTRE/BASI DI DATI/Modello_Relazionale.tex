@@ -348,3 +348,38 @@ $$PROF_{idart}(Artista)-PROJ_{idart}(SEL_{citta<>Roma \text{ and } anno>2000}(Co
 \underline{query5}: trovare le coppue $<x,y>$ tali che l'artista con id $x$ non ha mai fatto concerti nella città $y$.\\
 \underline{soluzione}: da tutte le possibili coppie $<x,y>$ tali che $x$ è l'id di un artista e $y$ è una città, leviamo le coppie $<x,y>$ tali che l'artista di id $x$ ha fatto almeno un concerto nella città $y$:\\
 $$(PROJ_{idart} \text{ JOIN }PROJ_{citta}(Concerto))-PROJ_{idart,citta}(Concerto)$$
+\section{Informazione incompleta}
+Il modello relazionale impone ai dati una struttura rigida:\\
+\begin{itemize}
+    \item l'informazione è rappresentata per mezzo di tuple
+    \item le tuple ammesse sono dettate dagli schemi di relazione
+\end{itemize}
+\noindent Nella pratica, però, i dati disponibili possono non corrispondere esattamente al formaato previsto, per varie ragioni\\
+Esempio:
+\begin{itemize}
+    \item di firenze non conosciamo l'indirizzo della predettura
+    \item Tivoli non è provincia: non ha predettura
+    \item Prato è "nuova" provincia: ha la prefettura?
+\end{itemize}
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|c|c|}
+        \hline
+        \textbf{città} & \textbf{indirizzo} \\
+        \hline
+        Roma & Via IV Novembre \\
+        \hline
+        Firenze & \\
+        \hline
+        Tivoli & \\
+        \hline
+        Prato & \\
+        \hline
+    \end{tabular}
+    \caption{Prefettura}
+\end{table}
+\noindent Nel modello relazionale si adotta la seguente tecnica:
+\begin{itemize}
+    \item viene introdotto il cosiddetto \textbf{valore nullo} (NULL): esso è un valore che il sistema riconosce essere particolare e che denota l'assenza di un valore del dominio
+    \item il valore nullo non è un valore di un dominio, ma può comparire come valore di qualunque attributo definito su qualunque dominio
+\end{itemize}
