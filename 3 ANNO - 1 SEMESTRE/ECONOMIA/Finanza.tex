@@ -490,7 +490,8 @@ Il procedimento con cui tutti i flussi di cassa futuri vengono attualizzati pren
 VA = \sum_{n=1}^{N}\frac{F_n}{(1+i_n)^n}
 \]
 
-\noindent Il simbolo \(\sum\) indica semplicemente che dobbiamo \textbf{calcolare e sommare il valore attuale di tutti i flussi}, dal primo periodo fino al periodo \(N\).
+\noindent Il simbolo \(\sum\) indica semplicemente che dobbiamo \textbf{calcolare e sommare il valore attuale di tutti i flussi}, 
+dal primo periodo fino al periodo \(N\).
 
 \subsection{VAN su più periodi}
 Se consideriamo anche l'investimento iniziale \(F_0\), possiamo calcolare il \textbf{Valore Attuale Netto}:
@@ -508,9 +509,11 @@ VAN = F_0 + \sum_{n=1}^{N}\frac{F_n}{(1+i_n)^n}
 
 
 \subsection{Equivalenza finanziaria}
-Due somme di denaro disponibili in momenti diversi non possono essere confrontate direttamente, perché il denaro ha un valore diverso nel tempo.
+Due somme di denaro disponibili in momenti diversi non possono essere confrontate 
+direttamente, perché il denaro ha un valore diverso nel tempo.
 
-\noindent Due somme sono dette \textbf{finanziariamente equivalenti} quando, applicando un determinato tasso di interesse \(i\), hanno lo stesso valore se riportate allo stesso istante temporale.
+\noindent Due somme sono dette \textbf{finanziariamente equivalenti} quando, applicando un determinato tasso di 
+interesse \(i\), hanno lo stesso valore se riportate allo stesso istante temporale.
 
 \noindent Il tasso di interesse permette quindi di spostare il valore del denaro nel tempo attraverso due operazioni:
 \begin{itemize}
@@ -580,7 +583,8 @@ VA = \frac{100}{0{,}05} = 2.000 \text{ euro}
     %\label{label}
 \end{figure}
 \subsection{Rendite costanti}
-Una \textbf{rendita costante} è una successione di pagamenti dello stesso importo \(C\), effettuati periodicamente per un numero limitato di periodi.
+Una \textbf{rendita costante} è una successione di pagamenti dello stesso importo \(C\), 
+effettuati periodicamente per un numero limitato di periodi.
 
 \noindent Il valore attuale della rendita può essere calcolato direttamente tramite:
 \[
@@ -594,10 +598,12 @@ VA = C \left[\frac{1}{r}-\frac{1}{r(1+r)^t}\right]
     \item \(t\) $\rightarrow$ numero totale di pagamenti.
 \end{itemize}
 
-\noindent Questa formula è una scorciatoia che permette di calcolare il valore attuale di tutti i pagamenti senza attualizzarli singolarmente.
+\noindent Questa formula è una scorciatoia che permette di calcolare il valore attuale di tutti 
+i pagamenti senza attualizzarli singolarmente.
 
 \subsubsection*{Esempio}
-Supponiamo di prendere un'auto in leasing per \(4\) anni pagando \(300\) euro al mese, senza anticipo e senza pagamento finale.
+Supponiamo di prendere un'auto in leasing per \(4\) anni pagando \(300\) euro al mese, 
+senza anticipo e senza pagamento finale.
 
 \noindent Il costo opportunità del capitale è dello \(0{,}5\%\) mensile. Abbiamo quindi:
 \[
@@ -624,7 +630,8 @@ il loro \textbf{valore attuale} è di circa \(12.774\) euro, perché i pagamenti
 avvengono nel futuro e non tutti oggi.
 
 \subsection{Rendite perpetue crescenti}
-Una \textbf{rendita perpetua crescente} è una successione infinita di pagamenti che aumentano ogni periodo a un tasso di crescita costante \(g\).
+Una \textbf{rendita perpetua crescente} è una successione infinita di pagamenti che aumentano ogni 
+periodo a un tasso di crescita costante \(g\).
 
 \noindent Il valore attuale si calcola con:
 \[
@@ -669,10 +676,635 @@ non stiamo valutando solamente il primo milione di euro, ma \textbf{tutti i
 pagamenti futuri, che continuano per sempre e crescono del \(4\%\) ogni anno}.
 
 \newpage
-\subsection{TIR}
-AO SCRIVI QUA
+\subsection{Capital Budgeting}
 
-\newpage
+\noindent Il \textbf{Capital Budgeting} è una metodologia attraverso la quale il management stabilisce l'allocazione ottimale 
+delle risorse finanziarie. Consiste nel valutare se i progetti di investimento di lungo periodo siano in grado di generare un valore tale da 
+giustificare il costo iniziale richiesto.
+
+\medskip
+
+\noindent L'obiettivo principale è quello di \textbf{creare valore per gli azionisti}, scegliendo gli investimenti più convenienti per l'impresa.
+
+\medskip
+
+\noindent
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.9\linewidth]{../images/totti.png}
+    %\label{label}
+\end{figure}
+
+\medskip
+
+\noindent Nel Capital Budgeting i progetti possono essere classificati come:
+
+\begin{itemize}
+    \item \textbf{indipendenti}: la realizzazione di un progetto non dipende dalla realizzazione di altri progetti;
+    
+    \item \textbf{alternativi}: non possono essere accettati tutti contemporaneamente e la scelta di un progetto 
+    può comportare l'esclusione degli altri, ad esempio per ragioni di budget.
+\end{itemize}
+
+\noindent Alcuni criteri decisionali utilizzati nella valutazione degli investimenti derivano da 
+\textbf{misure contabili di rendimento}. Tra queste troviamo il ROI e il ROE.
+
+\subsubsection*{ROI e ROE}
+
+\noindent Il \textbf{ROI (Return On Investment)} misura la redditività del capitale complessivamente 
+investito nel progetto, considerando quindi il rendimento dal punto di vista di \textbf{tutti gli investitori}.
+
+\[
+\boxed{
+ROI =
+\frac{\text{Reddito Operativo (EBIT)}}
+{\text{Valore contabile del capitale investito nel progetto}}
+}
+\]
+
+\noindent Il \textbf{ROE (Return On Equity)} misura invece la redditività del capitale proprio investito dagli azionisti, considerando quindi 
+il rendimento dal punto di vista dei \textbf{soli azionisti}.
+
+\[
+\boxed{
+ROE =
+\frac{\text{Utile Netto}}
+{\text{Valore contabile dell'investimento azionario nel progetto}}
+}
+\]
+
+\noindent Le componenti utilizzate per il calcolo di ROI e ROE riflettono principalmente \textbf{valori contabili e fiscali}, e 
+non valori di mercato o flussi di cassa. Per questo motivo tali indicatori risultano meno attendibili rispetto a criteri finanziari come il VAN.
+
+\subsubsection*{Esempio di calcolo del ROI}
+
+\noindent Si considera un progetto della durata di un anno con:
+
+\begin{itemize}
+    \item valore contabile del capitale investito pari a 900.000;
+    \item EBIT pari a 300.000;
+    \item aliquota d'imposta pari al $40\%$.
+\end{itemize}
+
+\noindent Il ROI al lordo delle imposte è:
+
+\[
+ROI_{\text{lordo}}
+=
+\frac{300.000}{900.000}
+=
+\boxed{33{,}33\%}
+\]
+
+\noindent Considerando invece l'EBIT al netto delle imposte:
+
+\[
+EBIT_{\text{netto}}
+=
+300.000(1-0{,}40)
+=
+180.000 euro
+\]
+
+\noindent si ottiene:
+
+\[
+ROI_{\text{netto}}
+=
+\frac{300.000(1-0{,}40)}{900.000}
+=
+\frac{180.000}{900.000}
+=
+\boxed{20\%}
+\]
+
+\subsubsection*{ROI nei progetti pluriennali}
+
+\noindent Se il progetto ha una durata pluriennale, per il calcolo del ROI bisogna considerare i \textbf{valori medi del periodo}.
+
+\begin{center}
+\begin{tabular}{|l|c|c|c|c|c|}
+\hline
+\textbf{Anni} & \textbf{1} & \textbf{2} & \textbf{3} & \textbf{4} & \textbf{Media} \\
+\hline
+EBIT netto & 
+120.000 & 
+183.000 & 
+216.300 & 
+252.930 & 
+\textbf{193.058} \\
+\hline
+Capitale investito & 
+1.040.000 & 
+814.000 & 
+582.900 & 
+233.900 & 
+\textbf{667.700} \\
+\hline
+\end{tabular}
+\end{center}
+
+\noindent Il ROI medio del progetto è quindi:
+
+\[
+ROI
+=
+\frac{\text{EBIT netto medio}}
+{\text{Capitale investito medio}}
+=
+\frac{193.058}{667.700}
+=
+\boxed{28{,}91\%}
+\]
+
+\noindent In un progetto pluriennale, quindi, il ROI viene determinato rapportando il \textbf{reddito operativo medio} al \textbf{capitale investito medio} nel corso della vita del progetto.
+\subsection{Tempo di recupero}
+
+\noindent Il \textbf{tempo di recupero}, o \textbf{Pay-Back Period (PBP)}, indica il tempo 
+necessario affinché i flussi di cassa generati da un progetto riescano a recuperare l'investimento iniziale.
+
+\medskip
+
+\noindent Si stabilisce un periodo limite, detto \textbf{cutoff period}, entro il quale 
+l'investimento deve essere recuperato:
+
+\begin{itemize}
+    \item $PBP < \text{cutoff period}$ $\rightarrow$ il progetto viene \textbf{accettato};
+    \item $PBP > \text{cutoff period}$ $\rightarrow$ il progetto viene \textbf{rifiutato}.
+\end{itemize}
+
+\noindent Il metodo considera solamente i flussi di cassa fino al momento in cui viene recuperato 
+l'investimento iniziale, trascurando quelli successivi.
+
+\subsubsection*{Calcolo del Pay-Back Period}
+
+\noindent Dal punto di vista operativo, bisogna individuare il numero di 
+anni $t=n_{payback}$ in cui, per la prima volta, la somma dei flussi di cassa generati dal progetto uguaglia l'investimento iniziale:
+
+\[
+\boxed{
+\sum_{t=0}^{n_{payback}} F_t = 0
+}
+\]
+
+\noindent In altre parole, il PBP individua il momento in cui i flussi cumulati del progetto diventano 
+pari a zero, cioè quando l'investimento iniziale è stato completamente recuperato.
+
+\subsubsection*{Esempio}
+
+\begin{center}
+\begin{tabular}{|c|rrrr|c|}
+\hline
+\textbf{Progetto} & $\mathbf{FC_0}$ & $\mathbf{FC_1}$ & $\mathbf{FC_2}$ & $\mathbf{FC_3}$ & \textbf{PBP} \\
+\hline
+A & -2000 & 500  & 500  & 5000 & 3 \\
+B & -2000 & 500  & 1800 & 0    & 2 \\
+C & -2000 & 1800 & 500  & 0    & 2 \\
+\hline
+\end{tabular}
+\end{center}
+
+\noindent Ad esempio, per il progetto B:
+
+\[
+-2000 + 500 + 1800 = 300 > 0
+\]
+
+\noindent quindi l'investimento iniziale viene recuperato entro il secondo anno:
+
+\[
+\boxed{PBP_B = 2}
+\]
+
+\noindent Analogamente, anche il progetto C recupera l'investimento entro il secondo anno, 
+mentre il progetto A necessita di tre anni.
+
+\subsubsection*{Limiti del tempo di recupero}
+
+\noindent Il Pay-Back Period presenta alcuni punti critici:
+
+\begin{itemize}
+    \item non considera i flussi di cassa successivi al PBP;
+    \item non considera il \textbf{valore finanziario del denaro nel tempo};
+    \item non considera adeguatamente l'ammontare del capitale investito;
+    \item è principalmente un \textbf{indicatore di rischio e liquidità}, non di rendimento.
+\end{itemize}
+
+\noindent Presenta però anche alcuni punti di forza:
+
+\begin{itemize}
+    \item semplicità di calcolo, utilizzo e comunicazione;
+    \item utilizza direttamente i flussi di cassa;
+    \item è particolarmente utile per investimenti tradizionali caratterizzati 
+    da un elevato investimento iniziale seguito da flussi di cassa positivi.
+\end{itemize}
+
+\subsubsection*{Tempo di recupero attualizzato}
+
+\noindent Per superare uno dei principali limiti del PBP è possibile considerare anche il \textbf{valore temporale del denaro}, 
+attualizzando i flussi di cassa al tasso $i$.
+
+\noindent Il tempo di recupero attualizzato è quindi individuato da:
+
+\[
+\boxed{
+\sum_{t=1}^{n_{payback}}
+F_t(1+i)^{-t} - F_0 = 0
+}
+\]
+
+\noindent dove $i$ rappresenta il tasso di attualizzazione.
+
+\medskip
+
+\noindent Considerando un tasso del $10\%$, i flussi attualizzati dell'esempio diventano:
+
+\begin{center}
+\begin{tabular}{|c|rrrr|c|c|}
+\hline
+\textbf{Progetto} & $\mathbf{FC_0}$ & $\mathbf{FC_1}$ & $\mathbf{FC_2}$ & $\mathbf{FC_3}$ &
+\textbf{PBP att.} & $\mathbf{VAN}$ \\
+\hline
+A & -2000 & 455  & 413  & 3757 & 3 & 2624 \\
+B & -2000 & 455  & 1488 & 0    & -- & -58 \\
+C & -2000 & 1636 & 413  & 0    & 2 & 50 \\
+\hline
+\end{tabular}
+\end{center}
+
+\noindent Il progetto B, che con il PBP semplice recuperava l'investimento in due anni, 
+dopo l'attualizzazione \textbf{non riesce più a recuperarlo}. Infatti:
+
+\[
+-2000 + 455 + 1488 = -57 < 0
+\]
+
+\noindent Il progetto C, invece, riesce ancora a recuperare l'investimento entro il secondo anno:
+
+\[
+-2000 + 1636 + 413 = 49 > 0
+\]
+
+\noindent Questo mostra come il \textbf{tempo di recupero attualizzato} sia più realistico 
+del PBP semplice, poiché tiene conto del valore temporale del denaro.
+
+\subsection{Equivalente annuo}
+
+\noindent L'\textbf{equivalente annuo (AE)} trasforma il VAN di un progetto in un
+\textbf{flusso monetario annuo costante equivalente}.
+
+\medskip
+
+\noindent Fornisce le stesse indicazioni del VAN, ma risulta particolarmente utile
+per confrontare \textbf{progetti con durata di vita differente}.
+
+\subsubsection*{Calcolo dell'equivalente annuo}
+
+\noindent L'equivalente annuo si ottiene moltiplicando il VAN per il
+\textbf{Capital Recovery Factor (CFR)}:
+
+\[
+\boxed{
+AE = VAN \cdot CFR
+}
+\]
+
+\noindent dove:
+
+\[
+CFR =
+\frac{i(1+i)^t}{(1+i)^t-1}
+\]
+
+\noindent Pertanto:
+
+\[
+\boxed{
+AE =
+VAN
+\frac{i(1+i)^t}{(1+i)^t-1}
+}
+\]
+
+\noindent con:
+
+\begin{itemize}
+    \item $i$ = tasso di attualizzazione;
+    \item $t$ = vita utile del progetto;
+    \item $VAN$ = Valore Attuale Netto del progetto.
+    \item $CFR$ (Capital Recovery Factor) = il fattore di recupero del capitale.
+\end{itemize}
+
+\noindent Il criterio decisionale è:
+
+\[
+\begin{cases}
+AE > 0 & \rightarrow \text{investimento accettabile} \\[2mm]
+AE = 0 & \rightarrow \text{non si guadagna né si perde} \\[2mm]
+AE < 0 & \rightarrow \text{investimento non accettabile}
+\end{cases}
+\]
+
+\subsubsection*{Esempio}
+
+\noindent Si vuole individuare l'alternativa più conveniente tra due offerte
+per l'acquisto di un PC, considerando:
+
+\[
+i = 10\%
+\]
+
+\noindent e una vita utile del PC pari a:
+
+\[
+t = 5 \text{ anni}
+\]
+
+\noindent Si utilizzano come criteri di confronto il \textbf{VAN} e
+l'\textbf{equivalente annuo (AE)}.
+
+\begin{center}
+\begin{tabular}{|c|c|c|c|}
+\hline
+\textbf{Alternativa} &
+\textbf{Costo iniziale} &
+\textbf{Manutenzione annuale} &
+\textbf{Valore di recupero} \\
+\hline
+ & $(t=0)$ & $(t=1\text{--}5)$ & $(t=5)$ \\
+\hline
+A & 2.000 euro & 350 euro & 400 euro \\
+\hline
+B & 1.800 euro & 400 euro & 350 euro \\
+\hline
+\end{tabular}
+\end{center}
+
+\subsubsection*{Analisi con il VAN}
+
+\noindent Con un tasso di attualizzazione del $10\%$, il fattore di attualizzazione
+di una rendita di 5 anni è circa:
+
+\[
+\frac{1-(1+0,10)^{-5}}{0,10} \simeq 3,79
+\]
+
+\noindent mentre il fattore di attualizzazione di un singolo flusso al quinto anno è:
+
+\[
+(1+0,10)^{-5} \simeq 0,62
+\]
+
+\noindent Per l'alternativa A:
+
+\[
+VAN_A =
+-2.000
+-350 \cdot 3,79
++(400-350)\cdot0,62
+\]
+
+\[
+\boxed{VAN_A=-3.078,5}
+\]
+
+\noindent Per l'alternativa B:
+
+\[
+VAN_B =
+-1.800
+-400 \cdot 3,79
++(350-400)\cdot0,62
+\]
+
+\[
+\boxed{VAN_B=-3.099}
+\]
+
+\noindent Confrontando i due valori:
+
+\[
+\boxed{VAN_A > VAN_B}
+\]
+
+\noindent Pertanto, tra le due alternative, il progetto A risulta più conveniente,
+poiché presenta un VAN meno negativo e quindi un costo complessivo attualizzato
+inferiore.
+
+\subsubsection*{Analisi con l'equivalente annuo}
+
+\noindent Per $i=10\%$ e $t=5$ anni, il Capital Recovery Factor è circa:
+
+\[
+CFR =
+\frac{0,10(1+0,10)^5}
+{(1+0,10)^5-1}
+\simeq 0,26
+\]
+
+\noindent L'equivalente annuo dell'alternativa A è:
+
+\[
+AE_A = VAN_A \cdot 0,26
+\]
+
+\[
+AE_A = -3.078,5 \cdot 0,26
+\]
+
+\[
+\boxed{AE_A=-800,41}
+\]
+
+\noindent Per l'alternativa B:
+
+\[
+AE_B = VAN_B \cdot 0,26
+\]
+
+\[
+AE_B = -3.099 \cdot 0,26
+\]
+
+\[
+\boxed{AE_B=-805,74}
+\]
+
+\noindent Quindi:
+
+\[
+\boxed{AE_A > AE_B}
+\]
+
+\noindent Anche attraverso l'equivalente annuo, l'alternativa A risulta
+più conveniente.
+
+\medskip
+
+\noindent In questo caso VAN ed equivalente annuo forniscono la stessa indicazione,
+poiché i due progetti hanno la \textbf{stessa vita utile}.
+
+\medskip
+
+\noindent L'equivalente annuo è particolarmente utile quando si devono confrontare
+\textbf{due investimenti con vita utile differente}, perché trasforma il valore
+complessivo di ciascun progetto in un valore equivalente su base annua.
+\subsection{Tasso Interno di Rendimento (TIR)}
+
+\noindent Il \textbf{Tasso Interno di Rendimento (TIR)} è il tasso di attualizzazione che rende il \textbf{VAN di un progetto uguale a zero}.
+
+\medskip
+
+\noindent In termini semplici, rappresenta il \textbf{rendimento percentuale generato dall'investimento}: al TIR, il valore attuale delle entrate generate dal progetto è esattamente uguale al valore attuale delle uscite.
+
+\medskip
+
+\noindent Il TIR si determina quindi risolvendo l'equazione:
+
+\[
+\boxed{
+\sum_{t=0}^{N}
+\frac{F_t}{(1+TIR)^t}
+=0
+}
+\]
+
+\noindent dove:
+
+\begin{itemize}
+    \item $F_t$ rappresenta il flusso di cassa al tempo $t$;
+    \item $N$ rappresenta la durata del progetto;
+    \item $TIR$ rappresenta il tasso interno di rendimento.
+\end{itemize}
+
+\subsubsection*{Investimento con una sola entrata}
+
+\noindent Nel caso più semplice, in cui un investimento produce una sola entrata dopo un periodo, il tasso di rendimento è:
+
+\[
+\boxed{
+\text{Tasso di rendimento}
+=
+\frac{\text{Entrata}}{\text{Investimento}}-1
+}
+\]
+
+\subsubsection*{Calcolo del TIR con una sola entrata}
+
+\noindent Consideriamo un investimento iniziale $F_0$ che genera un'unica entrata $F_1$ dopo un periodo.
+
+\noindent Il TIR è il tasso di attualizzazione che rende il VAN uguale a zero:
+
+\[
+VAN
+=
+F_0+
+\frac{F_1}{1+TIR}
+=
+0
+\]
+
+\noindent Se consideriamo l'investimento iniziale in valore assoluto, possiamo scrivere:
+
+\[
+-F_0+\frac{F_1}{1+TIR}=0
+\]
+
+\noindent da cui:
+
+\[
+F_0=\frac{F_1}{1+TIR}
+\]
+
+\noindent e quindi:
+
+\[
+\boxed{
+TIR=\frac{F_1}{F_0}-1
+}
+\]
+
+\noindent Pertanto, nel caso di un investimento con una sola entrata dopo un periodo, il \textbf{tasso di attualizzazione che rende il VAN uguale a zero coincide con il tasso di rendimento dell'investimento}.
+
+\subsubsection*{Esempio con più flussi di cassa}
+
+\noindent Si considera un investimento iniziale di $4.000$ per l'acquisto di un dispositivo per una macchina azionata a turbina.
+
+\medskip
+
+\noindent Nei due anni successivi l'investimento genera:
+
+\begin{itemize}
+    \item $2.000$ alla fine del primo anno;
+    \item $4.000$ alla fine del secondo anno.
+\end{itemize}
+
+\noindent Per determinare il TIR si pone il VAN uguale a zero:
+
+\[
+0
+=
+-4.000
++
+\frac{2.000}{1+TIR}
++
+\frac{4.000}{(1+TIR)^2}
+\]
+
+\noindent Moltiplicando per $(1+TIR)^2$:
+
+\[
+-4.000(1+TIR)^2
++
+2.000(1+TIR)
++
+4.000
+=
+0
+\]
+
+\noindent Dividendo per $2.000$:
+
+\[
+-2(1+TIR)^2+(1+TIR)+2=0
+\]
+
+\noindent Ponendo:
+
+\[
+x=1+TIR
+\]
+
+\noindent si ottiene:
+
+\[
+2x^2-x-2=0
+\]
+
+\noindent La soluzione positiva è:
+
+\[
+x=\frac{1+\sqrt{17}}{4}\simeq1,2808
+\]
+
+\noindent quindi:
+
+\[
+TIR=1,2808-1=0,2808
+\]
+
+\[
+\boxed{TIR\simeq28,08\%}
+\]
+
+\noindent Il progetto presenta quindi un tasso interno di rendimento di circa il
+\textbf{$28,08\%$}.
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.9\linewidth]{../images/TIRRRRR.png}
+    %\label{label}
+\end{figure}
+\noindent Vediamo ora alcuni casi particolari in cui il TIR può essere fuorviante o non applicabile.
 \subsection*{Trappole}
 \subsection*{Trappola 1: investimento o finanziamento?}
 
