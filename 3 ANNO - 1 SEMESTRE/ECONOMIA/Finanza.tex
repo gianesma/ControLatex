@@ -649,7 +649,8 @@ VA_t = \frac{C_{t+1}}{r-g}
 \]
 
 \subsubsection*{Esempio}
-Supponiamo di ricevere \(1\) milione di euro alla fine del primo anno e che questa somma cresca successivamente 
+Supponiamo di ricevere \(1\) milione di euro alla fine del primo anno e che questa 
+somma cresca successivamente 
 del \(4\%\) ogni anno, per sempre.
 
 \noindent Con un tasso di attualizzazione del \(10\%\):
@@ -664,4 +665,436 @@ VA_0=\frac{1}{0{,}10-0{,}04}
 \]
 
 \noindent Il valore è elevato perché 
-non stiamo valutando solamente il primo milione di euro, ma \textbf{tutti i pagamenti futuri, che continuano per sempre e crescono del \(4\%\) ogni anno}.
+non stiamo valutando solamente il primo milione di euro, ma \textbf{tutti i 
+pagamenti futuri, che continuano per sempre e crescono del \(4\%\) ogni anno}.
+
+\newpage
+\subsection{TIR}
+AO SCRIVI QUA
+
+\newpage
+\subsection*{Trappole}
+\subsection*{Trappola 1: investimento o finanziamento?}
+
+\noindent Nell'utilizzo del \textbf{TIR} bisogna distinguere tra un'operazione
+di investimento e un'operazione di finanziamento.
+
+\noindent Consideriamo i seguenti due progetti:
+
+\begin{center}
+\begin{tabular}{c|c|c|c}
+\textbf{Progetto} & $\mathbf{F_0}$ & $\mathbf{F_1}$ & \textbf{TIR} \\
+\hline
+A & -1.000 & +1.500 & 50\% \\
+B & +1.000 & -1.500 & 50\%
+\end{tabular}
+\end{center}
+
+\noindent Basandoci solamente sul TIR potremmo concludere che i due progetti
+siano ugualmente vantaggiosi, poiché entrambi presentano un TIR del 50\%.
+In realtà, rappresentano due operazioni completamente diverse.
+
+\begin{itemize}
+    \item \textbf{Progetto A:} paghiamo inizialmente 1.000 euro e riceviamo
+    successivamente 1.500 euro. Stiamo quindi \textbf{prestando/investendo denaro}
+    ottenendo un rendimento del 50\%.
+
+    \item \textbf{Progetto B:} riceviamo inizialmente 1.000 euro e successivamente
+    dobbiamo restituire 1.500 euro. Stiamo quindi \textbf{prendendo denaro in prestito}
+    pagando un tasso del 50\%.
+\end{itemize}
+
+\noindent Di conseguenza:
+
+\begin{itemize}
+    \item quando \textbf{investiamo o prestiamo denaro}, preferiamo un tasso di
+    rendimento elevato;
+    \item quando \textbf{prendiamo denaro in prestito}, preferiamo invece un
+    tasso più basso, perché rappresenta il costo del finanziamento.
+\end{itemize}
+
+\noindent Questo spiega perché non possiamo valutare un'operazione solamente
+guardando il valore del TIR: dobbiamo prima capire se si tratta di un
+\textbf{investimento} o di un \textbf{finanziamento}.
+
+\medskip
+\noindent\textbf{Attenzione:} normalmente, all'aumentare del tasso di sconto
+il VAN diminuisce. In alcune operazioni di finanziamento può invece accadere
+il contrario: il VAN può aumentare all'aumentare del tasso di sconto.
+\subsection*{Trappola 2: tassi di rendimento multipli}
+
+\noindent In alcuni casi uno stesso progetto può presentare \textbf{più valori del TIR}.
+Questo accade perché alcuni flussi di cassa possono generare un VAN pari a zero
+in corrispondenza di più tassi di sconto.
+
+\noindent Consideriamo il seguente esempio:
+
+\begin{center}
+\begin{tabular}{c|rrrrrrr}
+\textbf{Periodo} & 0 & 1 & 2 & 3 & 4 & 5 & 6 \\
+\hline
+Flusso prima delle imposte
+& -1000 & +300 & +300 & +300 & +300 & +300 & 0 \\
+
+Imposte
+& 0 & +500 & -150 & -150 & -150 & -150 & -150 \\
+
+\hline
+\textbf{Flusso dopo le imposte}
+& \textbf{-1000} & \textbf{+800} & \textbf{+150}
+& \textbf{+150} & \textbf{+150} & \textbf{+150} & \textbf{-150}
+\end{tabular}
+\end{center}
+
+\noindent Il TIR si determina, come sempre, imponendo il VAN uguale a zero:
+
+\[
+0 =
+-1000
++ \frac{800}{1+\mathrm{TIR}}
++ \frac{150}{(1+\mathrm{TIR})^2}
++ \frac{150}{(1+\mathrm{TIR})^3}
++ \frac{150}{(1+\mathrm{TIR})^4}
++ \frac{150}{(1+\mathrm{TIR})^5}
+- \frac{150}{(1+\mathrm{TIR})^6}
+\]
+
+\noindent In questo caso l'equazione presenta \textbf{due soluzioni}:
+
+\[
+\boxed{\mathrm{TIR}_1=-50\%}
+\qquad
+\boxed{\mathrm{TIR}_2=15,2\%}
+\]
+
+\noindent Quindi lo stesso progetto presenta due diversi tassi di rendimento
+che rendono il VAN uguale a zero.
+
+\subsubsection*{Regola dei segni di Cartesio}
+
+\noindent La presenza di più TIR è legata ai cambiamenti di segno dei flussi
+di cassa.
+
+\noindent Secondo la \textbf{regola dei segni di Cartesio}, il numero delle
+soluzioni positive di un polinomio può essere pari al numero dei cambiamenti
+di segno dei suoi coefficienti oppure inferiore ad esso di un numero pari.
+
+\noindent Nel nostro esempio la sequenza dei flussi è:
+
+\[
+-,\quad +,\quad +,\quad +,\quad +,\quad +,\quad -
+\]
+
+\noindent Sono quindi presenti \textbf{due cambiamenti di segno}:
+
+\[
+- \longrightarrow +
+\qquad\text{e}\qquad
++ \longrightarrow -
+\]
+
+\noindent Questo rende possibile la presenza di \textbf{TIR multipli}.
+
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.9\linewidth]{../images/Grafico VAN-Tasso.png}
+    \caption{Grafico VAN-Tasso di sconto}
+    %\label{label}
+\end{figure}
+
+\noindent Nel grafico la curva del VAN interseca due volte l'asse dei tassi
+di sconto, precisamente in corrispondenza di:
+
+\[
+\mathrm{TIR}=-50\%
+\qquad\text{e}\qquad
+\mathrm{TIR}=15,2\%.
+\]
+
+\noindent\textbf{Attenzione:} il caso dei tassi di rendimento multipli può
+verificarsi quando i flussi di cassa cambiano segno più di una volta, ad
+esempio quando il progetto, dopo aver generato entrate, prevede una
+\textbf{forte uscita di cassa finale}. In queste situazioni il criterio del TIR può risultare ambiguo,
+perché non esiste un unico tasso interno di rendimento con cui valutare
+il progetto.
+\subsection*{Trappola 2bis: inesistenza del TIR}
+
+\noindent Esistono casi in cui il \textbf{TIR non è calcolabile}, mentre il VAN
+rimane positivo.
+
+\noindent Consideriamo il seguente progetto:
+
+\begin{center}
+\begin{tabular}{c|ccc|c|c}
+\textbf{Progetto} & $\mathbf{F_0}$ & $\mathbf{F_1}$ & $\mathbf{F_2}$
+& \textbf{TIR} & $\mathbf{VAN\ (10\%)}$ \\
+\hline
+C & +1000 & +3000 & +2500 & Nessuno & +339
+\end{tabular}
+\end{center}
+
+\noindent Il TIR dovrebbe essere quel tasso che rende il VAN uguale a zero:
+
+\[
+0 =
+F_0
++ \frac{F_1}{1+\mathrm{TIR}}
++ \frac{F_2}{(1+\mathrm{TIR})^2}
+\]
+
+\noindent Tuttavia, in questo caso i flussi di cassa non presentano
+\textbf{alcun cambiamento di segno}:
+
+\[
++\qquad+\qquad+
+\]
+
+\noindent Non esiste quindi un tasso di attualizzazione che permetta al VAN
+di annullarsi. Di conseguenza:
+
+\[
+\boxed{\text{TIR inesistente}}
+\]
+
+\noindent Questo accade quando il progetto presenta un \textbf{VAN positivo
+per qualsiasi tasso di attualizzazione ammissibile}.
+
+\medskip
+
+\noindent\textbf{In sintesi:}
+
+\[
+\boxed{
+\text{Se il VAN non raggiunge mai lo zero, il TIR non esiste.}
+}
+\]
+\subsection*{Trappola 3: progetti mutuamente esclusivi}
+
+\noindent Un problema nell'utilizzo del TIR si presenta quando dobbiamo
+confrontare \textbf{progetti mutuamente esclusivi}, cioè progetti per i quali
+la scelta di uno comporta necessariamente l'esclusione dell'altro.
+
+\noindent Consideriamo i seguenti due progetti:
+
+\begin{center}
+\begin{tabular}{c|rrrr}
+\textbf{Progetto} & $\mathbf{F_0}$ & $\mathbf{F_1}$ &
+\textbf{TIR (\%)} & $\mathbf{VAN\ al\ 10\%}$ \\
+\hline
+E & -10.000 & +20.000 & 100 & +8.182 \\
+F & -20.000 & +35.000 & 75 & +11.818
+\end{tabular}
+\end{center}
+
+\noindent Osserviamo che:
+
+\[
+TIR_E = 100\% > TIR_F = 75\%
+\]
+
+\noindent mentre:
+
+\[
+VAN_F = 11.818 > VAN_E = 8.182
+\]
+
+\noindent I due criteri forniscono quindi indicazioni differenti:
+utilizzando esclusivamente il TIR sceglieremmo il progetto E, mentre
+utilizzando il VAN sceglieremmo il progetto F.
+
+\subsubsection*{Analisi dei flussi incrementali}
+
+\noindent In presenza di progetti mutuamente esclusivi è possibile analizzare
+l'\textbf{investimento incrementale}, cioè la differenza tra i flussi di cassa
+dei due progetti.
+
+\[
+F-E
+\]
+
+\begin{center}
+\begin{tabular}{c|rrrr}
+\textbf{Progetto} & $\mathbf{F_0}$ & $\mathbf{F_1}$ &
+\textbf{TIR (\%)} & $\mathbf{VAN\ al\ 10\%}$ \\
+\hline
+F-E & -10.000 & +15.000 & 50 & +3.636
+\end{tabular}
+\end{center}
+
+\noindent Il TIR dell'investimento incrementale è quindi:
+
+\[
+TIR_{F-E}=50\%
+\]
+
+\noindent Poiché il TIR incrementale è maggiore del costo opportunità
+del capitale:
+
+\[
+50\% > 10\%
+\]
+
+\noindent conviene sostenere l'investimento aggiuntivo necessario per passare
+dal progetto E al progetto F.
+
+\[
+\boxed{\text{Si sceglie il progetto F}}
+\]
+
+\noindent Se ci fossimo basati esclusivamente sul TIR dei singoli progetti,
+avremmo invece scelto il progetto E.
+
+\medskip
+
+\noindent\textbf{Il problema deriva dal fatto che il TIR non tiene conto
+dell'entità dell'operazione.}
+
+\noindent Infatti, un rendimento percentuale maggiore non implica
+necessariamente una maggiore creazione di valore in termini assoluti.
+Per questo motivo, nel confronto tra progetti mutuamente esclusivi,
+il criterio del VAN è generalmente quello da privilegiare per individuare
+il progetto che crea maggiore valore.
+
+% ------------------------------------------------
+
+\subsubsection*{Ipotesi di razionamento del capitale}
+
+\noindent Consideriamo ora i seguenti progetti:
+
+\begin{center}
+\begin{tabular}{c|rrrrrr|r|r}
+\textbf{Progetto} &
+$\mathbf{C_0}$ & $\mathbf{C_1}$ & $\mathbf{C_2}$ &
+$\mathbf{C_3}$ & $\mathbf{C_4}$ & $\mathbf{C_5}$ &
+\textbf{TIR (\%)} & $\mathbf{VAN\ al\ 10\%}$ \\
+\hline
+G & -9.000 & +6.000 & +5.000 & +4.000 & 0 & 0
+& 33 & +3.592 \\
+
+H & -9.000 & +1.800 & +1.800 & +1.800 & +1.800 & +1.800
+& 20 & +9.000 \\
+
+I & 0 & -6.000 & +1.200 & +1.200 & +1.200 & +1.200
+& 20 & +6.000
+\end{tabular}
+\end{center}
+
+\noindent Concentrandoci sui progetti G e H, osserviamo che:
+
+\[
+TIR_G = 33\% > TIR_H = 20\%
+\]
+
+\noindent Tuttavia, al tasso di attualizzazione del 10\%:
+
+\[
+VAN_H = 9.000 > VAN_G = 3.592
+\]
+
+\noindent Ancora una volta, TIR e VAN forniscono indicazioni differenti.
+
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.9\linewidth]{../images/VAN-Tasso attualizzazione.png}
+    \caption{VAN - Tasso di attualizzazione}
+    %\label{label}
+\end{figure}
+
+
+\noindent Le curve del VAN dei due progetti si intersecano in corrispondenza
+di un tasso di circa:
+
+\[
+15,6\%
+\]
+
+\noindent Per comprendere quale progetto scegliere possiamo nuovamente
+considerare i \textbf{flussi incrementali}.
+
+\subsubsection*{Flussi incrementali H-G}
+
+\noindent Calcoliamo la differenza tra i flussi del progetto H e quelli
+del progetto G:
+
+\[
+H-G
+\]
+
+\begin{center}
+\begin{tabular}{c|rrrrrr|r|r}
+\textbf{Progetto} &
+$\mathbf{C_0}$ & $\mathbf{C_1}$ & $\mathbf{C_2}$ &
+$\mathbf{C_3}$ & $\mathbf{C_4}$ & $\mathbf{C_5}$ &
+\textbf{TIR (\%)} & $\mathbf{VAN\ al\ 10\%}$ \\
+\hline
+H-G & 0 & -4.200 & -3.200 & -2.200 & +1.800 & +1.800
+& 15,6 & +5.408
+\end{tabular}
+\end{center}
+
+\noindent Il TIR dell'investimento incrementale è:
+
+\[
+\boxed{TIR_{H-G}=15,6\%}
+\]
+
+\noindent Questo valore rappresenta anche il \textbf{tasso di intersezione}
+tra i profili VAN dei due progetti.
+
+\noindent Poiché il TIR incrementale è superiore al costo opportunità
+del capitale del 10\%:
+
+\[
+15,6\% > 10\%
+\]
+
+\noindent conviene scegliere il progetto H piuttosto che il progetto G:
+
+\[
+\boxed{\text{Si sceglie il progetto H}}
+\]
+
+\noindent In particolare, per tassi di attualizzazione inferiori al 15,6\%,
+il progetto H presenta un VAN maggiore del progetto G; per tassi superiori
+al 15,6\%, la situazione si inverte.\\
+
+\noindent In sintesi, quando i progetti sono mutuamente esclusivi, 
+il criterio del TIR può risultare ambiguo e non fornire indicazioni chiare su quale progetto scegliere. In questi casi, è preferibile utilizzare il 
+criterio del VAN o analizzare i flussi incrementali per prendere decisioni più informate.\\
+\textbf{Quindi:} quando due progetti sono \textbf{mutuamente esclusivi}, non basta confrontare i loro TIR. Si calcolano i \textbf{flussi incrementali}:
+
+\[
+\text{Progetto più costoso} - \text{Progetto meno costoso}
+\]
+
+\noindent Successivamente si calcola il \textbf{TIR incrementale} e lo si confronta con il costo opportunità del capitale $r$:
+
+\begin{itemize}
+    \item $TIR_{\text{incrementale}} > r$ $\rightarrow$ conviene il \textbf{progetto più costoso};
+    \item $TIR_{\text{incrementale}} < r$ $\rightarrow$ conviene il \textbf{progetto meno costoso}.
+\end{itemize}
+
+\noindent Si utilizza questo verso della sottrazione per ottenere un normale \textbf{investimento incrementale}.
+
+\subsection*{Trappola 4 -- Costo opportunità variabile nel tempo}
+
+\noindent Se i tassi d'interesse variano nel tempo, quale costo opportunità bisogna confrontare con il TIR?
+
+\[
+VAN = -F_0 + \frac{F_1}{1+i_1}
++ \frac{F_2}{(1+i_2)^2} + \cdots
+\]
+
+\noindent Il \textbf{TIR restituisce un unico tasso}. Se il costo opportunità del capitale varia nel tempo, non esiste necessariamente un unico tasso di riferimento con cui confrontarlo.
+
+\medskip
+
+\noindent Il \textbf{VAN}, invece, può utilizzare tassi di attualizzazione differenti per ciascun periodo.
+
+\medskip
+
+\noindent Nel calcolo del TIR si assume, per semplicità, che i tassi di sconto rimangano \textbf{costanti} durante il periodo di svolgimento dell'operazione.
+
+\medskip
+
+\noindent Pertanto, quando il costo opportunità varia nel tempo, il \textbf{VAN è un criterio più adatto del TIR}, poiché permette di considerare la variazione dei tassi nei diversi periodi.
