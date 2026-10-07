@@ -2,7 +2,7 @@
 \section{Non}
 Quando nelle query troviamo la richiesta \textcolor{red}{non}, devo ricavare tale richiesta togliendo dal totale delle tuple tutte le tuple 
 che soddisfano la negazione della condizione.\\
-Esempio:\\
+\textcolor{verdeEsempio}{Esempio:}\\
 \texttt{concerto (idconc, idart, anno, città)}\\
 \texttt{Artista (idart, nome, tipo)}\\
 \texttt{Evento (ideve, idconc, voto)}\\
@@ -10,8 +10,22 @@ Esempio:\\
 \underline{soluzione}: $PROJ_{idconc}(Concerto)-PROJ_{idconc}(Evento )$
 \section{Solo}
 Quando nelle query troviamo la richiesta \textcolor{red}{solo}, dobbiamo ricondurla alla negazione \textbf{non}\\
-Esempio (stesso database dell'esempio precedente):\\
+\textcolor{verdeEsempio}{Esempio} (stesso database dell'esempio precedente):\\
 \underline{query}: Trovare l'id degli artisti che dopo il 2010 hanno tenuto concerti solo a Roma\\
 \underline{soluzione}: "hanno tenuto concerti solo a Roma" ha lo stesso significato di "non hanno tenuto concerti in una città diversa da Roma"\\
 $PROJ_{idart(Artista)-PROJ_{idart}(SEL_{citta<>Roma \text{ and }anno>2010}(Concerto ))}$
-
+\section{Per ogni}
+Quando nelle query troviamo la richiesta \textcolor{red}{per ogni}, dobbiamo ricondurla a un’operazione di \textbf{raggruppamento (GROUP BY)}.\
+In particolare, si raggruppano le tuple rispetto all’attributo indicato dopo ``per ogni’’ e si applica la funzione di aggregazione richiesta.\\
+\textcolor{verdeEsempio}{Esempio} (stesso database dell’esempio precedente):\\
+\underline{query}: Calcolare per ogni artista il numero di concerti tenuti dopo il 2010\
+``per ogni artista’’ indica che dobbiamo raggruppare i concerti in base a \texttt{idart}.\\
+\underline{soluzione}:\
+\begin{verbatim}
+SELECT idart, COUNT(*) AS numero_concerti
+FROM Concerto
+WHERE anno > 2010
+GROUP BY idart;
+\end{verbatim}
+Quindi, in generale:\
+\textcolor{red}{per ogni X} $\Rightarrow$ \textbf{GROUP BY X}
