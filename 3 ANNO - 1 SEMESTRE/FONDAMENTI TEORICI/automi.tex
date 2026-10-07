@@ -1085,20 +1085,123 @@ legge esattamente la stringa $c_1,c_2,...,c_k$, infatti ogni altra combinazione 
     %\label{label}
 \end{figure}
 \noindent L'unica esecuzione accettante di questo automa è proprio la stringa $s = \{ asd   \}$. Ogni altra sottostringa non arriverà mai allo stato accettante $q_{fin}$.\smallskip\\
-Abbiamo quindi dimostrato che, costruendo in questo modo l'automa, il lemma è dimostrato, e ci servirà per concludere la dimostrazione del teorema.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+Abbiamo quindi dimostrato che, costruendo in questo modo l'automa, il lemma è dimostrato, e ci servirà per concludere la dimostrazione del teorema.\smallskip\\
+Supponiamo di avere un linguaggio $\mathcal{L} = \{  s_1,s_2,...,s_k  \}$ e siano $A_1,...,A_k$ ASFND tali che $L(A_i) = \{s_i\}$, l'esistenza di tali automi è data del lemma che abbiamo appena dimostrato. Per concludere la
+dimostrazione ricordiamo la \textbf{proprietà di chiusura} tra gli automi, che dice che dati due ASFND $A,B$ esiste un ASFND $C$ tale che $L(C) = L(A) \cup L(B)$. Basterà estendere questa proprietà a tutta la stringa per concludere la dimostrazione, infatti:
+\[  L(A_{\mathcal{L}}) = L(A_1) \cup \dots \cup L(A_k) = \mathcal{L}    \]
+Siccome c'è sempre un automa che riconosce qualsiasi linguaggio con simboli finiti, la dimostrazione è completa.
 \end{proof}
 
+
+\noindent Ora abbiamo visto come si comportano gli automi nel rappresentare i linguaggi finiti, ma nel caso di linguaggi infiniti la rappresentazione con gli automi viene espressa attraverso dei cicli, poichè senza di essi l'ASFD "esaurirebbe"
+gli stati disponibili, vediamo un esempio:
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.9\linewidth]{../../images/lemma.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent Questo è un esempio tipico di linguaggio infinito, infatti $a^nb$ rappresenta ogni stringa con un numero arbitrario di $a$ che termina per $b$. In accordo con ciò che abbiamo visto prima il linguaggio infinito è caratterizzato dalla presenza
+di cicli nel diagramma degli stati degli automi. A causa della presenza dei cicli, per stringhe sufficientemente grandi si vengono a creare delle \textbf{strutture ricorrenti}, ovvero una sottostringa che può essere ripetuta arbitrariamente.
+Questo ragionamento è alla base del \textbf{Pumping Lemma}, che vediamo subito.
+
+
+\subsection{Pumping Lemma}
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{lemma}
+    Per ogni linguaggio regolare $\mathcal{L}$ di cardinalità infinita, esiste un numero intero $n$ tale che, per ogni stringa $z \in \mathcal{L}$ con $|z| \ge n$, esistono tre stringhe $u,v,w$ (non necessariamente in $\mathcal{L}$)
+    tali che le seguenti sono verificate:
+    \begin{itemize}[label =--]
+        \item $z = uvw$
+        \item $|u|\ge 0 , |v|\ge 1, |w|\ge 0$, e $|uv|\le n$
+        \item $u v^i w \in \mathcal{L}$ per ogni $i \ge 0$
+    \end{itemize}
+\end{lemma}}}\smallskip\\
+In altre parole il lemma dice che in ogni linguaggio regolare infinito, tutte le stringhe sufficientemente lunghe contengono una sottostringa non 
+vuota che può essere ripetuta un numero arbitrario di volte senza uscire dal linguaggio.
+Questo lemma è una semplice conseguenza della presenza di cicli nei linguaggi infiniti, infatti possiamo anche vedere questo lemma in questo modo:
+\[  z = u\ v\ w \]
+dove:
+\begin{itemize}
+    \item $u$: parte iniziale prima del ciclo
+    \item $v$: parte corrispondente al ciclo, quella che possiamo ripetere
+    \item $w$: parte finale dopo il ciclo
+\end{itemize}
+Riprendiamo l'esempio di prima per vedere come applicare il pumping lemma:\\
+\textit{Esempio.}\\
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.9\linewidth]{../../images/lemma.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+Questi sono 2 possibili applicazioni del pumping lemma:
+\begin{itemize}
+    \item \textbf{Esempio 1}: $s = aaab \longrightarrow u = \epsilon, \ \ v  = a, \ \ w = a a b$
+    \item \textbf{Esempio 2}: $s = aaab \longrightarrow  u = aa, \ \ v  = a, \ \ w = b$
+\end{itemize}
+In entrambi i casi $v$ si ripete più di una volta, pertanto rispetta la divisione del pumping lemma.\smallskip\\
+Ma a cosa serve il pumping lemma? Ci servirà per dimostrare l'esistenza dei linguaggi non regolari.
+
+
+
+\subsection{Linguaggi non regolari}
+Sfruttiamo il pumping lemma per definire linguaggi non regolari:\smallskip\\
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{theorem}
+    Se per un linguaggio $\mathcal{L}$ non esiste $n \in \mathbb{N}$ con le proprietà del Pumping Lemma allora $\mathcal{L}$ \textbf{non è un linguaggio regolare}
+\end{theorem}}}\smallskip\\
+Il teorema è abbastanza intuitivo, quindi vediamo direttamente un esempio e dimostriamo la non regolarità:\smallskip\\
+\textit{Esempio.} il linguaggio $\mathcal{L} = \{  a^n b^n | n \ge 0   \}$ sull'alfabeto $\Sigma = \{ a,b  \}$ non è un linguaggio regolare, dimostriamolo:
+l'idea è utilizzare il Pumping Lemma \textbf{per assurdo}: assumiamo che il linguaggio
+sia regolare e mostriamo che questa ipotesi porta a una contraddizione.\smallskip\\
+Il linguaggio contiene tutte le stringhe formate da un certo numero di simboli
+$a$ seguiti dallo stesso numero di simboli $b$:
+\[\varepsilon,\ ab,\ aabb,\ aaabbb,\ldots\]
+Vogliamo dimostrare che $\mathcal{L}$ non è regolare.
+Procediamo per assurdo.
+Supponiamo che $\mathcal{L}$ sia regolare.
+Poiché $\mathcal{L}$ è infinito, possiamo applicare il Pumping Lemma.
+Esiste quindi un intero $p \in \mathbb{N}$ tale che ogni stringa
+$z \in \mathcal{L}$ con
+\[|z| \geq p\]
+può essere scritta nella forma
+\[z = uvw\]
+con
+\[|v| \geq 1,\qquad|uv| \leq p,\]
+e tale che
+\[uv^i w \in \mathcal{L}\qquad\text{per ogni } i \geq 0.\]
+Scegliamo ora la stringa
+\[z = a^p b^p.\]
+Chiaramente
+\[z \in \mathcal{L}\]
+e inoltre
+\[|z| = 2p \geq p.\]
+Per il Pumping Lemma deve quindi esistere una decomposizione
+\[z = uvw\]
+che soddisfa le condizioni precedenti.
+Poiché
+\[|uv| \leq p,\]
+sia $u$ sia $v$ si trovano interamente all'interno dei primi $p$ simboli
+della stringa $z$.
+Ma i primi $p$ simboli di $z$ sono tutti simboli $a$.
+Di conseguenza, $v$ è necessariamente formato soltanto da simboli $a$.
+Possiamo quindi scrivere
+\[v = a^h\]
+per un certo $h \geq 1$.
+Consideriamo ora il caso $i=2$.
+Il Pumping Lemma afferma che anche
+\[uv^2w\]
+deve appartenere a $\mathcal{L}$.
+Ripetendo $v$ una seconda volta aggiungiamo però $h$ simboli $a$,
+senza aggiungere alcun simbolo $b$.
+Otteniamo quindi una stringa della forma
+\[a^{p+h}b^p.\]
+Poiché $h \geq 1$, abbiamo
+\[p+h \neq p.\]
+La stringa contiene quindi un numero diverso di simboli $a$ e di simboli $b$,
+perciò
+\[a^{p+h}b^p \notin \mathcal{L}.\]
+Questo contraddice il Pumping Lemma, secondo cui
+\[uv^i w \in \mathcal{L}\qquad\text{per ogni } i \geq 0.\]
+L'ipotesi iniziale che $\mathcal{L}$ fosse regolare è quindi falsa.
+Concludiamo che
+\[\boxed{\mathcal{L} = \{a^n b^n \mid n \geq 0\}\text{ non è regolare.}}\]
