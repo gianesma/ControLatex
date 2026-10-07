@@ -1143,8 +1143,29 @@ effettivamente per identificare ogni tupla.
 \subsubsection{Una sola chiave primaria}
 Una relazione può avere \textbf{più chiavi candidate}, cioè più chiavi
 che potrebbero essere utilizzate per identificare le tuple.
-Tra queste ne viene scelta \textbf{una sola} come chiave primaria.\\
+Tra queste ne viene scelta \textbf{una sola} come chiave primaria.
+\subsubsection{Esercizio}
+Quali sono i vicoli di integrità intrarelazionali da definire sullo schema:
+\[
+\text{Partita}(
+\text{Codice},
+\text{SqCasa},
+\text{SqTrasferta},
+\text{GoalCasa},
+\text{GoalTrasferta},
+\text{Schedina})
+\]
 
+\begin{itemize}
+    \item Codice è chiave primaria della relazione Partita - vincolo di chiave primaria
+    \item Sqcasa $\neq$ SqTrasferta - vincolo di tupla
+    \item GoalCasa $\ge0$ - vincolo di dominio
+    \item GoalTrasferta $\ge 0$ - vincolo di dominio
+    \item Schedina$=$'1' OR Schedina$=$'2' OR schema$=$'X' - vincolo di dominio
+    \item (NOT Schedina='1') OR (GoalCasa $>$ GoalTrasferta) - vincolo di tupla
+    \item (NOT Schedina='2') OR (GoalCasa $<$ GoalTrasferta) - vincolo di tupla
+    \item (NOT Schedina='X') OR (GoalCasa $=$ GoalTrasferta) - vincolo di tupla
+\end{itemize}
 
 sql da 'definizione dei dati in sql: create table'\\ 
 a 'domini per attributi' prima slide
