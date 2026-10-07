@@ -893,3 +893,396 @@ maggiore di 20.\\
     group by t.padre
     having avg(f.reddito) > 20      ----> condizione sulle tuple che rappresentano i gruppi 
 \end{verbatim}
+
+\subsection{Riassunto e ordine}
+L'ordine sintattico è:
+\begin{verbatim}
+    select ListaAttributiOEspressioni
+    from ListaTabelle
+    [where CondizioniSemplici]
+    [group by ListaAttributiDiRaggruppamento]
+    [having CondizioniAggregate]
+    [order by ListaAttributiDiOrdinamento]
+    [limit numero]
+\end{verbatim}
+
+\subsection{Unione}
+la \texttt{select} da sola non permette di eseguire l'unione. Serve un costrutto esplicito:
+\begin{verbatim}
+    select ...
+    union [all]
+    select ...
+\end{verbatim}
+\noindent La target list delle due select devono avere lo stesso numero di elementi\\
+Consideriamo la seguente query:
+\begin{verbatim}
+SELECT padre, figlio
+FROM paternita
+UNION
+SELECT madre, figlio
+FROM maternita;
+\end{verbatim}
+\noindent L'operatore \texttt{UNION} combina i risultati delle due \texttt{SELECT}.
+L'associazione tra le colonne avviene \textbf{in base alla loro posizione}
+e non in base al loro nome.
+In particolare:
+\[
+\begin{array}{ccc}
+\text{\texttt{padre}} & \longleftrightarrow & \text{\texttt{madre}} \\
+\text{\texttt{figlio}} & \longleftrightarrow & \text{\texttt{figlio}}
+\end{array}
+\]
+Quindi la prima colonna della prima \texttt{SELECT} viene unita con la
+prima colonna della seconda \texttt{SELECT}, mentre la seconda colonna
+viene unita con la seconda.
+Affinché sia possibile utilizzare \texttt{UNION}, le due \texttt{SELECT}
+devono restituire lo \textbf{stesso numero di colonne} e le colonne
+corrispondenti devono avere \textbf{tipi compatibili}.
+Poiché la prima query utilizza gli attributi \texttt{padre} e
+\texttt{figlio}, mentre la seconda utilizza \texttt{madre} e
+\texttt{figlio}, bisogna stabilire quali siano i nomi delle colonne
+della relazione risultante.
+Questo comportamento può dipendere dal DBMS. In molti sistemi vengono
+utilizzati i nomi derivanti dalla prima \texttt{SELECT}. Il risultato
+potrebbe quindi avere colonne:
+\[
+(\texttt{padre},\texttt{figlio})
+\]
+anche se nella prima colonna sono presenti sia padri sia madri.
+Per rendere più chiaro il significato della colonna è possibile utilizzare
+un alias:
+\begin{verbatim}
+SELECT padre AS genitore, figlio
+FROM paternita
+UNION
+SELECT madre AS genitore, figlio
+FROM maternita;
+\end{verbatim}
+\noindent ottenendo una relazione del tipo:
+\[
+(\texttt{genitore},\texttt{figlio})
+\]
+La prima \texttt{SELECT} produce le coppie padre--figlio, ad esempio:
+\[
+\begin{array}{c|c}
+\textbf{padre} & \textbf{figlio} \\ \hline
+\text{Sergio} & \text{Franco} \\
+\text{Luigi} & \text{Olga} \\
+\text{Luigi} & \text{Filippo} \\
+\text{Franco} & \text{Andrea}
+\end{array}
+\]
+La seconda \texttt{SELECT} produce invece le coppie madre--figlio, ad
+\textcolor{verdeEsempio}{Esempio:}
+\[
+\begin{array}{c|c}
+\textbf{madre} & \textbf{figlio} \\ \hline
+\text{Anna} & \text{Olga} \\
+\text{Anna} & \text{Filippo} \\
+\text{Maria} & \text{Andrea} \\
+\text{Maria} & \text{Aldo}
+\end{array}
+\]
+L'operatore \texttt{UNION} mette tutte queste tuple in un'unica relazione.
+Se i nomi delle colonne vengono presi dalla prima \texttt{SELECT}, si può
+ottenere:
+\[
+\begin{array}{c|c}
+\textbf{padre} & \textbf{figlio} \\ \hline
+\text{Sergio} & \text{Franco} \\
+\text{Luigi} & \text{Olga} \\
+\vdots & \vdots \\
+\text{Anna} & \text{Olga} \\
+\text{Anna} & \text{Filippo} \\
+\text{Maria} & \text{Andrea} \\
+\text{Maria} & \text{Aldo}
+\end{array}
+\]
+Il fatto che \texttt{Anna} e \texttt{Maria} compaiano nella colonna
+chiamata \texttt{padre} non significa che vengano considerate padri.
+Il motivo è semplicemente che \texttt{UNION} opera in modo
+\textbf{posizionale}:
+\[
+\boxed{
+\text{prima  colonna} \leftrightarrow \text{prima colonna},
+\qquad
+\text{seconda colonna} \leftrightarrow \text{seconda colonna}
+}
+\]
+Per questo motivo, dal punto di vista semantico, sarebbe più corretto
+chiamare la prima colonna \texttt{genitore}.
+\medskip
+\noindent
+\textbf{Nota:} \texttt{UNION} elimina eventuali righe duplicate.
+Se si vogliono mantenere anche i duplicati bisogna utilizzare
+\texttt{UNION ALL}.
+
+\subsection{Differenza: EXCEPT}
+
+L'operatore \texttt{EXCEPT} rappresenta la \textbf{differenza tra i risultati
+di due query}.
+La forma generale è:
+\begin{verbatim}
+SELECT ...
+FROM ...
+EXCEPT
+SELECT ...
+FROM ...
+\end{verbatim}
+\noindent Il risultato contiene le tuple prodotte dalla \textbf{prima SELECT} che
+\textbf{non compaiono nel risultato della seconda SELECT}.
+In termini insiemistici, se la prima query produce l'insieme $A$ e la
+seconda produce l'insieme $B$, allora:
+\[
+A \ \texttt{EXCEPT} \ B = A \setminus B
+\]
+È importante osservare che la differenza \textbf{non è commutativa}:
+\[
+A \setminus B \neq B \setminus A
+\]
+\textcolor{verdeEsempio}{Esempio}
+Consideriamo la query:
+\begin{verbatim}
+SELECT nome
+FROM impiegato
+EXCEPT
+SELECT cognome AS nome
+FROM impiegato;
+\end{verbatim}
+\noindent La prima query:
+\begin{verbatim}
+SELECT nome
+FROM impiegato
+\end{verbatim}
+\noindent produce l'insieme dei \textbf{nomi degli impiegati}.\\
+La seconda query:
+\begin{verbatim}
+SELECT cognome AS nome
+FROM impiegato
+\end{verbatim}
+\noindent produce invece l'insieme dei \textbf{cognomi degli impiegati}.
+Pertanto, l'intera query restituisce:
+\[
+\boxed{
+\text{nomi degli impiegati che non compaiono anche come cognomi}
+}
+\]
+Ad esempio, supponiamo di avere:
+\[
+A =
+\{\text{Mario},\text{Luca},\text{Rossi},\text{Anna}\}
+\]
+come insieme dei nomi e:
+\[
+B =
+\{\text{Rossi},\text{Bianchi},\text{Verdi}\}
+\]
+come insieme dei cognomi.
+Allora:
+\[
+A \setminus B =
+\{\text{Mario},\text{Luca},\text{Anna}\}
+\]
+poiché \texttt{Rossi} compare anche tra i cognomi e viene quindi escluso
+dal risultato.\\
+Come per \texttt{UNION}, le due \texttt{SELECT} devono avere lo
+\textbf{stesso numero di colonne} e le colonne nelle stesse posizioni
+devono avere tipi compatibili.
+In questo esempio entrambe restituiscono una sola colonna:
+\[
+\begin{array}{ccc}
+\text{\texttt{nome}} & \longleftrightarrow & \text{\texttt{cognome}}
+\end{array}
+\]
+L'alias:
+\begin{verbatim}
+cognome AS nome
+\end{verbatim}
+\noindent rinomina la colonna \texttt{cognome} in \texttt{nome}. Tuttavia,
+\textbf{non è l'alias a rendere possibile EXCEPT}: ciò che conta è che
+le colonne corrispondenti siano compatibili.\\
+\texttt{EXCEPT} e \texttt{EXCEPT ALL}\\
+Normalmente:
+\[
+\boxed{\texttt{EXCEPT} \quad \Rightarrow \quad
+\text{elimina i duplicati}}
+\]
+Quindi il risultato segue una semantica insiemistica.
+Con:
+\[
+\boxed{\texttt{EXCEPT ALL} \quad \Rightarrow \quad
+\text{tiene conto dei duplicati}}
+\]
+la differenza considera anche il numero di occorrenze delle tuple.
+Ad esempio, se:
+\[
+A = \{a,a,a,b\}
+\]
+e:
+\[
+B = \{a\}
+\]
+allora con \texttt{EXCEPT} otteniamo:
+\[
+A \ \texttt{EXCEPT} \ B = \{b\}
+\]
+mentre con \texttt{EXCEPT ALL} otteniamo:
+\[
+A \ \texttt{EXCEPT ALL} \ B = \{a,a,b\}
+\]
+perché viene sottratta solamente una delle tre occorrenze di $a$.
+
+\subsection{Intersezione: INTERSECT}
+L'operatore \texttt{INTERSECT} permette di calcolare
+l'\textbf{intersezione tra i risultati di due query}.\\
+La forma generale è:
+\begin{verbatim}
+SELECT ...
+FROM ...
+
+INTERSECT
+
+SELECT ...
+FROM ...
+\end{verbatim}
+\noindent Il risultato contiene solamente le tuple che compaiono
+\textbf{nel risultato di entrambe le SELECT}.
+In termini insiemistici, se la prima query produce l'insieme $A$
+e la seconda produce l'insieme $B$, allora:
+\[
+A \ \texttt{INTERSECT} \ B = A \cap B
+\]
+A differenza della differenza, l'intersezione è commutativa:
+\[
+A \cap B = B \cap A
+\]
+\textcolor{verdeEsempio}{Esempio} 
+Consideriamo la query:
+\begin{verbatim}
+SELECT nome
+FROM impiegato
+INTERSECT
+SELECT cognome AS nome
+FROM impiegato;
+\end{verbatim}
+\noindent La prima query:
+\begin{verbatim}
+SELECT nome
+FROM impiegato
+\end{verbatim}
+\noindent restituisce tutti i \textbf{nomi degli impiegati}.\\
+La seconda query:
+\begin{verbatim}
+SELECT cognome AS nome
+FROM impiegato
+\end{verbatim}
+\noindent restituisce tutti i \textbf{cognomi degli impiegati}.
+L'intersezione restituisce quindi:
+\[
+\boxed{
+\text{valori che compaiono sia come nome sia come cognome}
+}
+\]
+\textcolor{verdeEsempio}{Esempio} supponiamo che:
+\[
+A =
+\{\text{Mario},\text{Luca},\text{Rossi},\text{Anna}\}
+\]
+sia l'insieme dei nomi e che:
+\[
+B =
+\{\text{Rossi},\text{Bianchi},\text{Luca},\text{Verdi}\}
+\]
+sia l'insieme dei cognomi.
+Allora:
+\[
+A \cap B =
+\{\text{Luca},\text{Rossi}\}
+\]
+perché \texttt{Luca} e \texttt{Rossi} compaiono sia tra i nomi
+sia tra i cognomi.
+\textbf{Compatibilità tra le due SELECT}
+Come per \texttt{UNION} ed \texttt{EXCEPT}, le due \texttt{SELECT}
+devono restituire lo \textbf{stesso numero di colonne} e le colonne
+nelle stesse posizioni devono avere tipi compatibili.
+In questo caso:
+\[
+\begin{array}{ccc}
+\text{\texttt{nome}} & \longleftrightarrow &
+\text{\texttt{cognome}}
+\end{array}
+\]
+L'alias:
+\begin{verbatim}
+cognome AS nome
+\end{verbatim}
+rinomina la colonna \texttt{cognome} in \texttt{nome}.
+L'alias rende più chiaro il risultato, ma non è necessario
+per poter eseguire \texttt{INTERSECT}.\\
+\textbf{Equivalenza con un self join} la stessa interrogazione può essere espressa
+anche senza utilizzare \texttt{INTERSECT}:
+\begin{verbatim}
+SELECT DISTINCT i.nome
+FROM impiegato i, impiegato j
+WHERE i.nome = j.cognome;
+\end{verbatim}
+\noindent In questo caso la tabella \texttt{impiegato} viene considerata
+\textbf{due volte}:
+\[
+\texttt{impiegato i}
+\qquad\text{e}\qquad
+\texttt{impiegato j}
+\]
+Gli alias \texttt{i} e \texttt{j} rappresentano due copie logiche
+della stessa tabella.
+La condizione:
+\begin{verbatim}
+i.nome = j.cognome
+\end{verbatim}
+\noindent cerca tutte le situazioni in cui il nome di un impiegato coincide
+con il cognome di un altro impiegato
+che è esattamente ciò che cercava la query con \texttt{INTERSECT}.\\
+La parola \texttt{DISTINCT} è importante perché il join potrebbe
+produrre più volte lo stesso nome. Poiché \texttt{INTERSECT}
+elimina normalmente i duplicati, utilizziamo \texttt{DISTINCT}
+per ottenere lo stesso comportamento.
+\subsubsection*{\texttt{INTERSECT} e \texttt{INTERSECT ALL}}
+Normalmente:
+\[
+\boxed{
+\texttt{INTERSECT}
+\quad\Rightarrow\quad
+\text{elimina i duplicati}
+}
+\]
+Con:
+\[
+\boxed{
+\texttt{INTERSECT ALL}
+\quad\Rightarrow\quad
+\text{mantiene le molteplicità}
+}
+\]
+Ad esempio, supponiamo che:
+\[
+A = \{a,a,a,b\}
+\]
+e:
+\[
+B = \{a,a,c\}
+\]
+Con \texttt{INTERSECT} otteniamo:
+\[
+A \ \texttt{INTERSECT} \ B = \{a\}
+\]
+perché i duplicati vengono eliminati.
+Con \texttt{INTERSECT ALL}, invece:
+\[
+A \ \texttt{INTERSECT ALL} \ B = \{a,a\}
+\]
+perché $a$ compare tre volte in $A$ e due volte in $B$.
+Il numero di copie mantenute nell'intersezione è il minimo
+tra le due molteplicità:
+\[
+\min(3,2)=2
+\]
