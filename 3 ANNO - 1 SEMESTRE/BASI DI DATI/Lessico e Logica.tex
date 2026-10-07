@@ -29,3 +29,128 @@ GROUP BY idart;
 \end{verbatim}
 Quindi, in generale:\
 \textcolor{red}{per ogni X} $\Rightarrow$ \textbf{GROUP BY X}
+
+\section{Equivalenza}
+Due espressioni sono \textbf{equivalenti} se producono lo stesso risultato qualunque sia l'istanza della base di dati sulla quale vengono valutate\\
+L'equivalenza è importante in pratica perchè i DBMS cercano di eseguire espressioni equivalenti a quelle date, ma meno "costose" della espressione originaria (effettuando le selezioni il prima possibile).
+
+\section{Operatori logici nelle query SQL}
+Gli \textbf{operatori logici} permettono di combinare più condizioni
+all'interno della clausola \texttt{WHERE}. I principali sono:
+\[
+\begin{array}{c|c}
+\text{Logica} & \text{SQL} \\ \hline
+P \land Q & \texttt{P AND Q} \\
+P \lor Q & \texttt{P OR Q} \\
+\neg P & \texttt{NOT P}
+\end{array}
+\]
+\begin{itemize}
+    \item \texttt{AND}: entrambe le condizioni devono essere vere;
+    \item \texttt{OR}: almeno una condizione deve essere vera;
+    \item \texttt{NOT}: nega una condizione.
+\end{itemize}
+\noindent \textcolor{verdeEsempio}{Esempio}
+\begin{verbatim}
+SELECT *
+FROM Impiegato
+WHERE (Citta = 'Roma' OR Citta = 'Milano')
+  AND Stipendio > 2000;
+\end{verbatim}
+La condizione corrisponde a
+\[
+(\text{Citta = Roma} \lor \text{Citta = Milano})
+\land
+(\text{Stipendio} > 2000).
+\]
+Quindi vengono selezionati gli impiegati che si trovano a
+\textbf{Roma o Milano} e che hanno uno stipendio maggiore di 2000.
+\subsection{Leggi di De Morgan}
+Le \textbf{leggi di De Morgan} permettono di riscrivere la negazione
+di condizioni composte da \texttt{AND} e \texttt{OR}.
+Le due regole fondamentali sono:
+\[
+\boxed{
+\neg(P \land Q)
+\equiv
+(\neg P) \lor (\neg Q)
+}
+\]
+In italiano:
+\[
+\
+\text{NON }(P \text{ E } Q)
+\equiv
+(\text{NON }P) \text{ O } (\text{NON }Q)
+\]
+La seconda legge è:
+\[
+\boxed{
+\neg(P \lor Q)
+\equiv
+(\neg P) \land (\neg Q)
+}
+\]
+In italiano:
+\[
+\text{NON }(P \text{ O } Q)
+\equiv
+(\text{NON }P) \text{ E } (\text{NON }Q)
+\]
+In SQL possiamo ricordarle in questo modo:
+\begin{center}
+\boxed{\texttt{NOT (P AND Q)}
+\equiv
+\texttt{(NOT P) OR (NOT Q)}}
+\end{center}
+\begin{center}
+\boxed{\texttt{NOT (P OR Q)}
+\equiv
+\texttt{(NOT P) AND (NOT Q)}}
+\end{center}
+Quindi, quando il \texttt{NOT} entra nelle parentesi:
+\begin{itemize}
+    \item \texttt{AND} diventa \texttt{OR};
+    \item \texttt{OR} diventa \texttt{AND};
+    \item ogni singola condizione viene negata.
+\end{itemize}
+\textcolor{verdeEsempio}{Esempio}
+Supponiamo di voler trovare gli impiegati che \textbf{non} soddisfano
+la seguente condizione:
+\begin{quote}
+``vivono a Roma oppure hanno stipendio maggiore di 2000''.
+\end{quote}
+Possiamo scrivere:
+\begin{verbatim}
+SELECT *
+FROM Impiegato
+WHERE NOT (Citta = 'Roma' OR Stipendio > 2000);
+\end{verbatim}
+Poniamo:
+\[
+P = (\text{Citta = Roma})
+\]
+\[
+Q = (\text{Stipendio} > 2000)
+\]
+La condizione della query è quindi:
+\[
+\neg(P \lor Q).
+\]
+Applicando De Morgan:
+\[
+\neg(P \lor Q)
+\equiv
+(\neg P) \land (\neg Q).
+\]
+Di conseguenza, la query può essere riscritta come:
+\begin{verbatim}
+SELECT *
+FROM Impiegato
+WHERE Citta <> 'Roma'
+  AND Stipendio <= 2000;
+\end{verbatim}
+Le due query esprimono quindi la stessa condizione:
+l'impiegato deve \textbf{non essere di Roma}
+\textbf{e contemporaneamente} deve avere uno stipendio
+non superiore a 2000.
