@@ -209,7 +209,8 @@ visualizzare le diverse attività, la loro durata, le date di inizio e fine e le
 Il \textbf{Project Management Institute (PMI)} è un'organizzazione internazionale no-profit, 
 fondata negli Stati Uniti nel 1969, che rappresenta uno dei principali riferimenti nel campo del Project Management.
 
-\noindent Il suo obiettivo è sviluppare e diffondere \textbf{standard, metodologie e competenze professionali} nel Project Management, anche attraverso programmi di formazione 
+\noindent Il suo obiettivo è sviluppare e diffondere \textbf{standard, metodologie e competenze professionali} nel Project Management, 
+anche attraverso programmi di formazione 
 e certificazioni professionali.
 
 \subsection{Livelli di esperienza nel Project Management}
@@ -538,3 +539,333 @@ Non esiste un numero fisso di livelli valido per tutti i progetti. Il livello di
 
 \noindent Bisogna però evitare una scomposizione eccessiva: la WBS deve raggiungere un livello di dettaglio sufficiente per \textbf{stimare, assegnare, gestire e controllare il lavoro}, 
 senza rendere inutilmente complessa la gestione del progetto.
+
+\subsection{Resource Breakdown Structure (RBS)}
+
+\noindent La \textbf{Resource Breakdown Structure (RBS)} rappresenta la struttura con cui vengono individuate e organizzate le risorse necessarie 
+alla realizzazione del progetto.
+
+\medskip
+
+\noindent L'allocazione delle risorse, in particolare di quelle umane, è fondamentale 
+per verificare che le esigenze del progetto siano compatibili con le risorse effettivamente disponibili nell'organizzazione.
+
+\subsubsection*{Project Organizational Breakdown Structure (POBS)}
+
+\noindent La \textbf{Project Organizational Breakdown Structure (POBS)} rappresenta la struttura 
+organizzativa specifica del progetto e permette di \textbf{assegnare le responsabilità} alle diverse risorse coinvolte.
+
+\medskip
+
+\noindent Si tratta di una struttura \textbf{temporanea}, creata appositamente per il progetto e destinata a 
+sciogliersi al suo completamento. Una stessa risorsa può inoltre partecipare contemporaneamente a più progetti e, quindi, appartenere a più POBS.
+
+\medskip
+
+\noindent
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.7\linewidth]{../images/POBS.png}
+    \caption{POBS}
+    %\label{label}
+\end{figure}
+
+\subsubsection*{Relazione tra WBS e POBS}
+
+\noindent Esiste uno stretto legame tra la \textbf{Work Breakdown Structure (WBS)} e la \textbf{POBS}.
+
+\medskip
+
+\noindent La WBS viene generalmente costruita secondo una \textbf{logica mista}: il progetto viene scomposto in componenti e 
+attività sempre più semplici, indipendentemente da chi dovrà successivamente realizzarle.
+
+\medskip
+
+\noindent Una volta individuati i \textbf{Work Package (WP)}, si definisce la POBS, associando a ciascun WP le risorse e 
+le unità organizzative responsabili della sua realizzazione.
+
+\medskip
+
+\noindent Oltre alle risorse umane è necessario considerare anche le \textbf{risorse strumentali} 
+necessarie allo svolgimento delle attività. Questo aspetto diventa particolarmente importante quando l'organizzazione 
+gestisce contemporaneamente più progetti, poiché le stesse risorse potrebbero essere richieste da progetti differenti.
+
+\medskip
+
+\noindent
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.9\linewidth]{../images/OBS.png}
+    \caption{Relazione WBS e OBS/POBS}
+    %\label{label}
+\end{figure}
+
+
+\subsubsection*{Verifica dell'allocazione delle risorse}
+
+\noindent L'incrocio tra WBS e struttura organizzativa permette di verificare in maniera semplice \textbf{chi è responsabile di ciascun Work Package} 
+e come sono distribuite le attività tra le diverse risorse.
+
+\medskip
+
+\noindent Attraverso una rappresentazione matriciale è possibile individuare eventuali \textbf{sovraccarichi di lavoro}, 
+verificando che una singola risorsa non sia assegnata contemporaneamente a un numero eccessivo di attività.
+
+\medskip
+
+\noindent Una corretta distribuzione delle responsabilità e delle risorse consente quindi di ottenere una 
+maggiore \textbf{efficienza organizzativa} del progetto.
+
+\medskip
+
+\noindent
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.9\linewidth]{../images/Gestione.png}
+    \caption{Esempio Work Package}
+    %\label{label}
+\end{figure}
+
+
+\subsubsection*{Project Budget Breakdown Structure (PBBS)}
+
+\noindent Un'altra struttura fondamentale è la \textbf{Project Budget Breakdown Structure (PBBS)}, che rappresenta la 
+scomposizione del \textbf{budget complessivo del progetto} e permette di assicurare la copertura finanziaria delle risorse e delle attività previste.
+
+\medskip
+
+\noindent Il budget del progetto deve essere coerente con il \textbf{budget complessivo dell'organizzazione}.
+
+\medskip
+
+\noindent La PBBS mette quindi in relazione:
+
+\begin{itemize}
+    \item il \textbf{``che cosa''}, rappresentato dalle attività e dai Work Package della \textbf{WBS};
+    \item il \textbf{``chi fa''}, rappresentato dalle responsabilità definite nella \textbf{POBS};
+    \item il \textbf{``quanto costa''}, rappresentato dai costi associati alle attività e alle risorse.
+\end{itemize}
+
+\noindent Dalla combinazione di queste informazioni è possibile costruire la \textbf{Cost Baseline}, cioè il riferimento dei costi 
+pianificati rispetto al quale verrà controllato l'andamento economico del progetto.
+
+\subsubsection*{Freccia di loop}
+
+\noindent Il processo di pianificazione non è necessariamente lineare, ma può richiedere diverse \textbf{iterazioni}.
+
+\medskip
+
+\noindent
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.9\linewidth]{../images/FrecciaLoop.png}
+    \caption{Freccia Loop}
+    %\label{label}
+\end{figure}
+
+
+\medskip
+
+\noindent Se durante la pianificazione emerge un'incompatibilità tra \textbf{tempi, costi e risorse disponibili}, è necessario 
+tornare alle fasi precedenti e modificare alcune scelte.
+
+\medskip
+
+\noindent In alcuni casi il loop può essere più ampio e può portare a rimettere in discussione qualsiasi componente del progetto, 
+come attività, risorse, budget, deliverable o persino gli obiettivi iniziali.
+
+\medskip
+
+\noindent Il processo viene quindi ripetuto fino a raggiungere un adeguato \textbf{allineamento tra obiettivi di tempo, costo e risorse}.
+
+\subsection{Ambiti applicativi del Project Management}
+
+\noindent Nell'ambito dell'innovazione è innanzitutto necessario comprendere da dove provengano le informazioni e le opportunità che portano 
+allo sviluppo di nuovi prodotti. In questo contesto si fa riferimento al concetto di \textbf{progettazione industriale}.
+
+\medskip
+
+\noindent La \textbf{concept idea} nasce dall'incontro tra:
+
+\begin{itemize}
+    \item le \textbf{opportunità tecnologiche};
+    \item i \textbf{fabbisogni del mercato}.
+\end{itemize}
+
+\noindent Una volta definito il concept, si sviluppa l'\textbf{architettura del prodotto}, cioè il modo in cui le diverse funzioni del prodotto 
+vengono suddivise e organizzate nei suoi componenti.
+
+\subsubsection*{Rapporto tra innovazione e domanda di mercato}
+
+\noindent Il rapporto tra innovazione tecnologica e domanda di mercato può svilupparsi secondo diverse modalità:
+
+\begin{enumerate}
+    \item \textbf{Lo sviluppo tecnologico incorporato in un prodotto determina la domanda.}\\
+    Una nuova tecnologia permette di realizzare prodotti con prestazioni superiori e può quindi generare interesse da parte del mercato. Un esempio è 
+    l'introduzione di un nuovo microprocessore nei computer.
+
+    \item \textbf{La domanda è già presente.}\\
+    Il mercato presenta un bisogno già riconosciuto e l'innovazione cerca di soddisfarlo in maniera migliore. Un esempio è il settore farmaceutico, 
+    nel quale la ricerca continua a sviluppare nuovi farmaci e nuove soluzioni terapeutiche.
+
+    \item \textbf{L'innovazione stimola e sviluppa una domanda esistente.}\\
+    L'innovazione introduce funzionalità non strettamente necessarie, ma capaci di offrire vantaggi e comodità tali da aumentare la domanda. 
+    Un esempio è rappresentato dall'evoluzione delle fotocopiatrici.
+
+    \item \textbf{L'innovazione di prodotto fa emergere una domanda latente.}\\
+    L'innovazione soddisfa un bisogno che il consumatore non percepiva chiaramente prima dell'introduzione del nuovo prodotto. 
+    Un esempio è il telefono cellulare: prima della sua diffusione non esisteva una necessità esplicita di essere costantemente reperibili.
+
+    \item \textbf{L'innovazione rivitalizza una domanda già esistente.}\\
+    L'introduzione di nuove funzionalità può spingere i consumatori a sostituire prodotti ancora funzionanti. 
+    Esempi sono le Smart TV e i dispositivi per la domotica: la sostituzione non avviene necessariamente a fine vita del prodotto, ma può essere 
+    determinata dalla disponibilità di nuove funzionalità.
+\end{enumerate}
+
+\subsubsection*{Technology Push}
+
+\noindent Lo sviluppo della tecnologia può \textbf{precedere lo sviluppo del prodotto}. Questo fenomeno prende il nome di \textbf{Technology Push}.
+
+\medskip
+
+\noindent In questo caso vengono prima sviluppate nuove tecnologie e, successivamente, vengono individuati i prodotti e le applicazioni nei quali utilizzarle.
+
+\medskip
+
+\noindent Ciò avviene principalmente perché:
+
+\begin{itemize}
+    \item le tecnologie più sofisticate richiedono spesso \textbf{cicli di sviluppo più lunghi} rispetto ai prodotti;
+    \item la dinamicità e la volatilità del mercato rendono utile disporre anticipatamente di un \textbf{portafoglio di tecnologie} tra cui scegliere per sviluppare 
+    rapidamente nuovi prodotti.
+\end{itemize}
+
+\subsubsection*{Demand Pull}
+
+\noindent Può verificarsi anche il processo inverso, chiamato \textbf{Demand Pull}: in questo caso sono le \textbf{esigenze del mercato e dei clienti} a guidare lo 
+sviluppo della tecnologia necessaria per realizzare il prodotto.
+
+\medskip
+
+\noindent Questo approccio assume particolare importanza perché i clienti sono sempre più esigenti e la forte \textbf{interdipendenza tecnico-funzionale} tra i componenti rende 
+necessario gestire attentamente il portafoglio dei prodotti e sviluppare successivamente le tecnologie necessarie.
+
+\subsubsection*{Design dominante}
+
+\noindent Il \textbf{design dominante} è un'architettura di prodotto che riesce ad affermarsi sul mercato e a diventare, nel lungo periodo, uno \textbf{standard di riferimento}.
+
+\medskip
+
+\noindent Una volta affermatosi, il design dominante crea alcuni vincoli con i quali le innovazioni successive devono confrontarsi.
+
+\medskip
+
+\noindent Un esempio è la \textbf{tastiera QWERTY}: la sua disposizione dei tasti si è affermata come standard e le successive innovazioni nel settore delle tastiere si 
+sono sviluppate prevalentemente mantenendo tale configurazione.
+
+\subsubsection*{Tipologie di innovazione}
+
+\noindent Le innovazioni possono essere classificate in diverse categorie:
+
+\begin{itemize}
+    \item \textbf{Innovazioni incrementali}: perfezionano e migliorano il prodotto dominante senza modificarne sostanzialmente la struttura.
+
+    \item \textbf{Innovazioni modulari}: modificano uno o più componenti o tecnologie del prodotto, mantenendo sostanzialmente invariata la sua architettura complessiva.
+
+    \item \textbf{Innovazioni architetturali}: modificano il modo in cui i componenti del prodotto sono organizzati e collegati tra loro, pur mantenendo sostanzialmente 
+    invariati i principi tecnologici fondamentali dei componenti.
+
+    \item \textbf{Innovazioni radicali}: introducono cambiamenti significativi sia nelle tecnologie sia nell'architettura del prodotto e possono portare all'affermazione 
+    di un nuovo design dominante.
+
+    \item \textbf{Innovazioni disruptive (dirompenti)}: inizialmente possono presentarsi come soluzioni più semplici, economiche o rivolte a segmenti di mercato 
+    poco considerati, ma possono evolversi fino a modificare profondamente il mercato esistente.
+\end{itemize}
+
+\subsubsection*{Ricerca e Sviluppo}
+
+\noindent Lo sviluppo della tecnologia avviene anche attraverso le attività di \textbf{Ricerca e Sviluppo (R\&S)}, 
+in inglese \textbf{Research \& Development (R\&D)}.
+
+\medskip
+
+\noindent La R\&S rappresenta il processo attraverso il quale l'impresa sviluppa nuove conoscenze e tecnologie, collegando 
+le \textbf{opportunità tecnologiche} con le \textbf{esigenze individuate attraverso le ricerche di mercato}.
+
+\medskip
+
+\noindent Le attività di R\&S possono produrre:
+
+\begin{itemize}
+    \item \textbf{innovazione di prodotto}, attraverso lo sviluppo di prodotti nuovi o il miglioramento di quelli esistenti;
+    \item \textbf{innovazione di processo}, attraverso nuovi o migliori metodi di produzione e organizzazione.
+\end{itemize}
+
+\subsubsection*{Fonti dell'innovazione tecnologica}
+
+\noindent Le fonti dell'innovazione tecnologica possono essere:
+
+\begin{itemize}
+    \item \textbf{endogene}: l'innovazione viene sviluppata internamente all'impresa, principalmente attraverso le attività di \textbf{R\&S};
+
+    \item \textbf{esogene}: conoscenze e tecnologie provengono dall'esterno dell'impresa, ad esempio attraverso \textbf{fornitori, fiere, concorrenti, università e collaborazioni esterne}.
+\end{itemize}
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.9\linewidth]{../images/Picture1.png}
+    %\label{label}
+\end{figure}
+
+\subsection{Servizio}
+
+\noindent Un \textbf{servizio} è un'attività finalizzata ad accrescere la soddisfazione del cliente o dell'utilizzatore.
+
+\medskip
+
+\noindent Un servizio è caratterizzato principalmente da:
+
+\begin{itemize}
+    \item \textbf{Intangibilità}: il servizio è immateriale e non consiste necessariamente in un bene fisico;
+    
+    \item \textbf{Simultaneità}: produzione e consumo del servizio avvengono generalmente nello stesso momento;
+    
+    \item \textbf{Partecipazione del cliente}: il cliente partecipa direttamente al processo di erogazione del servizio.
+\end{itemize}
+
+\subsubsection*{Caratteristiche e criticità dei servizi}
+
+\noindent A causa della loro natura, i servizi presentano alcune caratteristiche e problematiche specifiche:
+
+\begin{itemize}
+    \item non possono essere \textbf{immagazzinati};
+    
+    \item risulta più difficile determinare con precisione i \textbf{costi di produzione};
+    
+    \item sono più difficili da \textbf{standardizzare}, poiché l'erogazione può dipendere dal cliente, dal personale e dalle specifiche circostanze;
+    
+    \item la difficoltà di standardizzazione rende più complesso conseguire \textbf{economie di scala};
+    
+    \item il personale a diretto contatto con il cliente, detto \textbf{front office}, assume un ruolo fondamentale nella qualità percepita del servizio;
+    
+    \item possono presentarsi problemi di \textbf{distribuzione ed erogazione}, soprattutto quando esiste una distanza fisica tra impresa e cliente;
+    
+    \item la comunicazione delle caratteristiche e della qualità del servizio può risultare \textbf{complessa e onerosa}, proprio a causa della sua natura intangibile.
+\end{itemize}
+
+\subsubsection*{Ambiti di applicazione dei servizi}
+
+\noindent I servizi possono essere presenti in differenti contesti:
+
+\begin{itemize}
+    \item \textbf{servizi al cliente offerti da imprese industriali e commerciali}, che accompagnano o supportano la vendita di un prodotto;
+    
+    \item \textbf{servizi offerti dalle imprese del settore terziario}, nelle quali il servizio rappresenta l'attività principale;
+    
+    \item \textbf{servizi offerti dalle organizzazioni no profit e dalle amministrazioni pubbliche}, finalizzati al soddisfacimento di bisogni collettivi o sociali.
+\end{itemize}
+
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.7\linewidth]{../images/servizio.png}
+    %\label{label}
+\end{figure}
