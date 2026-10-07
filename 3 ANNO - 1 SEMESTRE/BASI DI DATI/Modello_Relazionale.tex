@@ -877,6 +877,274 @@ ma non ogni superchiave è una chiave:
 \[
 \boxed{\text{Superchiave} \not\Longrightarrow \text{Chiave}}
 \]
-\noindent esempio pagina 172 con pdf salzo 172-173 da controllare e poi fino a 185\\
+
+\subsection{Superchiavi e chiavi nelle istanze di relazione}
+Nel modello relazionale una relazione è un \textbf{insieme di tuple}.
+Di conseguenza, non possono esistere due tuple completamente identiche.
+Se consideriamo l'insieme di \textbf{tutti gli attributi} della relazione,
+questo permette necessariamente di distinguere le tuple.\\
+Quindi:
+\[
+\boxed{
+\text{L'insieme di tutti gli attributi è sempre una superchiave}
+}
+\]
+Di conseguenza, ogni istanza di relazione possiede almeno una
+\textbf{superchiave}.
+Poiché una chiave è una superchiave \textbf{minimale}, partendo da una
+superchiave possiamo eliminare gli attributi non necessari fino a ottenere
+una superchiave minimale.\\
+Pertanto:
+\[
+\boxed{
+\text{Ogni istanza di relazione possiede almeno una chiave}
+}
+\]
+% -------------------------------------------------
+
+\subsection{Vincolo di superchiave sullo schema}
+È importante distinguere una proprietà osservata in una singola istanza
+da un \textbf{vincolo definito sullo schema}.
+Dichiarare che $K$ è una superchiave dello schema $R$ significa richiedere
+che $K$ identifichi univocamente le tuple in \textbf{ogni possibile
+istanza valida} di $R$.
+Formalmente:
+\[
+\boxed{
+K \text{ è superchiave di } R
+\Longrightarrow
+K \text{ è superchiave in ogni istanza valida di } R
+}
+\]
+Quindi non possono mai esistere due tuple diverse $t_1$ e $t_2$ che
+abbiano gli stessi valori negli attributi di $K$.
+\textcolor{verdeEsempio}{Esempio}
+Consideriamo lo schema:
+\[
+R(A,B,C,D)
+\]
+e dichiariamo:
+\[
+K=\{A,B\}
+\]
+come superchiave.\\
+Questo significa che in ogni istanza valida di $R$ non possono esistere
+due tuple diverse con la stessa coppia di valori $(A,B)$.\\
+Ad esempio, non sarebbe ammessa un'istanza contenente:
+\[
+\begin{array}{c|c|c|c}
+A & B & C & D \\ \hline
+1 & 5 & x & y \\
+1 & 5 & z & w
+\end{array}
+\]
+perché le due tuple hanno gli stessi valori per $A$ e $B$.\\
+Quindi:
+\[
+\boxed{\{A,B\} \text{ è una superchiave per } R}
+\]
+% -------------------------------------------------
+
+\subsection{Vincolo di chiave}
+Un insieme di attributi $K$ è una \textbf{chiave} dello schema $R$ se
+soddisfa due condizioni:
+\begin{enumerate}
+    \item $K$ è una superchiave in ogni istanza valida di $R$;
+    \item $K$ è minimale, cioè nessun suo sottoinsieme proprio è
+    una superchiave dello schema.
+\end{enumerate}
+\noindent In breve:
+\[
+\boxed{
+\text{Chiave} = \text{Superchiave minimale}
+}
+\]
+\textcolor{verdeEsempio}{Esempio}
+consideriamo ancora:
+\[
+R(A,B,C,D)
+\]
+e supponiamo che:
+\[
+K=\{A,B\}
+\]
+sia una superchiave.
+Per stabilire se è anche una chiave dobbiamo verificare se possiamo
+eliminare qualche attributo.\\
+Se:
+\[
+\{A\} \text{ non è una superchiave}
+\]
+e:
+\[
+\{B\} \text{ non è una superchiave},
+\]
+allora entrambi gli attributi sono necessari.\\
+Pertanto:
+\[
+\boxed{
+\{A,B\} \text{ è una chiave di } R
+}
+\]
+Se invece $\{A\}$ fosse già una superchiave, allora $\{A,B\}$ sarebbe
+una superchiave, ma \textbf{non una chiave}, perché $B$ sarebbe
+superfluo.
+
+% -------------------------------------------------
+
+\subsection{Come si individuano le chiavi?}
+Le chiavi non vengono individuate semplicemente osservando i dati
+presenti in un determinato momento.
+Bisogna considerare le \textbf{regole della realtà rappresentata}
+dalla base di dati.\\
+Il procedimento è:
+\begin{enumerate}
+    \item individuare gli attributi che devono identificare univocamente
+    ogni tupla in tutte le istanze valide;
+
+    \item individuare quindi le superchiavi;
+
+    \item eliminare gli attributi superflui per ottenere le
+    superchiavi minimali, cioè le \textbf{chiavi}.
+\end{enumerate}
+\noindent \textcolor{verdeEsempio}{Esempio}
+consideriamo:
+\[
+\text{Studenti}(
+\text{Matricola},
+\text{Cognome},
+\text{Nome},
+\text{Corso},
+\text{Nascita})
+\]
+Sappiamo, per le regole dell'applicazione, che due studenti diversi
+devono avere matricole diverse.\\
+Quindi:
+\[
+\boxed{
+\{\text{Matricola}\} \text{ è una superchiave}
+}
+\]
+Inoltre, essendo formata da un solo attributo, non possiamo eliminare
+alcun attributo mantenendo la proprietà di superchiave.\\
+Pertanto:
+\[
+\boxed{
+\{\text{Matricola}\} \text{ è una chiave}
+}
+\]
+
+\subsection{Chiavi e valori nulli}
+Una chiave può, in generale, riguardare attributi che ammettono il valore
+\texttt{NULL}.
+Ricordiamo che \texttt{NULL} rappresenta un valore
+\textbf{sconosciuto o non disponibile} e non viene trattato come un
+normale valore.\\
+\textcolor{verdeEsempio}{Esempio} consideriamo:
+\[
+\text{Studente}(
+\text{Matricola},
+\text{Cognome},
+\text{Nome},
+\text{Corso},
+\text{Nascita})
+\]
+Supponiamo che \texttt{Matricola} sia una chiave, ma che possa contenere
+valori nulli.\\
+Potremmo avere:
+\[
+\begin{array}{c|c|c}
+\textbf{Matricola} & \textbf{Cognome} & \textbf{Nome} \\ \hline
+\text{NULL} & Neri & Mario \\
+78763 & Rossi & Mario \\
+65432 & Bianchi & Piero \\
+87654 & Neri & Mario \\
+\text{NULL} & Bianchi & Mario
+\end{array}
+\]
+Le tuple che hanno in \texttt{Matricola} il valore \texttt{NULLL} non vengono considerate come aventi necessariamente lo stesso valore
+della chiave, perché \texttt{NULL} non rappresenta un valore noto.
+Non conoscendo il valore della matricola, non possiamo utilizzare
+l'attributo \texttt{Matricola} per identificare quelle tuple.\\
+Quindi una chiave che ammette valori nulli può creare due problemi:
+\begin{itemize}
+    \item non permette sempre di identificare concretamente una tupla;
+    \item rende più difficile creare riferimenti da altre relazioni.
+\end{itemize}
+Per questo motivo è utile scegliere una particolare chiave nella quale
+i valori nulli non siano ammessi.
+
+% -------------------------------------------------
+
+\subsection{Chiave primaria}
+La \textbf{chiave primaria} (\textit{primary key}) è una particolare
+chiave scelta per identificare le tuple della relazione.
+La proprietà fondamentale è:
+\[
+\boxed{
+\text{Gli attributi della chiave primaria non possono essere NULL}
+}
+\]
+Quindi una chiave primaria deve soddisfare due proprietà fondamentali:
+\[
+\boxed{
+\begin{array}{l}
+1.\ \text{Unicità} \\
+2.\ \text{Assenza di valori NULL}
+\end{array}
+}
+\]
+Consideriamo nuovamente:
+\[
+\text{Studente}(
+\underline{\text{Matricola}},
+\text{Cognome},
+\text{Nome},
+\text{Corso},
+\text{Nascita})
+\]
+La sottolineatura indica che \texttt{Matricola} è la
+\textbf{chiave primaria}.\\
+Potremmo quindi avere:
+\[
+\begin{array}{c|c|c}
+\textbf{\underline{Matricola}} & \textbf{Cognome} & \textbf{Nome} \\ \hline
+27655 & Rossi & Mario \\
+78763 & Rossi & Mario \\
+65432 & Neri & Piero \\
+87654 & Neri & Mario \\
+67653 & Rossi & Piero
+\end{array}
+\]
+Ogni valore di \texttt{Matricola} deve essere:
+\begin{itemize}
+    \item diverso da quello delle altre tuple;
+    \item diverso da \texttt{NULL}.
+\end{itemize}
+\noindent In questo modo ogni studente può essere identificato in maniera
+univoca tramite la sua matricola.
+% -------------------------------------------------
+
+\subsection{Vincolo di chiave primaria}
+Dichiarare che un insieme di attributi $K$ è la chiave primaria dello
+schema $S$ significa imporre contemporaneamente che:
+\begin{enumerate}
+    \item $K$ sia una \textbf{chiave} di $S$;
+    \item gli attributi appartenenti a $K$ \textbf{non possano assumere
+    valore NULL}.
+\end{enumerate}
+\noindent Se $K$ è la chiave primaria, allora per ogni coppia di tuple distinte
+$t_1$ e $t_2$ deve valere:
+\[
+t_1[K] \neq t_2[K].
+\]
+Questo significa che i valori di $K$ possono essere utilizzati
+effettivamente per identificare ogni tupla.
+\subsubsection{Una sola chiave primaria}
+Una relazione può avere \textbf{più chiavi candidate}, cioè più chiavi
+che potrebbero essere utilizzate per identificare le tuple.
+Tra queste ne viene scelta \textbf{una sola} come chiave primaria.\\
+
+
 sql da 'definizione dei dati in sql: create table'\\ 
 a 'domini per attributi' prima slide
