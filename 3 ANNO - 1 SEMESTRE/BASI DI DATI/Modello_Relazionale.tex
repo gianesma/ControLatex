@@ -419,6 +419,246 @@ $$SEL_{eta>40 \text{ OR eta IS NULL}}$$\\
 Due espressioni sono \textbf{equivalenti} se producono lo stesso risultato qualunque sia l'istanza della base di dati sulla quale vengono valutate\\
 L'equivalenza è importante in pratica perchè i DBMS cercano di eseguire espressioni equivalenti a quelle date, ma meno "costose" della espressione originaria (effettuando le selezioni il prima possibile).
 
+\section{Vincolo di integrità}
+\subsubsection{Che cos'è un vincolo di integrità?}
+Un \textbf{vincolo di integrità} è una regola che stabilisce quali dati
+possono essere considerati \textbf{corretti e ammissibili} all'interno
+di una base di dati.\\
+Il vincolo viene definito a livello di \textbf{schema} e deve essere
+rispettato da tutte le possibili istanze corrette della base di dati.\\
+In modo intuitivo:
+\[
+\boxed{
+\text{Vincolo di integrità}
+=
+\text{regola che i dati devono rispettare}
+}
+\]
+\textcolor{verdeEsempio}{Esempio} consideriamo una relazione:
+\[
+\text{Studente}(\text{Matricola},\text{Nome},\text{Età})
+\]
+Potremmo imporre i seguenti vincoli:
+\[
+\text{Età} \geq 0
+\]
+e
+\[
+\text{Matricola deve essere unica}.
+\]
+Un'istanza come:
+\[
+\begin{array}{c|c|c}
+\textbf{Matricola} & \textbf{Nome} & \textbf{Età} \\ \hline
+101 & Mario & 22 \\
+102 & Anna & 20
+\end{array}
+\]
+rispetta entrambi i vincoli.
+Invece:
+\[
+\begin{array}{c|c|c}
+\textbf{Matricola} & \textbf{Nome} & \textbf{Età} \\ \hline
+101 & Mario & 22 \\
+101 & Anna & -5
+\end{array}
+\]
+non è un'istanza corretta, perché viola entrambi i vincoli:
+la matricola \texttt{101} compare due volte e l'età $-5$ non è
+ammissibile.
+\subsubsection{Il vincolo come funzione booleana}
+Un vincolo può essere visto come una funzione che, data un'istanza
+$r$ della base di dati, restituisce:
+\[
+\boxed{
+\begin{cases}
+\text{vero} & \text{se } r \text{ rispetta il vincolo},\\
+\text{falso} & \text{se } r \text{ viola il vincolo}.
+\end{cases}
+}
+\]
+Normalmente uno schema possiede \textbf{più vincoli contemporaneamente}.
+Un'istanza della base di dati è considerata corretta solamente se
+\textbf{soddisfa tutti i vincoli}.\\
+Se abbiamo i vincoli:
+\[
+V_1,V_2,\ldots,V_n,
+\]
+l'istanza $r$ è corretta se:
+\[
+\boxed{
+V_1(r) \land V_2(r) \land \cdots \land V_n(r)
+=
+\text{vero}
+}
+\]
+In altre parole, basta violare anche un solo vincolo affinché
+l'istanza non sia considerata corretta.
+% -------------------------------------------------
+
+\subsection{Perché servono i vincoli di integrità?}
+I vincoli di integrità sono importanti perché permettono di descrivere
+in maniera più precisa la \textbf{realtà che vogliamo rappresentare}.
+La sola struttura di una relazione, infatti, spesso non è sufficiente.\\
+Supponiamo di avere:
+\[
+\text{Esame}(\text{Matricola},\text{Corso},\text{Voto})
+\]
+La struttura ci dice che esistono tre attributi, ma non ci dice,
+ad esempio, che:
+\[
+18 \leq \text{Voto} \leq 30.
+\]
+Questa informazione può essere rappresentata mediante un vincolo.
+\subsubsection{1. Descrivere meglio la realtà}
+I vincoli permettono quindi di aggiungere informazioni che non possono
+essere espresse semplicemente attraverso la struttura delle tabelle.
+\subsubsection{2. Migliorare la qualità dei dati}
+I vincoli impediscono, o aiutano a impedire, l'inserimento di dati
+inconsistenti o non validi.\\
+I vincoli contribuiscono alla:
+\[
+\boxed{\text{qualità dei dati}}
+\]
+\subsubsection{3. Aiutare la progettazione}
+I vincoli sono anche utili durante la progettazione della base di dati,
+perché permettono al progettista di specificare con maggiore precisione
+le proprietà che i dati devono rispettare.
+
+\subsubsection{4. Aiutare il DBMS nell'esecuzione delle query}
+Il DBMS può utilizzare la conoscenza di alcuni vincoli anche per
+scegliere strategie migliori per l'esecuzione delle interrogazioni.
+In altre parole, conoscere proprietà dei dati può aiutare il sistema
+nell'\textbf{ottimizzazione delle query}.
+
+\subsection*{Limite dei vincoli}
+
+Non tutte le proprietà del mondo reale possono essere facilmente
+rappresentate attraverso i vincoli direttamente disponibili nel DBMS.
+% -------------------------------------------------
+
+\subsection{Classificazione dei vincoli di integrità}
+Una distinzione fondamentale è quella tra:
+\[
+\boxed{
+\text{Vincoli intrarelazionali}
+\qquad\text{e}\qquad
+\text{Vincoli interrelazionali}
+}
+\]
+La differenza principale è molto semplice:
+\[
+\boxed{
+\begin{array}{ll}
+\textbf{Intrarelazionali} &
+\rightarrow \text{ riguardano una singola relazione}, \\[2mm]
+\textbf{Interrelazionali} &
+\rightarrow \text{ coinvolgono più relazioni}.
+\end{array}
+}
+\]
+
+% -------------------------------------------------
+
+\subsection*{Vincoli intrarelazionali}
+I vincoli \textbf{intrarelazionali} riguardano una sola relazione.
+Ad esempio, considerando:
+\[
+\text{Studente}(\text{Matricola},\text{Nome},\text{Età}),
+\]
+possiamo imporre delle condizioni solamente sui dati contenuti
+all'interno della relazione \texttt{Studente}.\\
+Tra i principali vincoli intrarelazionali troviamo:
+\begin{itemize}
+    \item vincoli di tupla;
+    \item vincoli di dominio;
+    \item vincoli di superchiave e chiave.
+\end{itemize}
+\subsubsection{Vincoli di dominio}
+Un vincolo di dominio stabilisce quali valori può assumere
+un determinato attributo.
+Ad esempio:
+\[
+\text{Età} \geq 0
+\]
+oppure:
+\[
+18 \leq \text{Voto} \leq 30.
+\]
+Questi vincoli controllano quindi i valori ammessi per un attributo.
+\subsubsection{Vincoli di tupla}
+Un vincolo di tupla impone una condizione sui valori presenti
+\textbf{all'interno della stessa tupla}.\\
+Un vincolo di tupla su una relazione $R$ si esprime come un'espressione boolena (con AND, OR, NOT) costruita su atomi che confrontano valori di attributi o espressioni su di essi\\
+Consideriamo:
+\[
+\text{Stipendio}(\text{Lordo},\text{Ritenute},\text{Netto}).
+\]
+Potremmo imporre:
+\[
+\boxed{
+\text{Lordo } $=$ \text{ }(\text{Ritenute } $+$ \text{ Netto})
+}
+\]
+La condizione mette in relazione due attributi appartenenti alla
+stessa tupla.
+\subsubsection{Vincoli di superchiave e chiave}
+Questi vincoli servono invece a garantire l'unicità delle tuple.
+Se \texttt{Matricola} è una chiave di \texttt{Studente}, allora
+non possono esistere due studenti con la stessa matricola.
+% -------------------------------------------------
+
+\subsection{Vincoli interrelazionali}
+I vincoli \textbf{interrelazionali} esprimono condizioni che coinvolgono
+più relazioni.\\
+Consideriamo, ad esempio:
+\[
+\text{Studente}(\text{Matricola},\text{Nome})
+\]
+e:
+\[
+\text{Esame}(\text{Matricola},\text{Corso},\text{Voto}).
+\]
+Le due relazioni possono essere collegate attraverso l'attributo
+\texttt{Matricola}.
+Tra i vincoli interrelazionali più importanti troviamo:
+\begin{itemize}
+    \item vincoli di integrità referenziale;
+    \item vincoli di inclusione.
+\end{itemize}
+\subsubsection*{Integrità referenziale}
+Il vincolo di \textbf{integrità referenziale} stabilisce che un valore
+utilizzato per fare riferimento a una tupla di un'altra relazione
+deve effettivamente corrispondere a una tupla esistente.\\
+Ad esempio, se:
+\[
+\text{Esame.Matricola}
+\]
+fa riferimento a:
+\[
+\text{Studente.Matricola},
+\]
+non dovrebbe essere possibile registrare un esame per uno studente
+che non esiste.\\
+Possiamo rappresentare intuitivamente il vincolo come:
+\[
+\boxed{
+\text{Esame.Matricola}
+\subseteq
+\text{Studente.Matricola}
+}
+\]
+Questo tipo di collegamento viene normalmente realizzato mediante
+una \textbf{foreign key} (chiave esterna).
+\subsubsection{Vincoli di inclusione}
+Un vincolo di inclusione richiede, più in generale, che determinati
+valori presenti in una relazione siano presenti anche in un'altra
+relazione.\\
+L'integrità referenziale può essere vista come un caso particolarmente
+importante di questo tipo di vincolo.
+
+% -------------------------------------------------
+
 \section{Vincoli intrarelazionali: le condizioni di superchiave e chiave}
 Consideriamo una relazione $R$ con un insieme di attributi $X$ e una
 sua istanza $r$.
@@ -429,7 +669,7 @@ K = \{A_1, A_2, \ldots, A_n\}
 un insieme non vuoto di attributi di $R$.
 L'idea fondamentale è capire quando gli attributi contenuti in $K$
 permettono di \textbf{identificare univocamente una tupla} della relazione.
-\subsubsection{Superchiave}
+\subsection{Superchiave}
 $K$ è una \textbf{superchiave} se non possono esistere due tuple diverse
 che abbiano gli stessi valori per tutti gli attributi appartenenti a $K$.\\
 Formalmente, non devono esistere due tuple distinte $t_1$ e $t_2$ tali che:
@@ -448,8 +688,8 @@ K \text{ è una superchiave}
 K \text{ identifica univocamente ogni tupla}
 }
 \]
-\textcolor{verdeEsempio}{Esempio} di superchiave
-Consideriamo la relazione:
+\textcolor{verdeEsempio}{Esempio} di superchiave,
+consideriamo la relazione:
 \[
 \text{Studente}(\text{Matricola},\text{Nome},\text{Cognome},\text{Email})
 \]
@@ -485,7 +725,7 @@ Questo mostra una caratteristica importante:
 \text{Una superchiave può contenere attributi non necessari}
 }
 \]
-\subsubsection{Chiave}
+\subsection{Chiave}
 Una \textbf{chiave} è una superchiave \textbf{minimale}.
 Questo significa che:
 \begin{enumerate}
@@ -538,36 +778,77 @@ mentre:
 \text{ è una chiave}
 }
 \]
-perché non contiene attributi superflui.
+perché non contiene attributi superflui.\medskip\\
 \textcolor{verdeEsempio}{Esempio} di chiave composta:\\
-Una chiave non deve necessariamente essere formata da un solo attributo.
-Consideriamo:
+Consideriamo la relazione:
 \[
-\text{Esame}(\text{Matricola},\text{CodiceCorso},\text{Voto})
+\text{Esame}(\text{Matricola}, \text{CodiceCorso}, \text{Voto})
 \]
-Uno studente può sostenere diversi esami e uno stesso esame può essere
-sostenuto da diversi studenti.
-Di conseguenza:
+dove ogni tupla rappresenta un esame sostenuto da uno studente.
+Ad esempio:
 \[
-\{\text{Matricola}\}
+\begin{array}{c|c|c}
+\textbf{Matricola} & \textbf{CodiceCorso} & \textbf{Voto} \\ \hline
+1001 & BD & 28 \\
+1001 & ALG & 25 \\
+1002 & BD & 30 \\
+1003 & BD & 27
+\end{array}
 \]
-da sola non identifica univocamente una tupla e nemmeno:
+L'attributo \texttt{Matricola} \textbf{non è una chiave}, perché uno
+stesso studente può sostenere più esami.
+Ad esempio, la matricola \texttt{1001} compare in due tuple:
 \[
-\{\text{CodiceCorso}\}.
+(1001,\text{BD},28)
+\qquad
+(1001,\text{ALG},25)
 \]
-Supponiamo invece che la coppia:
+Anche \texttt{CodiceCorso} da solo \textbf{non è una chiave}, perché
+lo stesso corso può essere sostenuto da studenti diversi.
+Ad esempio, il corso \texttt{BD} compare in più tuple:
 \[
-\{\text{Matricola},\text{CodiceCorso}\}
+(1001,\text{BD},28), \qquad
+(1002,\text{BD},30), \qquad
+(1003,\text{BD},27)
 \]
-identifichi univocamente ogni esame sostenuto.
-In questo caso:
+Consideriamo ora i due attributi insieme:
+\[
+K = \{\text{Matricola},\text{CodiceCorso}\}
+\]
+Supponendo che ogni studente possa avere un solo esito registrato per
+ciascun corso, la coppia:
+\[
+(\text{Matricola},\text{CodiceCorso})
+\]
+identifica univocamente ogni tupla della relazione.
+Ad esempio:
+\[
+(1001,\text{BD})
+\]
+identifica solamente la tupla:
+\[
+(1001,\text{BD},28).
+\]
+Pertanto:
 \[
 \boxed{
 \{\text{Matricola},\text{CodiceCorso}\}
 \text{ è una chiave composta}
 }
 \]
-perché sono necessari entrambi gli attributi.\\
+Si parla di \textbf{chiave composta} perché sono necessari più attributi
+per identificare univocamente una tupla.
+Inoltre, la chiave è minimale perché nessuno dei due attributi può essere
+eliminato:
+\[
+\{\text{Matricola}\}
+\quad \text{non basta}
+\]
+e
+\[
+\{\text{CodiceCorso}\}
+\quad \text{non basta}.
+\]
 \subsubsection{Idea fondamentale}
 La differenza fondamentale può essere ricordata così:
 \[
@@ -596,6 +877,6 @@ ma non ogni superchiave è una chiave:
 \[
 \boxed{\text{Superchiave} \not\Longrightarrow \text{Chiave}}
 \]
-\noindent da pagina 167 a 172 e 172-173 da controllare e poi fino a 185\\
+\noindent esempio pagina 172 con pdf salzo 172-173 da controllare e poi fino a 185\\
 sql da 'definizione dei dati in sql: create table'\\ 
 a 'domini per attributi' prima slide
