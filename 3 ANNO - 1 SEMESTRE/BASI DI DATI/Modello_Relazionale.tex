@@ -418,3 +418,184 @@ $$SEL_{eta>40 \text{ OR eta IS NULL}}$$\\
 \section{Osservazioni}
 Due espressioni sono \textbf{equivalenti} se producono lo stesso risultato qualunque sia l'istanza della base di dati sulla quale vengono valutate\\
 L'equivalenza è importante in pratica perchè i DBMS cercano di eseguire espressioni equivalenti a quelle date, ma meno "costose" della espressione originaria (effettuando le selezioni il prima possibile).
+
+\section{Vincoli intrarelazionali: le condizioni di superchiave e chiave}
+Consideriamo una relazione $R$ con un insieme di attributi $X$ e una
+sua istanza $r$.
+Sia:
+\[
+K = \{A_1, A_2, \ldots, A_n\}
+\]
+un insieme non vuoto di attributi di $R$.
+L'idea fondamentale è capire quando gli attributi contenuti in $K$
+permettono di \textbf{identificare univocamente una tupla} della relazione.
+\subsubsection{Superchiave}
+$K$ è una \textbf{superchiave} se non possono esistere due tuple diverse
+che abbiano gli stessi valori per tutti gli attributi appartenenti a $K$.\\
+Formalmente, non devono esistere due tuple distinte $t_1$ e $t_2$ tali che:
+\[
+t_1[A_1] = t_2[A_1],
+\quad
+t_1[A_2] = t_2[A_2],
+\quad \ldots \quad,
+t_1[A_n] = t_2[A_n].
+\]
+In altre parole:
+\[
+\boxed{
+K \text{ è una superchiave}
+\iff
+K \text{ identifica univocamente ogni tupla}
+}
+\]
+\textcolor{verdeEsempio}{Esempio} di superchiave
+Consideriamo la relazione:
+\[
+\text{Studente}(\text{Matricola},\text{Nome},\text{Cognome},\text{Email})
+\]
+con la seguente istanza:
+\[
+\begin{array}{c|c|c|c}
+\textbf{Matricola} & \textbf{Nome} & \textbf{Cognome} & \textbf{Email} \\ \hline
+101 & Mario & Rossi & mario@email.it \\
+102 & Luca & Bianchi & luca@email.it \\
+103 & Mario & Verdi & mario.verdi@email.it
+\end{array}
+\]
+Consideriamo:
+\[
+K = \{\text{Matricola}\}.
+\]
+Ogni studente ha una matricola diversa, quindi non esistono due tuple
+diverse con lo stesso valore di \texttt{Matricola}.
+Pertanto:
+\[
+\boxed{\{\text{Matricola}\} \text{ è una superchiave}}
+\]
+Anche:
+\[
+\{\text{Matricola},\text{Nome}\}
+\]
+è una superchiave.\\
+Infatti, se la sola \texttt{Matricola} identifica già univocamente una
+tupla, aggiungere \texttt{Nome} non fa perdere questa proprietà.
+Questo mostra una caratteristica importante:
+\[
+\boxed{
+\text{Una superchiave può contenere attributi non necessari}
+}
+\]
+\subsubsection{Chiave}
+Una \textbf{chiave} è una superchiave \textbf{minimale}.
+Questo significa che:
+\begin{enumerate}
+    \item $K$ deve essere una superchiave;
+    \item nessun sottoinsieme proprio di $K$ deve essere ancora una superchiave.
+\end{enumerate}
+\noindent Quindi:
+\[
+\boxed{
+\text{Chiave}
+=
+\text{Superchiave minimale}
+}
+\]
+Il termine ``minimale'' significa che non possiamo eliminare nessun
+attributo dalla superchiave senza perdere la capacità di identificare
+univocamente le tuple.
+\subsubsection{Differenza tra superchiave e chiave}
+Riprendiamo l'esempio precedente.
+Abbiamo:
+\[
+K_1 = \{\text{Matricola}\}
+\]
+e:
+\[
+K_2 = \{\text{Matricola},\text{Nome}\}.
+\]
+Entrambi identificano univocamente uno studente, quindi entrambi sono
+\textbf{superchiavi}.\\
+Tuttavia:
+\[
+\{\text{Matricola},\text{Nome}\}
+\]
+non è una chiave, perché possiamo eliminare \texttt{Nome} e ottenere:
+\[
+\{\text{Matricola}\},
+\]
+che continua a essere una superchiave.
+Quindi:
+\[
+\boxed{
+\{\text{Matricola},\text{Nome}\}
+\text{ è una superchiave ma non una chiave}
+}
+\]
+mentre:
+\[
+\boxed{
+\{\text{Matricola}\}
+\text{ è una chiave}
+}
+\]
+perché non contiene attributi superflui.
+\textcolor{verdeEsempio}{Esempio} di chiave composta:\\
+Una chiave non deve necessariamente essere formata da un solo attributo.
+Consideriamo:
+\[
+\text{Esame}(\text{Matricola},\text{CodiceCorso},\text{Voto})
+\]
+Uno studente può sostenere diversi esami e uno stesso esame può essere
+sostenuto da diversi studenti.
+Di conseguenza:
+\[
+\{\text{Matricola}\}
+\]
+da sola non identifica univocamente una tupla e nemmeno:
+\[
+\{\text{CodiceCorso}\}.
+\]
+Supponiamo invece che la coppia:
+\[
+\{\text{Matricola},\text{CodiceCorso}\}
+\]
+identifichi univocamente ogni esame sostenuto.
+In questo caso:
+\[
+\boxed{
+\{\text{Matricola},\text{CodiceCorso}\}
+\text{ è una chiave composta}
+}
+\]
+perché sono necessari entrambi gli attributi.\\
+\subsubsection{Idea fondamentale}
+La differenza fondamentale può essere ricordata così:
+\[
+\boxed{
+\begin{array}{c}
+\textbf{Superchiave} \\[2mm]
+\text{identifica univocamente le tuple} \\
+\text{ma può contenere attributi inutili}
+\end{array}
+}
+\]
+\[
+\boxed{
+\begin{array}{c}
+\textbf{Chiave} \\[2mm]
+\text{identifica univocamente le tuple} \\
+\text{e non contiene attributi inutili}
+\end{array}
+}
+\]
+Quindi ogni chiave è necessariamente una superchiave:
+\[
+\boxed{\text{Chiave} \Longrightarrow \text{Superchiave}}
+\]
+ma non ogni superchiave è una chiave:
+\[
+\boxed{\text{Superchiave} \not\Longrightarrow \text{Chiave}}
+\]
+\noindent da pagina 167 a 172 e 172-173 da controllare e poi fino a 185\\
+sql da 'definizione dei dati in sql: create table'\\ 
+a 'domini per attributi' prima slide
