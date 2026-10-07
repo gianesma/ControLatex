@@ -1359,16 +1359,6 @@ CREATE TABLE NomeTabella (
     [AltriVincoli]
 );
 \end{verbatim}
-\noindent Quindi, in maniera schematica:
-\[
-\boxed{
-\text{Attributo}
-+
-\text{Tipo}
-+
-\text{eventuali vincoli}
-}
-\]
 
 % ---------------------------------------------------------
 
@@ -1475,13 +1465,12 @@ Ogni attributo di una tabella deve avere un \textbf{tipo},
 che stabilisce quali valori può contenere.\\
 I principali tipi SQL sono i seguenti.
 
-\subsection{Stringhe}
-Per memorizzare testo possiamo utilizzare:
+\subsection{Carattere}
+Per memorizzare singoli caratteri o stringhe, anche di lunghezza variabile possiamo utilizzare:
 \begin{verbatim}
-CHAR(n)
-CHARACTER(n)
-VARCHAR(n)
-CHARACTER VARYING(n)
+CHAR(n) o CHARACTER(n)              - stringhe lunghezza fissa
+VARCHAR(n) o CHARACTER VARYING(n)   - stringhe di lunghezza variabile
+NCHAR(n) e NVARCHAR(n)              - come sopra ma UNICODE
 \end{verbatim}
 \noindent La differenza principale è:
 \[
@@ -1500,15 +1489,11 @@ Nome VARCHAR(20)
 limite specificato.
 
 \subsection{Tipi numerici}
-Per i numeri interi possiamo utilizzare, ad esempio:
 \begin{verbatim}
-INTEGER
-SMALLINT
-\end{verbatim}
-\noindent Per valori numerici esatti:
-\begin{verbatim}
-NUMERIC(p,s)
-DECIMAL(p,s)
+INTEGER o SMALLINT  - interi
+NUMERIC(p,s)        - valori numerici esatti
+DECIMAL(p,s)        - valori numerici esatti anche negativi
+REAL o FLOAT        - reali
 \end{verbatim}
 \noindent dove:
 \begin{itemize}
@@ -1521,13 +1506,7 @@ DECIMAL(p,s)
 NUMERIC(6,2)
 \end{verbatim}
 \noindent può rappresentare numeri con al massimo $6$ cifre complessive,
-di cui $2$ dopo la virgola.\\
-Per valori reali approssimati esistono inoltre tipi come:
-\begin{verbatim}
-REAL
-DOUBLE PRECISION
-FLOAT
-\end{verbatim}
+di cui $2$ dopo la virgola.
 
 \subsection{Date e orari}
 Per rappresentare informazioni temporali troviamo:
@@ -1539,15 +1518,15 @@ TIMESTAMP
 \noindent Inoltre esistono tipi che possono tenere conto del fuso orario,
 come:
 \begin{verbatim}
-TIME WITH TIME ZONE
-TIMESTAMP WITH TIME ZONE
+TIME WITH TIMEZONE
+TIMESTAMP WITH TIMEZONE
 \end{verbatim}
 
 \subsection{Altri tipi}
 SQL prevede anche altri domini, ad esempio:
 \begin{verbatim}
-BOOLEAN
-BIT(n)
+BOOLEAN     - valore booleano V/F
+BIT(n)      - singoli bit o stringhe di bit 
 BIT VARYING(n)
 \end{verbatim}
 \noindent Il tipo \texttt{BOOLEAN} viene utilizzato per valori logici, mentre
