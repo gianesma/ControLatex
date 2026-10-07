@@ -1286,3 +1286,272 @@ tra le due molteplicità:
 \[
 \min(3,2)=2
 \]
+
+\section{Definizione dei dati in PostgreSQL}
+In PostgreSQL è importante distinguere tra \textbf{database},
+\textbf{schema} e \textbf{tabella}.\\
+Un database viene creato con:
+\begin{verbatim}
+CREATE DATABASE nome_database;
+\end{verbatim}
+\noindent All'interno di uno stesso database possiamo creare diversi
+\textbf{schema} mediante:
+\begin{verbatim}
+CREATE SCHEMA nome_schema;
+\end{verbatim}
+\noindent In PostgreSQL uno schema può essere visto come un \textbf{namespace},
+cioè un contenitore utilizzato per organizzare gli oggetti del database,
+come tabelle e vincoli.\\
+La struttura può essere quindi vista come:
+\[
+\boxed{
+\text{Database}
+\supset
+\text{Schema}
+\supset
+\text{Tabelle}
+}
+\]
+Uno stesso database può quindi contenere più schema.
+
+\subsection{Accesso agli oggetti di uno schema}
+Per indicare esplicitamente un oggetto appartenente a uno schema si usa:
+\[
+\boxed{
+\texttt{nomeSchema.nomeOggetto}
+}
+\]
+Ad esempio, se la tabella \texttt{Impiegato} appartiene allo schema
+\texttt{Azienda}, possiamo riferirci ad essa come:
+\begin{verbatim}
+Azienda.Impiegato
+\end{verbatim}
+\noindent È possibile eseguire operazioni che coinvolgono tabelle appartenenti
+a schema diversi dello \textbf{stesso database}.\\
+Invece, normalmente PostgreSQL non permette a una singola query di
+accedere direttamente a tabelle appartenenti a database differenti.
+
+% ---------------------------------------------------------
+
+\section{CREATE TABLE}
+L'istruzione:
+\begin{verbatim}
+CREATE TABLE
+\end{verbatim}
+\noindent appartiene al \textbf{DDL} (\emph{Data Definition Language}) e serve
+a definire una nuova tabella.\\
+Con \texttt{CREATE TABLE} specifichiamo:
+\begin{itemize}
+    \item il nome della tabella;
+    \item gli attributi;
+    \item il tipo (dominio) di ogni attributo;
+    \item eventuali vincoli.
+\end{itemize}
+\noindent Quando viene eseguito il comando viene creata inizialmente una
+\textbf{tabella vuota} con la struttura specificata.
+La sintassi generale è:
+\begin{verbatim}
+CREATE TABLE NomeTabella (
+    Attributo1 Tipo [Vincoli],
+    Attributo2 Tipo [Vincoli],
+    ...
+    AttributoN Tipo [Vincoli],
+    [AltriVincoli]
+);
+\end{verbatim}
+\noindent Quindi, in maniera schematica:
+\[
+\boxed{
+\text{Attributo}
++
+\text{Tipo}
++
+\text{eventuali vincoli}
+}
+\]
+
+% ---------------------------------------------------------
+
+\subsubsection{Esempio di CREATE TABLE}
+Consideriamo una tabella che rappresenta gli impiegati:
+\begin{verbatim}
+CREATE TABLE Impiegato (
+    Matricola  CHARACTER(6)  PRIMARY KEY,
+    Nome       CHARACTER(20) NOT NULL,
+    Cognome    CHARACTER(20) NOT NULL,
+    Dipart     CHARACTER(15),
+    Stipendio  NUMERIC(9) DEFAULT 0,
+    Citta      CHARACTER(15),
+
+    FOREIGN KEY (Dipart)
+        REFERENCES Dipartimento(NomeDip),
+
+    UNIQUE (Cognome, Nome)
+);
+\end{verbatim}
+\noindent Analizziamo le varie parti.
+
+\subsection{PRIMARY KEY}
+\begin{verbatim}
+Matricola CHARACTER(6) PRIMARY KEY
+\end{verbatim}
+significa che \texttt{Matricola} è la \textbf{chiave primaria}.\\
+Quindi:
+\[
+\boxed{
+\texttt{Matricola} \text{ identifica univocamente ogni impiegato}
+}
+\]
+Inoltre una chiave primaria non può contenere valori \texttt{NULL}.
+\subsection{NOT NULL}
+Il vincolo:
+\begin{verbatim}
+Nome CHARACTER(20) NOT NULL
+\end{verbatim}
+\noindent impone che l'attributo \texttt{Nome} abbia sempre un valore.\\
+Quindi:
+\[
+\boxed{
+\texttt{Nome} \neq \texttt{NULL}
+}
+\]
+Lo stesso vale per \texttt{Cognome}.
+
+\subsection{DEFAULT}
+La dichiarazione:
+\begin{verbatim}
+Stipendio NUMERIC(9) DEFAULT 0
+\end{verbatim}
+\noindent stabilisce un valore predefinito.\\
+Se durante un inserimento non viene specificato lo stipendio,
+il sistema utilizza:
+\[
+\boxed{\texttt{Stipendio} = 0}
+\]
+
+\subsection{FOREIGN KEY}
+Il vincolo:
+\begin{verbatim}
+FOREIGN KEY (Dipart)
+    REFERENCES Dipartimento(NomeDip)
+\end{verbatim}
+\noindent stabilisce che \texttt{Dipart} è una \textbf{foreign key} che fa
+riferimento all'attributo \texttt{NomeDip} della tabella
+\texttt{Dipartimento}.\\
+Quindi, per ogni valore non nullo di \texttt{Dipart}, deve esistere
+un corrispondente valore di \texttt{NomeDip}:
+\[
+\boxed{
+\texttt{Impiegato.Dipart}
+\longrightarrow
+\texttt{Dipartimento.NomeDip}
+}
+\]
+Questo realizza un \textbf{vincolo di integrità referenziale}.
+
+\subsection{UNIQUE}
+Il vincolo:
+\begin{verbatim}
+UNIQUE (Cognome, Nome)
+\end{verbatim}
+\noindent impone che non possano esistere due tuple con la stessa
+\textbf{combinazione} di cognome e nome.\\
+Ad esempio, non possono comparire due volte:
+\[
+(\text{Rossi},\text{Mario}).
+\]
+È invece possibile avere:
+\[
+(\text{Rossi},\text{Mario})
+\qquad\text{e}\qquad
+(\text{Rossi},\text{Luca}),
+\]
+perché la coppia completa è diversa.
+
+% ---------------------------------------------------------
+
+\section{Domini e tipi degli attributi}
+Ogni attributo di una tabella deve avere un \textbf{tipo},
+che stabilisce quali valori può contenere.\\
+I principali tipi SQL sono i seguenti.
+
+\subsection{Stringhe}
+Per memorizzare testo possiamo utilizzare:
+\begin{verbatim}
+CHAR(n)
+CHARACTER(n)
+VARCHAR(n)
+CHARACTER VARYING(n)
+\end{verbatim}
+\noindent La differenza principale è:
+\[
+\boxed{
+\begin{array}{c|c}
+\texttt{CHAR(n)} & \text{lunghezza fissa} \\
+\texttt{VARCHAR(n)} & \text{lunghezza variabile}
+\end{array}
+}
+\]
+Ad esempio:
+\begin{verbatim}
+Nome VARCHAR(20)
+\end{verbatim}
+\noindent permette di memorizzare stringhe di lunghezza variabile fino al
+limite specificato.
+
+\subsection{Tipi numerici}
+Per i numeri interi possiamo utilizzare, ad esempio:
+\begin{verbatim}
+INTEGER
+SMALLINT
+\end{verbatim}
+\noindent Per valori numerici esatti:
+\begin{verbatim}
+NUMERIC(p,s)
+DECIMAL(p,s)
+\end{verbatim}
+\noindent dove:
+\begin{itemize}
+    \item $p$ indica la \textbf{precisione}, cioè il numero totale di cifre;
+    \item $s$ indica la \textbf{scala}, cioè il numero di cifre dopo
+          la virgola.
+\end{itemize}
+\noindent Ad esempio:
+\begin{verbatim}
+NUMERIC(6,2)
+\end{verbatim}
+\noindent può rappresentare numeri con al massimo $6$ cifre complessive,
+di cui $2$ dopo la virgola.\\
+Per valori reali approssimati esistono inoltre tipi come:
+\begin{verbatim}
+REAL
+DOUBLE PRECISION
+FLOAT
+\end{verbatim}
+
+\subsection{Date e orari}
+Per rappresentare informazioni temporali troviamo:
+\begin{verbatim}
+DATE
+TIME
+TIMESTAMP
+\end{verbatim}
+\noindent Inoltre esistono tipi che possono tenere conto del fuso orario,
+come:
+\begin{verbatim}
+TIME WITH TIME ZONE
+TIMESTAMP WITH TIME ZONE
+\end{verbatim}
+
+\subsection{Altri tipi}
+SQL prevede anche altri domini, ad esempio:
+\begin{verbatim}
+BOOLEAN
+BIT(n)
+BIT VARYING(n)
+\end{verbatim}
+\noindent Il tipo \texttt{BOOLEAN} viene utilizzato per valori logici, mentre
+\texttt{BIT} permette di rappresentare sequenze di bit.
+
+% ---------------------------------------------------------
+

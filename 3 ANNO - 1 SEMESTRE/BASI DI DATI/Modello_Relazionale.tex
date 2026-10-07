@@ -1167,5 +1167,375 @@ Quali sono i vicoli di integrità intrarelazionali da definire sullo schema:
     \item (NOT Schedina='X') OR (GoalCasa $=$ GoalTrasferta) - vincolo di tupla
 \end{itemize}
 
-sql da 'definizione dei dati in sql: create table'\\ 
-a 'domini per attributi' prima slide
+\subsection{Vincoli di integrità referenziale}
+Il \textbf{vincolo di integrità referenziale} serve a mantenere coerenti
+le informazioni contenute in relazioni diverse.
+L'idea fondamentale è che un attributo di una relazione può fare
+riferimento a una chiave presente in un'altra relazione.
+Consideriamo due relazioni:
+\[
+R_1(X,\ldots)
+\qquad\text{e}\qquad
+R_2(Y,\ldots)
+\]
+dove $Y$ è una chiave di $R_2$.\\
+Se $X$ è una \textbf{foreign key} che fa riferimento a $Y$, allora ogni
+valore non nullo presente in $X$ deve comparire anche in $Y$.\\
+In forma intuitiva:
+\[
+\boxed{
+X \neq \text{NULL}
+\quad\Longrightarrow\quad
+X \text{ deve corrispondere a un valore di } Y
+}
+\]
+In questo modo non è possibile fare riferimento a una tupla che non
+esiste nella relazione referenziata.\\
+\textcolor{verdeEsempio}{Esempio} consideriamo:
+\[
+\text{Infrazioni}(
+\underline{\text{Codice}},
+\underline{\text{Comune}},
+\text{Data},
+\text{Vigile},
+\text{Targa})
+\]
+e:
+\[
+\text{Vigili}(
+\underline{\text{Matricola}},
+\text{Cognome},
+\text{Nome})
+\]
+dove \texttt{Matricola} è la chiave primaria di \texttt{Vigili}.\\
+L'attributo:
+\[
+\texttt{Infrazioni.Vigile}
+\]
+fa riferimento a:
+\[
+\texttt{Vigili.Matricola}.
+\]
+Quindi:
+\[
+\boxed{
+\texttt{Infrazioni.Vigile}
+\rightarrow
+\texttt{Vigili.Matricola}
+}
+\]
+ogni valore diverso da null che compare nell'attributo Vigile di Infrazioni deve comparire anche nell'attributo Matricola di Vigili.
+% -------------------------------------------------
+
+\subsubsection{Foreign key composta}
+Una foreign key può essere costituita anche da \textbf{più attributi}.
+Consideriamo la relazione:
+\[
+\text{Infrazioni}(
+\underline{\text{Codice}},
+\underline{\text{Comune}},
+\text{Data},
+\text{Vigile},
+\text{Targa})
+\]
+dove supponiamo che:
+\[
+\{\text{Codice},\text{Comune}\}
+\]
+sia una chiave.
+Consideriamo poi:
+\[
+\text{Pagamenti}(
+\underline{\text{Transazione}},
+\text{Codice},
+\text{Comune})
+\]
+La coppia:
+\[
+(\texttt{Codice},\texttt{Comune})
+\]
+di \texttt{Pagamenti} può essere una foreign key che fa riferimento
+alla coppia:
+\[
+(\texttt{Codice},\texttt{Comune})
+\]
+di \texttt{Infrazioni}.\\
+Quindi ogni coppia non nulla presente in \texttt{Pagamenti} deve
+corrispondere a una coppia presente in \texttt{Infrazioni}:
+\[
+\boxed{
+\texttt{Pagamenti(Codice,Comune)}
+\rightarrow
+\texttt{Infrazioni(Codice,Comune)}
+}
+\]
+\textcolor{verdeEsempio}{Esempio:}
+\[
+(34321,\text{Roma})
+\]
+è valido solamente se esiste un'infrazione con:
+\[
+\texttt{Codice}=34321
+\qquad\text{e}\qquad
+\texttt{Comune}=\text{Roma}.
+\]
+È importante quindi controllare \textbf{l'intera combinazione di valori},
+non i singoli attributi separatamente.
+
+% -------------------------------------------------
+
+\subsection{Violazione dell'integrità referenziale}
+Supponiamo che \texttt{Infrazioni} sia:
+\[
+\begin{array}{c|c|c|c|c}
+\textbf{Codice} & \textbf{Comune} & \textbf{Data} &
+\textbf{Vigile} & \textbf{Targa} \\ \hline
+34321 & \text{Roma}   & 1/2/95 & 3987 & 39548K \\
+53524 & \text{Milano} & 4/3/95 & 3295 & E39548 \\
+64521 & \text{Napoli} & 5/4/96 & 3295 & H39548 \\
+73321 & \text{Roma}   & 5/2/98 & 9345 & H39548
+\end{array}
+\]
+e \texttt{Pagamenti} sia:
+\[
+\begin{array}{c|c|c}
+\textbf{Transazione} & \textbf{Codice} & \textbf{Comune} \\ \hline
+101 & 34321 & \text{Napoli} \\
+295 & 53524 & \text{Roma} \\
+300 & 73321 & \text{Roma} \\
+236 & 64521 & \text{Napoli}
+\end{array}
+\]
+Controlliamo le coppie $(\texttt{Codice},\texttt{Comune})$:
+\[
+\begin{array}{c|c}
+\textbf{Coppia in Pagamenti} & \textbf{Presente in Infrazioni?} \\ \hline
+(34321,\text{Napoli}) & \textbf{NO} \\
+(53524,\text{Roma})   & \textbf{NO} \\
+(73321,\text{Roma})   & \text{Sì} \\
+(64521,\text{Napoli}) & \text{Sì}
+\end{array}
+\]
+Le prime due tuple violano il vincolo di integrità referenziale.
+Infatti, in \texttt{Infrazioni} esiste:
+\[
+(34321,\text{Roma})
+\]
+ma non:
+\[
+(34321,\text{Napoli}).
+\]
+Allo stesso modo esiste:
+\[
+(53524,\text{Milano})
+\]
+ma non:
+\[
+(53524,\text{Roma}).
+\]
+Quindi non basta che il singolo \texttt{Codice} esista:
+deve esistere \textbf{l'intera coppia} $(\texttt{Codice},\texttt{Comune})$.
+\[
+\boxed{
+\text{Foreign key composta}
+\Rightarrow
+\text{deve corrispondere l'intera combinazione di valori}
+}
+\]
+% -------------------------------------------------
+
+\subsection{Integrità referenziale e valori NULL}
+La presenza di \texttt{NULL} in un attributo coinvolto in una foreign key
+\textbf{non costituisce necessariamente una violazione} del vincolo.
+Consideriamo:
+\[
+\text{Impiegati}(
+\underline{\text{Matricola}},
+\text{Cognome},
+\text{Progetto})
+\]
+e:
+\[
+\text{Progetti}(
+\underline{\text{Codice}},
+\text{Inizio},
+\text{Durata},
+\text{Costo})
+\]
+dove:
+\[
+\texttt{Impiegati.Progetto}
+\]
+è una foreign key verso:
+\[
+\texttt{Progetti.Codice}
+\]
+Potremmo avere:
+\[
+\begin{array}{c|c|c}
+\textbf{Matricola} & \textbf{Cognome} & \textbf{Progetto} \\ \hline
+34321 & Rossi & IDEA \\
+53524 & Neri & XYZ \\
+64521 & Verdi & \text{NULL} \\
+73032 & Bianchi & IDEA
+\end{array}
+\]
+e:
+\[
+\begin{array}{c|c}
+\textbf{Codice} & \textbf{Durata} \\ \hline
+IDEA & 36 \\
+XYZ & 24 \\
+BOH & 24
+\end{array}
+\]
+I valori:
+\[
+\text{IDEA}
+\qquad\text{e}\qquad
+\text{XYZ}
+\]
+devono esistere nella relazione \texttt{Progetti}, perché sono valori
+non nulli della foreign key.\\
+Invece:
+\[
+\texttt{Progetto}=\text{NULL}
+\]
+non richiede l'esistenza di un progetto corrispondente.
+Quindi il vincolo è comunque rispettato.
+\[
+\boxed{
+\text{Foreign key}=
+\begin{cases}
+\text{valore non NULL}
+&\Rightarrow \text{ deve esistere nella relazione referenziata}\\[2mm]
+\text{NULL}
+&\Rightarrow \text{ non richiede una corrispondenza}
+\end{cases}
+}
+\]
+
+% -------------------------------------------------
+
+\subsubsection{Esercizio}
+\[
+\text{Partita}(
+\underline{\text{Codice}},
+\text{SqCasa},
+\text{SqTrasferta},
+\text{GoalCasa},
+\text{GoalTrasferta},
+\text{Schedina})
+\]
+\[
+\text{Squadra}(
+\underline{\text{Nome}},
+\text{AnnoFondazione},
+\text{citta})
+\]
+Quali vincoli di integrita interrelazionali definireste su questo schema?\\
+Occorre definire
+\begin{enumerate}
+    \item un vincolo di integrità referenziale tra l'attributo SqCasa e la relazione Squadra
+    \item un vincolo di integrità referenziale tra l'attributo SqTrasferta e la relazione Squadra
+\end{enumerate}
+
+\subsection{Vincoli di inclusione}
+Un \textbf{vincolo di inclusione} mette in relazione gli attributi di
+due relazioni diverse.\\
+Consideriamo due relazioni:
+\[
+R_1(X,\ldots)
+\qquad\text{e}\qquad
+R_2(Y,\ldots)
+\]
+dove $X$ e $Y$ sono sequenze con lo stesso numero di attributi.
+Il vincolo di inclusione impone che ogni combinazione di valori
+\textbf{non NULL} presente negli attributi $X$ di $R_1$ debba comparire
+anche negli attributi $Y$ di $R_2$.
+Possiamo rappresentarlo come:
+\[
+\boxed{
+R_1[X] \subseteq R_2[Y]
+}
+\]
+cioè i valori presenti in $X$ devono essere inclusi nei valori
+presenti in $Y$.
+\subsubsection{Esempio}
+Consideriamo:
+\[
+\text{Impiegati}(\text{Nome},\text{Dipartimento})
+\]
+e:
+\[
+\text{Uffici}(\text{Codice},\text{Dipartimento})
+\]
+e supponiamo di avere il vincolo:
+\[
+\boxed{
+\text{Impiegati}[\text{Dipartimento}]
+\subseteq
+\text{Uffici}[\text{Dipartimento}]
+}
+\]
+Potremmo avere:
+\[
+\begin{array}{c|c}
+\textbf{Nome} & \textbf{Dipartimento} \\ \hline
+Mario & Informatica \\
+Luca & Vendite \\
+Anna & Informatica
+\end{array}
+\]
+e:
+\[
+\begin{array}{c|c}
+\textbf{Codice} & \textbf{Dipartimento} \\ \hline
+10 & Informatica \\
+20 & Vendite \\
+30 & Amministrazione
+\end{array}
+\]
+Il vincolo è rispettato perché:
+\[
+\{\text{Informatica},\text{Vendite}\}
+\subseteq
+\{\text{Informatica},\text{Vendite},\text{Amministrazione}\}.
+\]
+Se invece in \texttt{Impiegati} comparisse:
+\[
+(\text{Paolo},\text{Marketing})
+\]
+il vincolo sarebbe violato, perché:
+\[
+\text{Marketing}
+\notin
+\text{Uffici}[\text{Dipartimento}].
+\]
+
+\subsection{Differenza con l'integrità referenziale}
+Il vincolo di integrità referenziale (\textbf{foreign key}) è un
+\textbf{caso particolare} del vincolo di inclusione.\\
+Nel vincolo di inclusione:
+\[
+R_1[X] \subseteq R_2[Y]
+\]
+gli attributi $Y$ di $R_2$ \textbf{non devono necessariamente formare
+una chiave}.
+Nel vincolo di integrità referenziale, invece, gli attributi
+referenziati $Y$ \textbf{formano una chiave} di $R_2$.\\
+La differenza fondamentale è quindi:
+\[
+\boxed{
+\begin{array}{c|c}
+\textbf{Vincolo di inclusione} &
+Y \text{ non deve necessariamente essere una chiave}
+\\[2mm]
+\textbf{Integrità referenziale} &
+Y \text{ deve formare una chiave}
+\end{array}
+}
+\]
+In breve, entrambi richiedono che i valori di $R_1$ compaiano anche
+in $R_2$, ma la \textbf{foreign key} richiede in più che gli attributi
+referenziati costituiscano una chiave.
