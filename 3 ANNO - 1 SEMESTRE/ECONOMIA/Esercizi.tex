@@ -1,0 +1,407 @@
+\chapter{Esercizi}
+\section{Esercizi VAN e VA}
+
+\subsection{Richiamo delle formule}
+\subsection*{Formule utilizzate}
+
+\noindent\textbf{1. Valore attuale di più flussi di cassa}
+
+\[
+VA=\sum_{n=1}^{N}\frac{F_n}{(1+i)^n}
+\]
+
+\noindent dove:
+\begin{itemize}
+    \item $F_n$ = flusso di cassa ricevuto nell'anno $n$
+    \item $i$ = tasso di attualizzazione
+    \item $n$ = anno in cui si verifica il flusso
+\end{itemize}
+
+\noindent\textbf{2. Valore Attuale Netto (VAN)}
+
+\[
+VAN=F_0+VA
+\]
+
+\noindent oppure, in forma completa:
+
+\[
+VAN=F_0+\sum_{n=1}^{N}\frac{F_n}{(1+i)^n}
+\]
+
+\noindent dove $F_0$ rappresenta l'investimento iniziale ed è generalmente
+negativo perché costituisce un'uscita di denaro.
+
+\noindent\textbf{3. Valore attuale di una rendita annua costante}
+
+\[
+VA=C\left[
+\frac{1}{r}
+-\frac{1}{r(1+r)^t}
+\right]
+\]
+
+\noindent dove:
+\begin{itemize}
+    \item $C$ = flusso di cassa costante ricevuto ogni periodo
+    \item $r$ = tasso di attualizzazione
+    \item $t$ = numero di periodi
+\end{itemize}
+
+\noindent Questa formula è una scorciatoia utilizzabile quando si riceve
+\textbf{lo stesso flusso di cassa per un numero determinato di periodi}.
+Una volta trovato il valore attuale della rendita, il VAN si calcola come:
+
+\[
+VAN=-\text{Investimento iniziale}+VA
+\]
+\newpage
+\subsection{Esercizio 1}
+
+La società \textbf{InnovaTech S.r.l.} sta considerando di investire in un progetto di espansione aziendale, caratterizzato dai seguenti flussi di cassa:
+
+\begin{itemize}
+    \item \textbf{Investimento iniziale:} 100.000 euro.
+\end{itemize}
+
+\noindent I flussi di cassa netti previsti per gli anni successivi sono:
+
+\begin{itemize}
+    \item Anno 1: 30.000 euro;
+    \item Anno 2: 40.000 euro;
+    \item Anno 3: 50.000 euro;
+    \item Anno 4: 60.000 euro;
+    \item Anno 5: 70.000 euro.
+\end{itemize}
+
+\noindent Il tasso di sconto appropriato per questo tipo di investimento è del \textbf{10\% annuo}.
+
+\medskip
+
+\noindent Si richiede di:
+
+\begin{enumerate}
+    \item decidere se effettuare l'investimento utilizzando il \textbf{VAN};
+    \item determinare come cambierebbe la redditività del progetto se il tasso di sconto aumentasse al \textbf{12\% annuo}.
+\end{enumerate}
+
+\subsubsection*{Svolgimento}
+
+\noindent\textbf{1. Calcolo del VAN con $i=10\%$}
+
+\noindent Attualizziamo tutti i flussi di cassa previsti nei cinque anni:
+
+\[
+VA=
+\frac{30.000}{1,10^1}+
+\frac{40.000}{1,10^2}+
+\frac{50.000}{1,10^3}+
+\frac{60.000}{1,10^4}+
+\frac{70.000}{1,10^5}
+=182.341,6
+\]
+
+\noindent Calcoliamo il VAN considerando l'investimento iniziale di 100.000 euro:
+
+\[
+VAN=-100.000+182.341,6=82.341,6
+\]
+
+\[
+\boxed{VAN\simeq82.342\text{ euro}}
+\]
+
+\noindent Poiché il $VAN>0$, il progetto \textbf{crea valore} e l'investimento risulta conveniente.
+
+\medskip
+\noindent\textbf{2. Calcolo del VAN con $i=12\%$}
+
+\noindent Aumentiamo il tasso di attualizzazione al 12\% e ricalcoliamo il valore attuale:
+
+\[
+VA=
+\frac{30.000}{1,12^1}+
+\frac{40.000}{1,12^2}+
+\frac{50.000}{1,12^3}+
+\frac{60.000}{1,12^4}+
+\frac{70.000}{1,12^5}
+=172.113,4
+\]
+
+\noindent Il nuovo VAN è quindi:
+
+\[
+VAN=-100.000+172.113,4=72.113,4
+\]
+
+\[
+\boxed{VAN\simeq72.113\text{ euro}}
+\]
+
+\noindent Il VAN rimane positivo, quindi il progetto è ancora \textbf{conveniente}. Tuttavia, aumentando il tasso di attualizzazione dal 10\% al 12\%, il valore attuale dei flussi futuri diminuisce e, 
+di conseguenza, diminuisce anche il VAN:
+
+\[
+i\uparrow\quad\Rightarrow\quad VA\downarrow\quad\Rightarrow\quad VAN\downarrow
+\]
+\newpage
+\subsection{Esercizio 2}
+
+La società \textbf{Alma Chimica S.p.A.} sta valutando l'acquisto di un nuovo macchinario del costo di \textbf{6,5 milioni di euro}.
+
+\noindent I ricavi previsti ammontano a \textbf{3 milioni di euro all'anno}, mentre i costi di esercizio sono pari a \textbf{2 milioni di euro all'anno}.
+
+\noindent Inoltre:
+\begin{itemize}
+    \item dopo il quinto anno è necessaria una manutenzione straordinaria del costo di \textbf{1 milione di euro};
+    \item dopo il decimo anno è necessaria un'ulteriore manutenzione straordinaria del costo di \textbf{1 milione di euro};
+    \item al termine del quindicesimo anno il macchinario può essere venduto per \textbf{800.000 euro}.
+\end{itemize}
+
+\noindent Considerando un tasso di interesse del \textbf{7\%}, determinare il \textbf{VAN del macchinario}.
+
+\subsubsection*{Svolgimento}
+
+\noindent Il costo iniziale del macchinario è:
+
+\[
+F_0=-6.500.000
+\]
+
+\noindent Ogni anno il macchinario genera ricavi per 3 milioni di euro e costi di esercizio per 2 milioni di euro. Il \textbf{flusso di cassa netto annuo} è quindi:
+
+\[
+F=3.000.000-2.000.000=1.000.000
+\]
+
+\noindent Poiché il flusso di 1 milione di euro si ripete ogni anno per 15 anni, possiamo utilizzare la formula del valore attuale di una \textbf{rendita annua costante}:
+
+\[
+VA=C\left[\frac{1}{r}-\frac{1}{r(1+r)^t}\right]
+\]
+
+\noindent con:
+\begin{itemize}
+    \item $C=1.000.000$ $\rightarrow$ flusso di cassa netto annuo;
+    \item $r=0,07$ $\rightarrow$ tasso di attualizzazione;
+    \item $t=15$ $\rightarrow$ durata dell'investimento.
+\end{itemize}
+
+\noindent Sostituendo i valori:
+
+\[
+VA=
+1.000.000
+\left[
+\frac{1}{0,07}
+-
+\frac{1}{0,07(1,07)^{15}}
+\right]
+=9.107.914
+\]
+
+\noindent Dobbiamo poi considerare le due \textbf{manutenzioni straordinarie} da 1 milione di euro, sostenute rispettivamente alla fine del quinto e del decimo anno.
+
+\noindent Essendo delle uscite di denaro, vengono considerate con segno negativo e attualizzate separatamente:
+
+\[
+VA_{\text{manutenzioni}}
+=
+-\frac{1.000.000}{(1,07)^5}
+-\frac{1.000.000}{(1,07)^{10}}
+\]
+
+\[
+VA_{\text{manutenzioni}}
+=-1.221.335
+\]
+
+\noindent Quindi, fino a questo punto, abbiamo:
+\begin{itemize}
+    \item $+9.107.914$ euro $\rightarrow$ valore attuale dei flussi di cassa annuali;
+    \item $-1.221.335$ euro $\rightarrow$ valore attuale delle manutenzioni straordinarie.
+\end{itemize}
+\noindent Al termine dei 15 anni il macchinario viene venduto per 800.000 euro.
+Poiché questo incasso avverrà al quindicesimo anno, dobbiamo attualizzarlo per
+conoscere quanto vale oggi:
+
+\[
+VA_{\text{vendita}}
+=
+\frac{800.000}{(1,07)^{15}}
+=
+289.956,8
+\]
+
+\noindent A questo punto possiamo calcolare il \textbf{VAN dell'intero progetto},
+sommando tutti i flussi di cassa attualizzati e considerando il costo iniziale
+del macchinario:
+
+\[
+VAN
+=
+-6.500.000
++9.107.914
+-1.221.335
++289.956,8
+\]
+
+\[
+\boxed{VAN=1.676.535,80\text{ euro}}
+\]
+
+\noindent Il VAN è \textbf{positivo}, quindi il progetto è conveniente:
+considerando anche il valore temporale del denaro, l'investimento genera un
+valore aggiuntivo di circa 1,68 milioni di euro.
+\newpage
+\subsection{Esercizio 3}
+
+\noindent La società Digital Technologies S.r.l. sta valutando due progetti di
+investimento alternativi, il \textbf{Progetto X} e il \textbf{Progetto Y},
+entrambi con durata di 4 anni e caratterizzati dai seguenti flussi di cassa.
+
+\medskip
+\noindent\textbf{Progetto X:}
+\begin{itemize}
+    \item Investimento iniziale: 600.000 euro
+    \item Anno 1: 150.000 euro
+    \item Anno 2: 180.000 euro
+    \item Anno 3: 210.000 euro
+    \item Anno 4: 240.000 euro
+\end{itemize}
+
+\noindent\textbf{Progetto Y:}
+\begin{itemize}
+    \item Investimento iniziale: 750.000 euro
+    \item Anno 1: 200.000 euro
+    \item Anno 2: 220.000 euro
+    \item Anno 3: 240.000 euro
+    \item Anno 4: 260.000 euro
+\end{itemize}
+
+\noindent Considerando un tasso di sconto del 10\% annuo, si determini quale
+progetto di investimento finanziare utilizzando il VAN.
+\subsubsection*{Svolgimento}
+
+\noindent\textbf{Progetto X}
+
+\noindent Attualizziamo i quattro flussi di cassa utilizzando il tasso di sconto
+del 10\%:
+
+\[
+VA_X=
+\frac{150.000}{1,10^1}
++\frac{180.000}{1,10^2}
++\frac{210.000}{1,10^3}
++\frac{240.000}{1,10^4}
+=606.823,30
+\]
+
+\noindent Sottraiamo dal valore attuale dei flussi l'investimento iniziale:
+
+\[
+VAN_X=-600.000+606.823,30
+=\boxed{6.823,30}
+\]
+
+\noindent\textbf{Progetto Y}
+
+\noindent Allo stesso modo attualizziamo i flussi di cassa del secondo progetto:
+
+\[
+VA_Y=
+\frac{200.000}{1,10^1}
++\frac{220.000}{1,10^2}
++\frac{240.000}{1,10^3}
++\frac{260.000}{1,10^4}
+=721.535,41
+\]
+
+\noindent Sottraiamo l'investimento iniziale:
+
+\[
+VAN_Y=-750.000+721.535,41
+=\boxed{-28.464,59}
+\]
+
+\noindent Il \textbf{Progetto X è da preferire}, perché presenta un VAN positivo
+pari a 6.823,30 euro e quindi genera valore per l'impresa.
+
+\noindent Il Progetto Y presenta invece un VAN negativo: i flussi di cassa
+attualizzati non sono sufficienti a recuperare l'investimento iniziale.
+\newpage
+\subsection{Esercizio 4}
+
+\noindent La società InfoTech S.r.l. sta prendendo in considerazione due progetti
+di investimento alternativi, il \textbf{Progetto A} e il \textbf{Progetto B},
+entrambi di durata quinquennale e caratterizzati dai seguenti flussi di cassa:
+
+\noindent\textbf{Progetto A:}
+\begin{itemize}
+    \item Investimento iniziale: 110.000 euro
+    \item Flusso di cassa netto annuo: 50.000 euro
+\end{itemize}
+
+\noindent\textbf{Progetto B:}
+\begin{itemize}
+    \item Investimento iniziale: 150.000 euro
+    \item Flusso di cassa netto annuo: 60.000 euro
+\end{itemize}
+
+\noindent Considerando un tasso di sconto del 10\% annuo, si determini quale
+progetto di investimento finanziare utilizzando il VAN.
+\subsubsection*{Svolgimento}
+
+\noindent Poiché entrambi i progetti generano un flusso di cassa costante per
+5 anni, utilizziamo la formula del valore attuale di una rendita annua costante.
+
+\noindent\textbf{Progetto A}
+
+\[
+VA_A=
+50.000
+\left[
+\frac{1}{0,10}
+-\frac{1}{0,10(1,10)^5}
+\right]
+=189.539
+\]
+
+\noindent Calcoliamo quindi il VAN sottraendo l'investimento iniziale:
+
+\[
+VAN_A=-110.000+189.539
+=\boxed{79.539}
+\]
+
+\noindent\textbf{Progetto B}
+
+\[
+VA_B=
+60.000
+\left[
+\frac{1}{0,10}
+-\frac{1}{0,10(1,10)^5}
+\right]
+=227.447
+\]
+
+\noindent Calcoliamo il VAN:
+
+\[
+VAN_B=-150.000+227.447
+=\boxed{77.447}
+\]
+
+\noindent Entrambi i progetti hanno un VAN positivo e sono quindi convenienti.
+Tuttavia, essendo progetti alternativi, viene scelto il \textbf{Progetto A},
+poiché presenta il VAN maggiore:
+
+\[
+\boxed{VAN_A=79.539 > VAN_B=77.447}
+\]
+
+\noindent Anche se il Progetto B genera flussi di cassa annuali maggiori,
+richiede anche un investimento iniziale più elevato. Il VAN tiene conto di
+entrambi gli aspetti e mostra che il Progetto A crea leggermente più valore.
+\newpage

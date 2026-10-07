@@ -348,3 +348,1194 @@ $$PROF_{idart}(Artista)-PROJ_{idart}(SEL_{citta<>Roma \text{ and } anno>2000}(Co
 \underline{query5}: trovare le coppue $<x,y>$ tali che l'artista con id $x$ non ha mai fatto concerti nella città $y$.\\
 \underline{soluzione}: da tutte le possibili coppie $<x,y>$ tali che $x$ è l'id di un artista e $y$ è una città, leviamo le coppie $<x,y>$ tali che l'artista di id $x$ ha fatto almeno un concerto nella città $y$:\\
 $$(PROJ_{idart} \text{ JOIN }PROJ_{citta}(Concerto))-PROJ_{idart,citta}(Concerto)$$
+
+\subsection{Join esterno}
+Il join naturale esterno estende, con valori nulli, le tuple che verrebbero tagliate fuori da un join (interno)\\
+esistono tre versioni:
+\begin{itemize}
+    \item \textbf{sinistro}: mantiene tutte le tuple del primo operando, estendendole con valori nulli, se necessario
+    \item \textbf{destro}: mantiene tutte le tuple del secondo operando, estendendole con valori nulli, se necessario
+    \item \textbf{completo}: mantiene tutte le tuple di entrambi gli operandi, estendendole con valori nulli, se necessario
+\end{itemize}
+
+\section{Informazione incompleta}
+Il modello relazionale impone ai dati una struttura rigida:\\
+\begin{itemize}
+    \item l'informazione è rappresentata per mezzo di tuple
+    \item le tuple ammesse sono dettate dagli schemi di relazione
+\end{itemize}
+\noindent Nella pratica, però, i dati disponibili possono non corrispondere esattamente al formato previsto, per varie ragioni\\
+Esempio:
+\begin{itemize}
+    \item di firenze non conosciamo l'indirizzo della predettura
+    \item Tivoli non è provincia: non ha predettura
+    \item Prato è "nuova" provincia: ha la prefettura?
+\end{itemize}
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|c|c|}
+        \hline
+        \textbf{città} & \textbf{indirizzo} \\
+        \hline
+        Roma & Via IV Novembre \\
+        \hline
+        Firenze & \\
+        \hline
+        Tivoli & \\
+        \hline
+        Prato & \\
+        \hline
+    \end{tabular}
+    \caption{Prefettura}
+\end{table}
+\noindent Nel modello relazionale si adotta la seguente tecnica:
+\begin{itemize}
+    \item viene introdotto il cosiddetto \textbf{valore nullo} (NULL): esso è un valore che il sistema riconosce essere particolare e che denota l'assenza di un valore del dominio
+    \item il valore nullo non è un valore di un dominio, ma può comparire come valore di qualunque attributo definito su qualunque dominio
+\end{itemize}
+\noindent Formalmente, è sufficiente estendere il concetto di tupla: se t è una tupla, allora t[A], per ogni attributo A, è un valore del dominio dom(A) oppure è il valore nullo NULL\\
+Al momento di definire uno schema di basi di dati, si possono poi imporre restrizioni sulla presenza di valori nulli nei vari attributi delle relazioni.
+\subsubsection{Interpretazioni del valore nullo}
+Tre casi differenti:
+\begin{itemize}
+    \item valore \textbf{sconosciuto}: esiste un valore del dominio, ma non è noto (nel nostro esempio: Firenze)
+    \item valore \textbf{inesistente}: non esiste un valore del dominio (nel nostro esempio: Tivoli)
+    \item valore \textbf{senza informazione}: non è noto se esista o meno un valore del dominio (nel nostro esempio: Prato)
+\end{itemize}
+\noindent I DBMS non distinguono i tipi di valore nullo.\medskip\\
+Una condizione in un'espressione nell'algebra è vera \underline{solo per valori non nulli} - ossia \underline{il valore nullo non soddisfa alcuna condizione}. 
+Per riferirsi ai valori nulli esistono forme apposite di condizioni:
+\begin{center}
+\texttt{\textcolor{red}{IS NULL}}\\
+\texttt{\textcolor{red}{IS NOT NULL}}
+\end{center}
+\noindent Esempio sulla selezione:\\
+$$SEL_{eta>40}(Impiegati)$$\\
+la condizione atomica è vera solo per valori non nulli, invece l'espressione:\\
+$$SEL_{eta>40 \text{ OR eta IS NULL}}$$\\
+è vera anche per le tuple in cui eta contiene il valore nullo.
+
+\section{Osservazioni}
+Due espressioni sono \textbf{equivalenti} se producono lo stesso risultato qualunque sia l'istanza della base di dati sulla quale vengono valutate\\
+L'equivalenza è importante in pratica perchè i DBMS cercano di eseguire espressioni equivalenti a quelle date, ma meno "costose" della espressione originaria (effettuando le selezioni il prima possibile).
+
+\section{Vincolo di integrità}
+\subsubsection{Che cos'è un vincolo di integrità?}
+Un \textbf{vincolo di integrità} è una regola che stabilisce quali dati
+possono essere considerati \textbf{corretti e ammissibili} all'interno
+di una base di dati.\\
+Il vincolo viene definito a livello di \textbf{schema} e deve essere
+rispettato da tutte le possibili istanze corrette della base di dati.\\
+In modo intuitivo:
+\[
+\boxed{
+\text{Vincolo di integrità}
+=
+\text{regola che i dati devono rispettare}
+}
+\]
+\textcolor{verdeEsempio}{Esempio} consideriamo una relazione:
+\[
+\text{Studente}(\text{Matricola},\text{Nome},\text{Età})
+\]
+Potremmo imporre i seguenti vincoli:
+\[
+\text{Età} \geq 0
+\]
+e
+\[
+\text{Matricola deve essere unica}.
+\]
+Un'istanza come:
+\[
+\begin{array}{c|c|c}
+\textbf{Matricola} & \textbf{Nome} & \textbf{Età} \\ \hline
+101 & Mario & 22 \\
+102 & Anna & 20
+\end{array}
+\]
+rispetta entrambi i vincoli.
+Invece:
+\[
+\begin{array}{c|c|c}
+\textbf{Matricola} & \textbf{Nome} & \textbf{Età} \\ \hline
+101 & Mario & 22 \\
+101 & Anna & -5
+\end{array}
+\]
+non è un'istanza corretta, perché viola entrambi i vincoli:
+la matricola \texttt{101} compare due volte e l'età $-5$ non è
+ammissibile.
+\subsubsection{Il vincolo come funzione booleana}
+Un vincolo può essere visto come una funzione che, data un'istanza
+$r$ della base di dati, restituisce:
+\[
+\boxed{
+\begin{cases}
+\text{vero} & \text{se } r \text{ rispetta il vincolo},\\
+\text{falso} & \text{se } r \text{ viola il vincolo}.
+\end{cases}
+}
+\]
+Normalmente uno schema possiede \textbf{più vincoli contemporaneamente}.
+Un'istanza della base di dati è considerata corretta solamente se
+\textbf{soddisfa tutti i vincoli}.\\
+Se abbiamo i vincoli:
+\[
+V_1,V_2,\ldots,V_n,
+\]
+l'istanza $r$ è corretta se:
+\[
+\boxed{
+V_1(r) \land V_2(r) \land \cdots \land V_n(r)
+=
+\text{vero}
+}
+\]
+In altre parole, basta violare anche un solo vincolo affinché
+l'istanza non sia considerata corretta.
+% -------------------------------------------------
+
+\subsection{Perché servono i vincoli di integrità?}
+I vincoli di integrità sono importanti perché permettono di descrivere
+in maniera più precisa la \textbf{realtà che vogliamo rappresentare}.
+La sola struttura di una relazione, infatti, spesso non è sufficiente.\\
+Supponiamo di avere:
+\[
+\text{Esame}(\text{Matricola},\text{Corso},\text{Voto})
+\]
+La struttura ci dice che esistono tre attributi, ma non ci dice,
+ad esempio, che:
+\[
+18 \leq \text{Voto} \leq 30.
+\]
+Questa informazione può essere rappresentata mediante un vincolo.
+\subsubsection{1. Descrivere meglio la realtà}
+I vincoli permettono quindi di aggiungere informazioni che non possono
+essere espresse semplicemente attraverso la struttura delle tabelle.
+\subsubsection{2. Migliorare la qualità dei dati}
+I vincoli impediscono, o aiutano a impedire, l'inserimento di dati
+inconsistenti o non validi.\\
+I vincoli contribuiscono alla:
+\[
+\boxed{\text{qualità dei dati}}
+\]
+\subsubsection{3. Aiutare la progettazione}
+I vincoli sono anche utili durante la progettazione della base di dati,
+perché permettono al progettista di specificare con maggiore precisione
+le proprietà che i dati devono rispettare.
+
+\subsubsection{4. Aiutare il DBMS nell'esecuzione delle query}
+Il DBMS può utilizzare la conoscenza di alcuni vincoli anche per
+scegliere strategie migliori per l'esecuzione delle interrogazioni.
+In altre parole, conoscere proprietà dei dati può aiutare il sistema
+nell'\textbf{ottimizzazione delle query}.
+
+\subsection*{Limite dei vincoli}
+
+Non tutte le proprietà del mondo reale possono essere facilmente
+rappresentate attraverso i vincoli direttamente disponibili nel DBMS.
+% -------------------------------------------------
+
+\subsection{Classificazione dei vincoli di integrità}
+Una distinzione fondamentale è quella tra:
+\[
+\boxed{
+\text{Vincoli intrarelazionali}
+\qquad\text{e}\qquad
+\text{Vincoli interrelazionali}
+}
+\]
+La differenza principale è molto semplice:
+\[
+\boxed{
+\begin{array}{ll}
+\textbf{Intrarelazionali} &
+\rightarrow \text{ riguardano una singola relazione}, \\[2mm]
+\textbf{Interrelazionali} &
+\rightarrow \text{ coinvolgono più relazioni}.
+\end{array}
+}
+\]
+
+% -------------------------------------------------
+
+\subsection*{Vincoli intrarelazionali}
+I vincoli \textbf{intrarelazionali} riguardano una sola relazione.
+Ad esempio, considerando:
+\[
+\text{Studente}(\text{Matricola},\text{Nome},\text{Età}),
+\]
+possiamo imporre delle condizioni solamente sui dati contenuti
+all'interno della relazione \texttt{Studente}.\\
+Tra i principali vincoli intrarelazionali troviamo:
+\begin{itemize}
+    \item vincoli di tupla;
+    \item vincoli di dominio;
+    \item vincoli di superchiave e chiave.
+\end{itemize}
+\subsubsection{Vincoli di dominio}
+Un vincolo di dominio stabilisce quali valori può assumere
+un determinato attributo.
+Ad esempio:
+\[
+\text{Età} \geq 0
+\]
+oppure:
+\[
+18 \leq \text{Voto} \leq 30.
+\]
+Questi vincoli controllano quindi i valori ammessi per un attributo.
+\subsubsection{Vincoli di tupla}
+Un vincolo di tupla impone una condizione sui valori presenti
+\textbf{all'interno della stessa tupla}.\\
+Un vincolo di tupla su una relazione $R$ si esprime come un'espressione boolena (con AND, OR, NOT) costruita su atomi che confrontano valori di attributi o espressioni su di essi\\
+Consideriamo:
+\[
+\text{Stipendio}(\text{Lordo},\text{Ritenute},\text{Netto}).
+\]
+Potremmo imporre:
+\[
+\boxed{
+\text{Lordo } $=$ \text{ }(\text{Ritenute } $+$ \text{ Netto})
+}
+\]
+La condizione mette in relazione due attributi appartenenti alla
+stessa tupla.
+\subsubsection{Vincoli di superchiave e chiave}
+Questi vincoli servono invece a garantire l'unicità delle tuple.
+Se \texttt{Matricola} è una chiave di \texttt{Studente}, allora
+non possono esistere due studenti con la stessa matricola.
+% -------------------------------------------------
+
+\subsection{Vincoli interrelazionali}
+I vincoli \textbf{interrelazionali} esprimono condizioni che coinvolgono
+più relazioni.\\
+Consideriamo, ad esempio:
+\[
+\text{Studente}(\text{Matricola},\text{Nome})
+\]
+e:
+\[
+\text{Esame}(\text{Matricola},\text{Corso},\text{Voto}).
+\]
+Le due relazioni possono essere collegate attraverso l'attributo
+\texttt{Matricola}.
+Tra i vincoli interrelazionali più importanti troviamo:
+\begin{itemize}
+    \item vincoli di integrità referenziale;
+    \item vincoli di inclusione.
+\end{itemize}
+\subsubsection*{Integrità referenziale}
+Il vincolo di \textbf{integrità referenziale} stabilisce che un valore
+utilizzato per fare riferimento a una tupla di un'altra relazione
+deve effettivamente corrispondere a una tupla esistente.\\
+Ad esempio, se:
+\[
+\text{Esame.Matricola}
+\]
+fa riferimento a:
+\[
+\text{Studente.Matricola},
+\]
+non dovrebbe essere possibile registrare un esame per uno studente
+che non esiste.\\
+Possiamo rappresentare intuitivamente il vincolo come:
+\[
+\boxed{
+\text{Esame.Matricola}
+\subseteq
+\text{Studente.Matricola}
+}
+\]
+Questo tipo di collegamento viene normalmente realizzato mediante
+una \textbf{foreign key} (chiave esterna).
+\subsubsection{Vincoli di inclusione}
+Un vincolo di inclusione richiede, più in generale, che determinati
+valori presenti in una relazione siano presenti anche in un'altra
+relazione.\\
+L'integrità referenziale può essere vista come un caso particolarmente
+importante di questo tipo di vincolo.
+
+% -------------------------------------------------
+
+\section{Vincoli intrarelazionali: le condizioni di superchiave e chiave}
+Consideriamo una relazione $R$ con un insieme di attributi $X$ e una
+sua istanza $r$.
+Sia:
+\[
+K = \{A_1, A_2, \ldots, A_n\}
+\]
+un insieme non vuoto di attributi di $R$.
+L'idea fondamentale è capire quando gli attributi contenuti in $K$
+permettono di \textbf{identificare univocamente una tupla} della relazione.
+\subsection{Superchiave}
+$K$ è una \textbf{superchiave} se non possono esistere due tuple diverse
+che abbiano gli stessi valori per tutti gli attributi appartenenti a $K$.\\
+Formalmente, non devono esistere due tuple distinte $t_1$ e $t_2$ tali che:
+\[
+t_1[A_1] = t_2[A_1],
+\quad
+t_1[A_2] = t_2[A_2],
+\quad \ldots \quad,
+t_1[A_n] = t_2[A_n].
+\]
+In altre parole:
+\[
+\boxed{
+K \text{ è una superchiave}
+\iff
+K \text{ identifica univocamente ogni tupla}
+}
+\]
+\textcolor{verdeEsempio}{Esempio} di superchiave,
+consideriamo la relazione:
+\[
+\text{Studente}(\text{Matricola},\text{Nome},\text{Cognome},\text{Email})
+\]
+con la seguente istanza:
+\[
+\begin{array}{c|c|c|c}
+\textbf{Matricola} & \textbf{Nome} & \textbf{Cognome} & \textbf{Email} \\ \hline
+101 & Mario & Rossi & mario@email.it \\
+102 & Luca & Bianchi & luca@email.it \\
+103 & Mario & Verdi & mario.verdi@email.it
+\end{array}
+\]
+Consideriamo:
+\[
+K = \{\text{Matricola}\}.
+\]
+Ogni studente ha una matricola diversa, quindi non esistono due tuple
+diverse con lo stesso valore di \texttt{Matricola}.
+Pertanto:
+\[
+\boxed{\{\text{Matricola}\} \text{ è una superchiave}}
+\]
+Anche:
+\[
+\{\text{Matricola},\text{Nome}\}
+\]
+è una superchiave.\\
+Infatti, se la sola \texttt{Matricola} identifica già univocamente una
+tupla, aggiungere \texttt{Nome} non fa perdere questa proprietà.
+Questo mostra una caratteristica importante:
+\[
+\boxed{
+\text{Una superchiave può contenere attributi non necessari}
+}
+\]
+\subsection{Chiave}
+Una \textbf{chiave} è una superchiave \textbf{minimale}.
+Questo significa che:
+\begin{enumerate}
+    \item $K$ deve essere una superchiave;
+    \item nessun sottoinsieme proprio di $K$ deve essere ancora una superchiave.
+\end{enumerate}
+\noindent Quindi:
+\[
+\boxed{
+\text{Chiave}
+=
+\text{Superchiave minimale}
+}
+\]
+Il termine ``minimale'' significa che non possiamo eliminare nessun
+attributo dalla superchiave senza perdere la capacità di identificare
+univocamente le tuple.
+\subsubsection{Differenza tra superchiave e chiave}
+Riprendiamo l'esempio precedente.
+Abbiamo:
+\[
+K_1 = \{\text{Matricola}\}
+\]
+e:
+\[
+K_2 = \{\text{Matricola},\text{Nome}\}.
+\]
+Entrambi identificano univocamente uno studente, quindi entrambi sono
+\textbf{superchiavi}.\\
+Tuttavia:
+\[
+\{\text{Matricola},\text{Nome}\}
+\]
+non è una chiave, perché possiamo eliminare \texttt{Nome} e ottenere:
+\[
+\{\text{Matricola}\},
+\]
+che continua a essere una superchiave.
+Quindi:
+\[
+\boxed{
+\{\text{Matricola},\text{Nome}\}
+\text{ è una superchiave ma non una chiave}
+}
+\]
+mentre:
+\[
+\boxed{
+\{\text{Matricola}\}
+\text{ è una chiave}
+}
+\]
+perché non contiene attributi superflui.\medskip\\
+\textcolor{verdeEsempio}{Esempio} di chiave composta:\\
+Consideriamo la relazione:
+\[
+\text{Esame}(\text{Matricola}, \text{CodiceCorso}, \text{Voto})
+\]
+dove ogni tupla rappresenta un esame sostenuto da uno studente.
+Ad esempio:
+\[
+\begin{array}{c|c|c}
+\textbf{Matricola} & \textbf{CodiceCorso} & \textbf{Voto} \\ \hline
+1001 & BD & 28 \\
+1001 & ALG & 25 \\
+1002 & BD & 30 \\
+1003 & BD & 27
+\end{array}
+\]
+L'attributo \texttt{Matricola} \textbf{non è una chiave}, perché uno
+stesso studente può sostenere più esami.
+Ad esempio, la matricola \texttt{1001} compare in due tuple:
+\[
+(1001,\text{BD},28)
+\qquad
+(1001,\text{ALG},25)
+\]
+Anche \texttt{CodiceCorso} da solo \textbf{non è una chiave}, perché
+lo stesso corso può essere sostenuto da studenti diversi.
+Ad esempio, il corso \texttt{BD} compare in più tuple:
+\[
+(1001,\text{BD},28), \qquad
+(1002,\text{BD},30), \qquad
+(1003,\text{BD},27)
+\]
+Consideriamo ora i due attributi insieme:
+\[
+K = \{\text{Matricola},\text{CodiceCorso}\}
+\]
+Supponendo che ogni studente possa avere un solo esito registrato per
+ciascun corso, la coppia:
+\[
+(\text{Matricola},\text{CodiceCorso})
+\]
+identifica univocamente ogni tupla della relazione.
+Ad esempio:
+\[
+(1001,\text{BD})
+\]
+identifica solamente la tupla:
+\[
+(1001,\text{BD},28).
+\]
+Pertanto:
+\[
+\boxed{
+\{\text{Matricola},\text{CodiceCorso}\}
+\text{ è una chiave composta}
+}
+\]
+Si parla di \textbf{chiave composta} perché sono necessari più attributi
+per identificare univocamente una tupla.
+Inoltre, la chiave è minimale perché nessuno dei due attributi può essere
+eliminato:
+\[
+\{\text{Matricola}\}
+\quad \text{non basta}
+\]
+e
+\[
+\{\text{CodiceCorso}\}
+\quad \text{non basta}.
+\]
+\subsubsection{Idea fondamentale}
+La differenza fondamentale può essere ricordata così:
+\[
+\boxed{
+\begin{array}{c}
+\textbf{Superchiave} \\[2mm]
+\text{identifica univocamente le tuple} \\
+\text{ma può contenere attributi inutili}
+\end{array}
+}
+\]
+\[
+\boxed{
+\begin{array}{c}
+\textbf{Chiave} \\[2mm]
+\text{identifica univocamente le tuple} \\
+\text{e non contiene attributi inutili}
+\end{array}
+}
+\]
+Quindi ogni chiave è necessariamente una superchiave:
+\[
+\boxed{\text{Chiave} \Longrightarrow \text{Superchiave}}
+\]
+ma non ogni superchiave è una chiave:
+\[
+\boxed{\text{Superchiave} \not\Longrightarrow \text{Chiave}}
+\]
+
+\subsection{Superchiavi e chiavi nelle istanze di relazione}
+Nel modello relazionale una relazione è un \textbf{insieme di tuple}.
+Di conseguenza, non possono esistere due tuple completamente identiche.
+Se consideriamo l'insieme di \textbf{tutti gli attributi} della relazione,
+questo permette necessariamente di distinguere le tuple.\\
+Quindi:
+\[
+\boxed{
+\text{L'insieme di tutti gli attributi è sempre una superchiave}
+}
+\]
+Di conseguenza, ogni istanza di relazione possiede almeno una
+\textbf{superchiave}.
+Poiché una chiave è una superchiave \textbf{minimale}, partendo da una
+superchiave possiamo eliminare gli attributi non necessari fino a ottenere
+una superchiave minimale.\\
+Pertanto:
+\[
+\boxed{
+\text{Ogni istanza di relazione possiede almeno una chiave}
+}
+\]
+% -------------------------------------------------
+
+\subsection{Vincolo di superchiave sullo schema}
+È importante distinguere una proprietà osservata in una singola istanza
+da un \textbf{vincolo definito sullo schema}.
+Dichiarare che $K$ è una superchiave dello schema $R$ significa richiedere
+che $K$ identifichi univocamente le tuple in \textbf{ogni possibile
+istanza valida} di $R$.
+Formalmente:
+\[
+\boxed{
+K \text{ è superchiave di } R
+\Longrightarrow
+K \text{ è superchiave in ogni istanza valida di } R
+}
+\]
+Quindi non possono mai esistere due tuple diverse $t_1$ e $t_2$ che
+abbiano gli stessi valori negli attributi di $K$.
+\textcolor{verdeEsempio}{Esempio}
+Consideriamo lo schema:
+\[
+R(A,B,C,D)
+\]
+e dichiariamo:
+\[
+K=\{A,B\}
+\]
+come superchiave.\\
+Questo significa che in ogni istanza valida di $R$ non possono esistere
+due tuple diverse con la stessa coppia di valori $(A,B)$.\\
+Ad esempio, non sarebbe ammessa un'istanza contenente:
+\[
+\begin{array}{c|c|c|c}
+A & B & C & D \\ \hline
+1 & 5 & x & y \\
+1 & 5 & z & w
+\end{array}
+\]
+perché le due tuple hanno gli stessi valori per $A$ e $B$.\\
+Quindi:
+\[
+\boxed{\{A,B\} \text{ è una superchiave per } R}
+\]
+% -------------------------------------------------
+
+\subsection{Vincolo di chiave}
+Un insieme di attributi $K$ è una \textbf{chiave} dello schema $R$ se
+soddisfa due condizioni:
+\begin{enumerate}
+    \item $K$ è una superchiave in ogni istanza valida di $R$;
+    \item $K$ è minimale, cioè nessun suo sottoinsieme proprio è
+    una superchiave dello schema.
+\end{enumerate}
+\noindent In breve:
+\[
+\boxed{
+\text{Chiave} = \text{Superchiave minimale}
+}
+\]
+\textcolor{verdeEsempio}{Esempio}
+consideriamo ancora:
+\[
+R(A,B,C,D)
+\]
+e supponiamo che:
+\[
+K=\{A,B\}
+\]
+sia una superchiave.
+Per stabilire se è anche una chiave dobbiamo verificare se possiamo
+eliminare qualche attributo.\\
+Se:
+\[
+\{A\} \text{ non è una superchiave}
+\]
+e:
+\[
+\{B\} \text{ non è una superchiave},
+\]
+allora entrambi gli attributi sono necessari.\\
+Pertanto:
+\[
+\boxed{
+\{A,B\} \text{ è una chiave di } R
+}
+\]
+Se invece $\{A\}$ fosse già una superchiave, allora $\{A,B\}$ sarebbe
+una superchiave, ma \textbf{non una chiave}, perché $B$ sarebbe
+superfluo.
+
+% -------------------------------------------------
+
+\subsection{Come si individuano le chiavi?}
+Le chiavi non vengono individuate semplicemente osservando i dati
+presenti in un determinato momento.
+Bisogna considerare le \textbf{regole della realtà rappresentata}
+dalla base di dati.\\
+Il procedimento è:
+\begin{enumerate}
+    \item individuare gli attributi che devono identificare univocamente
+    ogni tupla in tutte le istanze valide;
+
+    \item individuare quindi le superchiavi;
+
+    \item eliminare gli attributi superflui per ottenere le
+    superchiavi minimali, cioè le \textbf{chiavi}.
+\end{enumerate}
+\noindent \textcolor{verdeEsempio}{Esempio}
+consideriamo:
+\[
+\text{Studenti}(
+\text{Matricola},
+\text{Cognome},
+\text{Nome},
+\text{Corso},
+\text{Nascita})
+\]
+Sappiamo, per le regole dell'applicazione, che due studenti diversi
+devono avere matricole diverse.\\
+Quindi:
+\[
+\boxed{
+\{\text{Matricola}\} \text{ è una superchiave}
+}
+\]
+Inoltre, essendo formata da un solo attributo, non possiamo eliminare
+alcun attributo mantenendo la proprietà di superchiave.\\
+Pertanto:
+\[
+\boxed{
+\{\text{Matricola}\} \text{ è una chiave}
+}
+\]
+
+\subsection{Chiavi e valori nulli}
+Una chiave può, in generale, riguardare attributi che ammettono il valore
+\texttt{NULL}.
+Ricordiamo che \texttt{NULL} rappresenta un valore
+\textbf{sconosciuto o non disponibile} e non viene trattato come un
+normale valore.\\
+\textcolor{verdeEsempio}{Esempio} consideriamo:
+\[
+\text{Studente}(
+\text{Matricola},
+\text{Cognome},
+\text{Nome},
+\text{Corso},
+\text{Nascita})
+\]
+Supponiamo che \texttt{Matricola} sia una chiave, ma che possa contenere
+valori nulli.\\
+Potremmo avere:
+\[
+\begin{array}{c|c|c}
+\textbf{Matricola} & \textbf{Cognome} & \textbf{Nome} \\ \hline
+\text{NULL} & Neri & Mario \\
+78763 & Rossi & Mario \\
+65432 & Bianchi & Piero \\
+87654 & Neri & Mario \\
+\text{NULL} & Bianchi & Mario
+\end{array}
+\]
+Le tuple che hanno in \texttt{Matricola} il valore \texttt{NULLL} non vengono considerate come aventi necessariamente lo stesso valore
+della chiave, perché \texttt{NULL} non rappresenta un valore noto.
+Non conoscendo il valore della matricola, non possiamo utilizzare
+l'attributo \texttt{Matricola} per identificare quelle tuple.\\
+Quindi una chiave che ammette valori nulli può creare due problemi:
+\begin{itemize}
+    \item non permette sempre di identificare concretamente una tupla;
+    \item rende più difficile creare riferimenti da altre relazioni.
+\end{itemize}
+Per questo motivo è utile scegliere una particolare chiave nella quale
+i valori nulli non siano ammessi.
+
+% -------------------------------------------------
+
+\subsection{Chiave primaria}
+La \textbf{chiave primaria} (\textit{primary key}) è una particolare
+chiave scelta per identificare le tuple della relazione.
+La proprietà fondamentale è:
+\[
+\boxed{
+\text{Gli attributi della chiave primaria non possono essere NULL}
+}
+\]
+Quindi una chiave primaria deve soddisfare due proprietà fondamentali:
+\[
+\boxed{
+\begin{array}{l}
+1.\ \text{Unicità} \\
+2.\ \text{Assenza di valori NULL}
+\end{array}
+}
+\]
+Consideriamo nuovamente:
+\[
+\text{Studente}(
+\underline{\text{Matricola}},
+\text{Cognome},
+\text{Nome},
+\text{Corso},
+\text{Nascita})
+\]
+La sottolineatura indica che \texttt{Matricola} è la
+\textbf{chiave primaria}.\\
+Potremmo quindi avere:
+\[
+\begin{array}{c|c|c}
+\textbf{\underline{Matricola}} & \textbf{Cognome} & \textbf{Nome} \\ \hline
+27655 & Rossi & Mario \\
+78763 & Rossi & Mario \\
+65432 & Neri & Piero \\
+87654 & Neri & Mario \\
+67653 & Rossi & Piero
+\end{array}
+\]
+Ogni valore di \texttt{Matricola} deve essere:
+\begin{itemize}
+    \item diverso da quello delle altre tuple;
+    \item diverso da \texttt{NULL}.
+\end{itemize}
+\noindent In questo modo ogni studente può essere identificato in maniera
+univoca tramite la sua matricola.
+% -------------------------------------------------
+
+\subsection{Vincolo di chiave primaria}
+Dichiarare che un insieme di attributi $K$ è la chiave primaria dello
+schema $S$ significa imporre contemporaneamente che:
+\begin{enumerate}
+    \item $K$ sia una \textbf{chiave} di $S$;
+    \item gli attributi appartenenti a $K$ \textbf{non possano assumere
+    valore NULL}.
+\end{enumerate}
+\noindent Se $K$ è la chiave primaria, allora per ogni coppia di tuple distinte
+$t_1$ e $t_2$ deve valere:
+\[
+t_1[K] \neq t_2[K].
+\]
+Questo significa che i valori di $K$ possono essere utilizzati
+effettivamente per identificare ogni tupla.
+\subsubsection{Una sola chiave primaria}
+Una relazione può avere \textbf{più chiavi candidate}, cioè più chiavi
+che potrebbero essere utilizzate per identificare le tuple.
+Tra queste ne viene scelta \textbf{una sola} come chiave primaria.
+\subsubsection{Esercizio}
+Quali sono i vicoli di integrità intrarelazionali da definire sullo schema:
+\[
+\text{Partita}(
+\text{Codice},
+\text{SqCasa},
+\text{SqTrasferta},
+\text{GoalCasa},
+\text{GoalTrasferta},
+\text{Schedina})
+\]
+
+\begin{itemize}
+    \item Codice è chiave primaria della relazione Partita - vincolo di chiave primaria
+    \item Sqcasa $\neq$ SqTrasferta - vincolo di tupla
+    \item GoalCasa $\ge0$ - vincolo di dominio
+    \item GoalTrasferta $\ge 0$ - vincolo di dominio
+    \item Schedina$=$'1' OR Schedina$=$'2' OR schema$=$'X' - vincolo di dominio
+    \item (NOT Schedina='1') OR (GoalCasa $>$ GoalTrasferta) - vincolo di tupla
+    \item (NOT Schedina='2') OR (GoalCasa $<$ GoalTrasferta) - vincolo di tupla
+    \item (NOT Schedina='X') OR (GoalCasa $=$ GoalTrasferta) - vincolo di tupla
+\end{itemize}
+
+\subsection{Vincoli di integrità referenziale}
+Il \textbf{vincolo di integrità referenziale} serve a mantenere coerenti
+le informazioni contenute in relazioni diverse.
+L'idea fondamentale è che un attributo di una relazione può fare
+riferimento a una chiave presente in un'altra relazione.
+Consideriamo due relazioni:
+\[
+R_1(X,\ldots)
+\qquad\text{e}\qquad
+R_2(Y,\ldots)
+\]
+dove $Y$ è una chiave di $R_2$.\\
+Se $X$ è una \textbf{foreign key} che fa riferimento a $Y$, allora ogni
+valore non nullo presente in $X$ deve comparire anche in $Y$.\\
+In forma intuitiva:
+\[
+\boxed{
+X \neq \text{NULL}
+\quad\Longrightarrow\quad
+X \text{ deve corrispondere a un valore di } Y
+}
+\]
+In questo modo non è possibile fare riferimento a una tupla che non
+esiste nella relazione referenziata.\\
+\textcolor{verdeEsempio}{Esempio} consideriamo:
+\[
+\text{Infrazioni}(
+\underline{\text{Codice}},
+\underline{\text{Comune}},
+\text{Data},
+\text{Vigile},
+\text{Targa})
+\]
+e:
+\[
+\text{Vigili}(
+\underline{\text{Matricola}},
+\text{Cognome},
+\text{Nome})
+\]
+dove \texttt{Matricola} è la chiave primaria di \texttt{Vigili}.\\
+L'attributo:
+\[
+\texttt{Infrazioni.Vigile}
+\]
+fa riferimento a:
+\[
+\texttt{Vigili.Matricola}.
+\]
+Quindi:
+\[
+\boxed{
+\texttt{Infrazioni.Vigile}
+\rightarrow
+\texttt{Vigili.Matricola}
+}
+\]
+ogni valore diverso da null che compare nell'attributo Vigile di Infrazioni deve comparire anche nell'attributo Matricola di Vigili.
+% -------------------------------------------------
+
+\subsubsection{Foreign key composta}
+Una foreign key può essere costituita anche da \textbf{più attributi}.
+Consideriamo la relazione:
+\[
+\text{Infrazioni}(
+\underline{\text{Codice}},
+\underline{\text{Comune}},
+\text{Data},
+\text{Vigile},
+\text{Targa})
+\]
+dove supponiamo che:
+\[
+\{\text{Codice},\text{Comune}\}
+\]
+sia una chiave.
+Consideriamo poi:
+\[
+\text{Pagamenti}(
+\underline{\text{Transazione}},
+\text{Codice},
+\text{Comune})
+\]
+La coppia:
+\[
+(\texttt{Codice},\texttt{Comune})
+\]
+di \texttt{Pagamenti} può essere una foreign key che fa riferimento
+alla coppia:
+\[
+(\texttt{Codice},\texttt{Comune})
+\]
+di \texttt{Infrazioni}.\\
+Quindi ogni coppia non nulla presente in \texttt{Pagamenti} deve
+corrispondere a una coppia presente in \texttt{Infrazioni}:
+\[
+\boxed{
+\texttt{Pagamenti(Codice,Comune)}
+\rightarrow
+\texttt{Infrazioni(Codice,Comune)}
+}
+\]
+\textcolor{verdeEsempio}{Esempio:}
+\[
+(34321,\text{Roma})
+\]
+è valido solamente se esiste un'infrazione con:
+\[
+\texttt{Codice}=34321
+\qquad\text{e}\qquad
+\texttt{Comune}=\text{Roma}.
+\]
+È importante quindi controllare \textbf{l'intera combinazione di valori},
+non i singoli attributi separatamente.
+
+% -------------------------------------------------
+
+\subsection{Violazione dell'integrità referenziale}
+Supponiamo che \texttt{Infrazioni} sia:
+\[
+\begin{array}{c|c|c|c|c}
+\textbf{Codice} & \textbf{Comune} & \textbf{Data} &
+\textbf{Vigile} & \textbf{Targa} \\ \hline
+34321 & \text{Roma}   & 1/2/95 & 3987 & 39548K \\
+53524 & \text{Milano} & 4/3/95 & 3295 & E39548 \\
+64521 & \text{Napoli} & 5/4/96 & 3295 & H39548 \\
+73321 & \text{Roma}   & 5/2/98 & 9345 & H39548
+\end{array}
+\]
+e \texttt{Pagamenti} sia:
+\[
+\begin{array}{c|c|c}
+\textbf{Transazione} & \textbf{Codice} & \textbf{Comune} \\ \hline
+101 & 34321 & \text{Napoli} \\
+295 & 53524 & \text{Roma} \\
+300 & 73321 & \text{Roma} \\
+236 & 64521 & \text{Napoli}
+\end{array}
+\]
+Controlliamo le coppie $(\texttt{Codice},\texttt{Comune})$:
+\[
+\begin{array}{c|c}
+\textbf{Coppia in Pagamenti} & \textbf{Presente in Infrazioni?} \\ \hline
+(34321,\text{Napoli}) & \textbf{NO} \\
+(53524,\text{Roma})   & \textbf{NO} \\
+(73321,\text{Roma})   & \text{Sì} \\
+(64521,\text{Napoli}) & \text{Sì}
+\end{array}
+\]
+Le prime due tuple violano il vincolo di integrità referenziale.
+Infatti, in \texttt{Infrazioni} esiste:
+\[
+(34321,\text{Roma})
+\]
+ma non:
+\[
+(34321,\text{Napoli}).
+\]
+Allo stesso modo esiste:
+\[
+(53524,\text{Milano})
+\]
+ma non:
+\[
+(53524,\text{Roma}).
+\]
+Quindi non basta che il singolo \texttt{Codice} esista:
+deve esistere \textbf{l'intera coppia} $(\texttt{Codice},\texttt{Comune})$.
+\[
+\boxed{
+\text{Foreign key composta}
+\Rightarrow
+\text{deve corrispondere l'intera combinazione di valori}
+}
+\]
+% -------------------------------------------------
+
+\subsection{Integrità referenziale e valori NULL}
+La presenza di \texttt{NULL} in un attributo coinvolto in una foreign key
+\textbf{non costituisce necessariamente una violazione} del vincolo.
+Consideriamo:
+\[
+\text{Impiegati}(
+\underline{\text{Matricola}},
+\text{Cognome},
+\text{Progetto})
+\]
+e:
+\[
+\text{Progetti}(
+\underline{\text{Codice}},
+\text{Inizio},
+\text{Durata},
+\text{Costo})
+\]
+dove:
+\[
+\texttt{Impiegati.Progetto}
+\]
+è una foreign key verso:
+\[
+\texttt{Progetti.Codice}
+\]
+Potremmo avere:
+\[
+\begin{array}{c|c|c}
+\textbf{Matricola} & \textbf{Cognome} & \textbf{Progetto} \\ \hline
+34321 & Rossi & IDEA \\
+53524 & Neri & XYZ \\
+64521 & Verdi & \text{NULL} \\
+73032 & Bianchi & IDEA
+\end{array}
+\]
+e:
+\[
+\begin{array}{c|c}
+\textbf{Codice} & \textbf{Durata} \\ \hline
+IDEA & 36 \\
+XYZ & 24 \\
+BOH & 24
+\end{array}
+\]
+I valori:
+\[
+\text{IDEA}
+\qquad\text{e}\qquad
+\text{XYZ}
+\]
+devono esistere nella relazione \texttt{Progetti}, perché sono valori
+non nulli della foreign key.\\
+Invece:
+\[
+\texttt{Progetto}=\text{NULL}
+\]
+non richiede l'esistenza di un progetto corrispondente.
+Quindi il vincolo è comunque rispettato.
+\[
+\boxed{
+\text{Foreign key}=
+\begin{cases}
+\text{valore non NULL}
+&\Rightarrow \text{ deve esistere nella relazione referenziata}\\[2mm]
+\text{NULL}
+&\Rightarrow \text{ non richiede una corrispondenza}
+\end{cases}
+}
+\]
+
+% -------------------------------------------------
+
+\subsubsection{Esercizio}
+\[
+\text{Partita}(
+\underline{\text{Codice}},
+\text{SqCasa},
+\text{SqTrasferta},
+\text{GoalCasa},
+\text{GoalTrasferta},
+\text{Schedina})
+\]
+\[
+\text{Squadra}(
+\underline{\text{Nome}},
+\text{AnnoFondazione},
+\text{citta})
+\]
+Quali vincoli di integrita interrelazionali definireste su questo schema?\\
+Occorre definire
+\begin{enumerate}
+    \item un vincolo di integrità referenziale tra l'attributo SqCasa e la relazione Squadra
+    \item un vincolo di integrità referenziale tra l'attributo SqTrasferta e la relazione Squadra
+\end{enumerate}
+
+\subsection{Vincoli di inclusione}
+Un \textbf{vincolo di inclusione} mette in relazione gli attributi di
+due relazioni diverse.\\
+Consideriamo due relazioni:
+\[
+R_1(X,\ldots)
+\qquad\text{e}\qquad
+R_2(Y,\ldots)
+\]
+dove $X$ e $Y$ sono sequenze con lo stesso numero di attributi.
+Il vincolo di inclusione impone che ogni combinazione di valori
+\textbf{non NULL} presente negli attributi $X$ di $R_1$ debba comparire
+anche negli attributi $Y$ di $R_2$.
+Possiamo rappresentarlo come:
+\[
+\boxed{
+R_1[X] \subseteq R_2[Y]
+}
+\]
+cioè i valori presenti in $X$ devono essere inclusi nei valori
+presenti in $Y$.
+\subsubsection{Esempio}
+Consideriamo:
+\[
+\text{Impiegati}(\text{Nome},\text{Dipartimento})
+\]
+e:
+\[
+\text{Uffici}(\text{Codice},\text{Dipartimento})
+\]
+e supponiamo di avere il vincolo:
+\[
+\boxed{
+\text{Impiegati}[\text{Dipartimento}]
+\subseteq
+\text{Uffici}[\text{Dipartimento}]
+}
+\]
+Potremmo avere:
+\[
+\begin{array}{c|c}
+\textbf{Nome} & \textbf{Dipartimento} \\ \hline
+Mario & Informatica \\
+Luca & Vendite \\
+Anna & Informatica
+\end{array}
+\]
+e:
+\[
+\begin{array}{c|c}
+\textbf{Codice} & \textbf{Dipartimento} \\ \hline
+10 & Informatica \\
+20 & Vendite \\
+30 & Amministrazione
+\end{array}
+\]
+Il vincolo è rispettato perché:
+\[
+\{\text{Informatica},\text{Vendite}\}
+\subseteq
+\{\text{Informatica},\text{Vendite},\text{Amministrazione}\}.
+\]
+Se invece in \texttt{Impiegati} comparisse:
+\[
+(\text{Paolo},\text{Marketing})
+\]
+il vincolo sarebbe violato, perché:
+\[
+\text{Marketing}
+\notin
+\text{Uffici}[\text{Dipartimento}].
+\]
+
+\subsection{Differenza con l'integrità referenziale}
+Il vincolo di integrità referenziale (\textbf{foreign key}) è un
+\textbf{caso particolare} del vincolo di inclusione.\\
+Nel vincolo di inclusione:
+\[
+R_1[X] \subseteq R_2[Y]
+\]
+gli attributi $Y$ di $R_2$ \textbf{non devono necessariamente formare
+una chiave}.
+Nel vincolo di integrità referenziale, invece, gli attributi
+referenziati $Y$ \textbf{formano una chiave} di $R_2$.\\
+La differenza fondamentale è quindi:
+\[
+\boxed{
+\begin{array}{c|c}
+\textbf{Vincolo di inclusione} &
+Y \text{ non deve necessariamente essere una chiave}
+\\[2mm]
+\textbf{Integrità referenziale} &
+Y \text{ deve formare una chiave}
+\end{array}
+}
+\]
+In breve, entrambi richiedono che i valori di $R_1$ compaiano anche
+in $R_2$, ma la \textbf{foreign key} richiede in più che gli attributi
+referenziati costituiscano una chiave.
