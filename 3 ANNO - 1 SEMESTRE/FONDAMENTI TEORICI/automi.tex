@@ -1012,7 +1012,7 @@ $\longrightarrow$
             \item Scegli un nodo $n\in N$ che non sia $n_{in}$ o $n_{out}$
             \begin{itemize}[label = --]
                 \item Per ogni coppia di archi $e_{in}^{n} = (x,n,e) \in E$ e $e_{out}^{n} = (n,y,e')\in E$
-                ($ e_{in}^{n} \text{ entrante in } n, \ e_{out}^{n} \text{ uscente da } n $) \textcolor{cyan}{\textbf{aggiungi}} un arco
+                ($ e_{in}^{n} \text{ entrante in } n, \ e_{out}^{n} \text{ uscente da } n $) \textcolor{cyan}{\textbf{Aggiungi}} un arco
                 $\Big(  x,y,(e) \circ (e_n)* \circ (e')    \Big)$ dove $e_n$ è l'etichetta del cappio di $n$ (se esiste).
                 \item \textcolor{red}{\textbf{Rimuovi}} $n$ e tutti gli archi che lo nominano da $G$
             \end{itemize}
@@ -1021,4 +1021,84 @@ $\longrightarrow$
         \item Restituisci l'etichetta dell'unico arco in $G$, che rappresenta l'espressione regolare equivalente all'automa di partenza.
     \end{enumerate}
 
-    \noindent Seguendo questi passaggi si può trasformare ogni ASFND in un espressione regolare.
+    \noindent Seguendo questi passaggi si può trasformare ogni ASFND in un espressione regolare.\smallskip\\
+    \textit{Esempio.} Vediamo il primo passaggio della trasformazione da un ASFND a una espressione regolare:\\
+    \begin{minipage}{0.45\textwidth}
+        \begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.9\linewidth]{../../images/regex1}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+    \end{minipage}
+    $\longrightarrow$
+    \begin{minipage}{0.45\textwidth}
+        \begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.9\linewidth]{../../images/regex2}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+    \end{minipage}
+\noindent Abbiamo aggiunto i nodi $n_{in}$ e $n_{out}$ e sostituito gli archi da $q_0$ a $q_1$
+con un espressione regolare. Facendo questo processo per tutti gli stati si otterrà l'espressione regolare equivalente all'automa:\\
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.9\linewidth]{../../images/regex3.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+
+
+
+
+
+\section{Linguaggi finiti e infiniti}
+Quello che vogliamo fare in questa sezione è capire la correlazione tra linguaggi finiti e infiniti, e linguaggi
+regolari e non regolari. Fino ad'ora abbiamo solo visto la definizione di linguaggi regolari (vd. \ref{regolare}), ovvero un linguaggio è regolare se esiste un
+automa che lo riconosce. Per quanto rigurda i linguaggi non regolari, dobbiamo comprendere se esistono e eventualmente le proprietà che li caratterizzano.\\
+Innanzitutto possiamo dimostrare che \textbf{ogni linguaggio finito è regolare}:\smallskip\\
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{theorem}
+   Sia $\mathcal{L}$ un linguaggio sull'alfabeto $\Sigma $ tale che $|\mathcal{L}| < \infty$, allora:
+   \[      \text{Il linguaggio } \mathcal{L} \text{ è \textbf{regolare}}        \]
+\end{theorem}}}
+\begin{proof}
+    Per dimostrare il teorema bisogna prima dimostrare il seguente lemma:\smallskip\\
+    \colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{lemma}
+        Per ogni stringa $s\in \Sigma^*$, esiste un ASFND $A_s$ tale che $L(A_s) = \{ s  \}$
+\end{lemma}}}\smallskip\\
+In altre parole, per ogni singola stringa $s$, esiste un ASFND $A_s$, che accetta solo quella stringa.\\
+Proviamo questo lemma: sia $s = c_1c_2c_3...c_k$ di lunghezza $k$ ($|s| = k$), definiamo un ASFND $A_s = <\Sigma,Q_s,q_1^s,F_s,\delta_s>$ tale che $L(A) = \{ s \}$:
+\begin{itemize}[label = --]
+    \item $\{Q_s = q_1^s,q_2^s,...,q_k^s,q_{fin}^s \}$
+    \item $\delta (q_i,c_i) = \{ q_{i+1} \}$
+    \item $\delta (q_k,c_k) = \{ q_{fin}  \}$
+    \item $\delta(q,c) = \emptyset$, per ogni altra combinazione di $q\in Q$ e $c \in \Sigma$
+\end{itemize}
+La funzione di transizione $\delta$ è definita in modo che esiste solo un \textbf{unica esecuzione accettante}, ovvero quella che
+legge esattamente la stringa $c_1,c_2,...,c_k$, infatti ogni altra combinazione di $q$ e $c$ non avviene alcuna transizione ($\emptyset$).\\
+\textit{Esempio.} Automa che riconosce il linguaggio $A = \{asd\}$\\
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.5\linewidth]{../../images/reg.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent L'unica esecuzione accettante di questo automa è proprio la stringa $s = \{ asd   \}$. Ogni altra sottostringa non arriverà mai allo stato accettante $q_{fin}$.\smallskip\\
+Abbiamo quindi dimostrato che, costruendo in questo modo l'automa, il lemma è dimostrato, e ci servirà per concludere la dimostrazione del teorema.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\end{proof}
+
