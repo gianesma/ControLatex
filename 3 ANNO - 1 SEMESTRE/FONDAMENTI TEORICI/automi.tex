@@ -1150,7 +1150,7 @@ Sfruttiamo il pumping lemma per definire linguaggi non regolari:\smallskip\\
     Se per un linguaggio $\mathcal{L}$ non esiste $n \in \mathbb{N}$ con le proprietà del Pumping Lemma allora $\mathcal{L}$ \textbf{non è un linguaggio regolare}
 \end{theorem}}}\smallskip\\
 Il teorema è abbastanza intuitivo, quindi vediamo direttamente un esempio e dimostriamo la non regolarità:\smallskip\\
-\textit{Esempio.} il linguaggio $\mathcal{L} = \{  a^n b^n | n \ge 0   \}$ sull'alfabeto $\Sigma = \{ a,b  \}$ non è un linguaggio regolare, dimostriamolo:
+\textit{Esempio.} il linguaggio $\mathcal{L} = \{  a^n b^n | n \ge 0   \}$ sull'alfabeto $\Sigma = \{ a,b  \}$ non è un linguaggio regolare, dimostriamolo: \label{dimostrazione}
 l'idea è utilizzare il Pumping Lemma \textbf{per assurdo}: assumiamo che il linguaggio
 sia regolare e mostriamo che questa ipotesi porta a una contraddizione.\smallskip\\
 Il linguaggio contiene tutte le stringhe formate da un certo numero di simboli
@@ -1205,3 +1205,97 @@ Questo contraddice il Pumping Lemma, secondo cui
 L'ipotesi iniziale che $\mathcal{L}$ fosse regolare è quindi falsa.
 Concludiamo che
 \[\boxed{\mathcal{L} = \{a^n b^n \mid n \geq 0\}\text{ non è regolare.}}\]
+
+
+\subsubsection{Casi particolari}
+Esistono linguaggi che, pur essendo non regolari, riescono a soddisfare la proprietà del Pumping Lemma. In questi casi come si fa a dimostrare che tale linguaggio non è regolare?\\
+Invece di utilizzare il Pumping Lemma, sfruttiamo la \textbf{proprietà di chiusura} dell'\textbf{intersezione}, che dice che dati 2 linguaggi regolari, la loro intersezione è ancora un linguaggio regolare.\\ 
+Formalmente, dati 2 linguaggi $\mathcal{L}_1$ e $\mathcal{L}_2$ allora:
+\[    \mathcal{L}_1 \cap \mathcal{L}_2 \text{ è un linguaggio regolare}   \]
+Utilizzeremo questa proprietà per dimostrare se un linguaggio è regolare. Per fare ciò assumiamo che \textbf{per assurdo} il linguaggio in esame sia regolare. Successivamente lo intersechiamo con un linguaggio regolare, se il risultato
+dell'intersezione è un linguaggio regolare allora il linguaggio in esame è regolare, se invece, come vederemo, il risultato è un linguaggio irregolare, abbiamo una contraddizione perchè l'intersezione di 2 linguaggi regolari 
+deve essere un linguaggio regolare. Vediamo subito un esempio:
+\newpage
+\noindent \textit{Esempio.} Dimostrare che il linguaggio $\mathcal{L} = \{  c^i a^j b^k | i,j,k \in \mathbb{N} \text{ e } i = 0 \text{ oppure } j =k   \}$ non è regolare.\smallskip\\
+Supponiamo per assurdo che $\mathcal{L}$ sia regolare, e consideriamo il linguaggio
+
+\[\mathcal{L}' = L(ca^*b^*).\]
+Il linguaggio $\mathcal{L}'$ è regolare, poiché è descritto dall'espressione regolare $ca^*b^*$, quindi contiene tutte le stringhe formate da esattamente una $c$ iniziale,
+seguita da un numero arbitrario di $a$ e da un numero arbitrario di $b$.\\
+Poiché abbiamo visto che i linguaggi regolari sono chiusi rispetto all'intersezione,
+se $\mathcal{L}$ fosse regolare allora anche
+\[\mathcal{L}\cap\mathcal{L}'\]
+dovrebbe essere regolare, studiamo tale intersezione: ogni stringa appartenente a $\mathcal{L}'$ contiene esattamente una $c$,
+quindi nella definizione di $\mathcal{L}$ abbiamo
+\[i=1.\]
+Di conseguenza, il linguaggio che rappresenta l'intersezione è il seguente:
+\[\mathcal{L}\cap\mathcal{L}'=\{ca^n b^n \mid n\in\mathbb{N}\}\]
+Tale linguaggio non è regolare, poichè abbiamo già dimostrato che questo linguaggio non è regolare visto che non vale il Pumping Lemma (vd. \ref{dimostrazione}).
+Abbiamo quindi ottenuto una contraddizione e la dimostrazione è completa.
+
+
+
+
+
+
+
+
+
+
+
+\section{Automi a pila}
+Fino ad adesso abbiamo utlizzato automi che hanno una memoria limitatissima, infatti riescono a risalire solamente allo stato precendente a quello attuale. Con gli automi a pila invece iniziamo ad avere una \textbf{memoria} un po' più strutturata.
+Gli automi a pila hanno accesso ad una struttura di memoria strutturata come una pila, ovvero uno \textbf{stack} (Last In First Out).
+Questi automi, oltre a leggere lo stato corrente, possono leggere anche l'ultimo simbolo affiorante della pila, ovvero l'ultimo simbolo inserito nello stack. 
+Per questo motivo negli automi a pila la funzione di trasferimento $\delta$ diventa più complessa, poichè deve includere non solo lo stato corrente e successivo ma anche i simboli da aggiungere o rimuovere dallo stack.\smallskip\\
+Vediamo la definizione formale:\smallskip\\
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
+   Un \textbf{automa a pila non deterministico} è una 6-tupla $M$ della forma 
+   \[M=<\Sigma,\Gamma ,Q,q_0,F,\delta>\] 
+   dove:
+   \begin{itemize}[label = --]
+    \item $\Sigma$ è l'alfabeto di input
+    \item $\Gamma$ è un insieme finito di simboli, chiamato l'insieme dei simboli della pila 
+    \item $Q$ è un insieme finito e non vuoto di stati
+    \item $q_0 \in Q$ è lo stato iniziale
+    \item $F \subseteq Q$ è l'insieme degli stati finali (accettanti)
+    \item $\delta:\  Q \times \Big(  \Sigma \cup \{\epsilon\}  \Big) \times \Big(\Gamma \cup \{\epsilon\} \Big) \longrightarrow  P\Big(  Q \times \Gamma \cup \{\epsilon \}   \Big)   $ è la funzione di transizione
+   \end{itemize}
+\end{definition}}}\smallskip\\
+Scritta in questo modo la funzione di trasferimento può sembrare difficile, ma indica semplicemente che uno stato ($Q$), un simbolo ($\Sigma \cup \{\epsilon\}$) e un simbolo della pila ($\Gamma \cup \{\epsilon\}$) viene associato
+ad uno stato successivo $(Q)$ e ad un simbolo da mettere nella pila ($\Gamma \cup \{\epsilon\}$). Siccome in $\Sigma$ e $\Gamma$ sono incluse anche le $\epsilon$, si può affermare che gli automi a pila sono un $\bm{\epsilon}$\textbf{-ASFND}
+con l'aggiunta di un accesso a una pila.
+
+
+\subsection{Esecuzioni di automi a pila}
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
+  Una \textbf{esecuzione} di $A$ su $s$ è una sequenza $(q_1, \dots, q_{k+1}) \in Q^{k+1}$ di $k+1$ elementi di $Q$ tale che esiste una $\epsilon$-estensione "$x_1 x_2 \dots x_k$" di $s$ e una sequenza di stringhe $t_1, t_2, \dots, t_{k+1}$ sull'alfabeto $\Gamma$ con le seguenti proprietà
+    \begin{enumerate}
+        \item $q_1 = I$ e $t_1 = \epsilon$ (l'esecuzione parte sempre dallo stato iniziale e dalla memoria vuota)
+        \item Per ogni $i = 1, \dots, k$,
+        \begin{enumerate}
+            \item $t_i = g_i z$ e $t_{i+1} = g_{i+1} z$, con $g_i, g_{i+1} \in \Gamma \cup \{\epsilon\}$ e $z \in \Gamma^*$
+            \item $(q_{i+1}, g_{i+1}) \in \delta(q_i, x_i, g_i)$
+        \end{enumerate}
+    \end{enumerate}
+\end{definition}}}\smallskip\\
+In altre parole, l'automa parte dallo stato iniziale e con lo stack vuoto. Successivamente, ad ogni passo, l'automa legge sia il simbolo dell'input sia il simbolo raffiorante dallo stack (inizialmente vuoto) e in base alla funzione di transizione
+$\delta $ decide qual è lo stato interno successivo e se aggiungere un simbolo $g$ allo stack (\texttt{push g}) o se rimuovere il simbolo affiorante dello stack (\texttt{pop g}). Vediamo quindi un esempio:\smallskip\\
+\textit{Esempio.}
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.9\linewidth]{../../images/pila.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.9\linewidth]{../../images/pila2.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+
+
+
+
+\
