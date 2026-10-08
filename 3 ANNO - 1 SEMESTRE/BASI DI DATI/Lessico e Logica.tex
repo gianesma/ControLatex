@@ -154,3 +154,97 @@ Le due query esprimono quindi la stessa condizione:
 l'impiegato deve \textbf{non essere di Roma}
 \textbf{e contemporaneamente} deve avere uno stipendio
 non superiore a 2000.
+\subsection{Implicazioni}
+Ricordiamo che un'implicazione:
+\[
+P \Rightarrow Q
+\]
+si legge:
+\begin{center}
+``se $P$, allora $Q$''.
+\end{center}
+L'implicazione è falsa solamente quando $P$ è vera e $Q$ è falsa.
+\subsubsection{Legge della contronominale}
+La prima regola è:
+\[
+\boxed{
+P \Rightarrow Q
+\quad \equiv \quad
+\neg Q \Rightarrow \neg P
+}
+\]
+In italiano si legge:
+\begin{center}
+\textbf{``Se $P$ allora $Q$'' equivale a ``se NON $Q$ allora NON $P$''.}
+\end{center}
+Quindi, invece di dimostrare direttamente che da $P$ segue $Q$,
+possiamo ragionare al contrario: se $Q$ non è vera, allora nemmeno
+$P$ può essere vera.\\
+\textcolor{verdeEsempio}{Esempio}
+Siano:
+\[
+P = \text{``un numero è divisibile per 4''}
+\]
+\[
+Q = \text{``un numero è pari''}.
+\]
+Abbiamo:
+\[
+P \Rightarrow Q
+\]
+cioè:
+\begin{center}
+``Se un numero è divisibile per 4, allora è pari''.
+\end{center}
+La contronominale è:
+\[
+\neg Q \Rightarrow \neg P
+\]
+cioè:
+\begin{center}
+``Se un numero NON è pari, allora NON è divisibile per 4''.
+\end{center}
+Le due proposizioni sono equivalenti.\\
+La seconda regola è:
+\[
+\boxed{
+P \Rightarrow Q
+\quad \equiv \quad
+(P \land \neg Q) \Rightarrow (R \land \neg R)
+}
+\]
+In italiano:
+\begin{center}
+\textbf{``Se $P$ allora $Q$'' equivale a supporre $P$ vera e $Q$ falsa
+e mostrare che ciò porta a una contraddizione.}
+\end{center}
+Infatti, per dimostrare:
+\[
+P \Rightarrow Q,
+\]
+si assume contemporaneamente:
+\[
+P
+\qquad\text{e}\qquad
+\neg Q.
+\]
+Se da queste ipotesi si arriva a una contraddizione:
+\[
+R \land \neg R,
+\]
+significa che non è possibile avere contemporaneamente $P$ vera e
+$Q$ falsa.
+Ma questo è proprio l'unico caso in cui:
+\[
+P \Rightarrow Q
+\]
+sarebbe falsa.
+Quindi:
+\[
+\boxed{
+P \land \neg Q
+\Rightarrow \text{contraddizione}
+\quad\Longrightarrow\quad
+P \Rightarrow Q
+}
+\]
