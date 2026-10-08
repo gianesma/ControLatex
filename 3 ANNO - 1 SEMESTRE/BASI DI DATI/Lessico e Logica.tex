@@ -204,47 +204,91 @@ cioè:
 \begin{center}
 ``Se un numero NON è pari, allora NON è divisibile per 4''.
 \end{center}
-Le due proposizioni sono equivalenti.\\
-La seconda regola è:
+Le due proposizioni sono equivalenti.
+\subsubsection{Eliminazione implicazione}
+Un'implicazione:
+\[
+P \Rightarrow Q
+\]
+può essere riscritta utilizzando solamente la negazione e la
+disgiunzione:
 \[
 \boxed{
 P \Rightarrow Q
 \quad \equiv \quad
-(P \land \neg Q) \Rightarrow (R \land \neg R)
+\neg P \lor Q
 }
 \]
-In italiano:
+In italiano si legge:
 \begin{center}
-\textbf{``Se $P$ allora $Q$'' equivale a supporre $P$ vera e $Q$ falsa
-e mostrare che ciò porta a una contraddizione.}
+\textbf{``Se $P$ allora $Q$'' equivale a ``NON $P$ oppure $Q$''.}
 \end{center}
-Infatti, per dimostrare:
-\[
-P \Rightarrow Q,
-\]
-si assume contemporaneamente:
-\[
-P
-\qquad\text{e}\qquad
-\neg Q.
-\]
-Se da queste ipotesi si arriva a una contraddizione:
-\[
-R \land \neg R,
-\]
-significa che non è possibile avere contemporaneamente $P$ vera e
-$Q$ falsa.
-Ma questo è proprio l'unico caso in cui:
+\paragraph{Perché sono equivalenti?}
+L'implicazione:
 \[
 P \Rightarrow Q
 \]
-sarebbe falsa.
-Quindi:
+è falsa solamente nel caso in cui $P$ sia vera e $Q$ sia falsa.
+Consideriamo ora:
+\[
+\neg P \lor Q.
+\]
+Affinché una disgiunzione sia falsa, entrambe le sue parti devono
+essere false. Quindi deve accadere che:
+\[
+\neg P = \text{falso}
+\qquad\text{e}\qquad
+Q = \text{falso}.
+\]
+Ma $\neg P$ è falso quando $P$ è vero. Otteniamo quindi:
+\[
+P = \text{vero}
+\qquad\text{e}\qquad
+Q = \text{falso}.
+\]
+È esattamente l'unico caso in cui anche $P \Rightarrow Q$ è falsa.
+Per questo le due espressioni sono equivalenti.
+\paragraph{Tabella di verità}
+\[
+\begin{array}{c|c|c|c}
+P & Q & P \Rightarrow Q & \neg P \lor Q \\ \hline
+V & V & V & V \\
+V & F & F & F \\
+F & V & V & V \\
+F & F & V & V
+\end{array}
+\]
+Le ultime due colonne sono identiche, quindi:
 \[
 \boxed{
-P \land \neg Q
-\Rightarrow \text{contraddizione}
-\quad\Longrightarrow\quad
 P \Rightarrow Q
+\equiv
+\neg P \lor Q
 }
 \]
+\textcolor{verdeEsempio}{Esempio}
+Siano:
+\[
+P = \text{``un numero è divisibile per 4''}
+\]
+e
+\[
+Q = \text{``il numero è pari''}.
+\]
+L'implicazione:
+\[
+P \Rightarrow Q
+\]
+significa:
+\begin{center}
+``Se un numero è divisibile per 4, allora è pari''.
+\end{center}
+Utilizzando l'equivalenza possiamo scriverla come:
+\[
+\neg P \lor Q,
+\]
+cioè:
+\begin{center}
+``Il numero NON è divisibile per 4 oppure è pari''.
+\end{center}
+Le due proposizioni hanno esattamente lo stesso significato logico.
