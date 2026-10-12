@@ -1534,3 +1534,726 @@ BIT VARYING(n)
 
 % ---------------------------------------------------------
 
+\section{Manipolazione dei dati - da fare}
+\subsection{Modifiche degli schemi}
+Permette di moficare una tabella
+\textcolor{verdeEsempio}{Esempio: }
+\begin{verbatim}
+    create table Infrazioni()
+\end{verbatim}
+\section{Interrogazioni complesse}
+\subsection{interrogazioni annidate}
+Le \textbf{interrogazioni annidate} (o \textbf{sottoquery}) sono istruzioni \texttt{SELECT} inserite all'interno di altre query SQL, racchiuse tra parentesi.
+Possono comparire in diverse parti di una query, in particolare nella clausola \texttt{WHERE}, dove permettono di:
+\begin{itemize}
+    \item Confrontare uno o più attributi con il risultato di una sottoquery.
+    \item Verificare condizioni esistenziali, cioè la presenza di elementi che soddisfano determinate condizioni.
+\end{itemize}
+\subsection{Semantica delle interrogazioni annidate}
+La semantica della query principale rimane invariata: per ogni tupla del prodotto cartesiano delle tabelle nella \texttt{FROM}, viene valutata la condizione nella \texttt{WHERE}.
+Se la condizione contiene una sottoquery, è necessario valutarne il risultato per stabilire se la tupla soddisfa la condizione.
+Concettualmente, la sottoquery viene quindi valutata per ogni tupla della query esterna, anche se il DBMS può ottimizzarne l'esecuzione.
+\subsection{Operatori per le sottoquery}
+Il risultato di una sottoquery può essere confrontato con uno o più attributi mediante diversi operatori.
+\begin{itemize}
+    \item \textbf{Operatori di confronto} (\texttt{=}, \texttt{<>}, \texttt{<}, \texttt{>}, ecc.): richiedono che la sottoquery restituisca al massimo un valore. Se non restituisce alcun valore, il confronto produce \texttt{UNKNOWN}, che nella \texttt{WHERE} non seleziona la tupla.
+    \item \textbf{\texttt{ANY}}: la condizione è vera se il confronto è soddisfatto da \textbf{almeno un valore} restituito dalla sottoquery.
+    \item \textbf{\texttt{ALL}}: la condizione è vera se il confronto è soddisfatto da \textbf{tutti i valori} restituiti dalla sottoquery.
+    \item \textbf{\texttt{IN}}: verifica se un valore appartiene all'insieme restituito dalla sottoquery. È equivalente a \texttt{= ANY}.
+    \item \textbf{\texttt{NOT IN}}: verifica se un valore non appartiene all'insieme restituito dalla sottoquery. È equivalente a \texttt{<> ALL}.
+    \item \textbf{\texttt{EXISTS}}: verifica se la sottoquery restituisce almeno una tupla, indipendentemente dai valori contenuti.
+\end{itemize}
+\noindent
+\textbf{Nota:} \texttt{ANY} restituisce \texttt{FALSE} se la sottoquery è vuota, mentre \texttt{ALL} restituisce \texttt{TRUE}. La presenza di valori \texttt{NULL} può produrre risultati \texttt{UNKNOWN} nei confronti.
+\subsection{Esempi}
+Si considerino le relazioni:
+\begin{itemize}
+    \item \texttt{persone(nome, reddito)}
+    \item \texttt{paternita(padre, figlio)}
+\end{itemize}
+\subsubsection{1. Nome e reddito del padre di Franco}
+\begin{verbatim}
+SELECT nome, reddito
+FROM persone
+WHERE nome = (
+    SELECT padre
+    FROM paternita
+    WHERE figlio = 'Franco'
+);
+\end{verbatim}
+La sottoquery individua il padre di Franco, mentre la query esterna ne restituisce nome e reddito.
+In questo caso si utilizza \texttt{=} perché si assume che Franco abbia un solo padre nella relazione.
+\subsubsection*{2. Padri di persone con reddito superiore a 20 milioni}
+\begin{verbatim}
+SELECT nome, reddito
+FROM persone
+WHERE nome IN (
+    SELECT padre
+    FROM paternita, persone
+    WHERE figlio = nome
+      AND reddito > 20
+);
+\end{verbatim}
+La sottoquery individua i padri delle persone con reddito superiore a 20 milioni.
+La query esterna restituisce nome e reddito di tali padri.
+Si utilizza \texttt{IN} perché la sottoquery può restituire più valori.
+La condizione può essere scritta equivalentemente utilizzando \texttt{= ANY}:
+\begin{verbatim}
+WHERE nome = ANY (
+    SELECT padre
+    FROM paternita, persone
+    WHERE figlio = nome
+      AND reddito > 20
+);
+\end{verbatim}
+\subsubsection*{3. Sottoquery annidate su più livelli}
+È possibile inserire una sottoquery all'interno di un'altra sottoquery:
+\begin{verbatim}
+SELECT nome, reddito
+FROM persone
+WHERE nome IN (
+    SELECT padre
+    FROM paternita
+    WHERE figlio IN (
+        SELECT nome
+        FROM persone
+        WHERE reddito > 20
+    )
+);
+\end{verbatim}
+L'esecuzione logica procede dall'interno verso l'esterno:
+\begin{enumerate}
+    \item La query più interna individua le persone con reddito superiore a 20 milioni.
+    \item La query intermedia individua i loro padri.
+    \item La query esterna restituisce nome e reddito dei padri individuati.
+\end{enumerate}
+\subsubsection*{4. Sottoquery con operatore ALL}
+Trovare i nomi delle persone che hanno un reddito maggiore di quello di tutte le persone con meno di 30 anni.
+\begin{verbatim}
+SELECT nome
+FROM persone
+WHERE reddito > ALL (
+    SELECT reddito
+    FROM persone
+    WHERE eta < 30
+);
+\end{verbatim}
+La sottoquery restituisce i redditi delle persone con meno di 30 anni.
+La query esterna seleziona soltanto le persone il cui reddito è superiore a \textbf{tutti i redditi} restituiti dalla sottoquery.
+In particolare:
+\begin{itemize}
+    \item La condizione è vera se il reddito è maggiore di ogni valore restituito.
+    \item Se la sottoquery è vuota, la condizione con \texttt{ALL} è vera.
+\end{itemize}
+\subsubsection*{5. Utilizzo dell'operatore EXISTS}
+L'operatore \texttt{EXISTS} verifica se il risultato di una sottoquery è \textbf{non vuoto}.
+Restituisce:
+\begin{itemize}
+    \item \texttt{TRUE} se la sottoquery restituisce almeno una tupla.
+    \item \texttt{FALSE} se la sottoquery non restituisce alcuna tupla.
+\end{itemize}
+\textcolor{verdeEsempio}{Esempio:} trovare tutte le persone che hanno almeno un figlio.
+\begin{verbatim}
+SELECT *
+FROM persone p
+WHERE EXISTS (
+    SELECT *
+    FROM paternita
+    WHERE padre = p.nome
+)
+OR EXISTS (
+    SELECT *
+    FROM maternita
+    WHERE madre = p.nome
+);
+\end{verbatim}
+La query verifica due condizioni:
+\begin{enumerate}
+    \item La prima sottoquery controlla se la persona compare come padre nella relazione \texttt{paternita}.
+    \item La seconda sottoquery controlla se la persona compare come madre nella relazione \texttt{maternita}.
+\end{enumerate}
+Grazie all'operatore \texttt{OR}, è sufficiente che almeno una delle due condizioni sia vera.\medskip\\
+\textbf{Funzionamento logico:}
+\begin{enumerate}
+    \item Si considera una tupla della tabella esterna \texttt{persone}.
+    \item Si eseguono logicamente le sottoquery utilizzando il valore \texttt{p.nome} della tupla corrente.
+    \item Si verifica se almeno una delle sottoquery restituisce una tupla.
+    \item Se la condizione è vera, la persona viene inclusa nel risultato.
+\end{enumerate}
+
+\subsection{Semantica e visibilità delle interrogazioni annidate}
+\subsubsection*{Semantica}
+Nelle interrogazioni annidate, una sottoquery correlata viene
+\textbf{concettualmente valutata per ogni tupla della query esterna},
+utilizzando i valori degli attributi della tupla corrente.
+\subsubsection*{Regole di visibilità}
+La \textbf{visibilità} determina quali attributi e alias possono essere
+utilizzati all'interno di una sottoquery.
+Le regole principali sono:
+\begin{itemize}
+    \item Una sottoquery può accedere agli attributi delle tabelle
+    dichiarate nella propria clausola \texttt{FROM}.
+    
+    \item Può accedere anche agli attributi delle query esterne
+    che la contengono.
+    
+    \item Le tabelle e gli alias definiti nelle query interne
+    \textbf{non sono visibili nelle query esterne}.
+    
+    \item Se due livelli definiscono attributi con lo stesso nome,
+    prevale quello del \textbf{livello più interno} (mascheramento).
+    
+    \item Se un attributo non è qualificato, SQL cerca il suo nome
+    a partire dal livello corrente, procedendo verso quelli esterni.
+    Se nello stesso livello il riferimento è ambiguo, viene generato
+    un errore.
+\end{itemize}
+\subsubsection*{visibilità degli attributi esterni}
+Trovare le persone che hanno almeno un figlio.
+\begin{verbatim}
+SELECT *
+FROM persone
+WHERE EXISTS (
+    SELECT *
+    FROM paternita
+    WHERE padre = nome
+)
+OR EXISTS (
+    SELECT *
+    FROM maternita
+    WHERE madre = nome
+);
+\end{verbatim}
+L'attributo \texttt{nome} non appartiene alle tabelle
+\texttt{paternita} e \texttt{maternita}, quindi viene cercato
+nella query esterna, dove è presente nella tabella \texttt{persone}.
+Le sottoquery sono quindi \textbf{correlate}, poiché utilizzano
+un attributo della query esterna.
+\subsubsection*{visibilità tra sottoquery}
+Si consideri la seguente interrogazione:
+\begin{verbatim}
+SELECT *
+FROM impiegato
+WHERE dipart IN (
+    SELECT nome
+    FROM dipartimento D1
+    WHERE nome = 'Produzione'
+)
+OR dipart IN (
+    SELECT nome
+    FROM dipartimento D2
+    WHERE D2.citta = D1.citta
+);
+\end{verbatim}
+Questa interrogazione è \textbf{scorretta}.
+L'alias \texttt{D1} è definito nella prima sottoquery,
+mentre viene utilizzato nella seconda.
+Le due sottoquery si trovano allo stesso livello di annidamento:
+\textbf{gli alias definiti in una sottoquery non sono visibili
+nelle altre sottoquery dello stesso livello}.
+Di conseguenza, il riferimento \texttt{D1.citta} non è valido.
+
+\subsubsection*{Visibilità delle variabili nei blocchi interni}
+Gli attributi delle tabelle definite in una sottoquery
+\textbf{non possono essere utilizzati direttamente nella
+clausola SELECT della query esterna}.\\
+\textcolor{verdeEsempio}{Esempio:} trovare nome e reddito dei padri di persone
+che guadagnano più di 20 milioni, indicando anche il reddito del figlio.
+La seguente interrogazione è corretta:
+\begin{verbatim}
+SELECT DISTINCT p.nome, p.reddito, f.reddito
+FROM persone p, paternita, persone f
+WHERE p.nome = padre
+  AND figlio = f.nome
+  AND f.reddito > 20;
+\end{verbatim}
+In questo caso:
+\begin{itemize}
+    \item \texttt{p} rappresenta il padre.
+    \item \texttt{f} rappresenta il figlio.
+    \item Entrambi gli alias sono definiti nella stessa
+    clausola \texttt{FROM}, quindi i rispettivi attributi
+    sono visibili nella \texttt{SELECT}.
+\end{itemize}
+Non sarebbe invece corretto scrivere:
+\begin{verbatim}
+SELECT nome, reddito, f.reddito
+FROM persone
+WHERE nome IN (
+    SELECT padre
+    FROM paternita
+    WHERE figlio IN (
+        SELECT nome
+        FROM persone f
+        WHERE f.reddito > 20
+    )
+);
+\end{verbatim}
+L'errore è nel riferimento \texttt{f.reddito} della
+\texttt{SELECT} esterna.
+L'alias \texttt{f} è definito soltanto nella sottoquery
+più interna e \textbf{non è visibile nella query esterna}.
+
+\subsection{Interrogazioni annidate e correlate}
+Una \textbf{sottoquery correlata} può utilizzare attributi o alias
+definiti nella query esterna.
+Questo permette di esprimere condizioni che dipendono dalla tupla
+attualmente considerata nella query principale.
+\subsubsection*{condizioni universali con NOT EXISTS}
+Trovare i padri i cui figli guadagnano \textbf{tutti più di 20 milioni}.
+\begin{verbatim}
+SELECT DISTINCT z.padre
+FROM paternita z
+WHERE NOT EXISTS (
+    SELECT *
+    FROM paternita p
+    JOIN persone f ON p.figlio = f.nome
+    WHERE z.padre = p.padre
+      AND f.reddito <= 20
+);
+\end{verbatim}
+La query utilizza \texttt{NOT EXISTS} per verificare che
+\textbf{non esista alcun figlio} con reddito minore o uguale a 20 milioni.
+Il funzionamento è il seguente:
+\begin{enumerate}
+    \item La query esterna considera i padri presenti in
+    \texttt{paternita}, identificati dall'alias \texttt{z}.
+
+    \item La sottoquery cerca eventuali figli dello stesso padre
+    con reddito minore o uguale a 20 milioni.
+    
+    \item La condizione \texttt{z.padre = p.padre} collega
+    la sottoquery alla query esterna, rendendola \textbf{correlata}.
+    
+    \item \texttt{NOT EXISTS} è vero soltanto se la sottoquery
+    non restituisce alcuna tupla.
+    
+    \item \texttt{DISTINCT} elimina eventuali duplicati,
+    restituendo ciascun padre una sola volta.
+\end{enumerate}
+\noindent
+\textbf{Concetto fondamentale:}
+Una condizione universale, cioè valida per \textbf{tutti}
+gli elementi, può essere espressa verificando che
+\textbf{non esistano elementi che la violano}.
+\subsection{Differenza mediante annidamento}
+\noindent
+\begin{minipage}[c]{0.38\textwidth}
+\footnotesize
+\begin{verbatim}
+SELECT nome
+FROM impiegato
+EXCEPT
+SELECT cognome AS nome
+FROM impiegato
+\end{verbatim}
+\end{minipage}%
+\hspace{0.3cm}%
+$\Longleftrightarrow$%
+\hspace{0.3cm}%
+\begin{minipage}[c]{0.5\textwidth}
+\footnotesize
+\begin{verbatim}
+SELECT nome
+FROM impiegato
+WHERE nome NOT IN (
+    SELECT cognome
+    FROM impiegato)
+\end{verbatim}
+\end{minipage}
+\subsection{Intersezione mediante annidamento}
+\begin{minipage}[c]{0.38\textwidth}
+\footnotesize
+\begin{verbatim}
+SELECT nome from impiegato
+    INTERSECTION
+SELECT cognome as nome from impiegato 
+\end{verbatim}
+\end{minipage}
+\hspace{0.3cm}
+$\Longleftrightarrow$%
+\hspace{0.3cm}
+\begin{minipage}[c]{0.48\textwidth}
+\begin{verbatim}
+SELECT nome
+FROM impiegato
+WHERE nome in (select cognome 
+                from impiegato)
+\end{verbatim}
+\end{minipage}
+
+\subsection{Condizione su più attributi con annidamento}
+Le interrogazioni annidate permettono di confrontare anche
+\textbf{tuple composte da più attributi}, anziché singoli valori.
+Per rappresentare una tupla si utilizza una lista di attributi
+separati da virgole e racchiusi tra parentesi tonde:
+\[
+(\texttt{attributo1}, \texttt{attributo2}, \ldots)
+\]
+\subsubsection*{Esempio: confronto tra coppie di attributi}
+Trovare le persone che hanno una coppia
+\textbf{(età, reddito) diversa da quella di tutte le altre persone}.
+\begin{verbatim}
+SELECT *
+FROM persone p
+WHERE (eta, reddito) NOT IN (
+    SELECT eta, reddito
+    FROM persone
+    WHERE nome <> p.nome
+);
+\end{verbatim}
+Il funzionamento è il seguente:
+\begin{enumerate}
+    \item La query esterna considera una persona \texttt{p}.
+    \item La sottoquery restituisce le coppie
+    \texttt{(eta, reddito)} di tutte le altre persone.
+    \item \texttt{NOT IN} verifica che la coppia della persona
+    corrente non sia presente tra quelle restituite.
+    \item Se la condizione è vera, la persona viene selezionata.
+\end{enumerate}
+La sottoquery è \textbf{correlata}, poiché utilizza
+\texttt{p.nome}, definito nella query esterna.
+
+\section{Interrogazioni annidate nella clausola FROM}
+Le sottoquery possono comparire anche nella clausola \texttt{FROM},
+oltre che nella \texttt{WHERE}.
+In questo caso prendono il nome di \textbf{query derivate},
+\textbf{viste inline} o \textbf{table expression}.
+Una vista inline è una \textbf{tabella temporanea calcolata}
+attraverso una query \texttt{SELECT}, il cui risultato viene
+utilizzato come tabella nella query esterna.
+\textbf{Caratteristiche principali:}
+\begin{itemize}
+    \item La sottoquery deve essere racchiusa tra parentesi tonde.
+    \item Deve avere un \textbf{alias}, utilizzato per riferirsi
+    alla tabella derivata.
+    \item Può essere utilizzata come una normale tabella
+    nelle operazioni di \texttt{JOIN}.
+    \item Può contenere aggregazioni, \texttt{GROUP BY}
+    e altre operazioni SQL.
+\end{itemize}
+\subsubsection*{Esempio: vista inline nella FROM}
+Trovare i padri delle persone con più di 30 anni.
+\begin{verbatim}
+SELECT p.padre
+FROM paternita p,
+     (SELECT nome
+      FROM persone
+      WHERE eta > 30) f
+WHERE f.nome = p.figlio;
+\end{verbatim}
+La sottoquery genera una tabella temporanea \texttt{f}
+contenente i nomi delle persone con più di 30 anni.
+La query esterna confronta tali nomi con l'attributo
+\texttt{figlio} della relazione \texttt{paternita},
+restituendo i rispettivi padri.
+\subsection{Utilizzo con JOIN esplicito}
+La stessa interrogazione può essere scritta utilizzando
+un \texttt{JOIN} esplicito:
+\begin{verbatim}
+SELECT p.padre
+FROM paternita p
+JOIN (
+    SELECT nome
+    FROM persone
+    WHERE eta > 30
+) f ON f.nome = p.figlio;
+\end{verbatim}
+Le due interrogazioni sono \textbf{equivalenti}:
+la differenza riguarda soltanto la sintassi utilizzata
+per effettuare il collegamento tra le tabelle.
+\subsection{Viste inline e aggregazioni}
+Le viste inline sono particolarmente utili quando
+si vuole effettuare un \texttt{JOIN} con il risultato
+di una \textbf{query aggregata}.
+\textcolor{verdeEsempio}{Esempio:} per ogni persona, trovare il nome,
+l'età e il numero di persone che hanno la stessa età.
+\begin{verbatim}
+SELECT p.nome, p.eta, v.conta
+FROM persona p
+JOIN (
+    SELECT eta, COUNT(*) AS conta
+    FROM persona
+    GROUP BY eta
+) v ON p.eta = v.eta;
+\end{verbatim}
+Il funzionamento è il seguente:
+\begin{enumerate}
+    \item La sottoquery raggruppa le persone per età
+    mediante \texttt{GROUP BY}.
+    
+    \item Per ogni età calcola il numero di persone
+    attraverso \texttt{COUNT(*)}.
+    
+    \item Il risultato viene trattato come una tabella
+    temporanea identificata dall'alias \texttt{v}.
+    
+    \item La query esterna effettua un \texttt{JOIN}
+    tra ogni persona e il gruppo corrispondente
+    alla sua età.
+\end{enumerate}
+In questo modo, a ogni persona viene associato
+il numero totale di persone della sua stessa età.
+\subsection{Aggregazioni su query aggregate}
+Le viste inline permettono anche di eseguire
+\textbf{aggregazioni sul risultato di altre aggregazioni}.\\
+\textcolor{verdeEsempio}{Esempio:} determinare, per ogni possibile numero
+di figli, quante madri hanno esattamente quel numero di figli.
+\begin{verbatim}
+SELECT t.conta AS numfigli,
+       COUNT(*) AS numgenitori
+FROM (
+    SELECT genitore, COUNT(*) AS conta
+    FROM genia
+    GROUP BY genitore
+) t
+GROUP BY t.conta;
+\end{verbatim}
+La query contiene \textbf{due livelli di aggregazione}:
+\begin{enumerate}
+    \item \textbf{Aggregazione interna:}
+    \begin{itemize}
+        \item Raggruppa le tuple per \texttt{genitore}.
+        \item Conta il numero di figli di ciascun genitore.
+        \item Produce una tabella con gli attributi
+        \texttt{genitore} e \texttt{conta}.
+    \end{itemize}
+    \item \textbf{Aggregazione esterna:}
+    \begin{itemize}
+        \item Raggruppa i genitori in base al numero
+        di figli (\texttt{t.conta}).
+        \item Conta quanti genitori hanno lo stesso
+        numero di figli.
+    \end{itemize}
+\end{enumerate}
+Il risultato contiene:
+\begin{itemize}
+    \item \texttt{numfigli}: numero di figli.
+    \item \texttt{numgenitori}: numero di genitori
+    che hanno esattamente quel numero di figli.
+\end{itemize}
+\noindent
+\textbf{Nota:} la query considera soltanto i genitori
+presenti nella relazione \texttt{genia}, quindi
+non include quelli con zero figli.
+
+\subsection{Importanza delle viste inline e clausola WITH}
+Le \textbf{viste inline} permettono di utilizzare il risultato
+di una sottoquery come tabella temporanea nella clausola \texttt{FROM}.
+Sono particolarmente utili per combinare risultati di più query
+e applicare successivamente operazioni di aggregazione.
+\subsubsection*{Esempio: media dei voti di tutti gli esami}
+Si considerino le relazioni:
+\begin{itemize}
+    \item \texttt{EsamiTriennale(matricola, corso, voto)}
+    \item \texttt{EsamiMagistrale(matricola, corso, voto)}
+\end{itemize}
+Si vuole calcolare la \textbf{media dei voti di tutti gli esami}
+(triennale e magistrale) per ciascuno studente.
+\begin{verbatim}
+SELECT v.matricola, AVG(v.voto)
+FROM (
+    SELECT matricola, corso, voto
+    FROM EsamiTriennale
+    UNION ALL
+    SELECT matricola, corso, voto
+    FROM EsamiMagistrale
+) v
+GROUP BY v.matricola;
+\end{verbatim}
+Il funzionamento è il seguente:
+\begin{enumerate}
+    \item La sottoquery combina gli esami della triennale
+    e della magistrale mediante \texttt{UNION ALL}.
+    
+    \item Il risultato viene trattato come una tabella
+    temporanea identificata dall'alias \texttt{v}.
+    
+    \item La query esterna raggruppa gli esami per
+    \texttt{matricola}.
+    
+    \item \texttt{AVG(v.voto)} calcola la media dei voti
+    di ciascuno studente.
+\end{enumerate}
+\noindent
+\textbf{Nota:} si utilizza \texttt{UNION ALL} per mantenere
+tutti gli esami, anche quelli con valori identici.
+L'operatore \texttt{UNION}, presente nelle slide, elimina
+invece eventuali tuple duplicate.
+\subsubsection{La clausola WITH}
+La clausola \texttt{WITH} permette di definire una o più
+\textbf{tabelle temporanee nominate}, dette anche
+\textbf{CTE} (\textit{Common Table Expressions}).
+Queste tabelle possono essere utilizzate nella query
+principale come normali relazioni.
+La clausola \texttt{WITH} rappresenta quindi un'alternativa
+alle viste inline, rendendo le interrogazioni più leggibili
+e modulari.
+\subsubsection*{Esempio: media dei voti con WITH}
+La query precedente può essere riscritta come:
+\begin{verbatim}
+WITH miavista(mat, cor, vot) AS (
+    SELECT matricola, corso, voto
+    FROM EsamiTriennale
+    UNION ALL
+    SELECT matricola, corso, voto
+    FROM EsamiMagistrale
+)
+SELECT miavista.mat, AVG(miavista.vot)
+FROM miavista
+GROUP BY miavista.mat;
+\end{verbatim}
+In questo caso:
+\begin{itemize}
+    \item \texttt{WITH} definisce una tabella temporanea
+    chiamata \texttt{miavista}.
+    
+    \item \texttt{(mat, cor, vot)} specifica i nomi
+    degli attributi della tabella temporanea.
+    
+    \item La query principale utilizza \texttt{miavista}
+    nella clausola \texttt{FROM} come una normale tabella.
+\end{itemize}
+
+\subsubsection*{Definizione di più viste con WITH}
+È possibile definire \textbf{più tabelle temporanee}
+all'interno della stessa clausola \texttt{WITH}.
+La sintassi generale è:
+\begin{verbatim}
+WITH V1 AS (
+    SELECT ...
+),
+V2 AS (
+    SELECT ...
+),
+...
+Vn AS (
+    SELECT ...
+)
+SELECT ...
+FROM ...
+WHERE ...;
+\end{verbatim}
+Le viste \texttt{V1}, \texttt{V2}, \ldots, \texttt{Vn}
+possono essere utilizzate nella query principale
+come normali tabelle.
+Inoltre, una CTE può fare riferimento alle CTE
+definite precedentemente nella stessa clausola
+\texttt{WITH}.
+\medskip
+\noindent
+\textbf{Differenza tra viste inline e WITH:}
+\begin{itemize}
+    \item \textbf{Vista inline}: la sottoquery è definita
+    direttamente nella clausola \texttt{FROM}.
+    
+    \item \textbf{WITH}: la sottoquery viene definita
+    prima della query principale e associata a un nome.
+    
+    \item Entrambe permettono di utilizzare risultati
+    intermedi come tabelle, ma \texttt{WITH} facilita
+    la lettura e il riutilizzo delle sottoquery.
+\end{itemize}
+\section{Interrogazioni annidate nella target list}
+Finora abbiamo visto interrogazioni annidate nelle clausole
+\texttt{WHERE} e \texttt{FROM}. Tuttavia, è possibile
+inserire sottoquery anche nella \textbf{target list},
+ovvero nella clausola \texttt{SELECT}.
+In questo caso, la sottoquery deve restituire
+\textbf{un solo valore} per ogni tupla della query esterna.
+\subsubsection*{Esempio}
+Vogliamo ottenere il nome di ogni persona con reddito
+maggiore di 10 e, accanto al nome, il numero di persone
+che hanno la sua stessa età.
+\begin{verbatim}
+SELECT p.nome,
+       (SELECT COUNT(*)
+        FROM persone
+        WHERE eta = p.eta)
+FROM persone p
+WHERE p.reddito > 10;
+\end{verbatim}
+La sottoquery nella clausola \texttt{SELECT} è
+\textbf{correlata}, poiché utilizza l'attributo
+\texttt{p.eta}, che appartiene alla query esterna.
+\textbf{Semantica:}
+\begin{itemize}
+    \item La query esterna seleziona le persone
+    con reddito maggiore di 10.
+    \item Per ogni persona selezionata viene
+    eseguita logicamente la sottoquery.
+    \item La sottoquery conta quante persone
+    hanno la stessa età della persona corrente.
+    \item Il risultato viene riportato accanto
+    al nome della persona.
+\end{itemize}
+Quindi, per ogni tupla della query esterna,
+la target list viene calcolata valutando
+anche la sottoquery presente al suo interno.
+\medskip
+\noindent
+\textbf{Nota:} una sottoquery utilizzata come
+espressione scalare nella target list deve
+restituire una sola colonna e al massimo una riga.
+Le funzioni aggregate come \texttt{COUNT(*)}
+sono particolarmente utili perché restituiscono
+un singolo valore.
+\section{Interrogazioni annidate nella clausola HAVING}
+Le sottoquery possono comparire anche nella
+clausola \texttt{HAVING}, utilizzata per
+\textbf{filtrare i gruppi} prodotti da
+\texttt{GROUP BY}.
+\subsubsection*{Esempio}
+Vogliamo conoscere le età delle persone
+per le quali la somma dei redditi delle persone
+con quella età è \textbf{massima}.
+Assumiamo che non siano presenti valori
+\texttt{NULL} nell'attributo \texttt{reddito}.
+\begin{verbatim}
+SELECT eta
+FROM persone
+GROUP BY eta
+HAVING SUM(reddito) >= ALL (
+    SELECT SUM(reddito)
+    FROM persone
+    GROUP BY eta
+);
+\end{verbatim}
+\textbf{Funzionamento:}
+\begin{enumerate}
+    \item La query esterna raggruppa le persone
+    in base all'età mediante \texttt{GROUP BY eta}.
+
+    \item Per ogni gruppo viene calcolata
+    la somma dei redditi con \texttt{SUM(reddito)}.
+
+    \item La sottoquery calcola tutte le somme
+    dei redditi, una per ciascuna età.
+
+    \item La condizione
+    \texttt{>= ALL} verifica che la somma
+    del gruppo corrente sia maggiore o uguale
+    a tutte le somme restituite dalla sottoquery.
+\end{enumerate}
+Vengono quindi selezionate soltanto le età
+che corrispondono alla \textbf{somma massima
+dei redditi}.
+Se più età hanno la stessa somma massima,
+vengono restituite tutte.
+\medskip
+\noindent
+\textbf{Osservazione:}
+l'operatore \texttt{ALL} permette di confrontare
+un valore con tutti quelli restituiti
+da una sottoquery.
+In particolare:
+\begin{itemize}
+    \item \texttt{>= ALL}: il valore è maggiore
+    o uguale a tutti gli elementi.
+    \item \texttt{<= ALL}: il valore è minore
+    o uguale a tutti gli elementi.
+\end{itemize}
+In questo esempio, la sottoquery non è correlata,
+poiché non fa riferimento ad attributi
+della query esterna.\\
+fino a pagina (asserzioni no) 211
