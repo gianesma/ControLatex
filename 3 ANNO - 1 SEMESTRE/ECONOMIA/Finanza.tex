@@ -1587,7 +1587,6 @@ Per questo motivo, nel confronto tra progetti mutuamente esclusivi,
 il criterio del VAN è generalmente quello da privilegiare per individuare
 il progetto che crea maggiore valore.
 
-% ------------------------------------------------
 
 \subsubsection*{Ipotesi di razionamento del capitale}
 
@@ -1730,3 +1729,839 @@ VAN = -F_0 + \frac{F_1}{1+i_1}
 \medskip
 
 \noindent Pertanto, quando il costo opportunità varia nel tempo, il \textbf{VAN è un criterio più adatto del TIR}, poiché permette di considerare la variazione dei tassi nei diversi periodi.
+
+\subsection{Piani di ammortamento}
+
+\subsubsection*{Interesse semplice e interesse composto}
+
+\noindent Quando una somma di denaro viene presa in prestito per un periodo superiore a un anno, generalmente si applica il regime di \textbf{interesse composto}.
+
+\medskip
+
+\noindent La differenza principale tra i due regimi è:
+
+\begin{itemize}
+    \item \textbf{Interesse semplice}: gli interessi vengono calcolati esclusivamente sul capitale iniziale e non producono ulteriori interessi.
+
+    \item \textbf{Interesse composto}: gli interessi maturati vengono aggiunti al capitale e, nei periodi successivi, producono a loro volta nuovi interessi.
+\end{itemize}
+
+\noindent Le rispettive formule di capitalizzazione sono:
+
+\[
+\boxed{M = C_0(1+nr_s)}
+\qquad \text{Interesse semplice}
+\]
+
+\[
+\boxed{M = C_0(1+r_c)^n}
+\qquad \text{Interesse composto}
+\]
+
+\noindent dove:
+
+\begin{itemize}
+    \item $M$ = montante finale;
+    \item $C_0$ = capitale iniziale;
+    \item $r_s$ = tasso di interesse semplice annuo;
+    \item $r_c$ = tasso di interesse composto annuo;
+    \item $n$ = numero di anni.
+\end{itemize}
+
+\subsubsection*{Equivalenza tra interesse semplice e composto}
+
+\noindent È possibile determinare il \textbf{tasso di interesse composto equivalente} a un determinato tasso di interesse semplice, 
+imponendo che i due regimi producano lo stesso montante finale.
+
+\[
+C_0(1+nr_s)=C_0(1+r_c)^n
+\]
+
+\noindent Semplificando il capitale iniziale:
+
+\[
+1+nr_s=(1+r_c)^n
+\]
+
+\noindent Ricavando il tasso composto:
+
+\[
+\boxed{
+r_c=(1+nr_s)^{\frac{1}{n}}-1
+}
+\]
+
+\noindent Questa formula permette di calcolare il \textbf{tasso composto annuo equivalente} a un tasso semplice annuo applicato per $n$ anni, 
+mantenendo invariato il montante finale.
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.9\linewidth]{../images/interesse.png}
+    %\label{label}
+\end{figure}
+\subsection{TAN e TAEG}
+
+\noindent Nei contratti di credito, il finanziatore deve indicare il
+\textbf{Tasso Annuo Nominale (TAN)} e il
+\textbf{Tasso Annuo Effettivo Globale (TAEG)}, che permette
+di valutare il costo complessivo del finanziamento.
+
+\medskip
+
+\noindent In particolare:
+
+\begin{itemize}
+    \item \textbf{TAN}: rappresenta il tasso di interesse puro
+    applicato al capitale finanziato, senza considerare le
+    spese accessorie;
+
+    \item \textbf{TAEG}: rappresenta il costo effettivo annuo
+    del credito, considerando gli interessi e gli oneri
+    accessori previsti dalla normativa.
+\end{itemize}
+
+\noindent Nel calcolo del TAEG non vengono generalmente
+considerate le spese notarili.
+
+\medskip
+
+\noindent Esiste anche il \textbf{TAE (Tasso Annuo Effettivo)},
+che tiene conto della capitalizzazione degli interessi,
+ma in questa trattazione ci concentreremo esclusivamente
+sul TAN e sul TAEG.
+
+\subsubsection*{Calcolo del TAN}
+
+\noindent Considerando un finanziamento in regime di
+capitalizzazione composta, il TAN è il tasso che permette
+di uguagliare il valore del finanziamento al valore attuale
+delle rate da rimborsare.
+
+\[
+\boxed{
+P_B+C_S=
+\sum_{i=1}^{N}
+\frac{R_i}{(1+TAN)^i}
+}
+\]
+
+\noindent dove:
+
+\begin{itemize}
+    \item $P_B$ = prezzo del bene acquistato a rate;
+    \item $C_S$ = costo dei servizi accessori finanziati;
+    \item $R_i$ = rata da pagare nel periodo $i$;
+    \item $N$ = numero di rate o periodi di pagamento;
+    \item $P_B+C_S$ = valore attuale del finanziamento erogato.
+\end{itemize}
+
+\noindent Il TAN considera quindi gli interessi applicati
+al finanziamento, senza rappresentare necessariamente
+tutti i costi sostenuti dal cliente.
+
+\subsubsection*{Calcolo del TAEG}
+
+\noindent Il \textbf{TAEG} considera anche i costi accessori
+del finanziamento, permettendo di determinarne il costo
+effettivo.
+
+\[
+\boxed{
+P_B=
+\sum_{i=1}^{N}
+\frac{R_i+S_i}{(1+TAEG)^i}
+}
+\]
+
+\noindent dove:
+
+\begin{itemize}
+    \item $P_B$ = prezzo del bene o servizio acquistato a rate;
+    \item $R_i$ = rata da pagare nel periodo $i$;
+    \item $S_i$ = costi accessori, come commissioni e spese
+    ammissibili, sostenuti nel periodo $i$;
+    \item $N$ = numero di rate o periodi di pagamento.
+\end{itemize}
+
+\noindent A differenza del TAN, il TAEG considera quindi
+anche gli oneri accessori del finanziamento.
+
+\medskip
+
+\noindent \textbf{Nota:} le formule riportate assumono periodi
+di pagamento annuali.
+
+\subsubsection*{Relazione tra TAN e TAEG con rate costanti}
+
+\noindent Supponiamo che le rate siano costanti e che
+anche i costi accessori periodici siano costanti:
+
+\[
+R_i=R
+\qquad
+S_i=S
+\]
+
+\noindent Utilizzando la formula della rendita costante,
+la rata del finanziamento calcolata attraverso il TAN è:
+
+\[
+\boxed{
+R=(P_B+C_S)
+\frac{TAN(1+TAN)^N}
+{(1+TAN)^N-1}
+}
+\]
+
+\noindent Considerando invece il TAEG:
+
+\[
+\boxed{
+R+S=P_B
+\frac{TAEG(1+TAEG)^N}
+{(1+TAEG)^N-1}
+}
+\]
+
+\noindent Uguagliando le due espressioni si ottiene:
+
+\[
+\begin{aligned}
+&(P_B+C_S)
+\frac{TAN(1+TAN)^N}
+{(1+TAN)^N-1}+S\\
+&\qquad =
+P_B
+\frac{TAEG(1+TAEG)^N}
+{(1+TAEG)^N-1}
+\end{aligned}
+\]
+
+\noindent Questa equazione permette di individuare la
+relazione tra TAN e TAEG, considerando le spese
+accessorie del finanziamento.
+
+\subsubsection*{Caso particolare: una sola rata}
+
+\noindent Se il finanziamento prevede una sola rata,
+ovvero $N=1$, le formule si semplificano:
+
+\[
+(P_B+C_S)(1+TAN)+S=P_B(1+TAEG)
+\]
+
+\noindent Sviluppando:
+
+\[
+P_B+C_S+(P_B+C_S)TAN+S
+=
+P_B+P_B\,TAEG
+\]
+
+\noindent Semplificando $P_B$ e dividendo per esso:
+
+\[
+TAEG=
+\frac{S+C_S}{P_B}
++
+\frac{P_B+C_S}{P_B}TAN
+\]
+
+\noindent Pertanto:
+
+\[
+\boxed{
+TAEG=
+\frac{S+C_S}{P_B}
++
+\left(1+\frac{C_S}{P_B}\right)TAN
+}
+\]
+
+\noindent La formula mostra che il TAEG dipende sia
+dal TAN sia dai costi accessori del finanziamento.
+
+\subsubsection*{Caso limite: numero di rate molto elevato}
+
+\noindent Consideriamo ora un numero di rate molto elevato,
+ipotizzando $N\to\infty$.
+
+\medskip
+
+\noindent Partiamo dall'equazione:
+
+\[
+\begin{aligned}
+&(P_B+C_S)
+\frac{TAN(1+TAN)^N}
+{(1+TAN)^N-1}+S\\
+&\qquad =
+P_B
+\frac{TAEG(1+TAEG)^N}
+{(1+TAEG)^N-1}
+\end{aligned}
+\]
+
+\noindent Dividendo numeratore e denominatore dei
+fattori finanziari per $(1+r)^N$, otteniamo:
+
+\[
+\begin{aligned}
+&(P_B+C_S)
+\frac{TAN}{1-(1+TAN)^{-N}}+S\\
+&\qquad =
+P_B
+\frac{TAEG}{1-(1+TAEG)^{-N}}
+\end{aligned}
+\]
+
+\noindent Per tassi positivi, quando $N\to\infty$:
+
+\[
+(1+TAN)^{-N}\to 0
+\]
+
+\[
+(1+TAEG)^{-N}\to 0
+\]
+
+\noindent Di conseguenza:
+
+\[
+(P_B+C_S)TAN+S=P_B\,TAEG
+\]
+
+\noindent Ricavando il TAEG:
+
+\[
+\boxed{
+TAEG=
+\frac{S}{P_B}
++
+\left(1+\frac{C_S}{P_B}\right)TAN
+}
+\]
+
+\noindent Questa rappresenta la relazione limite
+tra TAN e TAEG quando il numero di rate tende
+all'infinito, sotto le ipotesi considerate.
+
+\subsubsection*{Confronto tra TAN e TAEG}
+
+\noindent Dalle relazioni precedenti osserviamo che:
+
+\begin{itemize}
+    \item per $N=1$:
+
+    \[
+    TAEG=
+    \frac{S+C_S}{P_B}
+    +
+    \left(1+\frac{C_S}{P_B}\right)TAN
+    \]
+
+    \item per $N\to\infty$:
+
+    \[
+    TAEG=
+    \frac{S}{P_B}
+    +
+    \left(1+\frac{C_S}{P_B}\right)TAN
+    \]
+\end{itemize}
+
+\noindent A parità di TAN e di costi accessori positivi,
+il TAEG risulta generalmente maggiore del TAN.
+
+\medskip
+
+\noindent Inoltre, nell'ipotesi di costi iniziali fissi,
+il loro peso percentuale annuo tende a diminuire
+all'aumentare della durata del finanziamento.
+
+\medskip
+
+\noindent Per un numero finito di rate maggiore di uno,
+il TAEG deve essere generalmente determinato
+risolvendo l'equazione finanziaria completa.
+
+\medskip
+
+\noindent In conclusione, il \textbf{TAN misura il costo
+degli interessi}, mentre il \textbf{TAEG rappresenta
+un indicatore più completo del costo del finanziamento}.
+\subsubsection*{Esempio di calcolo del TAN e TAEG}
+
+\noindent Si considera un finanziamento di $3.000$ da rimborsare in due rate annuali:
+
+\begin{itemize}
+    \item Prima rata: $300$;
+    \item Seconda rata: $3.300$;
+    \item Spese iniziali: $100$;
+    \item Spese di incasso: $1\%$ di ciascuna rata.
+\end{itemize}
+
+\subsubsection*{Calcolo del TAN}
+
+\noindent Il TAN considera esclusivamente gli interessi del finanziamento, senza includere le spese accessorie.
+
+\[
+3.000=\frac{300}{1+TAN}+
+\frac{3.300}{(1+TAN)^2}
+\]
+
+\noindent Ponendo $x=1+TAN$:
+
+\[
+3.000x^2-300x-3.300=0
+\]
+
+\[
+10x^2-x-11=0
+\]
+
+\noindent La soluzione ammissibile è $x=1,1$, quindi:
+
+\[
+\boxed{TAN=10\%}
+\]
+
+\subsubsection*{Calcolo del TAEG}
+
+\noindent Il TAEG considera anche le spese iniziali e quelle di incasso. Il capitale effettivamente ricevuto è:
+
+\[
+3.000-100=2.900
+\]
+
+\noindent Le rate comprensive delle spese di incasso diventano:
+
+\[
+R_1=300(1+0,01)=303
+\]
+
+\[
+R_2=3.300(1+0,01)=3.333
+\]
+
+\noindent Pertanto:
+
+\[
+2.900=\frac{303}{1+TAEG}+
+\frac{3.333}{(1+TAEG)^2}
+\]
+
+\noindent Ponendo $x=1+TAEG$:
+
+\[
+2.900x^2-303x-3.333=0
+\]
+
+\noindent La soluzione ammissibile è $x\simeq1,126$, quindi:
+
+\[
+\boxed{TAEG\simeq12,6\%}
+\]
+
+\noindent \textbf{Conclusione:} il TAEG è maggiore del TAN perché considera anche le spese accessorie del finanziamento.
+
+\[
+\boxed{TAN=10\% \qquad TAEG\simeq12,6\%}
+\]
+\subsubsection*{Tipologie di ammortamento}
+
+\noindent Nei piani di ammortamento, ogni rata è generalmente composta da due elementi:
+
+\begin{itemize}
+    \item \textbf{Quota capitale}: parte della rata destinata a restituire il capitale preso in prestito. Ad esempio, se il debito è di $100.000$ e si rimborsano $2.000$ di quota capitale, il debito residuo diventa $98.000$.
+
+    \item \textbf{Quota interessi}: parte della rata che remunera il finanziatore per il denaro prestato. Si calcola sul capitale residuo prima del pagamento della rata.
+\end{itemize}
+
+\noindent La \textbf{rata complessiva} è quindi:
+
+\[
+\boxed{R_k=Q_k+I_k}
+\]
+
+\noindent dove $Q_k$ è la quota capitale e $I_k$ è la quota interessi del periodo $k$.
+
+\medskip
+
+\noindent Il \textbf{capitale residuo} rappresenta invece il debito che rimane da restituire dopo il pagamento della rata:
+
+\[
+\boxed{C_k=C_{k-1}-Q_k}
+\]
+
+\noindent Esistono tre principali metodi di ammortamento.
+
+\subsubsection*{1. Ammortamento alla francese}
+
+\noindent Il metodo alla francese prevede una \textbf{rata costante nel tempo}, composta da una quota interessi progressivamente decrescente e una quota capitale crescente.
+
+\medskip
+
+\noindent La rata costante viene calcolata mediante:
+
+\[
+\boxed{
+R=\frac{C_T\,i(1+i)^n}{(1+i)^n-1}
+}
+\]
+
+\noindent La quota interessi è:
+
+\[
+I_k=C_{k-1}\,i
+\]
+
+\noindent La quota capitale è:
+
+\[
+Q_k=R-I_k
+\]
+
+\noindent Il capitale residuo diventa:
+
+\[
+C_k=C_{k-1}-Q_k
+\]
+
+\subsubsection*{2. Ammortamento all'italiana}
+
+\noindent Il metodo all'italiana prevede una \textbf{quota capitale costante}, mentre la quota interessi e la rata complessiva diminuiscono progressivamente.
+
+\medskip
+
+\noindent La quota capitale è:
+
+\[
+\boxed{Q_k=\frac{C_T}{n}}
+\]
+
+\noindent Gli interessi vengono calcolati sul capitale residuo:
+
+\[
+I_k=C_{k-1}\,i
+\]
+
+\noindent La rata complessiva è:
+
+\[
+R_k=\frac{C_T}{n}+C_{k-1}\,i
+\]
+
+\noindent Il capitale residuo diventa:
+
+\[
+C_k=C_{k-1}-\frac{C_T}{n}
+\]
+
+\subsubsection*{3. Ammortamento all'americana}
+
+\noindent Il metodo all'americana prevede il pagamento dei \textbf{soli interessi durante la vita del finanziamento}, mentre l'intero capitale viene restituito con l'ultima rata (\textbf{rimborso bullet}).
+
+\medskip
+
+\noindent Per i periodi precedenti all'ultimo:
+
+\[
+\boxed{R_k=C_T\,i \qquad k=1,\ldots,n-1}
+\]
+
+\noindent Il capitale residuo rimane invariato:
+
+\[
+C_k=C_T
+\]
+
+\noindent Nell'ultimo periodo si rimborsano sia gli interessi sia l'intero capitale:
+
+\[
+\boxed{R_n=C_T(1+i)}
+\]
+
+\noindent In tutte le formule:
+
+\begin{itemize}
+    \item $C_T$ = capitale iniziale preso in prestito;
+    \item $C_k$ = capitale residuo dopo la rata $k$;
+    \item $i$ = tasso di interesse per periodo;
+    \item $n$ = numero complessivo delle rate;
+    \item $R_k$ = rata del periodo $k$.
+\end{itemize}
+
+\subsubsection*{Vantaggi e limiti dei metodi di ammortamento}
+
+\begin{itemize}
+    \item \textbf{Metodo alla francese}: garantisce rate costanti e prevedibili, facilitando la pianificazione delle spese. A parità di capitale, tasso e durata, comporta generalmente interessi complessivi maggiori rispetto al metodo all'italiana.
+
+    \item \textbf{Metodo all'italiana}: consente di ridurre più rapidamente il capitale residuo e minimizzare gli interessi complessivi rispetto al metodo alla francese. Presenta però rate iniziali più elevate.
+
+    \item \textbf{Metodo all'americana}: permette di sostenere pagamenti periodici contenuti, poiché inizialmente si pagano soltanto gli interessi. È utilizzato anche nei finanziamenti aziendali, ma richiede un elevato rimborso finale e comporta maggiori interessi complessivi se il capitale rimane a lungo invariato.
+\end{itemize}
+
+\noindent In conclusione, il metodo alla francese privilegia la
+\textbf{stabilità delle rate}, quello all'italiana la
+\textbf{riduzione progressiva del debito}, mentre quello
+all'americana permette di \textbf{rinviare il rimborso del capitale}.
+
+\medskip
+
+\noindent Per comprendere meglio le differenze, è possibile confrontare i tre metodi applicandoli allo stesso finanziamento.
+
+\subsubsection*{Confronto tra i metodi di ammortamento}
+
+\noindent Consideriamo lo stesso finanziamento, applicando i tre metodi di ammortamento:
+
+\begin{itemize}
+    \item \textbf{Capitale iniziale}: $C_0 = 100.000$;
+    \item \textbf{Tasso di interesse annuo}: $i = 5\%$;
+    \item \textbf{Durata}: $n = 5$ anni.
+\end{itemize}
+
+\noindent Ricordiamo che la rata è composta da:
+
+\[
+R_k = Q_k + I_k
+\]
+
+\noindent Gli interessi vengono calcolati sul capitale residuo:
+
+\[
+I_k = C_{k-1} \cdot i
+\]
+
+\noindent Di conseguenza, \textbf{più velocemente diminuisce il capitale residuo, minori saranno gli interessi complessivi}.
+
+\subsubsection*{Metodo alla francese}
+
+\noindent Nel metodo alla francese la rata è costante, mentre la quota interessi diminuisce e la quota capitale aumenta.
+
+\[
+R = \frac{100.000 \cdot 0{,}05}
+{1-(1+0{,}05)^{-5}}
+\]
+
+\[
+\boxed{R = 23.097{,}48}
+\]
+
+\noindent La rata rimane costante per tutti e cinque gli anni, ma cambia la sua composizione interna.
+
+\medskip
+
+\noindent Ad esempio, nel primo anno:
+
+\[
+I_1 = 100.000 \cdot 0{,}05 = 5.000
+\]
+
+\[
+Q_1 = 23.097{,}48 - 5.000 = 18.097{,}48
+\]
+
+\[
+C_1 = 100.000 - 18.097{,}48 = 81.902{,}52
+\]
+
+\noindent Al termine dei cinque anni:
+
+\[
+\boxed{\text{Interessi totali} \simeq 15.487{,}40}
+\]
+
+\subsubsection*{Metodo all'italiana}
+
+\noindent Nel metodo all'italiana la quota capitale è costante, mentre la rata diminuisce progressivamente.
+
+\[
+Q_k = \frac{100.000}{5}
+\]
+
+\[
+\boxed{Q_k = 20.000}
+\]
+
+\noindent Nel primo anno:
+
+\[
+R_1 = 20.000 + 100.000 \cdot 0{,}05
+= 25.000
+\]
+
+\noindent Nell'ultimo anno:
+
+\[
+R_5 = 20.000 + 20.000 \cdot 0{,}05
+= 21.000
+\]
+
+\noindent Gli interessi complessivi sono:
+
+\[
+5.000+4.000+3.000+2.000+1.000
+\]
+
+\[
+\boxed{\text{Interessi totali} = 15.000}
+\]
+
+\subsubsection*{Metodo all'americana}
+
+\noindent Nel metodo all'americana vengono pagati soltanto gli interessi durante il finanziamento, mentre il capitale viene restituito interamente alla scadenza.
+
+\[
+R_k = 100.000 \cdot 0{,}05
+= 5.000
+\]
+
+\noindent Nei primi quattro anni si pagano quindi 5.000 all'anno.
+
+\medskip
+
+\noindent Nell'ultimo anno si rimborsano il capitale e gli interessi:
+
+\[
+R_5 = 100.000 + 5.000
+\]
+
+\[
+\boxed{R_5 = 105.000}
+\]
+
+\noindent Gli interessi complessivi sono:
+
+\[
+\boxed{\text{Interessi totali} = 5.000 \cdot 5
+= 25.000}
+\]
+
+\subsubsection*{Confronto finale}
+
+\begin{center}
+\small
+\begin{tabular}{|l|r|r|r|}
+\hline
+\textbf{Metodo} &
+\textbf{Prima rata} &
+\textbf{Ultima rata} &
+\textbf{Interessi totali} \\
+\hline
+Francese & 23.097,48 & 23.097,48 & 15.487,40 \\
+\hline
+Italiano & 25.000,00 & 21.000,00 & 15.000,00 \\
+\hline
+Americano & 5.000,00 & 105.000,00 & 25.000,00 \\
+\hline
+\end{tabular}
+\end{center}
+
+\noindent Confrontando gli interessi complessivi:
+
+\[
+\boxed{
+I_{\text{italiano}}
+<
+I_{\text{francese}}
+<
+I_{\text{americano}}
+}
+\]
+
+\noindent Il \textbf{metodo all'italiana} risulta il meno costoso in termini di interessi complessivi, poiché il capitale residuo diminuisce più rapidamente.
+
+\medskip
+
+\noindent Il \textbf{metodo alla francese} offre invece il vantaggio di una rata costante e prevedibile.
+
+\medskip
+
+\noindent Il \textbf{metodo all'americana} permette pagamenti iniziali più contenuti, ma comporta interessi complessivi maggiori e un elevato rimborso finale.
+
+\medskip
+
+\noindent In conclusione, \textbf{gli interessi dipendono dalla velocità con cui viene rimborsato il capitale}: più rapidamente diminuisce il debito residuo, minore sarà il costo complessivo degli interessi.
+\subsection{Tassi di interesse nominali e reali}
+
+\noindent È possibile distinguere due tipologie di tassi di interesse:
+
+\begin{itemize}
+    \item \textbf{Tasso di interesse nominale}: rappresenta il tasso di crescita del valore monetario di un investimento, senza considerare l'inflazione.
+
+    \item \textbf{Tasso di interesse reale}: rappresenta il tasso di crescita del potere d'acquisto di un investimento, tenendo conto dell'inflazione.
+\end{itemize}
+
+\subsubsection*{Relazione tra tasso nominale e reale}
+
+\noindent Se ipotizziamo che non vi sia inflazione, i due tassi coincidono:
+
+\[
+\boxed{r_{\text{reale}} = r_{\text{nominale}}}
+\]
+
+\noindent In presenza di inflazione, invece, i due tassi sono differenti:
+
+\[
+r_{\text{reale}} \neq r_{\text{nominale}}
+\]
+
+\noindent Per determinare il tasso reale si utilizza la \textbf{relazione di Fisher}, considerando un tasso di inflazione $\pi$:
+
+\[
+1+r_{\text{reale}}
+=
+(1+r_{\text{nominale}})\cdot FA(\pi)
+\]
+
+\noindent dove il fattore di attualizzazione dell'inflazione è:
+
+\[
+FA(\pi)=\frac{1}{1+\pi}
+\]
+
+\noindent Sostituendo:
+
+\[
+1+r_{\text{reale}}
+=
+\frac{1+r_{\text{nominale}}}{1+\pi}
+\]
+
+\noindent Ricavando il tasso reale:
+
+\[
+r_{\text{reale}}
+=
+\frac{1+r_{\text{nominale}}}{1+\pi}-1
+\]
+
+\[
+r_{\text{reale}}
+=
+\frac{1+r_{\text{nominale}}-1-\pi}{1+\pi}
+\]
+
+\[
+\boxed{
+r_{\text{reale}}
+=
+\frac{r_{\text{nominale}}-\pi}{1+\pi}
+}
+\]
+
+\noindent Per valori contenuti dell'inflazione, è possibile utilizzare la seguente approssimazione:
+
+\[
+\boxed{
+r_{\text{reale}}\approx r_{\text{nominale}}-\pi
+}
+\]
+
+\noindent In conclusione, \textbf{il tasso reale misura il rendimento effettivo in termini di potere d'acquisto}: maggiore è l'inflazione, minore sarà il rendimento 
+reale di un investimento, a parità di tasso nominale.
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.9\linewidth]{../images/lacasacasino.png}
+    %\label{label}
+\end{figure}
