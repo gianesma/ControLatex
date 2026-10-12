@@ -1965,7 +1965,7 @@ per effettuare il collegamento tra le tabelle.
 \subsection{Viste inline e aggregazioni}
 Le viste inline sono particolarmente utili quando
 si vuole effettuare un \texttt{JOIN} con il risultato
-di una \textbf{query aggregata}.
+di una \textbf{query aggregata}.\\
 \textcolor{verdeEsempio}{Esempio:} per ogni persona, trovare il nome,
 l'età e il numero di persone che hanno la stessa età.
 \begin{verbatim}
@@ -2000,8 +2000,7 @@ Le viste inline permettono anche di eseguire
 \textcolor{verdeEsempio}{Esempio:} determinare, per ogni possibile numero
 di figli, quante madri hanno esattamente quel numero di figli.
 \begin{verbatim}
-SELECT t.conta AS numfigli,
-       COUNT(*) AS numgenitori
+SELECT t.conta AS numfigli, COUNT(*) AS numgenitori
 FROM (
     SELECT genitore, COUNT(*) AS conta
     FROM genia
@@ -2026,16 +2025,6 @@ La query contiene \textbf{due livelli di aggregazione}:
         numero di figli.
     \end{itemize}
 \end{enumerate}
-Il risultato contiene:
-\begin{itemize}
-    \item \texttt{numfigli}: numero di figli.
-    \item \texttt{numgenitori}: numero di genitori
-    che hanno esattamente quel numero di figli.
-\end{itemize}
-\noindent
-\textbf{Nota:} la query considera soltanto i genitori
-presenti nella relazione \texttt{genia}, quindi
-non include quelli con zero figli.
 
 \subsection{Importanza delle viste inline e clausola WITH}
 Le \textbf{viste inline} permettono di utilizzare il risultato
@@ -2055,7 +2044,7 @@ SELECT v.matricola, AVG(v.voto)
 FROM (
     SELECT matricola, corso, voto
     FROM EsamiTriennale
-    UNION ALL
+    UNION
     SELECT matricola, corso, voto
     FROM EsamiMagistrale
 ) v
@@ -2064,7 +2053,7 @@ GROUP BY v.matricola;
 Il funzionamento è il seguente:
 \begin{enumerate}
     \item La sottoquery combina gli esami della triennale
-    e della magistrale mediante \texttt{UNION ALL}.
+    e della magistrale mediante \texttt{UNION}.
     
     \item Il risultato viene trattato come una tabella
     temporanea identificata dall'alias \texttt{v}.
@@ -2075,11 +2064,6 @@ Il funzionamento è il seguente:
     \item \texttt{AVG(v.voto)} calcola la media dei voti
     di ciascuno studente.
 \end{enumerate}
-\noindent
-\textbf{Nota:} si utilizza \texttt{UNION ALL} per mantenere
-tutti gli esami, anche quelli con valori identici.
-L'operatore \texttt{UNION}, presente nelle slide, elimina
-invece eventuali tuple duplicate.
 \subsubsection{La clausola WITH}
 La clausola \texttt{WITH} permette di definire una o più
 \textbf{tabelle temporanee nominate}, dette anche
@@ -2095,7 +2079,7 @@ La query precedente può essere riscritta come:
 WITH miavista(mat, cor, vot) AS (
     SELECT matricola, corso, voto
     FROM EsamiTriennale
-    UNION ALL
+    UNION
     SELECT matricola, corso, voto
     FROM EsamiMagistrale
 )
@@ -2160,8 +2144,8 @@ Finora abbiamo visto interrogazioni annidate nelle clausole
 inserire sottoquery anche nella \textbf{target list},
 ovvero nella clausola \texttt{SELECT}.
 In questo caso, la sottoquery deve restituire
-\textbf{un solo valore} per ogni tupla della query esterna.
-\subsubsection*{Esempio}
+\textbf{un solo valore} per ogni tupla della query esterna.\\
+\textcolor{verdeEsempio}{Esempio: }
 Vogliamo ottenere il nome di ogni persona con reddito
 maggiore di 10 e, accanto al nome, il numero di persone
 che hanno la sua stessa età.
@@ -2175,7 +2159,7 @@ WHERE p.reddito > 10;
 \end{verbatim}
 La sottoquery nella clausola \texttt{SELECT} è
 \textbf{correlata}, poiché utilizza l'attributo
-\texttt{p.eta}, che appartiene alla query esterna.
+\texttt{p.eta}, che appartiene alla query esterna.\\
 \textbf{Semantica:}
 \begin{itemize}
     \item La query esterna seleziona le persone
@@ -2190,20 +2174,12 @@ La sottoquery nella clausola \texttt{SELECT} è
 Quindi, per ogni tupla della query esterna,
 la target list viene calcolata valutando
 anche la sottoquery presente al suo interno.
-\medskip
-\noindent
-\textbf{Nota:} una sottoquery utilizzata come
-espressione scalare nella target list deve
-restituire una sola colonna e al massimo una riga.
-Le funzioni aggregate come \texttt{COUNT(*)}
-sono particolarmente utili perché restituiscono
-un singolo valore.
 \section{Interrogazioni annidate nella clausola HAVING}
 Le sottoquery possono comparire anche nella
 clausola \texttt{HAVING}, utilizzata per
 \textbf{filtrare i gruppi} prodotti da
-\texttt{GROUP BY}.
-\subsubsection*{Esempio}
+\texttt{GROUP BY}.\\
+\textcolor{verdeEsempio}{Esempio: }\\
 Vogliamo conoscere le età delle persone
 per le quali la somma dei redditi delle persone
 con quella età è \textbf{massima}.
@@ -2240,20 +2216,306 @@ che corrispondono alla \textbf{somma massima
 dei redditi}.
 Se più età hanno la stessa somma massima,
 vengono restituite tutte.
-\medskip
+\medskip\\
 \noindent
 \textbf{Osservazione:}
 l'operatore \texttt{ALL} permette di confrontare
 un valore con tutti quelli restituiti
 da una sottoquery.
-In particolare:
+\section{Ulteriori aspetti di SQL}
+\subsection{Case}
+Nella \textbf{target list} può essere utile produrre un valore
+che dipende da una serie di condizioni.
+A questo scopo SQL mette a disposizione la clausola
+\texttt{CASE}, che permette di costruire espressioni condizionali.
+\subsubsection*{Sintassi}
+\begin{verbatim}
+CASE
+    WHEN <condizione> THEN <espressione>
+    ...
+    WHEN <condizione> THEN <espressione>
+    ELSE <espressione>
+END
+\end{verbatim}
+La clausola \texttt{ELSE} è facoltativa.\\
+\textbf{Semantica:}\\
+Le condizioni vengono valutate nell'ordine in cui compaiono.
+Il valore restituito è:
 \begin{itemize}
-    \item \texttt{>= ALL}: il valore è maggiore
-    o uguale a tutti gli elementi.
-    \item \texttt{<= ALL}: il valore è minore
-    o uguale a tutti gli elementi.
+    \item L'espressione associata alla
+    \textbf{prima condizione vera}.
+
+    \item L'espressione specificata dopo
+    \texttt{ELSE}, se nessuna condizione è vera.
+
+    \item \texttt{NULL}, se nessuna condizione
+    è vera e la clausola \texttt{ELSE} è assente.
 \end{itemize}
-In questo esempio, la sottoquery non è correlata,
-poiché non fa riferimento ad attributi
-della query esterna.\\
-fino a pagina (asserzioni no) 211
+
+\noindent \textcolor{verdeEsempio}{Esempio: }\\
+Consideriamo la relazione:
+\[
+\text{Persona(nome, eta, reddito)}
+\]
+Vogliamo selezionare le persone con età maggiore di 10,
+aggiungendo un attributo \texttt{fasciaeta} che assume
+i seguenti valori:
+\begin{itemize}
+    \item \texttt{ragazzo}: età minore o uguale a 20.
+    \item \texttt{adulto}: età maggiore di 20 e
+    minore o uguale a 50.
+    \item \texttt{anziano}: età maggiore di 50.
+\end{itemize}
+\begin{verbatim}
+SELECT nome,
+       CASE
+           WHEN eta <= 20 THEN 'ragazzo'
+           WHEN eta > 20 AND eta <= 50
+                THEN 'adulto'
+           ELSE 'anziano'
+       END AS fasciaeta,
+       reddito
+FROM Persona
+WHERE eta > 10;
+\end{verbatim}
+La clausola \texttt{CASE} viene valutata per ogni
+tupla selezionata dalla query.
+L'espressione \texttt{END AS fasciaeta} assegna
+il nome \texttt{fasciaeta} alla nuova colonna.
+
+\subsection{CHECK}
+La clausola \texttt{CHECK} permette di specificare
+\textbf{vincoli di integrità} che devono essere
+rispettati dai dati di una tabella.
+La sintassi generale è:
+\begin{verbatim}
+CHECK (<condizione>)
+\end{verbatim}
+Il vincolo può essere definito su un singolo attributo
+oppure sull'intera tabella.\\
+\textcolor{verdeEsempio}{Esempio}\\
+\begin{verbatim}
+CREATE TABLE impiegato
+(
+    matricola CHARACTER(6),
+    cognome CHARACTER(20),
+    nome CHARACTER(20),
+
+    sesso CHARACTER
+        NOT NULL
+        CHECK (sesso IN ('M', 'F')),
+
+    stipendio INTEGER,
+    superiore CHARACTER(6),
+
+    CHECK (
+        stipendio <=
+        (SELECT stipendio
+         FROM impiegato j
+         WHERE superiore = j.matricola)
+    )
+);
+\end{verbatim}
+In questo esempio vengono definiti due vincoli.
+\textbf{Primo vincolo:}
+\begin{verbatim}
+CHECK (sesso IN ('M', 'F'))
+\end{verbatim}
+L'attributo \texttt{sesso} può assumere
+soltanto i valori \texttt{'M'} e \texttt{'F'}.
+Inoltre, grazie a \texttt{NOT NULL},
+non può assumere il valore nullo.\\
+\textbf{Secondo vincolo:}
+Si vuole imporre che lo stipendio di un impiegato
+non sia superiore a quello del suo superiore.
+Per verificare questa condizione viene utilizzata
+una sottoquery.
+\medskip\\
+\noindent
+\textbf{Limitazione importante:}
+Molti DBMS, tra cui PostgreSQL, non consentono
+di utilizzare sottoquery all'interno di un
+vincolo \texttt{CHECK}.
+Di conseguenza, il secondo vincolo dell'esempio
+non è accettato da PostgreSQL.
+In generale, per verificare vincoli che coinvolgono
+altre righe o altre tabelle si possono utilizzare
+meccanismi come i \textbf{trigger}.
+\medskip\\
+\noindent
+\textbf{Nota:} un vincolo \texttt{CHECK} è soddisfatto
+quando la condizione risulta vera oppure sconosciuta
+(\texttt{UNKNOWN}). Per vietare valori nulli occorre
+quindi specificare anche \texttt{NOT NULL},
+quando necessario.
+\subsection{Viste}
+Una \textbf{vista} è una tabella la cui istanza
+è derivata da altre tabelle mediante
+un'interrogazione SQL.
+Per definire una vista si utilizza:
+\begin{verbatim}
+CREATE VIEW NomeVista [(ListaAttributi)]
+AS
+SELECT ...
+\end{verbatim}
+Le viste sono generalmente considerate
+\textbf{tabelle virtuali}.
+La loro definizione viene memorizzata nella base
+di dati, mentre il risultato dell'interrogazione
+viene normalmente calcolato quando la vista
+viene utilizzata.\\
+\textcolor{verdeEsempio}{Esempio}\\
+Vogliamo creare una vista contenente gli impiegati
+del dipartimento Amministrazione con stipendio
+maggiore di 10.
+\begin{verbatim}
+CREATE VIEW ImpAmmin(Mat, Nome, Cognome, Stip)
+AS
+SELECT Matricola, Nome, Cognome, Stipendio
+FROM Impiegato
+WHERE Dipart = 'Amministrazione'
+  AND Stipendio > 10;
+\end{verbatim}
+La vista \texttt{ImpAmmin} contiene quattro attributi:
+\begin{itemize}
+    \item \texttt{Mat}
+    \item \texttt{Nome}
+    \item \texttt{Cognome}
+    \item \texttt{Stip}
+\end{itemize}
+Questi attributi corrispondono alle colonne
+restituite dalla query associata alla vista.
+Una volta definita, la vista può essere
+interrogata come una normale tabella.
+Ad esempio:
+\begin{verbatim}
+SELECT *
+FROM ImpAmmin;
+\end{verbatim}
+\subsection{Utilizzo delle viste nelle interrogazioni}
+Consideriamo nuovamente il problema:
+\begin{quote}
+Trovare le età per le quali la somma dei redditi
+delle persone con quella età è massima.
+\end{quote}
+Abbiamo già visto una soluzione che utilizza
+una sottoquery nella clausola \texttt{HAVING}.
+\begin{verbatim}
+SELECT eta
+FROM persone
+GROUP BY eta
+HAVING SUM(reddito) >= ALL (
+    SELECT SUM(reddito)
+    FROM persone
+    GROUP BY eta
+);
+\end{verbatim}
+Un'alternativa consiste nel definire una vista.
+\subsubsection*{Soluzione mediante una vista}
+Per prima cosa creiamo una vista che associa
+a ogni età la somma dei redditi delle persone
+con quella età.
+\begin{verbatim}
+CREATE VIEW etaReddito(eta, totaleReddito)
+AS
+SELECT eta, SUM(reddito)
+FROM persone
+GROUP BY eta;
+\end{verbatim}
+La vista contiene due attributi:
+\begin{itemize}
+    \item \texttt{eta}: età delle persone.
+    \item \texttt{totaleReddito}: somma dei redditi
+    delle persone con quella età.
+\end{itemize}
+Successivamente possiamo individuare le età
+con reddito complessivo massimo:
+\begin{verbatim}
+SELECT eta
+FROM etaReddito
+WHERE totaleReddito = (
+    SELECT MAX(totaleReddito)
+    FROM etaReddito
+);
+\end{verbatim}
+\textbf{Funzionamento:}
+\begin{enumerate}
+    \item La vista calcola la somma dei redditi
+    per ogni età.
+
+    \item La sottoquery calcola il massimo
+    tra tutti i valori di \texttt{totaleReddito}.
+
+    \item La query esterna seleziona le età
+    per cui il reddito complessivo coincide
+    con tale massimo.
+\end{enumerate}
+Se più età hanno lo stesso reddito complessivo
+massimo, vengono restituite tutte.
+\medskip\\
+\noindent
+\textbf{Vantaggio:}
+L'utilizzo di una vista permette di separare
+il calcolo delle somme dalla ricerca del massimo,
+rendendo l'interrogazione più leggibile
+e consentendo di riutilizzare il risultato logico
+del raggruppamento in altre query.
+\subsection{Tabelle e viste temporanee}
+In molti DBMS è possibile creare
+\textbf{tabelle temporanee}, cioè tabelle
+che esistono soltanto per un periodo limitato.
+Generalmente, una tabella temporanea viene
+eliminata automaticamente al termine della
+sessione di connessione al database.
+\subsubsection*{Creazione di una tabella temporanea}
+\begin{verbatim}
+CREATE TEMPORARY TABLE MiaTabella (
+    id INTEGER,
+    nome VARCHAR(50)
+);
+\end{verbatim}
+La tabella \texttt{MiaTabella} può essere
+utilizzata durante la sessione corrente.
+Al termine della sessione viene eliminata
+automaticamente.
+\subsubsection*{Eliminazione esplicita}
+È possibile eliminare una tabella prima
+della fine della sessione:
+\begin{verbatim}
+DROP TABLE MiaTabella;
+\end{verbatim}
+Analogamente, una vista può essere eliminata
+mediante:
+\begin{verbatim}
+DROP VIEW NomeVista;
+\end{verbatim}
+\subsubsection*{Viste temporanee}
+Alcuni DBMS permettono anche di definire
+viste temporanee.
+Ad esempio, PostgreSQL supporta:
+\begin{verbatim}
+CREATE TEMPORARY VIEW MiaVista AS
+SELECT *
+FROM Impiegato
+WHERE Stipendio > 10;
+\end{verbatim}
+La disponibilità e il comportamento delle
+viste temporanee dipendono dal DBMS utilizzato.
+\medskip\\
+\noindent
+\textbf{Utilità:}
+Le tabelle e le viste temporanee permettono
+di organizzare interrogazioni complesse
+e gestire risultati intermedi senza creare
+oggetti permanenti nella base di dati.
+\medskip\\
+\noindent
+\textbf{Differenza importante:}
+Una tabella temporanea memorizza effettivamente
+i dati durante la propria esistenza.
+Una vista temporanea, invece, rappresenta
+normalmente una query memorizzata che viene
+valutata quando la vista è utilizzata.
+Pertanto, una vista temporanea non equivale
+necessariamente a salvare materialmente
+il risultato di una query.
