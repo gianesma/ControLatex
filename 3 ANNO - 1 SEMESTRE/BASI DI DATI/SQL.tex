@@ -1532,15 +1532,232 @@ BIT VARYING(n)
 \noindent Il tipo \texttt{BOOLEAN} viene utilizzato per valori logici, mentre
 \texttt{BIT} permette di rappresentare sequenze di bit.
 
+\subsection{Modifiche degli schemi: alter table}
+Permette di moficare una tabella\\
+\textcolor{verdeEsempio}{Esempio: }\\
+Sia il seguente database:\\
+\texttt{Infrazioni(\underline{codice},data,vigile,prov,numero)}\\
+\texttt{Vigili(\underline{matricola},cognome,nome)}\\
+\texttt{Auto(\underline{prov},\underline{numero},cognome,nome)}
+\begin{verbatim}
+    create table Infrazioni(
+        Codice CHARACTER(6) not null primary key,
+        Data DATE not null,
+        Vigile INTEGER not null references Vigili(Matricola),
+        Provincia CHARACTER(2),
+        Numero CHARACTER(6)
+    )
+
+    alter table Infrazioni
+    add constraint MioVincolo foreign key(Provincia, Numero)
+        references Auto(Provincia, Numero)
+\end{verbatim}
+\noindent Nella alter table si possono cambiare (\texttt{change, modify}) o eliminare (\texttt{drop}) elementi presenti o aggiungere nuovi elementi.\\
+Il comando \texttt{ALTER TABLE} permette di modificare la struttura di una tabella già esistente, ad esempio aggiungendo vincoli di integrità referenziale.
+È particolarmente utile quando due tabelle presentano \textbf{vincoli di integrità referenziale incrociati}, cioè quando ciascuna tabella contiene una chiave esterna che fa riferimento all'altra.
+\subsection{Problema dei vincoli incrociati}
+Consideriamo due tabelle $R_1$ e $R_2$ tali che:
+\begin{itemize}
+    \item $R_1$ contiene una chiave esterna verso $R_2$;
+    \item $R_2$ contiene una chiave esterna verso $R_1$.
+\end{itemize}
+Non è possibile definire entrambe le tabelle direttamente con i rispettivi vincoli, poiché:
+\begin{itemize}
+    \item per creare $R_1$ con il vincolo, $R_2$ deve già esistere;
+    \item per creare $R_2$ con il vincolo, $R_1$ deve già esistere.
+\end{itemize}
+Si genera quindi una \textbf{dipendenza circolare}.
+\subsection{Soluzione mediante ALTER TABLE}
+Il problema si risolve in tre passaggi:
+\begin{enumerate}
+    \item Si crea $R_1$ senza il vincolo di integrità referenziale verso $R_2$.
+    \item Si crea $R_2$ includendo il vincolo verso $R_1$, che ora esiste.
+    \item Si utilizza \texttt{ALTER TABLE} per aggiungere a $R_1$ il vincolo verso $R_2$.
+\end{enumerate}
+\subsection{Esempio: Persona e Città}
+Consideriamo le relazioni:
+\[
+\text{Persona}(\underline{cf},cittaNascita)
+\]
+\[
+\text{Citta}(\underline{nome},sindaco)
+\]
+con i seguenti vincoli:
+\begin{itemize}
+    \item \texttt{Persona.cittaNascita} fa riferimento a \texttt{Citta.nome};
+    \item \texttt{Citta.sindaco} fa riferimento a \texttt{Persona.cf}.
+\end{itemize}
+Poiché i vincoli sono incrociati, procediamo in tre fasi.
+\subsubsection*{1. Creazione della tabella Persona}
+Si crea la tabella senza definire inizialmente la chiave esterna verso \texttt{Citta}.
+\begin{verbatim}
+CREATE TABLE Persona (
+    cf VARCHAR(30) PRIMARY KEY,
+    cittaNascita VARCHAR(30)
+);
+\end{verbatim}
+\subsubsection*{2. Creazione della tabella Citta}
+Ora è possibile definire il vincolo verso \texttt{Persona}, poiché quest'ultima esiste già.
+\begin{verbatim}
+CREATE TABLE Citta (
+    nome VARCHAR(30) PRIMARY KEY,
+    sindaco VARCHAR(30),
+    CONSTRAINT vincolo1
+        FOREIGN KEY (sindaco)
+        REFERENCES Persona(cf)
+);
+\end{verbatim}
+\subsubsection*{3. Aggiunta del vincolo mediante ALTER TABLE}
+Una volta create entrambe le tabelle, si aggiunge il vincolo mancante su \texttt{Persona}.
+\begin{verbatim}
+ALTER TABLE Persona
+ADD CONSTRAINT vincolo2
+    FOREIGN KEY (cittaNascita)
+    REFERENCES Citta(nome);
+\end{verbatim}
 % ---------------------------------------------------------
 
-\section{Manipolazione dei dati - da fare}
-\subsection{Modifiche degli schemi}
-Permette di moficare una tabella
-\textcolor{verdeEsempio}{Esempio: }
+\section{Manipolazione dei dati}
+SQL permette di modificare il contenuto delle tabelle attraverso tre operazioni fondamentali:
+\begin{itemize}
+    \item \texttt{INSERT}: inserimento di una o più tuple.
+    \item \texttt{DELETE}: eliminazione di una o più tuple.
+    \item \texttt{UPDATE}: modifica dei valori di una o più tuple.
+\end{itemize}
+\noindent Le operazioni possono coinvolgere una o più tuple e possono essere eseguite sulla base di condizioni che fanno riferimento anche ad altre tabelle.
+\subsection{Inserimento di tuple: INSERT}
+Il comando \texttt{INSERT INTO} permette di inserire nuove tuple all'interno di una tabella.
+Esistono due modalità principali di inserimento.
+\subsubsection*{1. Inserimento mediante VALUES}
+Permette di inserire tuple specificando direttamente i valori degli attributi.\\
+\textbf{Sintassi:}
 \begin{verbatim}
-    create table Infrazioni()
+INSERT INTO NomeTabella [(attributi)]
+VALUES (valori);
 \end{verbatim}
+\textcolor{verdeEsempio}{Esempi:}\\
+Inserimento di una singola tupla:
+\begin{verbatim}
+INSERT INTO persone
+VALUES ('Mario', 25, 52);
+\end{verbatim}
+\noindent Inserimento di più tuple:
+\begin{verbatim}
+INSERT INTO persone
+VALUES ('Mario', 25, 52),
+       ('Anna', 30, 40);
+\end{verbatim}
+\noindent Inserimento specificando solo alcuni attributi:
+\begin{verbatim}
+INSERT INTO persone (nome, reddito)
+VALUES ('Lino', 55);
+\end{verbatim}
+\subsubsection*{2. Inserimento mediante SELECT}
+Permette di inserire in una tabella le tuple ottenute come risultato di una query.\\
+\textbf{Sintassi:}
+\begin{verbatim}
+INSERT INTO NomeTabella [(attributi)]
+SELECT ...
+\end{verbatim}
+\textcolor{verdeEsempio}{Esempio:}
+\begin{verbatim}
+INSERT INTO persone (nome)
+SELECT padre
+FROM paternita
+WHERE padre != 'Giovanni';
+\end{verbatim}
+\noindent Vengono inseriti nella tabella \texttt{persone} i nomi dei padri presenti nella tabella \texttt{paternita}, escludendo Giovanni.
+\subsubsection*{Osservazioni su INSERT}
+\begin{itemize}
+    \item \textbf{L'ordine degli attributi è significativo}: ogni valore viene associato all'attributo nella posizione corrispondente.
+
+    \item Il numero di attributi specificati deve coincidere con il numero di valori forniti.
+
+    \item Se la lista degli attributi viene omessa, i valori devono essere forniti nell'ordine definito nel comando \texttt{CREATE TABLE}.
+
+    \item Se vengono specificati solo alcuni attributi, quelli omessi assumono:
+    \begin{itemize}
+        \item il valore \texttt{DEFAULT}, se definito;
+        \item il valore \texttt{NULL}, se consentito e in assenza di un valore di default.
+    \end{itemize}
+
+    \item I valori inseriti devono rispettare i vincoli di integrità della tabella.
+\end{itemize}
+
+\subsection{Eliminazione di tuple: DELETE}
+Il comando \texttt{DELETE FROM} permette di eliminare le tuple di una tabella che soddisfano una determinata condizione.\\
+\textbf{Sintassi:}
+\begin{verbatim}
+DELETE FROM NomeTabella
+[WHERE condizione];
+\end{verbatim}
+\textcolor{verdeEsempio}{Esempi:}\\
+Eliminazione delle persone con età inferiore a 35 anni:
+\begin{verbatim}
+DELETE FROM persone
+WHERE eta < 35;
+\end{verbatim}
+\noindent Eliminazione delle tuple della tabella \texttt{paternita} in cui il figlio è diverso da Paolo:
+\begin{verbatim}
+DELETE FROM paternita
+WHERE figlio != 'Paolo';
+\end{verbatim}
+\subsubsection*{Osservazioni su DELETE}
+\begin{itemize}
+    \item Vengono eliminate tutte le tuple che soddisfano la condizione specificata nella clausola \texttt{WHERE}.
+
+    \item Se la clausola \texttt{WHERE} viene omessa, la condizione è considerata sempre vera e vengono quindi eliminate \textbf{tutte le tuple della tabella}.
+
+    \item L'eliminazione può coinvolgere indirettamente altre tabelle in presenza di vincoli di integrità referenziale con politica \texttt{ON DELETE CASCADE}.
+
+    \item In assenza di una politica che consenta l'eliminazione, l'operazione può essere impedita dai vincoli di integrità referenziale.
+\end{itemize}
+\subsection{Modifica di tuple: UPDATE}
+Il comando \texttt{UPDATE} permette di modificare i valori degli attributi delle tuple di una tabella.\\
+\textbf{Sintassi:}
+\begin{verbatim}
+UPDATE NomeTabella
+SET attributo = espressione
+[WHERE condizione];
+\end{verbatim}
+\noindent Il valore assegnato a un attributo può essere:
+\begin{itemize}
+    \item un valore costante;
+    \item il risultato di un'espressione;
+    \item il risultato di una sottoquery \texttt{SELECT};
+    \item \texttt{NULL}, se consentito;
+    \item \texttt{DEFAULT}, per ripristinare il valore predefinito.
+\end{itemize}
+È inoltre possibile modificare più attributi contemporaneamente, separando le assegnazioni con una virgola.
+\subsubsection*{Esempi}
+Modifica del reddito di una persona specifica:
+\begin{verbatim}
+UPDATE persone
+SET reddito = 45
+WHERE nome = 'Piero';
+\end{verbatim}
+Il reddito di tutte le persone chiamate Piero viene impostato a 45.
+Incremento del reddito del 10\% per le persone con meno di 30 anni:
+\begin{verbatim}
+UPDATE persone
+SET reddito = reddito * 1.1
+WHERE eta < 30;
+\end{verbatim}
+Il nuovo reddito viene calcolato a partire dal valore precedente:
+\[
+\text{reddito nuovo} = \text{reddito precedente} \cdot 1.1
+\]
+\subsubsection*{Osservazioni su UPDATE}
+\begin{itemize}
+    \item La clausola \texttt{SET} specifica gli attributi da modificare e i nuovi valori da assegnare.
+
+    \item La clausola \texttt{WHERE} individua le tuple sulle quali effettuare la modifica.
+
+    \item Se \texttt{WHERE} viene omessa, la modifica viene applicata a \textbf{tutte le tuple della tabella}.
+
+    \item I nuovi valori devono rispettare i vincoli di integrità definiti sulla tabella.
+\end{itemize}
+
 \section{Interrogazioni complesse}
 \subsection{interrogazioni annidate}
 Le \textbf{interrogazioni annidate} (o \textbf{sottoquery}) sono istruzioni \texttt{SELECT} inserite all'interno di altre query SQL, racchiuse tra parentesi.
@@ -2293,30 +2510,18 @@ CHECK (<condizione>)
 \end{verbatim}
 Il vincolo può essere definito su un singolo attributo
 oppure sull'intera tabella.\\
-\textcolor{verdeEsempio}{Esempio}\\
+\textcolor{verdeEsempio}{Esempio}
 \begin{verbatim}
 CREATE TABLE impiegato
 (
     matricola CHARACTER(6),
     cognome CHARACTER(20),
     nome CHARACTER(20),
-
-    sesso CHARACTER
-        NOT NULL
-        CHECK (sesso IN ('M', 'F')),
-
+    sesso CHARACTER  NOT NULL CHECK (sesso IN ('M', 'F')),
     stipendio INTEGER,
-    superiore CHARACTER(6),
-
-    CHECK (
-        stipendio <=
-        (SELECT stipendio
-         FROM impiegato j
-         WHERE superiore = j.matricola)
-    )
+    superiore CHARACTER(6)
 );
 \end{verbatim}
-In questo esempio vengono definiti due vincoli.
 \textbf{Primo vincolo:}
 \begin{verbatim}
 CHECK (sesso IN ('M', 'F'))
@@ -2325,29 +2530,10 @@ L'attributo \texttt{sesso} può assumere
 soltanto i valori \texttt{'M'} e \texttt{'F'}.
 Inoltre, grazie a \texttt{NOT NULL},
 non può assumere il valore nullo.\\
-\textbf{Secondo vincolo:}
-Si vuole imporre che lo stipendio di un impiegato
-non sia superiore a quello del suo superiore.
-Per verificare questa condizione viene utilizzata
-una sottoquery.
-\medskip\\
-\noindent
-\textbf{Limitazione importante:}
-Molti DBMS, tra cui PostgreSQL, non consentono
-di utilizzare sottoquery all'interno di un
-vincolo \texttt{CHECK}.
-Di conseguenza, il secondo vincolo dell'esempio
-non è accettato da PostgreSQL.
-In generale, per verificare vincoli che coinvolgono
-altre righe o altre tabelle si possono utilizzare
-meccanismi come i \textbf{trigger}.
-\medskip\\
 \noindent
 \textbf{Nota:} un vincolo \texttt{CHECK} è soddisfatto
 quando la condizione risulta vera oppure sconosciuta
-(\texttt{UNKNOWN}). Per vietare valori nulli occorre
-quindi specificare anche \texttt{NOT NULL},
-quando necessario.
+(\texttt{UNKNOWN}).
 \subsection{Viste}
 Una \textbf{vista} è una tabella la cui istanza
 è derivata da altre tabelle mediante
@@ -2395,8 +2581,7 @@ FROM ImpAmmin;
 \subsection{Utilizzo delle viste nelle interrogazioni}
 Consideriamo nuovamente il problema:
 \begin{quote}
-Trovare le età per le quali la somma dei redditi
-delle persone con quella età è massima.
+Voglio sapere l'età delle persone cui corrisponde il massimo reddito
 \end{quote}
 Abbiamo già visto una soluzione che utilizza
 una sottoquery nella clausola \texttt{HAVING}.
@@ -2438,19 +2623,7 @@ WHERE totaleReddito = (
     FROM etaReddito
 );
 \end{verbatim}
-\textbf{Funzionamento:}
-\begin{enumerate}
-    \item La vista calcola la somma dei redditi
-    per ogni età.
-
-    \item La sottoquery calcola il massimo
-    tra tutti i valori di \texttt{totaleReddito}.
-
-    \item La query esterna seleziona le età
-    per cui il reddito complessivo coincide
-    con tale massimo.
-\end{enumerate}
-Se più età hanno lo stesso reddito complessivo
+\noindent Se più età hanno lo stesso reddito complessivo
 massimo, vengono restituite tutte.
 \medskip\\
 \noindent
@@ -2501,21 +2674,3 @@ WHERE Stipendio > 10;
 \end{verbatim}
 La disponibilità e il comportamento delle
 viste temporanee dipendono dal DBMS utilizzato.
-\medskip\\
-\noindent
-\textbf{Utilità:}
-Le tabelle e le viste temporanee permettono
-di organizzare interrogazioni complesse
-e gestire risultati intermedi senza creare
-oggetti permanenti nella base di dati.
-\medskip\\
-\noindent
-\textbf{Differenza importante:}
-Una tabella temporanea memorizza effettivamente
-i dati durante la propria esistenza.
-Una vista temporanea, invece, rappresenta
-normalmente una query memorizzata che viene
-valutata quando la vista è utilizzata.
-Pertanto, una vista temporanea non equivale
-necessariamente a salvare materialmente
-il risultato di una query.
