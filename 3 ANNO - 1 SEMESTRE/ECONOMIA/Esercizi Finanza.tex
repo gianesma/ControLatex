@@ -405,3 +405,648 @@ poiché presenta il VAN maggiore:
 richiede anche un investimento iniziale più elevato. Il VAN tiene conto di
 entrambi gli aspetti e mostra che il Progetto A crea leggermente più valore.
 \newpage
+\section{Esercitazione -- Analisi degli investimenti}
+
+\subsection*{Riepilogo delle formule}
+
+\noindent Prima di svolgere gli esercizi, richiamiamo le principali formule
+utilizzate per valutare la convenienza economica degli investimenti.
+
+\subsubsection*{Valore Attuale Netto (VAN)}
+
+\noindent Il VAN rappresenta il valore creato da un investimento,
+attualizzando tutti i flussi di cassa al costo opportunità del capitale.
+
+\[
+\boxed{
+VAN=F_0+\sum_{t=1}^{N}\frac{F_t}{(1+i)^t}
+}
+\]
+
+\noindent Un progetto è conveniente quando $VAN>0$.
+
+\subsubsection*{Tasso Interno di Rendimento (TIR)}
+
+\noindent Il TIR è il tasso di attualizzazione che rende il VAN uguale a zero.
+
+\[
+\boxed{
+0=F_0+\sum_{t=1}^{N}\frac{F_t}{(1+TIR)^t}
+}
+\]
+
+\noindent Per investimenti tradizionali, un progetto è conveniente
+quando $TIR>i$, dove $i$ rappresenta il costo opportunità del capitale.
+
+\subsubsection*{Indice di redditività}
+
+\noindent L'indice di redditività permette di confrontare il valore
+creato rispetto al capitale investito.
+
+\[
+\boxed{
+PI=\frac{VAN}{I_0}
+}
+\]
+
+\noindent Dove $I_0$ rappresenta l'investimento iniziale.
+Un valore maggiore indica una maggiore creazione di valore
+per unità di capitale investito.
+
+\subsubsection*{Razionamento del capitale}
+
+\noindent Quando il budget è limitato, bisogna individuare
+la combinazione di investimenti che massimizza il VAN complessivo.
+
+\[
+\boxed{
+\max \sum_{j=1}^{m} VAN_j
+}
+\]
+
+\noindent rispettando il vincolo:
+
+\[
+\boxed{
+\sum_{j=1}^{m} I_{0,j}\leq B
+}
+\]
+
+\noindent dove $B$ è il budget disponibile.
+
+\subsubsection*{Payback Period}
+
+\noindent Il Payback Period indica il tempo necessario
+per recuperare l'investimento iniziale.
+
+\noindent Se il recupero avviene durante un anno:
+
+\[
+\boxed{
+PBP=k+\frac{C_{\text{mancante}}}{F_{k+1}}
+}
+\]
+
+\noindent dove $k$ indica gli anni già trascorsi,
+$C_{\text{mancante}}$ il capitale ancora da recuperare
+e $F_{k+1}$ il flusso dell'anno successivo.
+
+\noindent Nel caso di flussi annui costanti:
+
+\[
+\boxed{
+PBP=\frac{I_0}{R}
+}
+\]
+
+\subsubsection*{Payback Period attualizzato}
+
+\noindent Il Payback attualizzato considera il valore temporale
+del denaro, utilizzando i flussi di cassa attualizzati:
+
+\[
+\boxed{
+F_t^{\text{att}}=\frac{F_t}{(1+i)^t}
+}
+\]
+
+\noindent Il recupero avviene quando la somma dei flussi
+attualizzati raggiunge l'investimento iniziale.
+
+\subsubsection*{Valore attuale di una rendita costante}
+
+\noindent Quando un investimento genera entrate annue costanti,
+si utilizza il fattore di attualizzazione della rendita:
+
+\[
+\boxed{
+FA(i,n)=\frac{1-(1+i)^{-n}}{i}
+}
+\]
+
+\noindent Il VAN diventa quindi:
+
+\[
+\boxed{
+VAN=-I_0+R\cdot FA(i,n)
+}
+\]
+
+\noindent dove $R$ rappresenta il flusso annuo costante.
+
+
+\subsection{Esercizio 1 -- Valutazione tramite VAN e TIR}
+
+\noindent Un progetto presenta i seguenti flussi di cassa:
+
+\[
+F_0=+9\,500
+\qquad
+F_1=+9\,000
+\qquad
+F_2=-21\,000
+\]
+
+\noindent Il costo opportunità del capitale è pari all'8\%.
+Si vuole valutare la convenienza dell'investimento.
+
+\subsubsection*{Calcolo del TIR}
+
+\[
+0=9\,500+\frac{9\,000}{1+TIR}
+-\frac{21\,000}{(1+TIR)^2}
+\]
+
+\noindent Ponendo $x=1+TIR$:
+
+\[
+9\,500x^2+9\,000x-21\,000=0
+\]
+
+\noindent Dividendo per 100:
+
+\[
+95x^2+90x-210=0
+\]
+
+\noindent Risolvendo:
+
+\[
+x_1\simeq1{,}0867
+\qquad
+x_2\simeq-2{,}0341
+\]
+
+\noindent Consideriamo solamente la soluzione ammissibile $x>0$:
+
+\[
+TIR=1{,}0867-1
+\]
+
+\[
+\boxed{TIR\simeq8{,}67\%}
+\]
+
+\subsubsection*{Calcolo del VAN}
+
+\[
+VAN=9\,500+\frac{9\,000}{1{,}08}
+-\frac{21\,000}{1{,}08^2}
+\]
+
+\[
+\boxed{VAN\simeq-170{,}78}
+\]
+
+\noindent \textbf{Conclusione:} il progetto non è conveniente,
+poiché presenta un VAN negativo.
+
+\medskip
+
+\noindent Nonostante il TIR sia maggiore dell'8\%, i flussi
+non rappresentano un investimento tradizionale,
+poiché si ricevono entrate iniziali e si sostiene un'uscita finale.
+
+\noindent In questi casi il criterio del TIR può essere fuorviante,
+quindi si preferisce utilizzare il VAN.
+
+
+\subsection{Esercizio 2 -- Razionamento del capitale}
+
+\noindent Si dispone di un budget massimo di $90\,000$
+da investire nei seguenti progetti:
+
+\begin{center}
+\begin{tabular}{|c|r|r|c|}
+\hline
+\textbf{Progetto} & \textbf{VAN} &
+\textbf{Investimento} & \textbf{PI} \\
+\hline
+1 & 5.000 & 10.000 & 0,50 \\
+2 & 5.000 & 5.000 & 1,00 \\
+3 & 10.000 & 90.000 & 0,11 \\
+4 & 15.000 & 60.000 & 0,25 \\
+5 & 15.000 & 75.000 & 0,20 \\
+6 & 3.000 & 15.000 & 0,20 \\
+\hline
+\end{tabular}
+\end{center}
+
+\noindent L'obiettivo è individuare la combinazione di progetti
+che massimizza il VAN complessivo, senza superare il budget.
+
+\subsubsection*{Calcolo dell'indice di redditività}
+
+\noindent Per ogni progetto calcoliamo:
+
+\[
+PI=\frac{VAN}{I_0}
+\]
+
+\noindent Ad esempio, per il progetto 4:
+
+\[
+PI_4=\frac{15\,000}{60\,000}=0{,}25
+\]
+
+\noindent Considerando gli indici di redditività e
+verificando le combinazioni ammissibili,
+la scelta ottimale è costituita dai progetti
+\textbf{1, 2, 4 e 6}.
+
+\subsubsection*{Verifica del budget}
+
+\[
+I_{\text{totale}}
+=10\,000+5\,000+60\,000+15\,000
+\]
+
+\[
+\boxed{I_{\text{totale}}=90\,000}
+\]
+
+\noindent Il vincolo di budget viene rispettato.
+
+\subsubsection*{Calcolo del VAN complessivo}
+
+\[
+VAN_{\text{totale}}
+=5\,000+5\,000+15\,000+3\,000
+\]
+
+\[
+\boxed{VAN_{\text{totale}}=28\,000}
+\]
+
+\noindent \textbf{Conclusione:} scegliamo i progetti
+\textbf{1, 2, 4 e 6}, poiché permettono di ottenere
+il massimo VAN complessivo rispettando il capitale disponibile.
+
+\medskip
+
+\noindent Quando i progetti sono indivisibili,
+il semplice ordinamento tramite PI non garantisce
+sempre la combinazione ottimale.
+
+
+\subsection{Esercizio 3 -- VAN e tempo di recupero}
+
+\noindent Si considerano tre progetti con un costo opportunità
+del capitale pari al $6\%$.
+
+\begin{center}
+\small
+\begin{tabular}{|c|r|r|r|r|r|r|}
+\hline
+\textbf{Progetto} & $F_0$ & $F_1$ & $F_2$ &
+$F_3$ & $F_4$ & $F_5$ \\
+\hline
+1 & -1000 & 1200 & 2500 & 2000 & 1750 & 1500 \\
+2 & -2000 & 600 & 1000 & 2000 & 3000 & 5000 \\
+3 & -3000 & 4000 & 200 & 0 & 1000 & 1500 \\
+\hline
+\end{tabular}
+\end{center}
+
+\subsubsection*{Calcolo del VAN}
+
+\noindent Per il progetto 1:
+
+\[
+\begin{aligned}
+VAN_1={}&-1000+\frac{1200}{1{,}06}
++\frac{2500}{1{,}06^2}\\
+&+\frac{2000}{1{,}06^3}
++\frac{1750}{1{,}06^4}
++\frac{1500}{1{,}06^5}
+\end{aligned}
+\]
+
+\[
+\boxed{VAN_1\simeq6\,543{,}36}
+\]
+
+\noindent Per il progetto 2:
+
+\[
+\begin{aligned}
+VAN_2={}&-2000+\frac{600}{1{,}06}
++\frac{1000}{1{,}06^2}\\
+&+\frac{2000}{1{,}06^3}
++\frac{3000}{1{,}06^4}
++\frac{5000}{1{,}06^5}
+\end{aligned}
+\]
+
+\[
+\boxed{VAN_2\simeq7\,247{,}84}
+\]
+
+\noindent Per il progetto 3:
+
+\[
+\begin{aligned}
+VAN_3={}&-3000+\frac{4000}{1{,}06}
++\frac{200}{1{,}06^2}\\
+&+\frac{1000}{1{,}06^4}
++\frac{1500}{1{,}06^5}
+\end{aligned}
+\]
+
+\[
+\boxed{VAN_3\simeq2\,864{,}57}
+\]
+
+\subsubsection*{Calcolo del Payback Period}
+
+\noindent \textbf{Progetto 1}
+
+\noindent L'investimento viene recuperato durante il primo anno:
+
+\[
+PBP_1=\frac{1000}{1200}
+\]
+
+\[
+\boxed{PBP_1\simeq0{,}83\text{ anni}}
+\]
+
+\medskip
+
+\noindent \textbf{Progetto 2}
+
+\noindent Dopo due anni sono stati recuperati:
+
+\[
+600+1000=1600
+\]
+
+\noindent Il capitale ancora da recuperare è:
+
+\[
+2000-1600=400
+\]
+
+\[
+PBP_2=2+\frac{400}{2000}
+\]
+
+\[
+\boxed{PBP_2=2{,}20\text{ anni}}
+\]
+
+\medskip
+
+\noindent \textbf{Progetto 3}
+
+\noindent Il capitale iniziale viene recuperato
+durante il primo anno:
+
+\[
+PBP_3=\frac{3000}{4000}
+\]
+
+\[
+\boxed{PBP_3=0{,}75\text{ anni}}
+\]
+
+\subsubsection*{Conclusione}
+
+\begin{center}
+\begin{tabular}{|c|r|c|}
+\hline
+\textbf{Progetto} & \textbf{VAN} & \textbf{PBP} \\
+\hline
+1 & 6.543,36 & 0,83 anni \\
+2 & 7.247,84 & 2,20 anni \\
+3 & 2.864,57 & 0,75 anni \\
+\hline
+\end{tabular}
+\end{center}
+
+\noindent Se il \textbf{cutoff period è pari a 2 anni},
+vengono accettati i progetti il cui tempo di recupero
+non supera tale limite.
+
+\[
+\boxed{\text{Progetti accettati: 1 e 3}}
+\]
+
+\noindent Il progetto 2 viene escluso dal criterio del Payback,
+nonostante presenti il VAN maggiore.
+
+\medskip
+
+\noindent \textbf{Nota:} considerando solamente gli anni interi,
+i tempi di recupero diventano rispettivamente 1, 3 e 1 anno.
+La decisione finale rimane invariata.
+
+
+\subsection{Esercizio 4 -- Indice di redditività e Payback attualizzato}
+
+\noindent Si considerano quattro progetti alternativi
+della durata di 6 anni, con un costo opportunità
+del capitale pari al $12\%$.
+
+\begin{center}
+\begin{tabular}{|c|r|r|}
+\hline
+\textbf{Progetto} & \textbf{Investimento} &
+\textbf{Entrata annua} \\
+\hline
+1 & 14.000 & 3.500 \\
+2 & 11.000 & 2.800 \\
+3 & 13.000 & 3.100 \\
+4 & 17.000 & 4.400 \\
+\hline
+\end{tabular}
+\end{center}
+
+\subsubsection*{a) Scelta tramite indice di redditività}
+
+\noindent Poiché le entrate sono costanti, utilizziamo
+il fattore di attualizzazione della rendita:
+
+\[
+FA(12\%,6)
+=\frac{1-(1{,}12)^{-6}}{0{,}12}
+\]
+
+\[
+\boxed{FA\simeq4{,}1114}
+\]
+
+\noindent Calcoliamo il VAN di ciascun progetto:
+
+\[
+VAN_1=-14\,000+3\,500\cdot4{,}1114
+\]
+
+\[
+\boxed{VAN_1\simeq389{,}93}
+\]
+
+\[
+VAN_2=-11\,000+2\,800\cdot4{,}1114
+\]
+
+\[
+\boxed{VAN_2\simeq511{,}94}
+\]
+
+\[
+VAN_3=-13\,000+3\,100\cdot4{,}1114
+\]
+
+\[
+\boxed{VAN_3\simeq-254{,}64}
+\]
+
+\[
+VAN_4=-17\,000+4\,400\cdot4{,}1114
+\]
+
+\[
+\boxed{VAN_4\simeq1\,090{,}19}
+\]
+
+\noindent Calcoliamo ora gli indici di redditività:
+
+\[
+PI_1=\frac{389{,}93}{14\,000}\simeq0{,}0279
+\]
+
+\[
+PI_2=\frac{511{,}94}{11\,000}\simeq0{,}0465
+\]
+
+\[
+PI_3=\frac{-254{,}64}{13\,000}\simeq-0{,}0196
+\]
+
+\[
+PI_4=\frac{1\,090{,}19}{17\,000}\simeq0{,}0641
+\]
+
+\noindent Il progetto 4 presenta l'indice maggiore:
+
+\[
+\boxed{PI_4\simeq0{,}0641}
+\]
+
+\noindent \textbf{Conclusione:} scegliamo il
+\textbf{progetto 4}, che presenta anche il VAN maggiore.
+
+\subsubsection*{b) Tempo di recupero del progetto 4}
+
+\noindent Consideriamo:
+
+\[
+I_0=17\,000
+\qquad
+R=4\,400
+\qquad
+i=12\%
+\]
+
+\noindent \textbf{Payback non attualizzato}
+
+\[
+PBP=\frac{17\,000}{4\,400}
+\]
+
+\[
+PBP\simeq3{,}8636\text{ anni}
+\]
+
+\noindent Convertiamo la parte decimale in mesi e giorni,
+considerando mesi di 30 giorni:
+
+\[
+0{,}8636\cdot12\simeq10{,}36\text{ mesi}
+\]
+
+\[
+0{,}36\cdot30\simeq11\text{ giorni}
+\]
+
+\[
+\boxed{
+PBP\simeq3\text{ anni, }10\text{ mesi e }11\text{ giorni}
+}
+\]
+
+\medskip
+
+\noindent \textbf{Payback attualizzato}
+
+\noindent Attualizziamo le entrate annuali:
+
+\[
+F_t^{\text{att}}=\frac{4\,400}{(1{,}12)^t}
+\]
+
+\noindent Dopo cinque anni il capitale non è ancora
+completamente recuperato, mentre viene recuperato
+durante il sesto anno.
+
+\medskip
+
+\noindent Calcoliamo la frazione dell'ultimo anno necessaria
+per recuperare il capitale residuo:
+
+\[
+f=
+\frac{
+17\,000-\displaystyle\sum_{t=1}^{5}
+\frac{4\,400}{(1{,}12)^t}
+}{
+\frac{4\,400}{(1{,}12)^6}
+}
+\]
+
+\[
+f\simeq0{,}5109
+\]
+
+\noindent Pertanto, interpolando il flusso del sesto anno:
+
+\[
+PBP_{\text{att}}\simeq5{,}5109\text{ anni}
+\]
+
+\noindent Convertendo in mesi e giorni:
+
+\[
+0{,}5109\cdot12\simeq6{,}13\text{ mesi}
+\]
+
+\[
+0{,}13\cdot30\simeq4\text{ giorni}
+\]
+
+\[
+\boxed{
+PBP_{\text{att}}\simeq
+5\text{ anni, }6\text{ mesi e }4\text{ giorni}
+}
+\]
+
+\subsubsection*{Conclusione}
+
+\noindent Il progetto selezionato è il \textbf{progetto 4}.
+
+\[
+\boxed{
+\begin{aligned}
+VAN &\simeq1\,090{,}19\\
+PI &\simeq0{,}0641\\
+PBP &\simeq3{,}86\text{ anni}\\
+PBP_{\text{att}} &\simeq5{,}51\text{ anni}
+\end{aligned}
+}
+\]
+
+\noindent Il Payback attualizzato è maggiore di quello semplice,
+poiché considera il valore temporale del denaro.
+\newpage
