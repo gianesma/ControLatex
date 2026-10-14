@@ -2674,3 +2674,1029 @@ WHERE Stipendio > 10;
 \end{verbatim}
 La disponibilità e il comportamento delle
 viste temporanee dipendono dal DBMS utilizzato.
+
+\section{Transazioni}
+\subsection{Definizione}
+Una \textbf{transazione} è un insieme di operazioni su una
+base di dati che devono essere eseguite come un'unica
+unità logica di lavoro.\\
+Una transazione deve garantire che:
+\begin{itemize}
+    \item le operazioni siano eseguite interamente oppure
+    non abbiano alcun effetto;
+    \item i vincoli di integrità della base di dati siano
+    rispettati;
+    \item l'esecuzione contemporanea di più transazioni
+    non produca risultati scorretti;
+    \item i risultati delle transazioni completate
+    rimangano memorizzati anche in presenza di guasti.
+\end{itemize}
+\noindent Queste caratteristiche sono riassunte dalle
+\textbf{proprietà ACID}:
+\begin{itemize}
+    \item \textbf{A}tomicità;
+    \item \textbf{C}onsistenza;
+    \item \textbf{I}solamento;
+    \item \textbf{D}urabilità (o persistenza).
+\end{itemize}
+
+\subsection{Proprietà ACID}
+
+\subsubsection{Atomicità (Atomicity)}
+
+Una transazione è \textbf{atomica} se tutte le operazioni
+che la compongono vengono eseguite completamente oppure
+nessuna di esse produce effetti permanenti.\\
+\textcolor{verdeEsempio}{Esempio:}\\
+Supponiamo di voler trasferire 100 euro dal conto A
+al conto B.\\
+Le operazioni necessarie sono:
+\begin{enumerate}
+    \item Sottrarre 100 euro dal conto A.
+    \item Aggiungere 100 euro al conto B.
+\end{enumerate}
+\noindent Se si verifica un errore dopo il prelievo dal conto A,
+ma prima del versamento sul conto B, il sistema deve
+annullare anche il prelievo.
+Quindi:
+\[
+\text{Transazione} =
+\begin{cases}
+\text{entrambe le operazioni}, & \text{se tutto va bene}\\
+\text{nessuna operazione}, & \text{in caso di errore}
+\end{cases}
+\]
+L'annullamento delle modifiche prende il nome di
+\textbf{rollback}.
+\subsubsection{Consistenza (Consistency)}
+Una transazione è \textbf{consistente} se porta la base
+di dati da uno stato valido a un altro stato valido,
+rispettando tutti i vincoli di integrità.
+Durante l'esecuzione possono essere temporaneamente
+violati alcuni vincoli, purché quelli che devono essere
+verificati alla fine della transazione risultino
+soddisfatti prima del commit.
+In particolare, alcuni vincoli possono essere
+\textbf{differibili (deferrable)}, cioè controllati
+alla conclusione della transazione.
+In SQL, nei DBMS che lo supportano, è possibile
+posticiparne il controllo mediante:
+\begin{verbatim}
+SET CONSTRAINTS ALL DEFERRED;
+\end{verbatim}
+\textbf{Attenzione:} questa istruzione riguarda
+soltanto i vincoli dichiarati differibili.
+Se al momento del commit un vincolo di integrità
+risulta ancora violato, la transazione non può
+essere confermata e deve essere annullata.\\
+\textcolor{verdeEsempio}{Esempio:}\\
+Supponiamo che il saldo di un conto non possa essere
+negativo.
+Una transazione che porta il saldo da 100 euro
+a -50 euro viola il vincolo:
+\[
+Saldo \geq 0
+\]
+Se tale violazione permane al momento della verifica
+del vincolo, la transazione viene rifiutata.
+\subsubsection{Isolamento (Isolation)}
+Una transazione è \textbf{isolata} se la sua esecuzione
+concorrente con altre transazioni non produce
+interferenze scorrette.
+In particolare, il DBMS deve controllare
+l'interazione tra transazioni che accedono
+contemporaneamente agli stessi dati.
+Un'esecuzione è \textbf{serializzabile} quando il risultato
+dell'esecuzione concorrente è equivalente a quello
+di una qualche esecuzione seriale.\\
+\textcolor{verdeEsempio}{Esempio:}\\
+Supponiamo che il saldo iniziale di un conto sia:
+\[
+Saldo = 1000
+\]
+Due transazioni concorrenti devono sottrarre
+rispettivamente 100 e 200 euro.
+Il risultato corretto è:
+\[
+Saldo_{\text{finale}} = 1000 - 100 - 200 = 700
+\]
+Senza un adeguato isolamento, entrambe le transazioni
+potrebbero leggere il saldo iniziale di 1000 euro
+e sovrascrivere reciprocamente i risultati.
+Si potrebbe quindi ottenere erroneamente:
+\[
+Saldo_{\text{finale}} = 900
+\]
+oppure:
+\[
+Saldo_{\text{finale}} = 800
+\]
+Questo problema prende il nome di
+\textbf{lost update} (aggiornamento perso).
+L'isolamento serve a prevenire queste anomalie.
+\subsubsection{Durabilità (Durability)}
+Una transazione è \textbf{durevole} se, una volta
+confermata, le modifiche apportate alla base di dati
+rimangono permanenti.
+La conferma di una transazione avviene mediante
+l'operazione:
+\begin{verbatim}
+COMMIT;
+\end{verbatim}
+Dopo il commit, il DBMS garantisce la persistenza
+delle modifiche anche in presenza di guasti
+del sistema, secondo le garanzie di durabilità
+offerte dal sistema stesso.\\
+\textcolor{verdeEsempio}{Esempio:}\\
+Se trasferiamo 100 euro dal conto A al conto B
+e la transazione termina con successo, un successivo
+riavvio del database non deve annullare il trasferimento.
+\subsection{Gestione delle transazioni in SQL}
+SQL mette a disposizione alcune istruzioni fondamentali
+per gestire le transazioni.
+\subsubsection{BEGIN}
+L'istruzione:
+\begin{verbatim}
+BEGIN TRANSACTION;
+\end{verbatim}
+indica l'inizio di una transazione esplicita.
+Le operazioni successive appartengono alla stessa
+transazione fino alla sua conclusione.
+\subsubsection{COMMIT}
+L'istruzione:
+\begin{verbatim}
+COMMIT;
+\end{verbatim}
+conferma la transazione e rende definitive
+le modifiche effettuate.
+\subsubsection{ROLLBACK}
+L'istruzione:
+\begin{verbatim}
+ROLLBACK;
+\end{verbatim}
+annulla le modifiche effettuate dalla transazione
+corrente, riportando i dati allo stato precedente
+alla transazione.
+\paragraph{Schema generale}
+\begin{verbatim}
+BEGIN TRANSACTION;
+-- Operazione 1
+-- Operazione 2
+-- ...
+-- Operazione N
+COMMIT;
+\end{verbatim}
+Se si verifica un errore che richiede
+l'annullamento della transazione, si utilizza:
+\begin{verbatim}
+ROLLBACK;
+\end{verbatim}
+\subsubsection{Esempio: trasferimento di denaro}
+Consideriamo una tabella:
+\begin{verbatim}
+ContoCorrente(
+    NumeroConto,
+    Saldo
+)
+\end{verbatim}
+Vogliamo trasferire 100 euro dal conto 12345
+al conto 55555.
+\subsubsection{Esecuzione senza transazione esplicita}
+Supponiamo di eseguire separatamente:
+\begin{verbatim}
+UPDATE ContoCorrente
+SET Saldo = Saldo - 100
+WHERE NumeroConto = 12345;
+\end{verbatim}
+\begin{verbatim}
+UPDATE ContoCorrente
+SET Saldo = Saldo + 100
+WHERE NumeroConto = 55555;
+\end{verbatim}
+Se le istruzioni vengono confermate separatamente,
+possono verificarsi problemi.
+Ad esempio, se il sistema si blocca dopo
+la prima operazione, ma prima della seconda:
+\begin{itemize}
+    \item il conto 12345 perde 100 euro;
+    \item il conto 55555 non riceve nulla.
+\end{itemize}
+Il trasferimento risulta quindi incompleto.
+\subsubsection{Esecuzione con transazione}
+Per evitare questo problema, raggruppiamo
+le due operazioni in una transazione:
+\begin{verbatim}
+BEGIN TRANSACTION;
+
+UPDATE ContoCorrente
+SET Saldo = Saldo - 100
+WHERE NumeroConto = 12345;
+
+UPDATE ContoCorrente
+SET Saldo = Saldo + 100
+WHERE NumeroConto = 55555;
+
+COMMIT;
+\end{verbatim}
+In questo modo, le modifiche vengono
+confermate come un'unica unità logica.
+Se la transazione viene annullata prima del commit,
+nessuna delle due modifiche rimane permanente.
+\subsubsection{Esempio: problemi di concorrenza}
+Nelle slide viene considerato un trasferimento
+in cui l'importo da trasferire non è costante,
+ma viene letto da un'altra tabella.
+Supponiamo di avere la relazione:
+\[
+R(A,B)
+\]
+e di voler trasferire l'importo:
+\[
+\texttt{select A from R where B=1}
+\]
+Assumiamo che la selezione restituisca
+un unico valore numerico.
+Il trasferimento prevede:
+\begin{enumerate}
+    \item Leggere il valore A dalla tabella R
+    nella tupla con B = 1.
+    \item Sottrarre tale valore dal conto 12345.
+    \item Aggiungere lo stesso valore al conto 55555.
+\end{enumerate}
+\subsubsection{Problema senza isolamento}
+Supponiamo che inizialmente:
+\[
+A = 100
+\]
+La prima operazione sottrae 100 euro
+dal conto 12345.
+Prima della seconda operazione, un'altra
+transazione modifica il valore di A:
+\[
+A = 50
+\]
+La seconda operazione legge quindi il nuovo valore
+e aggiunge soltanto 50 euro al conto 55555.
+Il risultato è:
+\[
+\begin{aligned}
+\Delta Saldo_{12345} &= -100\\
+\Delta Saldo_{55555} &= +50
+\end{aligned}
+\]
+Di conseguenza:
+\[
+\Delta Saldo_{\text{totale}} = -50
+\]
+Sono stati persi 50 euro.
+Il problema nasce dal fatto che le due operazioni
+hanno letto valori diversi di A.
+\subsubsection{Soluzione mediante transazione serializzabile}
+Per evitare questa anomalia, possiamo utilizzare
+una transazione con isolamento serializzabile:
+\begin{verbatim}
+BEGIN TRANSACTION;
+
+SET TRANSACTION ISOLATION LEVEL
+SERIALIZABLE;
+
+UPDATE ContoCorrente
+SET Saldo = Saldo - (SELECT A FROM R WHERE B = 1)
+WHERE NumeroConto = 12345;
+
+UPDATE ContoCorrente
+SET Saldo = Saldo + (SELECT A FROM R WHERE B = 1)
+WHERE NumeroConto = 55555;
+
+COMMIT;
+\end{verbatim}
+Il livello di isolamento \texttt{SERIALIZABLE}
+garantisce che l'esecuzione concorrente sia
+equivalente a una qualche esecuzione seriale.
+In particolare, non deve essere possibile
+confermare un risultato in cui il trasferimento
+utilizzi due importi differenti a causa
+di un'interferenza concorrente.
+Il DBMS può ottenere questa garanzia mediante
+meccanismi di controllo della concorrenza,
+eventualmente bloccando o annullando
+una delle transazioni coinvolte.\\
+\textbf{Nota:} in caso di annullamento dovuto
+a un conflitto di serializzazione, l'applicazione
+può dover ripetere la transazione.
+
+\section{Vincoli di Foreign Key e reazioni agli aggiornamenti}
+\subsection{Integrità referenziale}
+Un vincolo di \textbf{foreign key} (chiave esterna)
+garantisce l'integrità referenziale tra due tabelle.
+In particolare, una foreign key impone che ogni
+valore non nullo della chiave esterna presente
+in una tabella corrisponda a un valore della
+chiave referenziata nell'altra tabella.
+Consideriamo due tabelle:
+\begin{itemize}
+    \item \textbf{Tabella figlia}: contiene la foreign key.
+    \item \textbf{Tabella padre}: contiene la chiave
+    referenziata dalla foreign key.
+\end{itemize}
+La relazione tra le due tabelle è quindi:
+\[
+\boxed{
+\text{Tabella figlia}
+\xrightarrow{\text{Foreign Key}}
+\text{Tabella padre}
+}
+\]
+\textcolor{verdeEsempio}{Esempio}\\
+Consideriamo le seguenti tabelle:
+\begin{verbatim}
+CREATE TABLE persona (
+    cf VARCHAR(100) PRIMARY KEY,
+    eta INTEGER
+);
+
+CREATE TABLE citta (
+    nome VARCHAR(30) PRIMARY KEY,
+    sindaco VARCHAR(100)
+        CONSTRAINT vincolo1
+        REFERENCES persona(cf)
+);
+\end{verbatim}
+In questo caso:
+\begin{itemize}
+    \item \texttt{persona} è la tabella padre;
+    \item \texttt{citta} è la tabella figlia;
+    \item \texttt{citta.sindaco} è la foreign key;
+    \item \texttt{persona.cf} è la chiave referenziata.
+\end{itemize}
+\noindent Supponiamo di avere:
+\[
+\text{persona} =
+\{(2000,42)\}
+\]
+
+\[
+\text{citta} =
+\{(\text{Savona},2000)\}
+\]
+La tupla:
+\[
+(2000,42)
+\]
+è detta \textbf{tupla padre}, mentre:
+\[
+(\text{Savona},2000)
+\]
+è detta \textbf{tupla figlia}.
+Questo perché il valore \texttt{2000} presente
+nell'attributo \texttt{sindaco} della tabella
+\texttt{citta} fa riferimento alla persona
+con codice fiscale \texttt{2000}.
+\subsection{Politiche di reazione ai vincoli di Foreign Key}
+Quando si modifica o si elimina una tupla
+della tabella padre, si potrebbe violare
+un vincolo di integrità referenziale.\\
+\textcolor{verdeEsempio}{Esempio} se eliminiamo dalla tabella
+\texttt{persona} una persona che compare
+come sindaco nella tabella \texttt{citta},
+quest'ultima potrebbe contenere un riferimento
+a una persona non più esistente.\\
+SQL permette di specificare delle
+\textbf{politiche di reazione}, cioè azioni
+da eseguire quando una modifica rischia
+di violare un vincolo di foreign key.
+La sintassi generale è:
+\begin{verbatim}
+FOREIGN KEY (attributi)
+REFERENCES tabella(attributi)
+
+ON DELETE azione
+ON UPDATE azione
+\end{verbatim}
+Dove:
+\begin{itemize}
+    \item \texttt{ON DELETE}: specifica cosa accade
+    quando viene eliminata una tupla padre.
+
+    \item \texttt{ON UPDATE}: specifica cosa accade
+    quando viene modificata la chiave
+    referenziata di una tupla padre.
+\end{itemize}
+\noindent Le possibili azioni sono:
+\begin{itemize}
+    \item \texttt{NO ACTION}
+    \item \texttt{RESTRICT}
+    \item \texttt{CASCADE}
+    \item \texttt{SET NULL}
+    \item \texttt{SET DEFAULT}
+\end{itemize}
+\subsubsection{NO ACTION}
+La politica \texttt{NO ACTION} impedisce
+che una modifica della tabella padre lasci
+violato un vincolo di integrità referenziale
+al momento della sua verifica.
+Se si tenta di eliminare o modificare
+una tupla padre ancora referenziata
+da una tupla figlia, viene generato un errore
+se il vincolo risulta violato al momento
+del controllo.
+\textbf{Importante:} il controllo può essere
+posticipato alla fine della transazione
+se il vincolo è definito come
+\texttt{DEFERRABLE} ed è impostato
+in modalità \texttt{DEFERRED}.\\
+\textcolor{verdeEsempio}{Esempio:}\\
+Supponiamo che la città di Savona
+abbia come sindaco la persona con
+codice fiscale \texttt{2000}.
+Se eseguiamo:
+\begin{verbatim}
+DELETE FROM persona
+WHERE cf = '2000';
+\end{verbatim}
+otteniamo un errore se la persona
+è ancora referenziata dalla tabella
+\texttt{citta} al momento della verifica.\\
+\textbf{Nota:} \texttt{NO ACTION} è la
+politica predefinita quando non viene
+specificata un'azione.
+\subsubsection{RESTRICT}
+La politica \texttt{RESTRICT} impedisce
+immediatamente la cancellazione o
+l'aggiornamento di una tupla padre
+se questa è ancora referenziata
+da una tupla figlia.
+La differenza principale rispetto
+a \texttt{NO ACTION} riguarda
+il momento del controllo.
+\begin{itemize}
+    \item \textbf{NO ACTION}: il controllo
+    può essere differito.
+
+    \item \textbf{RESTRICT}: il controllo
+    non può essere differito.
+\end{itemize}
+\noindent Quindi, anche se il vincolo è differibile,
+\texttt{RESTRICT} non permette di
+rimandare il controllo dell'azione
+referenziale alla fine della transazione.
+\subsubsection{CASCADE}
+La politica \texttt{CASCADE} propaga
+automaticamente le modifiche effettuate
+sulla tabella padre alle tuple figlie.
+Il comportamento dipende dall'operazione.
+\paragraph{ON DELETE CASCADE}
+Quando viene eliminata una tupla padre,
+vengono eliminate automaticamente anche
+le tuple figlie che la referenziano.
+\begin{verbatim}
+FOREIGN KEY (sindaco)
+REFERENCES persona(cf)
+ON DELETE CASCADE
+\end{verbatim}
+Se eliminiamo una persona, vengono
+eliminate anche le città che la
+referenziano attraverso l'attributo
+\texttt{sindaco}.
+\paragraph{ON UPDATE CASCADE}
+Quando viene modificato il valore
+della chiave referenziata nella
+tabella padre, vengono aggiornati
+automaticamente i corrispondenti
+valori delle foreign key nelle
+tuple figlie.
+\begin{verbatim}
+FOREIGN KEY (sindaco)
+REFERENCES persona(cf)
+ON UPDATE CASCADE
+\end{verbatim}
+Ad esempio, se il codice fiscale
+referenziato cambia da \texttt{2000}
+a \texttt{3000}, anche il valore
+\texttt{sindaco} nelle città
+corrispondenti viene aggiornato.
+\subsubsection{SET NULL}
+La politica \texttt{SET NULL}
+sostituisce con \texttt{NULL}
+il valore della foreign key nelle
+tuple figlie coinvolte.
+\begin{verbatim}
+FOREIGN KEY (sindaco)
+REFERENCES persona(cf)
+ON DELETE SET NULL
+\end{verbatim}
+Se viene eliminata una persona
+che è sindaco di una città,
+la città rimane nella tabella,
+ma il suo attributo
+\texttt{sindaco} diventa \texttt{NULL}.
+\textbf{Attenzione:} questa politica
+richiede che gli attributi coinvolti
+possano assumere il valore \texttt{NULL}.
+Se la foreign key è dichiarata
+\texttt{NOT NULL}, l'operazione
+non può completarsi con successo.
+\subsubsection{SET DEFAULT}
+La politica \texttt{SET DEFAULT}
+sostituisce il valore della foreign key
+nelle tuple figlie con il valore
+predefinito dell'attributo.
+\begin{verbatim}
+FOREIGN KEY (sindaco)
+REFERENCES persona(cf)
+ON DELETE SET DEFAULT
+\end{verbatim}
+Il valore predefinito deve comunque
+rispettare il vincolo di integrità
+referenziale.
+Ad esempio, se il valore di default
+è \texttt{'SCONOSCIUTO'}, deve esistere
+una tupla padre con tale chiave.
+In caso contrario, l'operazione
+può essere rifiutata.
+\subsection{Riepilogo delle politiche}
+\begin{center}
+\begin{tabular}{|l|p{8cm}|}
+\hline
+\textbf{Politica} & \textbf{Comportamento} \\
+\hline
+NO ACTION &
+Rifiuta l'operazione se il vincolo
+risulta violato al momento della verifica. \\
+\hline
+RESTRICT &
+Impedisce immediatamente l'operazione
+sulla tupla padre referenziata. \\
+\hline
+CASCADE &
+Propaga automaticamente la cancellazione
+o l'aggiornamento alle tuple figlie. \\
+\hline
+SET NULL &
+Imposta a NULL la foreign key
+delle tuple figlie coinvolte. \\
+\hline
+SET DEFAULT &
+Imposta al valore di default
+la foreign key delle tuple figlie. \\
+\hline
+\end{tabular}
+\end{center}
+
+\section{Transazioni SQL e vincoli differibili}
+\subsection{Vincoli DEFERRABLE e DEFERRED}
+Normalmente, i vincoli di integrità
+vengono controllati al termine
+di ogni istruzione SQL.
+Tuttavia, in alcune situazioni
+può essere utile consentire
+temporaneamente una violazione
+di un vincolo, purché questa
+venga risolta prima della
+conclusione della transazione.
+SQL permette di ottenere questo
+comportamento attraverso i
+\textbf{vincoli differibili}.
+È importante distinguere:
+\begin{itemize}
+    \item \textbf{DEFERRABLE}: indica
+    che il controllo del vincolo
+    può essere posticipato.
+
+    \item \textbf{DEFERRED}: indica
+    che il controllo del vincolo
+    è effettivamente posticipato
+    alla fine della transazione.
+
+    \item \textbf{IMMEDIATE}: indica
+    che il vincolo viene controllato
+    al termine di ogni istruzione SQL.
+\end{itemize}
+\noindent Quindi:
+\[
+\boxed{
+\text{DEFERRABLE}
+\neq
+\text{DEFERRED}
+}
+\]
+Un vincolo può essere dichiarato
+\texttt{DEFERRABLE}, ma essere
+inizialmente controllato in
+modalità \texttt{IMMEDIATE}.
+\subsection{Definizione dei vincoli differibili}
+Quando si definisce un vincolo,
+è possibile specificare:
+\begin{verbatim}
+DEFERRABLE
+\end{verbatim}
+oppure:
+\begin{verbatim}
+NOT DEFERRABLE
+\end{verbatim}
+Un vincolo \texttt{NOT DEFERRABLE}
+non può essere impostato in
+modalità \texttt{DEFERRED}.
+Per i vincoli differibili,
+è inoltre possibile specificare:
+\begin{verbatim}
+DEFERRABLE INITIALLY IMMEDIATE
+\end{verbatim}
+oppure:
+\begin{verbatim}
+DEFERRABLE INITIALLY DEFERRED
+\end{verbatim}
+Nel primo caso, il vincolo viene
+inizialmente controllato dopo
+ogni istruzione.
+Nel secondo caso, il controllo
+viene inizialmente posticipato
+alla fine della transazione.
+Se non si specifica nulla,
+il comportamento predefinito è:
+\begin{verbatim}
+NOT DEFERRABLE
+\end{verbatim}
+Se invece si specifica soltanto
+\texttt{DEFERRABLE}, il vincolo
+è inizialmente \texttt{IMMEDIATE}.
+\subsection{SET CONSTRAINTS}
+All'interno di una transazione,
+è possibile modificare la modalità
+di controllo dei vincoli differibili.
+Per posticipare il controllo
+di un vincolo specifico:
+\begin{verbatim}
+SET CONSTRAINTS nome_vincolo DEFERRED;
+\end{verbatim}
+Per posticipare il controllo
+di tutti i vincoli differibili:
+\begin{verbatim}
+SET CONSTRAINTS ALL DEFERRED;
+\end{verbatim}
+Per tornare alla modalità immediata:
+\begin{verbatim}
+SET CONSTRAINTS nome_vincolo IMMEDIATE;
+\end{verbatim}
+\textbf{Attenzione:} passando da
+\texttt{DEFERRED} a \texttt{IMMEDIATE},
+il DBMS verifica immediatamente
+i vincoli interessati.
+Se esistono violazioni,
+il comando fallisce.
+\subsection{Vincoli differibili in PostgreSQL}
+Non tutti i DBMS supportano
+gli stessi tipi di vincoli differibili.
+In PostgreSQL possono essere
+dichiarati \texttt{DEFERRABLE}
+i seguenti vincoli:
+\begin{itemize}
+    \item \texttt{UNIQUE};
+    \item \texttt{PRIMARY KEY};
+    \item \texttt{FOREIGN KEY};
+    \item \texttt{EXCLUDE}.
+\end{itemize}
+In particolare, i vincoli
+\texttt{NOT NULL} e \texttt{CHECK}
+non possono essere dichiarati
+\texttt{DEFERRABLE} in PostgreSQL.
+Per gli esempi del corso,
+i vincoli più importanti sono
+quelli di \textbf{foreign key}.
+
+\section{Esempio: vincoli di Foreign Key reciproci}
+\subsection{Definizione delle tabelle}
+Consideriamo due tabelle:
+\begin{itemize}
+    \item \texttt{persona}: contiene
+    le persone e le rispettive città
+    di nascita.
+
+    \item \texttt{citta}: contiene
+    le città e i rispettivi sindaci.
+\end{itemize}
+Le due tabelle hanno vincoli
+di foreign key reciproci:
+\[
+\text{persona.cittanascita}
+\rightarrow
+\text{citta.nome}
+\]
+\[
+\text{citta.sindaco}
+\rightarrow
+\text{persona.cf}
+\]
+Quindi, a seconda del vincolo
+considerato, una tabella può
+essere sia padre sia figlia.
+Definiamo le tabelle:
+\begin{verbatim}
+CREATE TABLE persona (
+    cf VARCHAR(100) PRIMARY KEY,
+    cittanascita VARCHAR(30)
+);
+
+CREATE TABLE citta (
+    nome VARCHAR(30) PRIMARY KEY,
+    sindaco VARCHAR(100)
+        CONSTRAINT vincolo1
+        REFERENCES persona(cf)
+);
+
+ALTER TABLE persona
+ADD CONSTRAINT vincolo2
+FOREIGN KEY (cittanascita)
+REFERENCES citta(nome);
+\end{verbatim}
+Abbiamo quindi:
+\begin{itemize}
+    \item \texttt{vincolo1}:
+    il sindaco di una città deve
+    essere una persona esistente.
+
+    \item \texttt{vincolo2}:
+    la città di nascita di una persona
+    deve essere una città esistente.
+\end{itemize}
+\noindent Entrambi i vincoli utilizzano
+la politica predefinita
+\texttt{NO ACTION}.
+\subsection{Inserimento dei dati}
+Inseriamo due città:
+\begin{verbatim}
+INSERT INTO citta
+VALUES
+('Roma', NULL),
+('Milano', NULL);
+\end{verbatim}
+Successivamente inseriamo una persona:
+\begin{verbatim}
+INSERT INTO persona
+VALUES ('100', 'Roma');
+\end{verbatim}
+L'inserimento è valido perché:
+\begin{itemize}
+    \item il valore \texttt{NULL}
+    dell'attributo \texttt{sindaco}
+    è consentito;
+
+    \item la città \texttt{Roma}
+    esiste già nella tabella
+    \texttt{citta}.
+\end{itemize}
+
+\subsection{Problema: cancellazione di Roma}
+Supponiamo di voler eliminare
+la città di Roma:
+\begin{verbatim}
+DELETE FROM citta
+WHERE nome = 'Roma';
+\end{verbatim}
+Il DBMS genera un errore perché
+la persona con codice fiscale
+\texttt{100} ha come città
+di nascita \texttt{Roma}.
+La cancellazione lascerebbe
+una tupla figlia che referenzia
+una tupla padre inesistente.
+Si avrebbe quindi una violazione
+del vincolo \texttt{vincolo2}.
+Per risolvere il problema
+possiamo utilizzare tre metodi.
+
+\subsection{Metodo 1: aggiornamento manuale}
+Il primo metodo consiste
+nell'eliminare manualmente
+i riferimenti alla città
+prima di cancellarla.
+Eseguiamo:
+\begin{verbatim}
+BEGIN TRANSACTION;
+
+UPDATE persona
+SET cittanascita = NULL
+WHERE cittanascita = 'Roma';
+
+DELETE FROM citta
+WHERE nome = 'Roma';
+
+COMMIT;
+\end{verbatim}
+In questo modo:
+\begin{enumerate}
+    \item Le persone nate a Roma
+    non referenziano più la città.
+
+    \item La città di Roma
+    può essere eliminata.
+
+    \item La transazione conferma
+    entrambe le operazioni.
+\end{enumerate}
+\noindent
+\textbf{Condizione necessaria:}
+l'attributo \texttt{cittanascita}
+deve accettare valori \texttt{NULL}.
+Il vantaggio è che le persone
+rimangono memorizzate nel database.
+\subsection{Metodo 2: ON DELETE CASCADE}
+Il secondo metodo consiste
+nel definire il vincolo
+\texttt{vincolo2} con la politica
+\texttt{ON DELETE CASCADE}.
+La definizione diventa:
+\begin{verbatim}
+ALTER TABLE persona
+ADD CONSTRAINT vincolo2
+FOREIGN KEY (cittanascita)
+REFERENCES citta(nome)
+ON DELETE CASCADE;
+\end{verbatim}
+Si intende che questa definizione
+sostituisce quella precedente
+del vincolo \texttt{vincolo2}.
+Ora possiamo eseguire:
+\begin{verbatim}
+DELETE FROM citta
+WHERE nome = 'Roma';
+\end{verbatim}
+Il DBMS elimina automaticamente:
+\begin{itemize}
+    \item la tupla relativa
+    alla città di Roma;
+
+    \item tutte le tuple della
+    tabella \texttt{persona}
+    che hanno \texttt{Roma}
+    come città di nascita.
+\end{itemize}
+Quindi:
+\[
+\boxed{
+\text{Eliminazione padre}
+\Rightarrow
+\text{Eliminazione figli}
+}
+\]
+\textbf{Attenzione:} questa soluzione
+può essere pericolosa perché
+la cancellazione di una città
+provoca anche la cancellazione
+delle persone nate in quella città.
+La politica \texttt{CASCADE}
+deve quindi essere utilizzata
+soltanto quando questo comportamento
+è coerente con il significato dei dati.
+
+\subsection{Metodo 3: vincoli DEFERRABLE}
+Il terzo metodo consiste
+nel posticipare il controllo
+del vincolo di foreign key
+alla fine della transazione.
+Per farlo, il vincolo deve
+essere dichiarato
+\texttt{DEFERRABLE}.
+Definiamo le tabelle:
+\begin{verbatim}
+CREATE TABLE persona (
+    cf VARCHAR(100) PRIMARY KEY,
+    cittanascita VARCHAR(30)
+);
+CREATE TABLE citta (
+    nome VARCHAR(30) PRIMARY KEY,
+    sindaco VARCHAR(100)
+        CONSTRAINT vincolo1
+        REFERENCES persona(cf)
+        DEFERRABLE
+);
+
+ALTER TABLE persona
+ADD CONSTRAINT vincolo2
+FOREIGN KEY (cittanascita)
+REFERENCES citta(nome)
+DEFERRABLE;
+\end{verbatim}
+Inseriamo i dati:
+\begin{verbatim}
+INSERT INTO citta
+VALUES
+('Roma', NULL),
+('Milano', NULL);
+
+INSERT INTO persona
+VALUES ('100', 'Roma');
+\end{verbatim}
+Ora vogliamo eliminare Roma,
+ma senza modificare i riferimenti
+prima della cancellazione.
+Possiamo utilizzare:
+\begin{verbatim}
+BEGIN TRANSACTION;
+
+SET CONSTRAINTS vincolo2 DEFERRED;
+
+DELETE FROM citta
+WHERE nome = 'Roma';
+
+UPDATE persona
+SET cittanascita = NULL
+WHERE cittanascita = 'Roma';
+
+COMMIT;
+\end{verbatim}
+
+\subsubsection{Spiegazione dell'esecuzione}
+\paragraph{1. Inizio della transazione}
+\begin{verbatim}
+BEGIN TRANSACTION;
+\end{verbatim}
+Viene avviata una transazione.
+\paragraph{2. Posticipo del controllo}
+\begin{verbatim}
+SET CONSTRAINTS vincolo2 DEFERRED;
+\end{verbatim}
+Il controllo del vincolo
+\texttt{vincolo2} viene posticipato
+alla fine della transazione.
+\paragraph{3. Cancellazione di Roma}
+\begin{verbatim}
+DELETE FROM citta
+WHERE nome = 'Roma';
+\end{verbatim}
+In questo momento, la persona
+con codice fiscale \texttt{100}
+referenzia una città inesistente.
+Si verifica quindi una
+\textbf{violazione temporanea}
+del vincolo di integrità referenziale.
+Tuttavia, l'operazione è consentita
+perché il vincolo è in modalità
+\texttt{DEFERRED}.
+\paragraph{4. Ripristino della consistenza}
+\begin{verbatim}
+UPDATE persona
+SET cittanascita = NULL
+WHERE cittanascita = 'Roma';
+\end{verbatim}
+Il riferimento alla città
+eliminata viene rimosso.
+La violazione del vincolo
+non esiste più.
+\paragraph{5. Conferma della transazione}
+\begin{verbatim}
+COMMIT;
+\end{verbatim}
+Il DBMS verifica il vincolo
+\texttt{vincolo2}.
+Poiché il vincolo è soddisfatto,
+la transazione viene confermata.
+Se invece la violazione
+fosse ancora presente,
+il commit non potrebbe
+essere completato.
+\subsection{Differenza tra i tre metodi}
+I tre metodi permettono
+di gestire la cancellazione
+di una tupla padre referenziata,
+ma con comportamenti differenti.
+\begin{itemize}
+    \item \textbf{Metodo 1:}
+    si modificano prima
+    le tuple figlie e poi
+    si elimina la tupla padre.
+    \item \textbf{Metodo 2:}
+    si utilizza
+    \texttt{ON DELETE CASCADE}
+    per eliminare automaticamente
+    le tuple figlie.
+
+    \item \textbf{Metodo 3:}
+    si elimina prima la tupla padre
+    e si correggono successivamente
+    le tuple figlie, sfruttando
+    un vincolo differibile.
+\end{itemize}
+\noindent La differenza fondamentale
+tra il metodo 1 e il metodo 3
+è l'ordine delle operazioni.
+Nel metodo 1:
+\[
+\boxed{
+\text{Aggiorna figli}
+\rightarrow
+\text{Elimina padre}
+}
+\]
+Nel metodo 3:
+\[
+\boxed{
+\text{Elimina padre}
+\rightarrow
+\text{Aggiorna figli}
+}
+\]
+Il metodo 3 è possibile
+perché il controllo del vincolo
+viene posticipato alla fine
+della transazione.
