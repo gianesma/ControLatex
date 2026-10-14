@@ -1244,3 +1244,779 @@ influenzare la conclusione del progetto.
     \caption{Esempio completo con Percorso Critico}
     %\label{label}
 \end{figure}
+\subsubsection*{Esercizio esempio}
+
+\noindent Consideriamo il seguente esercizio CPM, nel quale
+sono indicate le attività, le rispettive durate e le relazioni
+di precedenza.
+
+\begin{center}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|}
+\hline
+\textbf{Attività} & \textbf{Durata} & \textbf{Predec.} &
+\textbf{ES} & \textbf{EF} & \textbf{LS} & \textbf{LF} &
+\textbf{TS} & \textbf{FS} & \textbf{CS} & \textbf{IS} \\
+\hline
+A & 9  & --    & & & & & & & & \\ \hline
+B & 3  & --    & & & & & & & & \\ \hline
+C & 7  & --    & & & & & & & & \\ \hline
+D & 10 & A     & & & & & & & & \\ \hline
+E & 1  & B     & & & & & & & & \\ \hline
+F & 21 & B     & & & & & & & & \\ \hline
+G & 1  & B     & & & & & & & & \\ \hline
+H & 5  & C,G   & & & & & & & & \\ \hline
+I & 6  & D     & & & & & & & & \\ \hline
+L & 3  & H     & & & & & & & & \\ \hline
+M & 11 & H     & & & & & & & & \\ \hline
+N & 8  & E,F,L & & & & & & & & \\ \hline
+O & 1  & I     & & & & & & & & \\ \hline
+P & 2  & M     & & & & & & & & \\ \hline
+Q & 3  & M     & & & & & & & & \\ \hline
+R & 2  & O,N,P & & & & & & & & \\ \hline
+\end{tabular}%
+}
+\end{center}
+
+\noindent L'obiettivo è completare la tabella determinando
+le date minime e massime delle attività e i relativi margini
+di ritardo.
+
+\medskip
+
+\noindent La \textbf{tabella completa} risulta essere:
+
+\begin{center}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|}
+\hline
+\textbf{Attività} & \textbf{Durata} & \textbf{Predec.} &
+\textbf{ES} & \textbf{EF} & \textbf{LS} & \textbf{LF} &
+\textbf{TS} & \textbf{FS} & \textbf{CS} & \textbf{IS} \\
+\hline
+A & 9  & --    & 0  & 9  & 6  & 15 & 6  & 0  & 6 & 0  \\ \hline
+B & 3  & --    & 0  & 3  & 0  & 3  & 0  & 0  & 0 & 0  \\ \hline
+C & 7  & --    & 0  & 7  & 7  & 14 & 7  & 0  & 7 & 0  \\ \hline
+D & 10 & A     & 9  & 19 & 15 & 25 & 6  & 0  & 6 & 0  \\ \hline
+E & 1  & B     & 3  & 4  & 23 & 24 & 20 & 20 & 0 & 20 \\ \hline
+F & 21 & B     & 3  & 24 & 3  & 24 & 0  & 0  & 0 & 0  \\ \hline
+G & 1  & B     & 3  & 4  & 13 & 14 & 10 & 3  & 7 & 3  \\ \hline
+H & 5  & C,G   & 7  & 12 & 14 & 19 & 7  & 0  & 7 & 0  \\ \hline
+I & 6  & D     & 19 & 25 & 25 & 31 & 6  & 0  & 6 & 0  \\ \hline
+L & 3  & H     & 12 & 15 & 21 & 24 & 9  & 9  & 0 & 2  \\ \hline
+M & 11 & H     & 12 & 23 & 19 & 30 & 7  & 0  & 7 & 0  \\ \hline
+N & 8  & E,F,L & 24 & 32 & 24 & 32 & 0  & 0  & 0 & 0  \\ \hline
+O & 1  & I     & 25 & 26 & 31 & 32 & 6  & 6  & 0 & 0  \\ \hline
+P & 2  & M     & 23 & 25 & 30 & 32 & 7  & 7  & 0 & 0  \\ \hline
+Q & 3  & M     & 23 & 26 & 31 & 34 & 8  & 8  & 0 & 1  \\ \hline
+R & 2  & O,N,P & 32 & 34 & 32 & 34 & 0  & 0  & 0 & 0  \\ \hline
+\end{tabular}%
+}
+\end{center}
+
+\subsubsection*{Calcolo delle date}
+
+\noindent Per completare la tabella si procede in due direzioni:
+
+\begin{itemize}
+    \item \textbf{Calcolo in avanti}: si procede da sinistra
+    verso destra. Se un'attività ha più predecessori,
+    si considera il \textbf{massimo EF}, poiché deve
+    attendere il completamento di tutte le attività precedenti.
+
+    \item \textbf{Calcolo all'indietro}: si procede da destra
+    verso sinistra. Se un'attività ha più successori,
+    si considera il \textbf{minimo LS}, poiché deve
+    rispettare la scadenza più restrittiva.
+\end{itemize}
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.9\linewidth]{../images/qulalalala.png}
+    \caption{Esercizio schematizzato con percorso critico}
+    %\label{label}
+\end{figure}
+\noindent Il percorso in rosso è il percorso critico.
+\subsubsection*{Esempio pratico: attività L e H}
+
+\noindent Consideriamo l'attività \textbf{L}, che ha
+durata pari a 3 e precede l'attività N.
+
+\medskip
+
+\noindent Poiché N ha:
+
+\[
+LS_N=24
+\]
+
+\noindent L deve terminare al massimo all'istante 24:
+
+\[
+LF_L=24
+\]
+
+\noindent Di conseguenza:
+
+\[
+LS_L=24-3=\boxed{21}
+\]
+
+\medskip
+
+\noindent Consideriamo ora l'attività \textbf{H},
+che ha due successori: L e M.
+
+\medskip
+
+\noindent I rispettivi Late Start sono:
+
+\[
+LS_L=21
+\qquad
+LS_M=19
+\]
+
+\noindent H deve terminare entro il Late Start di
+entrambi i successori. Pertanto, si considera il valore minore:
+
+\[
+LF_H=\min(21,19)=\boxed{19}
+\]
+
+\noindent Essendo la durata di H pari a 5:
+
+\[
+LS_H=19-5=\boxed{14}
+\]
+
+\noindent \textbf{Perché non scegliamo 21?}
+
+\noindent Se H terminasse all'istante 21, l'attività M
+non potrebbe iniziare entro il proprio Late Start,
+pari a 19, causando un ritardo nella pianificazione.
+
+\subsubsection*{Margini di ritardo}
+
+\noindent Nella tabella sono presenti i seguenti
+margini di ritardo:
+
+\begin{itemize}
+    \item \textbf{TS (Total Slack)}: ritardo massimo
+    consentito senza posticipare la conclusione del progetto.
+
+    \item \textbf{FS (Free Slack)}: ritardo massimo
+    consentito senza posticipare l'inizio minimo
+    delle attività successive.
+
+    \item \textbf{CS (Conditional Slack)}: margine
+    di ritardo condizionato, che considera i vincoli
+    temporali delle attività collegate.
+
+    \item \textbf{IS (Independent Slack)}: ritardo
+    indipendente, utilizzabile senza influenzare
+    le attività precedenti e successive.
+\end{itemize}
+
+\subsubsection*{Individuazione del percorso critico}
+
+\noindent Le attività con \textbf{TS nullo}
+appartengono al percorso critico.
+
+\medskip
+
+\noindent Nel nostro esercizio il percorso critico è:
+
+\[
+\boxed{B \rightarrow F \rightarrow N \rightarrow R}
+\]
+
+\noindent La durata complessiva del progetto è:
+
+\[
+3+21+8+2=\boxed{34}
+\]
+
+\noindent Il percorso critico determina la durata minima
+del progetto: un ritardo in una delle sue attività
+può comportare un ritardo nella conclusione dell'intero progetto.
+\subsection{Altre tecniche reticolari}
+
+\subsubsection*{Precedenze nel PDM}
+
+\noindent Nel \textbf{Precedence Diagramming Method (PDM)}, le attività
+possono essere collegate attraverso vincoli di precedenza,
+che possono prevedere anticipi o ritardi tra le attività.
+
+\medskip
+
+\noindent In particolare, distinguiamo:
+
+\begin{itemize}
+    \item \textbf{Lead (anticipo)}: permette a un'attività
+    successiva di iniziare prima che l'attività precedente
+    sia terminata.
+
+    \item \textbf{Lag (ritardo)}: rappresenta un intervallo
+    di tempo che deve trascorrere prima che l'attività
+    successiva possa iniziare.
+\end{itemize}
+
+\noindent Ad esempio, nel caso della relazione
+\textbf{Fine-Inizio (FS)}:
+
+\begin{itemize}
+    \item con un \textbf{Lead di 2 giorni}, l'attività successiva
+    può iniziare 2 giorni prima della conclusione della precedente;
+
+    \item con un \textbf{Lag di 2 giorni}, l'attività successiva
+    può iniziare solamente 2 giorni dopo la conclusione
+    della precedente.
+\end{itemize}
+
+\noindent Questi vincoli consentono una pianificazione
+temporale più flessibile rispetto alle semplici
+relazioni di precedenza.
+
+
+\subsection{PERT -- Program Evaluation and Review Technique}
+
+\noindent Il \textbf{PERT} è una tecnica reticolare che,
+a differenza del CPM, considera la durata delle attività
+in termini \textbf{probabilistici}.
+
+\medskip
+
+\noindent Le durate vengono stimate attraverso tre valori:
+
+\begin{itemize}
+    \item $d_{ott}$: \textbf{durata ottimistica},
+    cioè il tempo minimo previsto;
+
+    \item $d_{pp}$: \textbf{durata più probabile},
+    cioè il tempo che si ritiene più realistico;
+
+    \item $d_{pess}$: \textbf{durata pessimistica},
+    cioè il tempo massimo previsto.
+\end{itemize}
+
+\noindent Nel modello PERT si utilizza una distribuzione
+beta per rappresentare la possibile durata delle
+singole attività.
+
+\subsubsection*{Durata attesa e varianza}
+
+\noindent La \textbf{durata attesa} di un'attività si calcola
+attraverso una media ponderata delle tre stime:
+
+\[
+\boxed{
+d_{att}=
+\frac{d_{pess}+4d_{pp}+d_{ott}}{6}
+}
+\]
+
+\noindent La \textbf{varianza} misura invece l'incertezza
+associata alla durata dell'attività:
+
+\[
+\boxed{
+V=\frac{(d_{pess}-d_{ott})^2}{36}
+}
+\]
+
+\noindent La \textbf{deviazione standard}, indicata con
+la lettera greca $\sigma$ (sigma), è:
+
+\[
+\boxed{\sigma=\sqrt{V}}
+\]
+
+\noindent Maggiore è la deviazione standard, maggiore
+è l'incertezza sulla durata dell'attività.
+
+\subsubsection*{Probabilità di completamento del progetto}
+
+\noindent Per stimare la probabilità di completare
+il progetto entro un determinato tempo,
+si considera il \textbf{percorso critico}.
+
+\medskip
+
+\noindent Il tempo atteso di completamento del progetto è:
+
+\[
+\boxed{
+T_E=\sum_{\text{percorso critico}}d_{att}
+}
+\]
+
+\noindent La varianza complessiva, assumendo che le durate
+delle attività siano indipendenti, si ottiene sommando
+le varianze delle sole attività del percorso critico:
+
+\[
+\boxed{
+\sigma^2=\sum_{\text{percorso critico}}V_i
+}
+\]
+
+\noindent Di conseguenza, la deviazione standard
+complessiva è:
+
+\[
+\boxed{
+\sigma=\sqrt{\sum_{\text{percorso critico}}V_i}
+}
+\]
+
+\noindent Per calcolare la probabilità di completamento
+entro il tempo richiesto si utilizza:
+
+\[
+\boxed{
+Z=\frac{T-T_E}{\sigma}
+}
+\]
+
+\noindent dove:
+
+\begin{itemize}
+    \item $T$ = tempo richiesto per completare il progetto;
+    \item $T_E$ = tempo atteso di completamento;
+    \item $\sigma$ = deviazione standard del percorso critico;
+    \item $Z$ = valore da ricercare nella tabella della
+    distribuzione normale standard.
+\end{itemize}
+
+\noindent Il valore di $Z$ permette di individuare,
+attraverso la tabella della distribuzione normale,
+la probabilità di completare il progetto entro il tempo
+stabilito.
+
+
+\subsubsection*{Esercizio esempio}
+
+\noindent Consideriamo un progetto composto da otto attività,
+per le quali sono note le precedenze e le durate
+ottimistiche, più probabili e pessimistiche.
+
+\medskip
+
+\noindent Applicando le formule precedenti, otteniamo
+la seguente tabella:
+
+\begin{center}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|}
+\hline
+\textbf{Attività} & \textbf{Preced.} &
+$\mathbf{d_{ott}}$ & $\mathbf{d_{pp}}$ &
+$\mathbf{d_{pess}}$ & $\mathbf{d_{att}}$ &
+$\mathbf{V}$ & $\boldsymbol{\sigma}$ \\
+\hline
+A & --  & 4  & 11 & 12 & 10 & 1,78 & 1,33 \\ \hline
+B & --  & 45 & 48 & 63 & 50 & 9,00 & 3,00 \\ \hline
+C & B   & 13 & 33 & 35 & 30 & 13,44 & 3,67 \\ \hline
+D & B   & 25 & 29 & 39 & 30 & 5,44 & 2,33 \\ \hline
+E & A,C & 14 & 21 & 22 & 20 & 1,78 & 1,33 \\ \hline
+F & D,E & 18 & 32 & 34 & 30 & 7,11 & 2,67 \\ \hline
+G & A,C & 17 & 19 & 27 & 20 & 2,78 & 1,67 \\ \hline
+H & G   & 15 & 20 & 25 & 20 & 2,78 & 1,67 \\ \hline
+\end{tabular}%
+}
+\end{center}
+
+\noindent Ad esempio, per l'attività B:
+
+\[
+d_{att,B}=\frac{63+4(48)+45}{6}
+\]
+
+\[
+\boxed{d_{att,B}=50}
+\]
+
+\noindent La varianza è:
+
+\[
+V_B=\frac{(63-45)^2}{36}
+\]
+
+\[
+\boxed{V_B=9}
+\]
+
+\noindent La deviazione standard è:
+
+\[
+\sigma_B=\sqrt{9}=\boxed{3}
+\]
+
+\subsubsection*{Individuazione del percorso critico}
+
+\noindent Utilizzando le durate attese, il percorso critico
+risulta:
+
+\[
+\boxed{B\rightarrow C\rightarrow E\rightarrow F}
+\]
+
+\noindent Il tempo atteso per completare il progetto è:
+
+\[
+T_E=50+30+20+30
+\]
+
+\[
+\boxed{T_E=130\text{ giorni}}
+\]
+
+\subsubsection*{Calcolo della deviazione standard}
+
+\noindent Per determinare la deviazione standard complessiva
+bisogna considerare solamente le varianze delle attività
+che appartengono al percorso critico.
+
+\[
+\sigma^2=V_B+V_C+V_E+V_F
+\]
+
+\[
+\sigma^2=9+13{,}44+1{,}78+7{,}11
+\]
+
+\[
+\boxed{\sigma^2=31{,}33}
+\]
+
+\noindent Calcoliamo quindi la radice quadrata:
+
+\[
+\sigma=\sqrt{31{,}33}
+\]
+
+\[
+\boxed{\sigma\simeq5{,}597}
+\]
+
+\subsubsection*{Calcolo della probabilità di completamento}
+
+\noindent Supponiamo che il progetto debba essere
+completato entro:
+
+\[
+T=141\text{ giorni}
+\]
+
+\noindent Il tempo atteso è invece:
+
+\[
+T_E=130\text{ giorni}
+\]
+
+\noindent Applicando la formula:
+
+\[
+Z=\frac{T-T_E}{\sigma}
+\]
+
+\[
+Z=\frac{141-130}{5{,}597}
+\]
+
+\[
+\boxed{Z\simeq1{,}96}
+\]
+
+\noindent A questo punto si utilizza la
+\textbf{tabella della distribuzione normale standard}.
+
+\medskip
+
+\noindent Per trovare il valore corrispondente a $Z=1{,}96$
+bisogna incrociare:
+
+\begin{itemize}
+    \item la \textbf{riga 1,9};
+    \item la \textbf{colonna 0,06}.
+\end{itemize}
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.9\linewidth]{../images/strapalle.png}
+    \caption{Fornita all'esame dal prof}
+    %\label{label}
+\end{figure}
+
+\noindent Il valore ottenuto è:
+
+\[
+P(Z\leq1{,}96)=0{,}9750
+\]
+
+\noindent Pertanto, la probabilità di completare
+il progetto entro 141 giorni è:
+
+\[
+\boxed{P(\text{completamento})=97{,}50\%}
+\]
+
+\noindent La probabilità di terminare oltre la scadenza,
+incorrendo quindi in un'eventuale penalità, è:
+
+\[
+P(\text{ritardo})=1-0{,}9750
+\]
+
+\[
+\boxed{P(\text{ritardo})=2{,}50\%}
+\]
+
+\subsubsection*{Conclusione}
+
+\noindent Il progetto presenta:
+
+\[
+\boxed{
+\begin{aligned}
+T_E &=130\text{ giorni}\\
+T &=141\text{ giorni}\\
+\sigma &\simeq5{,}597\\
+Z &\simeq1{,}96
+\end{aligned}
+}
+\]
+
+\noindent La probabilità stimata di rispettare
+la scadenza è del \textbf{97,50\%}, mentre
+la probabilità di completare il progetto
+in ritardo è del \textbf{2,50\%}.
+
+\medskip
+
+\noindent Il risultato si basa sull'approssimazione
+normale della durata del progetto e sull'ipotesi
+che il percorso critico rimanga invariato.
+\subsection{Calendario di progetto}
+
+\noindent Le \textbf{tecniche reticolari} permettono di effettuare lo
+\textbf{scheduling delle attività} e l'\textbf{analisi degli slittamenti},
+ovvero dei margini di flessibilità (\textit{slack} o \textit{float}).
+
+\medskip
+
+\noindent Queste informazioni consentono di realizzare la
+\textbf{calendarizzazione del progetto}, rappresentando graficamente
+le attività e la loro distribuzione nel tempo, ad esempio
+attraverso il diagramma di Gantt.
+
+\medskip
+
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.9\linewidth]{../images/fatemi.png}
+    \caption{caption}
+    %\label{label}
+\end{figure}
+
+\subsubsection*{Scheduling ASAP e ALAP}
+
+\noindent Una volta individuate le date minime e massime di inizio,
+è possibile pianificare le attività secondo due modalità:
+
+\begin{itemize}
+    \item \textbf{ASAP (As Soon As Possible)}: le attività vengono
+    programmate il prima possibile, rispettando le precedenze.
+    È la modalità generalmente utilizzata dai software di
+    Project Management.
+
+    \item \textbf{ALAP (As Late As Possible)}: le attività vengono
+    programmate il più tardi possibile, sfruttando i margini
+    disponibili senza ritardare la conclusione del progetto.
+\end{itemize}
+
+\noindent Le attività non critiche possono quindi essere spostate
+all'interno dell'intervallo compreso tra la data minima e quella
+massima di inizio, rispettando i vincoli del progetto.
+
+\medskip
+
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.9\linewidth]{../images/dormire.png}
+    \caption{Esempio di scheduling ASAP}
+    %\label{label}
+\end{figure}
+
+\medskip
+
+\noindent La scelta tra ASAP e ALAP dipende anche dalla presenza
+di \textbf{milestone contrattuali}, cioè eventi o risultati
+che devono essere raggiunti entro determinate scadenze.
+
+\medskip
+
+\noindent Queste scadenze introducono delle
+\textbf{Constraint Date (CD)}, ovvero date vincolanti
+che possono modificare la pianificazione temporale.
+
+\medskip
+
+\subsubsection*{Possibili vincoli temporali}
+
+\noindent Le principali tipologie di vincoli sono:
+
+\begin{itemize}
+    \item \textbf{Must Start On}: l'attività deve iniziare
+    esattamente nella data stabilita (CD).
+    Le date di inizio vengono fissate al valore della CD,
+    aggiornando di conseguenza quelle di fine.
+
+    \item \textbf{Must Finish On}: l'attività deve terminare
+    esattamente nella data stabilita (CD).
+    Le date di fine vengono fissate alla CD,
+    aggiornando di conseguenza quelle di inizio.
+
+    \item \textbf{Start No Earlier Than}: l'attività non può
+    iniziare prima della CD. Se $ES<CD$, il valore di ES
+    viene aggiornato alla CD.
+
+    \item \textbf{Start No Later Than}: l'attività non può
+    iniziare dopo la CD. Se $LS>CD$, il valore di LS
+    viene aggiornato alla CD.
+
+    \item \textbf{Finish No Earlier Than}: l'attività non può
+    terminare prima della CD. Se $EF<CD$, il valore di EF
+    viene aggiornato alla CD, modificando di conseguenza
+    la data minima di inizio.
+
+    \item \textbf{Finish No Later Than}: l'attività non può
+    terminare dopo la CD. Se $LF>CD$, il valore di LF
+    viene aggiornato alla CD, modificando di conseguenza
+    la data massima di inizio.
+\end{itemize}
+
+\noindent I vincoli temporali permettono quindi di adattare
+il calendario del progetto alle scadenze imposte
+dall'organizzazione o dai contratti.
+
+\medskip
+
+
+\subsubsection*{Allocazione delle risorse alle attività}
+
+\noindent Una volta completata la pianificazione temporale,
+è necessario \textbf{assegnare le risorse alle attività}
+per verificare la presenza di eventuali
+\textbf{sottocarichi o sovraccarichi di lavoro}.
+
+\medskip
+
+\noindent L'allocazione delle risorse può influenzare
+il calendario del progetto, rendendo necessario,
+ad esempio, posticipare l'inizio di alcune attività.
+
+\medskip
+
+\noindent Le risorse necessarie alla realizzazione
+del progetto possono essere suddivise in:
+
+\begin{itemize}
+    \item \textbf{Risorse economiche}: rappresentano
+    direttamente un costo per il progetto.
+
+    \item \textbf{Risorse a disponibilità limitata}:
+    comprendono persone e attrezzature, per le quali
+    è possibile valutare il tempo di impiego
+    e il relativo costo orario.
+
+    \item \textbf{Risorse a disponibilità illimitata}:
+    comprendono materiali e risorse considerate
+    disponibili nelle quantità necessarie,
+    generalmente valutate attraverso un costo unitario.
+\end{itemize}
+
+\medskip
+
+
+\subsubsection*{Effetti dell'allocazione delle risorse}
+
+\noindent La disponibilità limitata delle risorse può
+modificare il piano temporale anche quando le attività
+non presentano vincoli di precedenza diretti.
+
+\medskip
+
+\noindent Ad esempio, se due attività richiedono
+la \textbf{stessa risorsa}, potrebbero non poter
+essere svolte contemporaneamente.
+
+\medskip
+
+\noindent In questo caso è necessario introdurre
+un vincolo aggiuntivo, posticipando una delle attività.
+
+\medskip
+
+\noindent Nell'esempio della Figura 6, le attività A e B
+condividono la medesima risorsa:
+
+\begin{itemize}
+    \item inizialmente A e B potrebbero essere eseguite
+    contemporaneamente;
+
+    \item poiché utilizzano la stessa risorsa, B viene
+    posticipata fino al completamento di A;
+
+    \item l'attività C, che dipende da A e B,
+    può iniziare solamente dopo il completamento
+    di entrambe.
+\end{itemize}
+
+\noindent Di conseguenza, la durata complessiva
+del progetto passa da \textbf{25 a 40 unità di tempo}.
+
+\medskip
+
+\subsubsection*{Modalità di allocazione delle risorse}
+
+\noindent L'allocazione delle risorse può essere effettuata
+considerando tre differenti situazioni:
+
+\begin{itemize}
+    \item \textbf{Tempo infinito e capacità infinita}:
+    non sono imposti vincoli particolari sulle scadenze
+    e sulla disponibilità delle risorse.
+
+    \item \textbf{Tempo infinito e capacità finita}:
+    le risorse disponibili sono limitate, ma è possibile
+    prolungare la durata del progetto.
+
+    \item \textbf{Tempo finito e capacità finita}:
+    sia le scadenze sia le risorse disponibili
+    rappresentano vincoli da rispettare.
+\end{itemize}
+
+\subsubsection*{Livellamento dei carichi}
+
+\noindent Per evitare sovraccarichi delle risorse
+si può ricorrere al \textbf{livellamento dei carichi},
+che può avvenire in due modi:
+
+\begin{itemize}
+    \item \textbf{Livellamento dei tempi}:
+    consiste nello spostare le attività sfruttando
+    gli \textbf{slack time} precedentemente calcolati,
+    senza modificare la durata complessiva del progetto.
+
+    \item \textbf{Livellamento delle risorse}:
+    consiste nel modificare la pianificazione
+    anche oltre gli slack time disponibili,
+    per rispettare i vincoli delle risorse.
+    Questo può comportare un
+    \textbf{allungamento della durata complessiva del progetto}.
+\end{itemize}
+
+\noindent In conclusione, la pianificazione temporale
+deve essere compatibile non soltanto con le precedenze
+tra le attività, ma anche con la
+\textbf{disponibilità effettiva delle risorse}.
