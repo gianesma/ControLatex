@@ -3048,10 +3048,6 @@ La tupla:
 (\text{Savona},2000)
 \]
 è detta \textbf{tupla figlia}.
-Questo perché il valore \texttt{2000} presente
-nell'attributo \texttt{sindaco} della tabella
-\texttt{citta} fa riferimento alla persona
-con codice fiscale \texttt{2000}.
 \subsection{Politiche di reazione ai vincoli di Foreign Key}
 Quando si modifica o si elimina una tupla
 della tabella padre, si potrebbe violare
@@ -3099,7 +3095,7 @@ Se si tenta di eliminare o modificare
 una tupla padre ancora referenziata
 da una tupla figlia, viene generato un errore
 se il vincolo risulta violato al momento
-del controllo.
+del controllo.\\
 \textbf{Importante:} il controllo può essere
 posticipato alla fine della transazione
 se il vincolo è definito come
@@ -3144,8 +3140,8 @@ referenziale alla fine della transazione.
 La politica \texttt{CASCADE} propaga
 automaticamente le modifiche effettuate
 sulla tabella padre alle tuple figlie.
-Il comportamento dipende dall'operazione.
-\paragraph{ON DELETE CASCADE}
+Il comportamento dipendedall'operazione.\medskip\\
+\texttt{ON DELETE CASCADE}\\\
 Quando viene eliminata una tupla padre,
 vengono eliminate automaticamente anche
 le tuple figlie che la referenziano.
@@ -3157,8 +3153,8 @@ ON DELETE CASCADE
 Se eliminiamo una persona, vengono
 eliminate anche le città che la
 referenziano attraverso l'attributo
-\texttt{sindaco}.
-\paragraph{ON UPDATE CASCADE}
+\texttt{sindaco}.\medskip\\
+\texttt{ON UPDATE CASCADE}\\
 Quando viene modificato il valore
 della chiave referenziata nella
 tabella padre, vengono aggiornati
@@ -3189,7 +3185,7 @@ Se viene eliminata una persona
 che è sindaco di una città,
 la città rimane nella tabella,
 ma il suo attributo
-\texttt{sindaco} diventa \texttt{NULL}.
+\texttt{sindaco} diventa \texttt{NULL}.\\
 \textbf{Attenzione:} questa politica
 richiede che gli attributi coinvolti
 possano assumere il valore \texttt{NULL}.
@@ -3321,9 +3317,10 @@ Se invece si specifica soltanto
 \texttt{DEFERRABLE}, il vincolo
 è inizialmente \texttt{IMMEDIATE}.
 \subsection{SET CONSTRAINTS}
+La parola $CONSTRAINTS$ serve a indicare al database che il comando riguarda i vincoli.\\
 All'interno di una transazione,
 è possibile modificare la modalità
-di controllo dei vincoli differibili.
+di controllo dei vincoli differibili.\\
 Per posticipare il controllo
 di un vincolo specifico:
 \begin{verbatim}
@@ -3338,12 +3335,6 @@ Per tornare alla modalità immediata:
 \begin{verbatim}
 SET CONSTRAINTS nome_vincolo IMMEDIATE;
 \end{verbatim}
-\textbf{Attenzione:} passando da
-\texttt{DEFERRED} a \texttt{IMMEDIATE},
-il DBMS verifica immediatamente
-i vincoli interessati.
-Se esistono violazioni,
-il comando fallisce.
 \subsection{Vincoli differibili in PostgreSQL}
 Non tutti i DBMS supportano
 gli stessi tipi di vincoli differibili.
@@ -3472,8 +3463,6 @@ i riferimenti alla città
 prima di cancellarla.
 Eseguiamo:
 \begin{verbatim}
-BEGIN TRANSACTION;
-
 UPDATE persona
 SET cittanascita = NULL
 WHERE cittanascita = 'Roma';
@@ -3481,7 +3470,6 @@ WHERE cittanascita = 'Roma';
 DELETE FROM citta
 WHERE nome = 'Roma';
 
-COMMIT;
 \end{verbatim}
 In questo modo:
 \begin{enumerate}
@@ -3679,7 +3667,7 @@ ma con comportamenti differenti.
 \end{itemize}
 \noindent La differenza fondamentale
 tra il metodo 1 e il metodo 3
-è l'ordine delle operazioni.
+è l'ordine delle operazioni.\\
 Nel metodo 1:
 \[
 \boxed{
@@ -3696,7 +3684,3 @@ Nel metodo 3:
 \text{Aggiorna figli}
 }
 \]
-Il metodo 3 è possibile
-perché il controllo del vincolo
-viene posticipato alla fine
-della transazione.
