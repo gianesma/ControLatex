@@ -1404,13 +1404,15 @@ Grazie alle grammatiche non contestuali che abbiamo definito, possiamo definire 
 Siccome un linguaggio non contestuale esiste se c'è una grammatica non contestuale che la genera, ne consegue che un linguaggio è 
 riconosciuto da un automa a pila se e solo se è generato da una grammatica non contestuale. 
 \[    \text{Automi a pila} \longleftrightarrow \text{grammatiche non contestuali} \longleftrightarrow \text{linguaggi non contestuali}   \]
-
+\[    \text{Altri automi} \longleftrightarrow \text{espressioni regolari} \longleftrightarrow \text{linguaggi regolari}   \]
 
 \subsection{Pumping Lemma per linguaggi non contestuali}
 Dagli esempi che abbiamo visto prima possiamo constatare che anche i linguaggi non contestuali possono avere una struttura fissa
 costituita da un preffisso, una parte centrale ripetuta un numero arbitrario di volte e un suffisso. Possiamo quindi definire il 
 pumping lemma anche per i linguaggi non contestuali.\smallskip\\
 \colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{lemma}
-   Per ogni linguaggio non contestuale $\mathcal{L}$ di cardinalità infinita esiste una costante $n \ge 1$ tale che:
-   \[\]
-\end{lemma}}}
+   Per ogni linguaggio non contestuale $\mathcal{L}$ di cardinalità infinita esiste una costante $n \ge 1$ tale che se $ z \in L$ e $|z| \ge n$, allora esistono stringhe 
+   $u,v,w,x,y$ tali che:
+   \[ z = uvwxy,\ \ \text{con} \ \ |vx| \ge 1 \ \ \text{e} \ \ |vwx | \le n, \ \ \text{e} \ \ uv^i wx^i y \in L \ \ \text{per ogni} \ \ i \ge 0        \]
+\end{lemma}}} \smallskip\\
+Non vedremo i dettagli della dimostrazione ma l'idea è che il numero di simboli non terminali nella GNC che genera il linguaggio ci permette di concludere l'esistenza di una struttura ricorrente.
