@@ -1284,18 +1284,133 @@ $\delta $ decide qual è lo stato interno successivo e se aggiungere un simbolo 
 \textit{Esempio.}
 \begin{figure}[H]
     \centering  
-    \includegraphics[width=0.9\linewidth]{../../images/pila.png}
+    \includegraphics[width=0.9\linewidth]{../../images/asd.png}
     %\caption{caption}
     %\label{label}
 \end{figure}
 \begin{figure}[H]
     \centering  
-    \includegraphics[width=0.9\linewidth]{../../images/pila2.png}
+    \includegraphics[width=0.9\linewidth]{../../images/asd1.png}
     %\caption{caption}
     %\label{label}
 \end{figure}
 
+\newpage
+
+\subsection{Grammatiche Non Contestuali (GNC)}
+Vogliamo trovare uno strumento sintattico per esprimere gli automi a pila in modo da poter tradurre i linguaggi
+espressi dagli automi a pila in linguggi che possiamo utilizzare nei compilatori reali. Per gli altri automi lo 
+strumento sintattico erano le \textit{espressioni regolari} mentre per gli automi a pila ci sono le \textbf{grammatiche non contesuali},
+vediamone la definizione:\smallskip\\
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
+   Una \textbf{grammatica non contestuale} (context free) è una 4-upla $<V,\Sigma,R,S>$ dove:
+   \begin{itemize}
+    \item $\bm{V}$ è un insieme finito di simboli detti \textbf{non terminali}
+    \item $\bm{\Sigma}$ con $\Sigma \cap V = \emptyset$ è un insieme finito di simboli detti \textbf{terminali}
+    \item $\bm{R}$ è un insieme finito di coppie $(v,\rho)$ con $v \in V$ e $\rho \in (\Sigma \cap V)^*$ detto 
+    \textbf{insieme di regole} dove
+    \begin{itemize}
+        \item $\bm{\rho}$ è una stringa sull'alfabeto $\Sigma \cap V$ (anche vuota)
+        \item $\bm{v}$ è un singolo simbolo in $V$
+    \end{itemize}
+    \item $\bm{S \in V}$ è detto \textbf{simbolo iniziale}
+   \end{itemize}
+\end{definition}}}\smallskip\\
+In altre parole una grammatica non contestuale rappresenta tutte le stringe di simboli terminali che si possono produrre a partire dal simbolo
+iniziale $S$ applicando le regole in $R$.\\
+Tali grammatiche vengono definite \textbf{non contestuali} poichè i simboli non terminali non tengono conto 
+del contesto, cioè non dipendono nè dal simbolo precedente nè dal simbolo successivo nè da altro.\smallskip\\
+\textit{Esempio.} Definiamo una grammatica non contestuale $<V, \Sigma,R,S>$:
+\begin{itemize}
+    \item $V = \{ \text{formula} \}$
+    \item $\Sigma = \{ (,), +,-,\times,\div,0,1  \}$
+    \item $S =$ formula
+    \item $R$ contiene le seguenti regole:
+    \begin{itemize}
+        \item formula $\rightarrow$ (formula $+$ formula)
+        \item formula $\rightarrow$ (formula $-$ formula)
+        \item  formula $\rightarrow$ (formula $\times$ formula)
+        \item  formula $\rightarrow$ (formula $\div$ formula)
+        \item formula $\rightarrow$ $0$
+        \item formula $\rightarrow$ $1$
+    \end{itemize}
+\end{itemize}
+
+\noindent La grammatica che abbiamo appena definito rappresenta il linguaggio delle espressioni algebriche 
+composte dai simboli $+,-,\times,\div,0,1$.
 
 
 
-\
+\subsection{Linguaggio generato da una GNC}
+Ci sono 3 possibili modi di definire un linguaggio generato da una grammatica non contestuale:\smallskip\\
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
+   Data una grammatica non contestuale $G = <V, \Sigma,R,S>$ diciamo che la stringa:
+   \[    c_1...c_{k-1}  \ \mathcolor{red}{c_k}\ c_{k+1}...c_n \in (\Sigma \cup V) \]
+   genera la stringa 
+   \[    c_1...c_{k-1}  \ \mathcolor{red}{s_1...s_m}\ c_{k+1}...c_n \]
+   se esiste una regola $(c_k,\mathcolor{red}{s_1...s_m})$ in $R$ e scriviamo:
+   \[  c_1...c_{k-1}  \ \mathcolor{red}{c_k}\ c_{k+1}...c_n  \rightarrow   c_1...c_{k-1}  \ \mathcolor{red}{s_1...s_m}\ c_{k+1}...c_n \]
+\end{definition}}}\smallskip\\
+Ovviamente, per come lo abbiamo definito, $c_k$ è un simbolo \textit{non terminale}.\medskip\\
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
+   Data una grammatica non contestuale $G = <V, \Sigma,R,S>$ diciamo che la stringa:
+ \[     s_0 \in (\Sigma \cup V)^*   \]
+ deriva la stringa
+ \[    s_n \in (\Sigma \cup V)     \]
+ se esiste una sequenza $s_0,s_1,s_2,...,s_n$ con $n\ge 0$ tale che
+ \[   s_i \rightarrow_G s_{i+1}  \ \ \text{per ogni}\ i = 0,n-1\]
+ e scriviamo
+ $s_0 \rightarrow^*_G s_n $
+\end{definition}}}\medskip\\
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
+   Data una grammatica non contestuale $G = <V, \Sigma,R,S>$ il linguaggio $L(G)$ generato da $G$ è definito come
+   \[  L(G) = \{ w \in \Sigma^* | S \rightarrow^*_G w    \}   \]
+\end{definition}}}\smallskip\\
+$L(G)$ è il linguaggio si tutte le stringhe sull'alfabeto $\Sigma$ che derivano dal simbolo iniziale $S$ di $G$.\smallskip\\
+Le tre definizioni sono assolutamente \textbf{equivalenti} e descrivono in maniera leggermente diversa tra di loro, il linguaggio generato 
+da una grammatica non contestuale. Vediamo due esempi:\smallskip\\
+\textit{Esempi.}
+\begin{itemize}
+    \item Definire una GNC per il linguaggio $\mathcal{L} = \{  a_n b_n | n\ge 0  \}$
+    \begin{itemize}
+        \item $V = \{ S  \}$
+        \item $\Sigma = \{  a,b\}$
+        \item $R$:
+        \begin{itemize}[label =  ]
+            \item $S\to \epsilon$
+            \item $S \to aSb$
+        \end{itemize}
+    \end{itemize}
+
+\item Definire una GNC per il linguaggio $\mathcal{L} = \{ a^n cc b^n | n\ge 1    \}$
+\begin{itemize}
+        \item $V = \{ S  \}$
+        \item $\Sigma = \{  a,b,c\}$
+        \item $R$:
+        \begin{itemize}[label =  ]
+            \item $S\to accb$
+            \item $S \to aSb$
+        \end{itemize}
+    \end{itemize}
+\end{itemize}
+
+
+\subsection{Linguaggi non contestuali}
+Grazie alle grammatiche non contestuali che abbiamo definito, possiamo definire i \textbf{linguaggio non contestuali}\smallskip\\
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{theorem}
+   Un linguaggio è \textbf{non contestuale} se e solo se esiste una grammatica non contestuale $G$ tale che:
+   \[   S = L(G)  \]
+\end{theorem}}}\smallskip\\
+Siccome un linguaggio non contestuale esiste se c'è una grammatica non contestuale che la genera, ne consegue che un linguaggio è 
+riconosciuto da un automa a pila se e solo se è generato da una grammatica non contestuale. 
+\[    \text{Automi a pila} \longleftrightarrow \text{grammatiche non contestuali} \longleftrightarrow \text{linguaggi non contestuali}   \]
+
+
+\subsection{Pumping Lemma per linguaggi non contestuali}
+Dagli esempi che abbiamo visto prima possiamo constatare che anche i linguaggi non contestuali possono avere una struttura fissa
+costituita da un preffisso, una parte centrale ripetuta un numero arbitrario di volte e un suffisso. Possiamo quindi definire il 
+pumping lemma anche per i linguaggi non contestuali.\smallskip\\
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{lemma}
+   Per ogni linguaggio non contestuale $\mathcal{L}$ di cardinalità infinita esiste una costante $n \ge 1$ tale che:
+   \[\]
+\end{lemma}}}
