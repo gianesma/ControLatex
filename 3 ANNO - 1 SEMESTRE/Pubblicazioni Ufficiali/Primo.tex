@@ -1,0 +1,122 @@
+\chapter{Teorema fondamentale dei fluidi della piscio-dinamica}
+\section*{Introduzione}
+Si definisce una regola di spostamento tra i piani di un edificio per la ricerca di un servizio igienico disponibile. Sotto un'ipotesi esplicita sull'occupazione, si dimostra il miglioramento della probabilità di disponibilità passando al piano immediatamente inferiore. La regola viene estesa al piano terra mediante una convenzione ciclica. Le ipotesi del modello sono teoriche e non costituiscono fatti empiricamente accertati.
+
+
+\section{Definizioni preliminari}
+Si consideri un edificio composto da $M+1$ piani, con $M\geq 1$, e sia
+\[
+\mathcal{P}=\{0,1,\ldots,M\}
+\]
+l'insieme dei piani. Il piano $0$ è il piano terra e $M$ è il piano più alto. Indichiamo con $N\in\mathcal{P}$ il piano in cui si trova l'individuo, con $L(N)\geq 0$ un indice adimensionale di occupazione dei servizi igienici e con $P(N)$ la probabilità di trovare almeno un servizio disponibile.
+
+Si adotta la relazione di modello
+\begin{equation}\label{pd:eq:probabilita}
+P(N)=\frac{1}{1+L(N)}.
+\end{equation}
+Questa relazione assegna a un maggiore indice di occupazione una minore probabilità di disponibilità.
+
+\section{Ipotesi di occupazione discendente}
+\noindent\textbf{Assioma di affollamento discendente.} Per ogni $N\in\{1,\ldots,M\}$ si assume che
+\begin{equation}\label{pd:eq:assioma}
+L(N-1)<L(N).
+\end{equation}
+L'assioma introduce un gradiente di occupazione crescente con il piano. È un'ipotesi del modello, non una proprietà dimostrata degli edifici reali. La preferenza degli utenti per i servizi del proprio piano, da sola, non implica la disuguaglianza~\eqref{pd:eq:assioma}.
+
+\section{Lemma di disponibilità al piano inferiore}
+\par\medskip\noindent\textbf{Lemma (disponibilità al piano inferiore).}\ \itshape
+
+Sotto le ipotesi~\eqref{pd:eq:probabilita} e~\eqref{pd:eq:assioma}, per ogni $N\in\{1,\ldots,M\}$ vale
+\[
+\boxed{P(N-1)>P(N).}
+\]
+\par\normalfont\medskip
+\par\noindent\textit{Dimostrazione.} 
+Dall'assioma segue $1+L(N-1)<1+L(N)$. Entrambi i membri sono positivi. Passando ai reciproci si ottiene
+\[
+\frac{1}{1+L(N-1)}>\frac{1}{1+L(N)}.
+\]
+Applicando la definizione~\eqref{pd:eq:probabilita}, si conclude che $P(N-1)>P(N)$.
+\hfill$\square$\par\medskip
+
+\section{Regola di spostamento e teorema fondamentale}
+Si definisce la funzione di spostamento $f\colon\mathcal{P}\to\mathcal{P}$ mediante
+\begin{equation}\label{pd:eq:regola}
+\boxed{
+f(N)=
+\begin{cases}
+N-1, & \text{se }N>0,\\[4pt]
+M, & \text{se }N=0.
+\end{cases}}
+\end{equation}
+La seconda condizione è una convenzione di chiusura ciclica del percorso.
+
+\par\medskip\noindent\textbf{Teorema fondamentale.}\ \itshape
+
+La regola~\eqref{pd:eq:regola} assegna un unico piano di destinazione a ogni piano di partenza. Se $N>0$, lo spostamento prescritto aumenta la probabilità di trovare un servizio disponibile. Se $N=0$, la destinazione è il piano $M$ per definizione della chiusura ciclica.
+\par\normalfont\medskip
+\par\noindent\textit{Dimostrazione.} 
+Si distinguono due casi.
+
+\medskip
+\noindent\textbf{Caso $N>0$.} Poiché $1\leq N\leq M$, si ha $N-1\in\mathcal{P}$. La prima condizione di~\eqref{pd:eq:regola} assegna univocamente $f(N)=N-1$. Per il lemma,
+\[
+P(f(N))=P(N-1)>P(N).
+\]
+Lo spostamento determina quindi un miglioramento rispetto alla permanenza al piano corrente.
+
+\medskip
+\noindent\textbf{Caso $N=0$.} La sottrazione ordinaria darebbe $N-1=-1$, che non appartiene a $\mathcal{P}$. Identificando i piani con le classi di resto modulo $M+1$, si ha
+\[
+-1\equiv M\pmod{M+1}.
+\]
+La chiusura ciclica assegna pertanto $f(0)=M\in\mathcal{P}$. I due casi sono disgiunti ed esauriscono tutti i piani di partenza.
+\hfill$\square$\par\medskip
+
+\par\medskip\noindent\textbf{Osservazione.} 
+Il miglioramento dimostrato per $N>0$ è relativo al piano corrente e non afferma che $N-1$ massimizzi la disponibilità tra tutti i piani. Inoltre, dall'assioma discende
+\[
+P(0)>P(1)>\cdots>P(M).
+\]
+Di conseguenza, il passaggio da $0$ a $M$ non migliora la disponibilità nel modello: è esclusivamente una regola di percorso. Non è possibile imporre un miglioramento stretto lungo l'intero ciclo.
+\par\medskip
+
+\section{Corollario della rappresentazione modulare}
+\par\medskip\noindent\textbf{Corollario (rappresentazione modulare).}\ \itshape
+
+La funzione di spostamento ammette la rappresentazione uniforme
+\begin{equation}\label{pd:eq:modulare}
+\boxed{f(N)=(N-1)\bmod(M+1),}
+\end{equation}
+dove il resto è scelto nell'insieme $\{0,1,\ldots,M\}$.
+\par\normalfont\medskip
+\par\noindent\textit{Dimostrazione.} 
+Se $N>0$, il numero $N-1$ appartiene già all'insieme dei resti ammessi. Se $N=0$, il resto di $-1$ modulo $M+1$ è $M$. La formula coincide dunque con~\eqref{pd:eq:regola} in entrambi i casi.
+\hfill$\square$\par\medskip
+La forma della legge è la stessa per ogni piano di partenza, mentre la destinazione dipende da $N$. Ogni applicazione della regola assegna un piano esistente; non garantisce che vi sia un servizio libero.
+
+\section{Primo principio di spostamento}
+\par\medskip\noindent\textbf{Primo principio di spostamento.}\ \itshape
+
+La ricerca segue la regola di discesa di un piano quando il piano di partenza è superiore al piano terra. Dal piano terra, il percorso riprende dal piano massimo secondo la convenzione ciclica.
+\par\normalfont\medskip
+In forma sintetica,
+\[
+\text{Ricerca di un servizio}
+\quad\Longrightarrow\quad
+\begin{cases}
+\text{discesa di un piano}, & N>0,\\[4pt]
+\text{risalita al piano massimo}, & N=0.
+\end{cases}
+\]
+
+\section{Formula conclusiva e ambito di validità}
+Indicando con $N_{\mathrm{dest}}$ il piano di destinazione, si ottiene
+\[
+\boxed{N_{\mathrm{dest}}=(N-1)\bmod(M+1).}
+\]
+Le conclusioni probabilistiche dipendono dalla relazione~\eqref{pd:eq:probabilita} e dall'assioma~\eqref{pd:eq:assioma}. La formula modulare descrive invece la convenzione di percorso. L'applicabilità delle ipotesi a un edificio reale richiede una verifica empirica.
+
+\begin{flushright}
+\textsc{Q.E.D.} --- \textit{Quod erat demonstrandum.}
+\end{flushright}
