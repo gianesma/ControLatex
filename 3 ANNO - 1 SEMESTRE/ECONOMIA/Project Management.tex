@@ -2020,3 +2020,1304 @@ che può avvenire in due modi:
 deve essere compatibile non soltanto con le precedenze
 tra le attività, ma anche con la
 \textbf{disponibilità effettiva delle risorse}.
+\subsection{Fast Tracking e Crashing del tempo}
+
+\subsubsection*{Fast Tracking}
+
+\noindent Il \textbf{Fast Tracking} è una tecnica che permette di
+\textbf{ridurre la durata complessiva del progetto} attraverso
+la sovrapposizione di attività inizialmente previste in sequenza.
+
+\medskip
+
+\noindent Questa tecnica presenta alcune caratteristiche:
+
+\begin{itemize}
+    \item richiede la \textbf{disponibilità delle risorse}
+    necessarie per svolgere contemporaneamente più attività;
+
+    \item prevede la produzione di \textbf{deliverable provvisori},
+    ovvero risultati intermedi che permettono di iniziare
+    l'attività successiva prima della conclusione della precedente;
+
+    \item i deliverable diventano \textbf{definitivi} solamente
+    quando l'attività precedente viene completata;
+
+    \item può aumentare la quantità di documentazione e
+    il rischio di modifiche o rilavorazioni.
+\end{itemize}
+
+\subsubsection*{Esempio di Fast Tracking}
+
+\noindent Consideriamo tre attività:
+
+\begin{itemize}
+    \item A: durata 20;
+    \item B: durata 15;
+    \item C: durata 5.
+\end{itemize}
+
+\noindent Inizialmente le attività vengono svolte in sequenza:
+
+\[
+A\rightarrow B\rightarrow C
+\]
+
+\noindent La durata complessiva è:
+
+\[
+T=20+15+5=\boxed{40}
+\]
+
+\noindent Introducendo un \textbf{Lead di 6 unità di tempo}
+tra A e B, l'attività B può iniziare prima della conclusione
+di A.
+
+\medskip
+
+\noindent Quindi:
+
+\[
+ES_B=20-6=\boxed{14}
+\]
+
+\[
+EF_B=14+15=\boxed{29}
+\]
+
+\noindent L'attività C può iniziare all'istante 29:
+
+\[
+EF_C=29+5=\boxed{34}
+\]
+
+\noindent La nuova durata del progetto è:
+
+\[
+\boxed{T=34}
+\]
+
+\noindent Il Fast Tracking ha quindi permesso di
+\textbf{ridurre la durata del progetto di 6 unità di tempo},
+senza modificare la durata delle singole attività.
+
+\medskip
+
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.9\linewidth]{../images/fasttracking.png}
+    \caption{Effetto del Fast Tracking}
+    %\label{label}
+\end{figure}
+
+
+\subsubsection*{Crashing del tempo}
+
+\noindent Il \textbf{Crashing} è una tecnica utilizzata per
+\textbf{ridurre la durata complessiva del progetto}
+intervenendo sulle attività appartenenti al
+\textbf{percorso critico}.
+
+\medskip
+
+\noindent A differenza del Fast Tracking, il Crashing
+prevede generalmente un \textbf{aumento dei costi},
+poiché richiede risorse aggiuntive per accelerare le attività.
+
+\medskip
+
+\noindent Le principali modalità di Crashing sono:
+
+\begin{itemize}
+    \item \textbf{Lavoro straordinario}: aumento delle ore lavorative;
+
+    \item \textbf{Risorse addizionali}: impiego di personale
+    o attrezzature supplementari;
+
+    \item \textbf{Sub-contracting}: affidamento di parte
+    delle attività a soggetti esterni.
+\end{itemize}
+
+\noindent Prima di applicare il Crashing è necessario
+analizzare le possibili alternative, cercando di ottenere
+la \textbf{massima riduzione dei tempi con il minimo
+aumento dei costi}.
+
+\medskip
+
+\noindent Per questo motivo si interviene prioritariamente
+sulle attività critiche che presentano il
+\textbf{costo di Crashing per unità di tempo più basso}.
+
+\[
+\boxed{
+C_{\text{unitario}}=
+\frac{C_{\text{crash}}-C_{\text{base}}}
+{d_{\text{base}}-d_{\text{crash}}}
+}
+\]
+
+\noindent dove:
+
+\begin{itemize}
+    \item $C_{\text{crash}}$ = costo dell'attività accelerata;
+    \item $C_{\text{base}}$ = costo iniziale dell'attività;
+    \item $d_{\text{base}}$ = durata iniziale;
+    \item $d_{\text{crash}}$ = durata minima raggiungibile.
+\end{itemize}
+
+\noindent Il Crashing deve essere valutato considerando
+l'intero progetto, poiché il costo aggiuntivo deve essere
+giustificato dai benefici economici derivanti
+dalla riduzione dei tempi.
+
+
+\subsubsection*{Esercizio esempio: Crashing del tempo}
+
+\noindent Consideriamo un progetto composto da sette attività,
+per le quali sono note le durate e i costi nelle condizioni
+normali e in quelle di Crashing.
+
+\begin{center}
+\renewcommand{\arraystretch}{1.2}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|c|c|r|r|r|r|r|r|r|}
+\hline
+\textbf{Att.} &
+\textbf{Prec.} &
+\shortstack{\textbf{Durata}\\\textbf{base}} &
+\shortstack{\textbf{Costo}\\\textbf{base}} &
+\shortstack{\textbf{Durata}\\\textbf{crash}} &
+\shortstack{\textbf{Costo}\\\textbf{crash}} &
+\shortstack{\textbf{Tempo}\\\textbf{risparmiato}} &
+\shortstack{\textbf{Sovra-}\\\textbf{costo}} &
+\shortstack{\textbf{Costo per}\\\textbf{unità}} \\
+\hline
+A & --  & 5 & 15.000 & 4 & 20.000 & 1 & 5.000 & 5.000 \\ \hline
+B & A   & 5 & 25.000 & 3 & 31.000 & 2 & 6.000 & 3.000 \\ \hline
+C & --  & 3 & 9.000  & 2 & 11.000 & 1 & 2.000 & 2.000 \\ \hline
+D & C   & 2 & 14.000 & 1 & 17.000 & 1 & 3.000 & 3.000 \\ \hline
+E & D   & 2 & 16.000 & 1 & 20.000 & 1 & 4.000 & 4.000 \\ \hline
+F & B,E & 7 & 42.000 & 4 & 55.500 & 3 & 13.500 & 4.500 \\ \hline
+G & F   & 8 & 59.000 & 5 & 71.000 & 3 & 12.000 & 4.000 \\ \hline
+\end{tabular}%
+}
+\end{center}
+
+\noindent Il contratto prevede:
+
+\begin{itemize}
+    \item una consegna dell'impianto entro \textbf{16 settimane};
+    \item una \textbf{penale di 3.000 per ogni settimana di ritardo}.
+\end{itemize}
+
+\subsubsection*{Individuazione del percorso critico}
+
+\noindent Nella configurazione iniziale, il percorso critico è:
+
+\[
+\boxed{A\rightarrow B\rightarrow F\rightarrow G}
+\]
+
+\noindent La durata iniziale del progetto è:
+
+\[
+T=5+5+7+8=\boxed{25\text{ settimane}}
+\]
+
+\noindent Il costo iniziale complessivo delle attività è:
+
+\[
+\begin{aligned}
+C_{\text{base}}={}&15.000+25.000+9.000+14.000\\
+&+16.000+42.000+59.000
+\end{aligned}
+\]
+
+\[
+\boxed{C_{\text{base}}=180.000}
+\]
+
+\noindent Poiché il progetto deve essere consegnato entro
+16 settimane, il ritardo iniziale sarebbe:
+
+\[
+25-16=9\text{ settimane}
+\]
+
+\noindent La penale complessiva sarebbe:
+
+\[
+P=9\cdot3.000=\boxed{27.000}
+\]
+
+\noindent Il costo totale, considerando la penale, diventa:
+
+\[
+C_{\text{totale}}=180.000+27.000
+\]
+
+\[
+\boxed{C_{\text{totale}}=207.000}
+\]
+
+
+\subsubsection*{Applicazione del Crashing}
+
+\noindent Per ridurre il tempo del progetto, interveniamo
+sulle attività critiche con il costo di Crashing
+per unità di tempo più conveniente.
+
+\medskip
+
+\noindent Il processo di riduzione può essere riassunto
+attraverso la seguente tabella:
+
+\begin{center}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{|c|r|r|r|}
+\hline
+\textbf{Durata} &
+\textbf{Costo attività} &
+\textbf{Penale} &
+\textbf{Costo totale} \\
+\hline
+25 & 180.000 & 27.000 & 207.000 \\ \hline
+23 & 186.000 & 21.000 & 207.000 \\ \hline
+20 & 198.000 & 12.000 & 210.000 \\ \hline
+17 & 211.500 & 3.000  & 214.500 \\ \hline
+16 & 216.500 & 0      & 216.500 \\ \hline
+\end{tabular}
+\end{center}
+
+\noindent La riduzione dei tempi viene ottenuta
+attraverso i seguenti interventi:
+
+\begin{itemize}
+    \item \textbf{Da 25 a 23 settimane}: riduzione
+    dell'attività B di 2 settimane, con un
+    sovracosto di 6.000;
+
+    \item \textbf{Da 23 a 20 settimane}: riduzione
+    dell'attività G di 3 settimane, con un
+    ulteriore sovracosto di 12.000;
+
+    \item \textbf{Da 20 a 17 settimane}: riduzione
+    dell'attività F di 3 settimane, con un
+    ulteriore sovracosto di 13.500;
+
+    \item \textbf{Da 17 a 16 settimane}: riduzione
+    dell'attività A di 1 settimana, con un
+    ulteriore sovracosto di 5.000.
+\end{itemize}
+
+\noindent Osserviamo che, diminuendo la durata,
+\textbf{aumentano i costi delle attività},
+ma diminuiscono le penali dovute al ritardo.
+
+\medskip
+
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.9\linewidth]{../images/crashingtempo.png}
+    %\caption{Grafico}
+    %\label{label}
+\end{figure}
+
+
+\subsubsection*{Scelta economicamente più conveniente}
+
+\noindent Supponiamo che il ricavo previsto dal contratto
+sia pari a 210.000.
+
+\medskip
+
+\noindent Il risultato economico può essere calcolato come:
+
+\[
+\boxed{
+Utile=Ricavo-Costo_{\text{totale}}
+}
+\]
+
+\noindent Con una durata di 25 settimane:
+
+\[
+Utile_{25}=210.000-207.000=\boxed{3.000}
+\]
+
+\noindent Con una durata di 23 settimane:
+
+\[
+Utile_{23}=210.000-207.000=\boxed{3.000}
+\]
+
+\noindent Con una durata di 20 settimane:
+
+\[
+Utile_{20}=210.000-210.000=\boxed{0}
+\]
+
+\noindent Riducendo ulteriormente la durata,
+i costi superano il ricavo previsto.
+
+\medskip
+
+\noindent La durata di \textbf{23 settimane} rappresenta
+quindi una scelta conveniente, poiché permette
+di ridurre il tempo di realizzazione rispetto
+alle 25 settimane iniziali, mantenendo invariato
+il costo totale.
+
+\[
+\boxed{
+T=23\text{ settimane}
+\qquad
+C_{\text{totale}}=207.000
+}
+\]
+
+\noindent \textbf{Conclusione:} il Crashing non deve
+necessariamente portare alla durata minima possibile.
+È preferibile individuare il \textbf{miglior compromesso
+tra riduzione dei tempi e aumento dei costi}.
+
+\subsection{Critical Chain Scheduling (CC) e Buffer Management (BM)}
+
+\noindent Il \textbf{Critical Chain Scheduling (CC)} e il \textbf{Buffer Management (BM)} sono tecniche di pianificazione che permettono di gestire i ritardi e proteggere la durata complessiva del progetto.
+
+\medskip
+
+\noindent La \textbf{catena critica} è l'insieme delle attività che determina la durata del progetto, considerando sia le \textbf{relazioni di precedenza} sia la \textbf{disponibilità delle risorse}.
+
+\subsubsection*{Cause dei ritardi}
+
+\noindent I principali fattori che possono ritardare un progetto sono:
+
+\begin{enumerate}
+    \item \textbf{Ritardi delle attività critiche}: un'attività appartenente al percorso critico termina in ritardo, posticipando la conclusione del progetto.
+
+    \item \textbf{Ritardi delle attività non critiche}: un'attività esterna al percorso critico ritarda l'inizio di un'attività critica.
+
+    \item \textbf{Conflitti nell'utilizzo delle risorse}: una stessa risorsa viene richiesta contemporaneamente da più attività, rendendo necessario posticiparne almeno una.
+\end{enumerate}
+
+\subsubsection*{Buffer di sicurezza}
+
+\noindent Per proteggere il progetto da questi ritardi, la metodologia CC/BM introduce i \textbf{buffer di sicurezza}, ovvero margini temporali destinati ad assorbire eventuali imprevisti.
+
+\medskip
+
+\noindent Si distinguono tre tipologie di buffer:
+
+\begin{itemize}
+    \item \textbf{Project Buffer}: viene collocato alla fine della catena critica e protegge la data di completamento del progetto. È dimensionato considerando i tempi di sicurezza delle attività critiche e assorbe eventuali ritardi lungo la catena.
+
+    \item \textbf{Feeding Buffer}: viene inserito nei punti in cui le attività non critiche confluiscono nella catena critica. Serve ad assorbire i ritardi delle attività non critiche, evitando che si propaghino a quelle critiche.
+
+    \item \textbf{Resource Buffer}: serve ad assicurare la disponibilità delle risorse necessarie alle attività della catena critica. Può prevedere avvisi anticipati e interventi di ripianificazione per evitare conflitti nell'utilizzo delle risorse.
+\end{itemize}
+
+\subsubsection*{Esempio di applicazione}
+
+\noindent Nel seguente schema le durate delle attività vengono \textbf{compresse}, trasferendo parte dei tempi di sicurezza nei buffer.
+
+\medskip
+
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.7\linewidth]{../images/projectbuffer.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+
+
+\medskip
+
+\noindent Nell'esempio:
+
+\begin{itemize}
+    \item il percorso principale è costituito dalle attività
+    $A \rightarrow D \rightarrow F \rightarrow H \rightarrow I$;
+
+    \item le attività $E \rightarrow G$ e $B \rightarrow C$
+    sono collegate al percorso principale tramite
+    \textbf{Feeding Buffer};
+
+    \item alla fine del percorso principale viene inserito
+    un \textbf{Project Buffer}, che protegge la scadenza
+    complessiva del progetto.
+\end{itemize}
+
+\noindent La durata programmata del percorso principale,
+prima del Project Buffer, è:
+
+\[
+T=20+3+15+8+5=\boxed{51}
+\]
+
+\noindent Il Project Buffer aggiunge un margine di protezione
+rispetto a eventuali ritardi.
+
+\medskip
+
+\noindent In conclusione, la metodologia \textbf{CC/BM}
+permette di concentrare i tempi di sicurezza nei buffer,
+anziché distribuirli interamente sulle singole attività,
+migliorando il controllo dei ritardi e della disponibilità
+delle risorse.
+
+
+\subsection{Controllo dell'avanzamento del progetto}
+
+\noindent La pianificazione delle attività e l'analisi dei possibili ritardi
+possono essere effettuate in fase preventiva.
+
+\medskip
+
+\noindent Una volta avviato il progetto, si entra nella fase di
+\textbf{controllo dell'avanzamento}, durante la quale si verificano
+gli eventuali \textbf{scostamenti rispetto a quanto pianificato}.
+
+\medskip
+
+\noindent Gli scostamenti possono riguardare:
+
+\begin{itemize}
+    \item le \textbf{date di inizio e fine} delle attività;
+    \item la \textbf{durata effettiva} delle attività rispetto a quella prevista;
+    \item le \textbf{risorse e i costi} necessari alla realizzazione del progetto.
+\end{itemize}
+
+\subsubsection*{Diagramma causa-effetto}
+
+\noindent Per individuare le cause degli scostamenti si può utilizzare
+il \textbf{diagramma causa-effetto}, chiamato anche
+\textbf{diagramma di Ishikawa} o \textbf{diagramma a spina di pesce}.
+
+\medskip
+
+\noindent Questo strumento permette di rappresentare graficamente
+le possibili cause di un problema e le loro relazioni con
+l'effetto osservato.
+
+\medskip
+
+\noindent In particolare:
+
+\begin{itemize}
+    \item le \textbf{frecce principali} rappresentano
+    le categorie di cause che contribuiscono all'effetto finale;
+
+    \item le \textbf{frecce secondarie} rappresentano
+    le cause specifiche associate a ciascuna categoria.
+\end{itemize}
+
+\noindent Ad esempio, uno scostamento nella durata di un'attività
+può dipendere da:
+
+\begin{itemize}
+    \item \textbf{Risorsa assegnata indisponibile o imprevisti}:
+    malattie oppure impegno urgente in altre attività;
+
+    \item \textbf{Incertezza tecnica}:
+    necessità di ricerche e test supplementari oppure
+    scelta iniziale di una tecnologia inadeguata;
+
+    \item \textbf{Carico di lavoro maggiore del previsto}:
+    sottostima delle ore necessarie, minore efficienza
+    delle risorse o difficoltà esecutive.
+\end{itemize}
+
+\medskip
+
+\noindent
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.7\linewidth]{../images/causaeffetto.png}
+    %\label{label}
+\end{figure}
+
+\medskip
+
+\noindent L'obiettivo è quindi \textbf{individuare le cause
+dei ritardi}, così da poter adottare azioni correttive
+e migliorare la pianificazione futura.
+
+
+\subsection{Gestione dei costi}
+
+\noindent La \textbf{gestione dei costi} comprende tutte le attività
+necessarie per stimare, pianificare e controllare
+le risorse economiche del progetto.
+
+\medskip
+
+\noindent Si articola principalmente in tre fasi:
+
+\begin{enumerate}
+    \item \textbf{Cost Estimating (Stima dei costi)}:
+    consiste nell'individuazione e nella valutazione
+    dei costi delle risorse necessarie alla realizzazione
+    del progetto.
+
+    \item \textbf{Cost Budgeting (Definizione del budget)}:
+    consiste nell'aggregazione e nell'organizzazione
+    dei costi stimati, definendo il budget complessivo
+    e la sua distribuzione nel tempo.
+
+    \noindent L'andamento temporale dei costi pianificati
+    viene rappresentato attraverso la \textbf{Cost Baseline},
+    che costituisce il riferimento per il controllo economico.
+
+    \item \textbf{Cost Control (Controllo dei costi)}:
+    viene effettuato durante l'esecuzione del progetto
+    e consiste nel monitoraggio continuo delle spese effettive,
+    confrontandole con quelle preventivate.
+\end{enumerate}
+
+\noindent Le stime dei costi vengono progressivamente
+\textbf{affinate durante lo sviluppo del progetto},
+grazie alla disponibilità di informazioni sempre più precise.
+
+\medskip
+
+\noindent Le risorse e le rispettive necessità di impiego
+vengono individuate a partire dalle attività previste
+nella \textbf{Work Breakdown Structure (WBS)}.
+
+\subsubsection*{Processo di gestione dei costi}
+
+\noindent Il processo di gestione dei costi è strettamente collegato
+alle diverse fasi di sviluppo del progetto.
+
+\medskip
+
+\noindent Inizialmente, il \textbf{committente} presenta
+una richiesta di offerta, sulla base della quale
+l'impresa effettua una prima stima dei costi
+(\textbf{Cost Estimating}).
+
+\medskip
+
+\noindent Questa stima permette di formulare
+un'offerta contenente:
+
+\begin{itemize}
+    \item il prezzo previsto del progetto;
+    \item la data di consegna stimata.
+\end{itemize}
+
+\noindent Se il committente accetta l'offerta,
+viene autorizzato l'avvio del progetto attraverso
+il \textbf{Project Charter}.
+
+\medskip
+
+\noindent Si procede quindi con l'ingegnerizzazione
+del prodotto o servizio, la definizione del processo
+produttivo e la successiva pianificazione delle attività.
+
+\medskip
+
+\noindent Durante queste fasi viene elaborato il
+\textbf{Cost Budgeting}, che permette di definire
+un budget più dettagliato sulla base delle risorse
+e delle attività effettivamente previste.
+
+\medskip
+
+\noindent Con l'avvio dell'esecuzione si passa al
+\textbf{Cost Control}, confrontando i costi e i tempi
+effettivi con quelli preventivati.
+
+\medskip
+
+\noindent Il processo prevede quindi tre confronti fondamentali:
+
+\begin{itemize}
+    \item $\Delta_1$: differenza tra la stima iniziale
+    e la successiva valorizzazione del progetto;
+
+    \item $\Delta_2$: differenza tra la stima iniziale
+    e il budget dettagliato;
+
+    \item $\Delta_3$: differenza tra il budget pianificato
+    e i costi effettivamente sostenuti.
+\end{itemize}
+
+\noindent Questi confronti permettono di individuare
+gli scostamenti e adottare eventuali azioni correttive.
+
+\medskip
+
+\noindent
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.9\linewidth]{../images/macre.png}
+    \caption{caption}
+    %\label{label}
+\end{figure}
+
+
+\subsection{Stima parametrica dei costi}
+
+\noindent La \textbf{stima parametrica} è una metodologia
+che permette di valutare il costo di un progetto
+attraverso \textbf{modelli matematici basati su parametri misurabili}.
+
+\medskip
+
+\noindent I principali parametri utilizzati sono:
+
+\begin{itemize}
+    \item \textbf{Ambito del progetto}: caratteristiche
+    e tipologia delle attività da realizzare;
+
+    \item \textbf{Dimensione del progetto}: quantità
+    di lavoro, risorse e componenti necessari;
+
+    \item \textbf{Livello di performance}: prestazioni
+    e requisiti qualitativi richiesti.
+\end{itemize}
+
+\noindent La stima parametrica risulta più precisa quando:
+
+\begin{itemize}
+    \item le informazioni disponibili sono \textbf{accurate e affidabili};
+
+    \item i parametri del modello sono \textbf{facilmente quantificabili};
+
+    \item il modello è \textbf{scalabile}, cioè applicabile
+    anche a progetti di dimensioni differenti.
+\end{itemize}
+
+\noindent Questa metodologia viene spesso utilizzata
+durante la \textbf{contrattazione del prezzo},
+quando è necessario effettuare una valutazione preliminare
+dei costi del progetto.
+
+\subsubsection*{Stima per analogia}
+
+\noindent La \textbf{stima per analogia} si basa sulle
+\textbf{esperienze pregresse}, utilizzando informazioni
+relative a progetti simili già realizzati.
+
+\medskip
+
+\noindent Le valutazioni vengono generalmente affidate
+a esperti del settore, che possono successivamente
+essere nominati responsabili dei relativi
+\textbf{Work Package (WP)}.
+
+
+\subsubsection*{Approccio Top-Down e Bottom-Up}
+
+\noindent Le stime dei costi possono essere effettuate
+attraverso due approcci principali:
+
+\begin{itemize}
+    \item \textbf{Top-Down}: si parte da una stima complessiva
+    del progetto, generalmente formulata da manager
+    o esperti sulla base della propria esperienza.
+
+    \noindent Successivamente, il costo e la durata complessivi
+    vengono suddivisi tra le diverse attività.
+
+    \item \textbf{Bottom-Up}: si parte dalla stima dettagliata
+    dei singoli \textbf{Work Package} individuati nella WBS.
+
+    \noindent I costi vengono progressivamente aggregati,
+    risalendo dai Work Package fino ai deliverable principali
+    e al costo complessivo del progetto.
+\end{itemize}
+
+\noindent L'approccio \textbf{Top-Down} è particolarmente utile
+nelle fasi iniziali, quando le informazioni sono limitate.
+
+\medskip
+
+\noindent L'approccio \textbf{Bottom-Up} permette invece
+di ottenere stime più dettagliate e di verificare
+la correttezza degli elementi di costo individuati
+nella WBS.
+
+\medskip
+
+\noindent I due approcci possono essere utilizzati
+congiuntamente per confrontare e migliorare
+l'affidabilità delle stime.
+
+\subsection{Approcci Top-Down}
+
+\noindent Gli \textbf{approcci Top-Down} sono metodi utilizzati
+per stimare i tempi e i costi di un progetto partendo
+da una valutazione complessiva, successivamente
+suddivisa tra le diverse attività.
+
+\medskip
+
+\noindent I principali metodi sono:
+
+\begin{itemize}
+    \item Metodo del consenso;
+    \item Metodo dei rapporti;
+    \item Metodo di ripartizione;
+    \item Metodo dei Function Point per progetti software e di sistema;
+    \item Curve di apprendimento.
+\end{itemize}
+
+\subsubsection*{Metodo del consenso}
+
+\noindent Il \textbf{metodo del consenso} si basa
+sull'esperienza condivisa dei manager per stimare
+la durata e il costo complessivo di un progetto.
+
+\medskip
+
+\noindent Generalmente prevede una riunione nella quale
+gli esperti discutono e confrontano le proprie valutazioni,
+fino a raggiungere una \textbf{stima condivisa}.
+
+\medskip
+
+\noindent In alcuni casi questo metodo può fornire
+stime particolarmente accurate, soprattutto
+quando si tratta di progetti simili a quelli
+già realizzati in passato.
+
+\medskip
+
+\noindent Tuttavia, può produrre errori significativi
+quando vengono utilizzate tecnologie nuove
+o non ancora sufficientemente collaudate.
+
+\medskip
+
+\noindent In conclusione, il metodo è utile soprattutto
+quando \textbf{esperienza e giudizio degli esperti
+si sono dimostrati affidabili in passato}.
+
+
+\subsubsection*{Metodo dei rapporti}
+
+\noindent Il \textbf{metodo dei rapporti} permette
+di stimare tempi e costi di un progetto applicando
+a una grandezza misurabile un \textbf{rapporto unitario}
+ottenuto da dati storici.
+
+\medskip
+
+\noindent Ad esempio, un'impresa edile può stimare
+il costo di costruzione di una casa sulla base
+della sua superficie.
+
+\medskip
+
+\noindent Supponiamo di avere:
+
+\begin{itemize}
+    \item Superficie della casa: $250\,m^2$;
+    \item Costo unitario: $1.540$ per metro quadrato.
+\end{itemize}
+
+\noindent Il costo complessivo stimato sarà:
+
+\[
+C=250\cdot1.540
+\]
+
+\[
+\boxed{C=385.000}
+\]
+
+\noindent Analogamente, utilizzando i dati relativi
+a costruzioni precedenti, si potrebbe stimare
+una durata di circa \textbf{100 giorni}.
+
+\medskip
+
+\noindent Altri esempi di applicazione sono:
+
+\begin{itemize}
+    \item stima del costo di un impianto in funzione
+    della sua \textbf{capacità produttiva};
+
+    \item stima del costo di un software in funzione
+    delle sue \textbf{funzionalità e complessità}.
+\end{itemize}
+
+\noindent Il metodo è quindi particolarmente utile
+quando esiste una relazione sufficientemente stabile
+tra una caratteristica misurabile del progetto
+e il suo costo o tempo di realizzazione.
+
+
+\subsubsection*{Metodo di ripartizione}
+
+\noindent Il \textbf{metodo di ripartizione} rappresenta
+un'estensione del metodo dei rapporti.
+
+\medskip
+
+\noindent Consiste nel suddividere il costo complessivo
+del progetto tra le diverse attività, utilizzando
+\textbf{percentuali ricavate da progetti precedenti}.
+
+\medskip
+
+\noindent Questo metodo è particolarmente utile
+per progetti relativamente standardizzati,
+che presentano poche variazioni rispetto
+a quelli già realizzati.
+
+\medskip
+
+\noindent Disponendo di dati storici affidabili,
+è possibile ottenere rapidamente stime
+con una precisione ragionevole.
+
+\subsubsection*{Esempio: ripartizione di un finanziamento}
+
+\noindent Un esempio è rappresentato da un mutuo edilizio
+con erogazione secondo lo \textbf{Stato di Avanzamento
+dei Lavori (SAL)}.
+
+\medskip
+
+\noindent La banca può suddividere il finanziamento
+in più tranche, erogate solamente dopo aver verificato
+il completamento di determinate fasi.
+
+\medskip
+
+\noindent Ad esempio:
+
+\begin{center}
+\begin{tabular}{|l|c|}
+\hline
+\textbf{Fase} & \textbf{Quota} \\
+\hline
+Avvio del cantiere & 20\% \\
+\hline
+Fondazioni, struttura e copertura & 30\% \\
+\hline
+Impianti e infissi & 30\% \\
+\hline
+Collaudo finale & 20\% \\
+\hline
+\textbf{Totale} & \textbf{100\%} \\
+\hline
+\end{tabular}
+\end{center}
+
+\noindent Ogni tranche viene erogata dopo
+la verifica del raggiungimento della fase prevista.
+
+
+\subsubsection*{Esempio: ripartizione dei costi di un progetto}
+
+\noindent Consideriamo ora un progetto software
+con un costo complessivo stimato di:
+
+\[
+\boxed{C_{\text{totale}}=500.000}
+\]
+
+\noindent Utilizzando le percentuali ricavate
+da progetti precedenti, possiamo distribuire
+il budget tra le diverse attività.
+
+\medskip
+
+\noindent Inizialmente, il costo viene ripartito
+tra le \textbf{cinque attività principali}:
+
+\begin{center}
+\begin{tabular}{|l|c|r|}
+\hline
+\textbf{Attività} & \textbf{Percentuale} &
+\textbf{Costo} \\
+\hline
+Progettazione & 20\% & 100.000 \\
+\hline
+Programmazione & 30\% & 150.000 \\
+\hline
+Collaudo & 40\% & 200.000 \\
+\hline
+Documentazione & 5\% & 25.000 \\
+\hline
+Produzione CD & 5\% & 25.000 \\
+\hline
+\textbf{Totale} & \textbf{100\%} & \textbf{500.000} \\
+\hline
+\end{tabular}
+\end{center}
+
+\noindent Ad esempio, la progettazione rappresenta
+il 20\% del costo complessivo:
+
+\[
+C_{\text{progettazione}}
+=500.000\cdot0{,}20
+=\boxed{100.000}
+\]
+
+\noindent Una volta assegnato il budget alle attività
+principali, è possibile procedere con una
+\textbf{ripartizione più dettagliata},
+suddividendo ciascuna attività in sottoattività.
+
+\medskip
+
+\noindent Ad esempio, la progettazione dispone
+di un budget di 100.000, che viene distribuito
+tra due sottoattività:
+
+\begin{itemize}
+    \item D-1: 50.000;
+    \item D-2: 50.000.
+\end{itemize}
+
+\noindent La somma dei costi deve corrispondere
+al budget assegnato alla progettazione:
+
+\[
+50.000+50.000=\boxed{100.000}
+\]
+
+\noindent Analogamente, la programmazione
+dispone di un budget di 150.000,
+suddiviso tra tre sottoattività:
+
+\begin{itemize}
+    \item P-1: 100.000;
+    \item P-2: 25.000;
+    \item P-3: 25.000.
+\end{itemize}
+
+\[
+100.000+25.000+25.000=\boxed{150.000}
+\]
+
+\noindent La stessa procedura viene applicata
+alle altre attività, ottenendo la seguente
+ripartizione complessiva:
+
+\begin{center}
+\small
+\begin{tabular}{|l|c|c|r|}
+\hline
+\textbf{Attività} &
+\textbf{Sottoattività} &
+\textbf{\% totale} &
+\textbf{Costo} \\
+\hline
+Progettazione & D-1 & 10\% & 50.000 \\
+\hline
+Progettazione & D-2 & 10\% & 50.000 \\
+\hline
+Programmazione & P-1 & 20\% & 100.000 \\
+\hline
+Programmazione & P-2 & 5\% & 25.000 \\
+\hline
+Programmazione & P-3 & 5\% & 25.000 \\
+\hline
+Collaudo & T-1 & 10\% & 50.000 \\
+\hline
+Collaudo & T-2 & 10\% & 50.000 \\
+\hline
+Collaudo & T-3 & 20\% & 100.000 \\
+\hline
+Documentazione & Doc-1 & 2\% & 10.000 \\
+\hline
+Documentazione & Doc-2 & 3\% & 15.000 \\
+\hline
+Produzione CD & CD-1 & 5\% & 25.000 \\
+\hline
+\textbf{Totale} & -- & \textbf{100\%} &
+\textbf{500.000} \\
+\hline
+\end{tabular}
+\end{center}
+
+\medskip
+
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.9\linewidth]{../images/uomocollo.png}
+    \caption{caption}
+    %\label{label}
+\end{figure}
+
+
+\medskip
+
+\noindent \textbf{Attenzione:} tutte le percentuali
+della tabella sono riferite al \textbf{costo complessivo
+del progetto}, pari a 500.000, e non al costo
+della singola attività.
+
+\medskip
+
+\noindent Ad esempio, P-1 rappresenta il 20\%
+dell'intero progetto:
+
+\[
+C_{P-1}=500.000\cdot0{,}20=\boxed{100.000}
+\]
+
+\noindent In conclusione, il metodo permette
+di partire da un \textbf{budget complessivo}
+e distribuirlo progressivamente tra
+\textbf{attività principali e sottoattività},
+utilizzando percentuali ottenute dall'esperienza
+su progetti precedenti.
+
+\medskip
+
+\noindent In questo modo, il costo totale
+rimane invariato, ma viene suddiviso
+in componenti sempre più dettagliate.
+
+
+\subsubsection*{Metodo dei Function Point}
+
+\noindent Il \textbf{metodo dei Function Point}
+viene utilizzato soprattutto nell'industria
+del software per stimare i tempi e i costi
+dei progetti di sviluppo.
+
+\medskip
+
+\noindent Si basa sull'individuazione di alcune
+\textbf{macrovariabili ponderate}, chiamate
+\textbf{Function Point}, che rappresentano
+le principali funzionalità del software.
+
+\medskip
+
+\noindent Gli elementi considerati sono:
+
+\begin{itemize}
+    \item \textbf{Input}: dati inseriti nel sistema;
+    \item \textbf{Output}: informazioni prodotte dal sistema;
+    \item \textbf{Interrogazioni}: richieste di informazioni
+    effettuate dagli utenti;
+    \item \textbf{File}: archivi e strutture di dati utilizzati;
+    \item \textbf{Interfacce}: collegamenti e scambi di dati
+    con altri sistemi.
+\end{itemize}
+
+\noindent A ciascun elemento viene associato un
+\textbf{peso in base al livello di complessità},
+che può essere basso, medio oppure alto.
+
+\medskip
+
+\noindent I valori ponderati vengono successivamente
+sommati per determinare il numero complessivo
+di Function Point.
+
+\medskip
+
+\noindent Il totale costituisce la base per stimare
+l'\textbf{impegno lavorativo} e il \textbf{costo del progetto},
+utilizzando rapporti ricavati dai dati storici.
+
+\subsubsection*{Ponderazione dei Function Point}
+
+\noindent La seguente tabella riporta i pesi
+associati ai diversi elementi:
+
+\begin{center}
+\begin{tabular}{|l|c|c|c|}
+\hline
+\textbf{Elemento} &
+\textbf{Bassa} &
+\textbf{Media} &
+\textbf{Alta} \\
+\hline
+Input & 2 & 3 & 4 \\
+\hline
+Output & 3 & 6 & 9 \\
+\hline
+Interrogazioni & 2 & 4 & 6 \\
+\hline
+File & 5 & 8 & 12 \\
+\hline
+Interfacce & 5 & 10 & 15 \\
+\hline
+\end{tabular}
+\end{center}
+
+\noindent Il numero complessivo di Function Point
+si ottiene moltiplicando il numero di elementi
+per il rispettivo peso e sommando i risultati.
+
+\[
+\boxed{
+FP_{\text{totale}}=
+\sum_{i=1}^{N}n_iw_i
+}
+\]
+
+\noindent dove:
+
+\begin{itemize}
+    \item $n_i$ = numero di elementi della tipologia $i$;
+    \item $w_i$ = peso associato al livello di complessità;
+    \item $N$ = numero di tipologie considerate.
+\end{itemize}
+
+
+\subsubsection*{Esempio: software per accettazione e fatturazione}
+
+\noindent Supponiamo di dover sviluppare un software
+per l'\textbf{accettazione e la fatturazione dei pazienti}.
+
+\medskip
+
+\noindent Sono stati individuati i seguenti elementi:
+
+\begin{center}
+\begin{tabular}{|l|c|c|c|}
+\hline
+\textbf{Elemento} &
+\textbf{Numero} &
+\textbf{Complessità} &
+\textbf{Peso} \\
+\hline
+Input & 15 & Bassa & 2 \\
+\hline
+Output & 5 & Media & 6 \\
+\hline
+Interrogazioni & 10 & Media & 4 \\
+\hline
+File & 30 & Alta & 12 \\
+\hline
+Interfacce & 20 & Media & 10 \\
+\hline
+\end{tabular}
+\end{center}
+
+\noindent Applichiamo i pesi ai singoli elementi:
+
+\[
+FP_{\text{Input}}=15\cdot2=30
+\]
+
+\[
+FP_{\text{Output}}=5\cdot6=30
+\]
+
+\[
+FP_{\text{Interrogazioni}}=10\cdot4=40
+\]
+
+\[
+FP_{\text{File}}=30\cdot12=360
+\]
+
+\[
+FP_{\text{Interfacce}}=20\cdot10=200
+\]
+
+\noindent Sommando i risultati:
+
+\[
+FP_{\text{totale}}
+=30+30+40+360+200
+\]
+
+\[
+\boxed{FP_{\text{totale}}=660}
+\]
+
+\noindent Il software richiede quindi
+\textbf{660 Function Point}.
+
+\subsubsection*{Stima dell'impegno lavorativo}
+
+\noindent Supponiamo che, sulla base dei dati storici,
+un \textbf{mese-persona} corrisponda alla realizzazione
+di 5 Function Point.
+
+\medskip
+
+\noindent Il mese-persona rappresenta il lavoro svolto
+da una persona in un mese.
+
+\medskip
+
+\noindent L'impegno complessivo richiesto sarà:
+
+\[
+L=\frac{660}{5}
+\]
+
+\[
+\boxed{L=132\text{ mesi-persona}}
+\]
+
+\noindent Ciò significa che, teoricamente,
+una persona impiegherebbe 132 mesi
+per completare il lavoro.
+
+\medskip
+
+\noindent Supponiamo ora di avere
+\textbf{10 programmatori} disponibili.
+
+\medskip
+
+\noindent La durata stimata del progetto sarà:
+
+\[
+T=\frac{132}{10}
+\]
+
+\[
+\boxed{T=13{,}2\text{ mesi}}
+\]
+
+\noindent Quindi il progetto richiederebbe
+\textbf{circa 13 mesi}, ipotizzando che il lavoro
+possa essere distribuito uniformemente tra i programmatori.
+
+
+\subsubsection*{Stima del costo del progetto}
+
+\noindent Supponiamo che il costo mensile
+di ciascun programmatore sia pari a 4.000.
+
+\medskip
+
+\noindent Il costo complessivo del lavoro sarà:
+
+\[
+C=132\cdot4.000
+\]
+
+\[
+\boxed{C=528.000}
+\]
+
+\noindent Quindi:
+
+\[
+\boxed{
+\begin{aligned}
+FP_{\text{totale}} &= 660\\
+L &= 132\text{ mesi-persona}\\
+T &= 13{,}2\text{ mesi}\\
+C &= 528.000
+\end{aligned}
+}
+\]
+
+\noindent In conclusione, il metodo dei Function Point
+permette di stimare \textbf{l'impegno, la durata
+e il costo di un progetto software}
+partendo dal numero e dalla complessità
+delle funzionalità da sviluppare.

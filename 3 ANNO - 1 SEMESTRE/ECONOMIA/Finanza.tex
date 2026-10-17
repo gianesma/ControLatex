@@ -2565,3 +2565,772 @@ reale di un investimento, a parità di tasso nominale.
     \includegraphics[width=0.9\linewidth]{../images/lacasacasino.png}
     %\label{label}
 \end{figure}
+\subsection{Rendimento e rischio di un investimento}
+
+\noindent Quando si effettua un investimento, è possibile scegliere tra diverse tipologie di strumenti finanziari, caratterizzati da differenti livelli di \textbf{rendimento e rischio}.
+
+\medskip
+
+\noindent Le principali alternative sono:
+
+\begin{itemize}
+    \item \textbf{Titoli di Stato a breve termine}: presentano un prezzo relativamente stabile, un rischio di rimborso generalmente contenuto e rendimenti bassi.
+
+    \item \textbf{Titoli di Stato a lungo termine}: presentano un prezzo più incerto, poiché maggiormente influenzato dalle variazioni dei tassi di interesse. Il rimborso a scadenza è generalmente prevedibile, salvo il rischio di insolvenza dell'emittente.
+
+    \item \textbf{Investimenti azionari}: offrono rendimenti potenzialmente più elevati, ma presentano maggiore incertezza sia sul prezzo sia sul capitale recuperabile.
+\end{itemize}
+
+\subsubsection*{Confronto tra rendimento e rischio}
+
+\noindent La seguente tabella riporta i rendimenti storici indicati
+nella slide:
+
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{|l|c|c|c|}
+\hline
+\textbf{Portafoglio} &
+\shortstack{\textbf{Rendimento}\\\textbf{nominale}} &
+\shortstack{\textbf{Rendimento}\\\textbf{reale}} &
+\shortstack{\textbf{Premio}\\\textbf{per il rischio}} \\
+\hline
+Buoni del Tesoro & 3,9\% & 1,0\% & 0,0\% \\
+\hline
+Obbligazioni & 5,4\% & 2,5\% & 1,4\% \\
+\hline
+Azioni & 11,3\% & 8,2\% & 7,3\% \\
+\hline
+\end{tabular}
+\end{center}
+
+\noindent Il \textbf{premio per il rischio} rappresenta il rendimento aggiuntivo richiesto dagli investitori per accettare un investimento più rischioso rispetto a uno di riferimento.
+
+\medskip
+
+\noindent In generale, il rendimento nominale richiesto può essere espresso come:
+
+\[
+\boxed{
+r_{\text{nominale}} =
+r_{\text{mercato}} +
+\text{Premio per il rischio}
+}
+\]
+
+\noindent Per un'azione, il rendimento atteso può essere espresso come:
+
+\[
+\boxed{
+r = \frac{DIV_1}{P_0}+g
+}
+\]
+
+\noindent dove:
+
+\begin{itemize}
+    \item $DIV_1$ = dividendo atteso nel periodo successivo;
+    \item $P_0$ = prezzo attuale dell'azione;
+    \item $g$ = tasso di crescita atteso dei dividendi, nell'ipotesi di crescita costante.
+\end{itemize}
+
+\noindent La prima componente rappresenta il \textbf{rendimento da dividendi}, mentre la seconda rappresenta il rendimento legato alla crescita attesa.
+
+
+\subsection{Medie aritmetiche e rendimenti annui composti}
+
+\noindent Per valutare il rendimento di un investimento nel tempo è possibile utilizzare la \textbf{media aritmetica} oppure la \textbf{media geometrica}.
+
+\subsubsection*{Esempio: azioni InfoTech}
+
+\noindent Supponiamo di acquistare un'azione InfoTech al prezzo di 100.
+
+\medskip
+
+\noindent Dopo un anno, con uguale probabilità, il suo valore potrebbe diventare:
+
+\begin{itemize}
+    \item 90, con un rendimento del $-10\%$;
+    \item 110, con un rendimento del $+10\%$;
+    \item 130, con un rendimento del $+30\%$.
+\end{itemize}
+
+\noindent Poiché i tre scenari hanno la stessa probabilità,
+il \textbf{rendimento atteso} si calcola attraverso la media aritmetica:
+
+\[
+r^*=\frac{-10\%+10\%+30\%}{3}
+\]
+
+\[
+\boxed{r^*=10\%}
+\]
+
+\noindent Il valore atteso dell'azione dopo un anno è:
+
+\[
+F_1^*=\frac{90+110+130}{3}=110
+\]
+
+\noindent Il rendimento atteso risulta quindi:
+
+\[
+r^*=\frac{110}{100}-1
+\]
+
+\[
+\boxed{r^*=0{,}10=10\%}
+\]
+
+\noindent Procedendo al contrario, possiamo attualizzare
+il flusso di cassa atteso attraverso la formula del
+\textbf{Valore Attuale (VA)}:
+
+\[
+\boxed{
+VA=\frac{F_n}{(1+i)^n}
+}
+\]
+
+\noindent Nel nostro caso:
+
+\[
+VA^*=\frac{110}{1+0{,}10}
+\]
+
+\[
+\boxed{VA^*=100}
+\]
+
+\noindent Otteniamo quindi il prezzo iniziale dell'azione,
+coerentemente con un rendimento atteso del $10\%$.
+
+\subsubsection*{Rendimento annuo composto}
+
+\noindent Se consideriamo un investimento su più anni,
+è necessario tenere conto dell'effetto della
+\textbf{capitalizzazione composta}.
+
+\medskip
+
+\noindent Il rendimento annuo composto si calcola
+attraverso la media geometrica:
+
+\[
+\boxed{
+r_{\text{composto}}=
+\sqrt[n]{(1+r_1)(1+r_2)\cdots(1+r_n)}-1
+}
+\]
+
+\noindent Supponiamo che nei tre anni consecutivi
+si verifichino rendimenti pari a $-10\%$, $+10\%$ e $+30\%$.
+
+\[
+r_{\text{composto}}=
+\sqrt[3]{(1-0{,}10)(1+0{,}10)(1+0{,}30)}-1
+\]
+
+\[
+r_{\text{composto}}=
+\sqrt[3]{0{,}9\cdot1{,}1\cdot1{,}3}-1
+\]
+
+\[
+r_{\text{composto}}\simeq0{,}0889
+\]
+
+\[
+\boxed{r_{\text{composto}}\simeq8{,}89\%}
+\]
+
+\subsubsection*{Differenza tra media aritmetica e geometrica}
+
+\begin{itemize}
+    \item \textbf{Media aritmetica}: rappresenta il rendimento medio atteso di un singolo periodo.
+
+    \item \textbf{Media geometrica}: rappresenta il tasso di crescita composto effettivamente realizzato su più periodi.
+\end{itemize}
+
+\noindent Nel nostro esempio:
+
+\[
+\boxed{
+r_{\text{aritmetico}}=10\%
+\qquad
+r_{\text{geometrico}}=8{,}89\%
+}
+\]
+
+\noindent La media geometrica risulta inferiore a quella aritmetica
+perché considera l'effetto delle variazioni percentuali
+sul capitale accumulato nei periodi precedenti.
+
+\medskip
+
+\noindent In conclusione, \textbf{la media aritmetica è utile per stimare il rendimento atteso di un singolo periodo}, mentre
+\textbf{la media geometrica permette di misurare la crescita composta nel tempo}.
+\subsection{Introduzione al rischio}
+
+\noindent Il \textbf{rischio di un investimento} rappresenta
+l'incertezza associata ai rendimenti futuri. Per misurarlo
+si utilizzano principalmente la \textbf{varianza} e lo
+\textbf{scarto quadratico medio}.
+
+\subsubsection*{Esempio: lancio di due monete}
+
+\noindent Supponiamo di partecipare a un gioco investendo
+un capitale iniziale di 100 e lanciando due monete.
+
+\medskip
+
+\noindent Per ogni moneta:
+
+\begin{itemize}
+    \item se esce \textbf{Testa (T)}, si guadagna il $20\%$;
+    \item se esce \textbf{Croce (C)}, si perde il $10\%$.
+\end{itemize}
+
+\noindent I possibili risultati complessivi sono:
+
+\begin{itemize}
+    \item $T+T$: rendimento del $+40\%$;
+    \item $T+C$: rendimento del $+10\%$;
+    \item $C+T$: rendimento del $+10\%$;
+    \item $C+C$: rendimento del $-20\%$.
+\end{itemize}
+
+\noindent Supponendo che i lanci siano indipendenti
+e che Testa e Croce abbiano la stessa probabilità,
+ciascuna combinazione ha probabilità:
+
+\[
+P=\frac{1}{2}\cdot\frac{1}{2}
+=\frac{1}{4}=0{,}25
+\]
+
+\noindent Pertanto:
+
+\[
+P(40\%)=0{,}25
+\]
+
+\[
+P(10\%)=0{,}25+0{,}25=0{,}50
+\]
+
+\[
+P(-20\%)=0{,}25
+\]
+
+\subsubsection*{Calcolo del rendimento atteso}
+
+\noindent Il \textbf{rendimento atteso} si ottiene
+moltiplicando ciascun rendimento per la sua probabilità:
+
+\[
+\boxed{
+\hat{r}=\sum_{i=1}^{N}p_i r_i
+}
+\]
+
+\noindent Nel nostro esempio:
+
+\[
+\hat{r}
+=(0{,}25\cdot40\%)
++(0{,}50\cdot10\%)
++(0{,}25\cdot(-20\%))
+\]
+
+\[
+\boxed{\hat{r}=10\%}
+\]
+
+\subsubsection*{Calcolo della varianza e del rischio}
+
+\noindent La \textbf{varianza} misura quanto i rendimenti
+possibili si discostano dal rendimento atteso.
+
+\[
+\boxed{
+V=\sum_{i=1}^{N}p_i(r_i-\hat{r})^2
+}
+\]
+
+\noindent Per calcolarla bisogna:
+
+\begin{enumerate}
+    \item determinare lo scarto di ogni rendimento
+    rispetto al rendimento atteso;
+    \item elevare al quadrato ciascuno scarto;
+    \item moltiplicare ogni scarto quadratico
+    per la rispettiva probabilità;
+    \item sommare tutti i risultati.
+\end{enumerate}
+
+\noindent Nel nostro esempio, il rendimento atteso è $10\%$.
+
+\begin{center}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+\textbf{Rendimento} &
+\textbf{Scarto} &
+\textbf{Scarto quadratico} &
+\textbf{Probabilità} &
+\textbf{Prodotto} \\
+\hline
+$40\%$ & $30\%$ & $900$ & $0{,}25$ & $225$ \\
+\hline
+$10\%$ & $0\%$ & $0$ & $0{,}50$ & $0$ \\
+\hline
+$-20\%$ & $-30\%$ & $900$ & $0{,}25$ & $225$ \\
+\hline
+\end{tabular}%
+}
+\end{center}
+
+\noindent Gli scarti si ottengono sottraendo
+il rendimento atteso da ciascun rendimento possibile:
+
+\[
+40\%-10\%=30\%
+\]
+
+\[
+10\%-10\%=0\%
+\]
+
+\[
+-20\%-10\%=-30\%
+\]
+
+\noindent Elevando gli scarti al quadrato
+e considerando le probabilità:
+
+\[
+V=0{,}25(30)^2+0{,}50(0)^2+0{,}25(-30)^2
+\]
+
+\[
+V=225+0+225
+\]
+
+\[
+\boxed{V=450}
+\]
+
+\noindent Il valore 450 è espresso in
+\textbf{punti percentuali al quadrato}.
+
+\medskip
+
+\noindent Lo \textbf{scarto quadratico medio (s.q.m.)},
+chiamato anche deviazione standard,
+si ottiene calcolando la radice quadrata della varianza:
+
+\[
+\boxed{\sigma=\sqrt{V}}
+\]
+
+\[
+\sigma=\sqrt{450}
+\]
+
+\[
+\boxed{\sigma\simeq21{,}21\%}
+\]
+
+\noindent In conclusione, il gioco presenta:
+
+\[
+\boxed{
+\hat{r}=10\%
+\qquad
+\sigma=21{,}21\%
+}
+\]
+
+\noindent Il rendimento atteso è quindi positivo,
+ma il rendimento effettivo può discostarsi
+notevolmente da quello previsto.
+
+
+\subsubsection*{Rendimento atteso di un portafoglio}
+
+\noindent Supponiamo di avere due titoli azionari,
+A e B, con rendimenti attesi rispettivamente
+$\hat{r}_A$ e $\hat{r}_B$.
+
+\medskip
+
+\noindent Indichiamo con $x_A$ e $x_B$ i pesi
+dei due titoli nel portafoglio, tali che:
+
+\[
+x_A+x_B=1
+\]
+
+\noindent Il rendimento atteso del portafoglio
+è dato dalla \textbf{media ponderata dei rendimenti attesi}:
+
+\[
+\boxed{
+\hat{r}_{portafoglio}
+=x_A\hat{r}_A+x_B\hat{r}_B
+}
+\]
+
+\noindent Il rendimento atteso è quindi semplice da calcolare,
+poiché dipende dai rendimenti dei singoli titoli
+e dal loro peso nel portafoglio.
+
+
+\subsubsection*{Rischio di un portafoglio}
+
+\noindent A differenza del rendimento atteso,
+il \textbf{rischio del portafoglio non può essere
+calcolato come semplice media ponderata dei rischi}.
+
+\medskip
+
+\noindent È necessario considerare anche la
+\textbf{covarianza}, cioè il modo in cui
+i rendimenti dei due titoli variano congiuntamente.
+
+\medskip
+
+\noindent Per un portafoglio di due titoli,
+la matrice dei contributi alla varianza è:
+
+\[
+\begin{pmatrix}
+x_A^2\sigma_A^2 &
+x_Ax_B\sigma_{AB} \\[2mm]
+x_Ax_B\sigma_{AB} &
+x_B^2\sigma_B^2
+\end{pmatrix}
+\]
+
+\noindent dove:
+
+\begin{itemize}
+    \item $\sigma_A$ e $\sigma_B$ sono le deviazioni standard
+    dei due titoli;
+    \item $\sigma_{AB}$ rappresenta la covarianza
+    tra i rendimenti dei titoli;
+    \item $x_A$ e $x_B$ rappresentano i pesi
+    dei titoli nel portafoglio.
+\end{itemize}
+
+\noindent La covarianza può essere espressa attraverso
+il \textbf{coefficiente di correlazione} $\rho_{AB}$:
+
+\[
+\boxed{
+\sigma_{AB}=\rho_{AB}\sigma_A\sigma_B
+}
+\]
+
+\noindent \textit{[Inserire qui la figura della matrice
+varianza-covarianza del portafoglio]}
+
+\subsubsection*{Varianza del portafoglio}
+
+\noindent La varianza complessiva di un portafoglio
+composto da due titoli è:
+
+\[
+\boxed{
+\sigma_{portafoglio}^2
+=x_A^2\sigma_A^2+x_B^2\sigma_B^2
++2x_Ax_B\sigma_{AB}
+}
+\]
+
+\noindent Sostituendo la covarianza:
+
+\[
+\boxed{
+\sigma_{portafoglio}^2
+=x_A^2\sigma_A^2+x_B^2\sigma_B^2
++2x_Ax_B\rho_{AB}\sigma_A\sigma_B
+}
+\]
+
+\noindent Il coefficiente $\rho_{AB}$ indica
+quanto i rendimenti dei due titoli sono correlati:
+
+\begin{itemize}
+    \item $\rho_{AB}=1$: correlazione perfettamente positiva;
+    \item $\rho_{AB}=0$: assenza di correlazione lineare;
+    \item $\rho_{AB}=-1$: correlazione perfettamente negativa.
+\end{itemize}
+
+\subsubsection*{Scarto quadratico medio del portafoglio}
+
+\noindent Il rischio del portafoglio si ottiene
+calcolando la radice quadrata della varianza:
+
+\[
+\boxed{
+\sigma_{portafoglio}=
+\sqrt{
+x_A^2\sigma_A^2+x_B^2\sigma_B^2+
+2x_Ax_B\rho_{AB}\sigma_A\sigma_B
+}
+}
+\]
+
+\noindent Per un portafoglio composto da $N$ titoli,
+la formula generale diventa:
+
+\[
+\boxed{
+\sigma_{portafoglio}
+=
+\sqrt{
+\sum_{i=1}^{N}\sum_{j=1}^{N}
+x_ix_j\sigma_{ij}
+}
+}
+\]
+
+\noindent dove $\sigma_{ij}$ rappresenta la covarianza
+tra i rendimenti dei titoli $i$ e $j$,
+mentre $\sigma_{ii}=\sigma_i^2$ rappresenta
+la varianza del singolo titolo.
+
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.6\linewidth]{../images/portfolio.png}
+    \caption{Portfolio}
+    %\label{label}
+\end{figure}
+
+\subsubsection*{Esempio: portafoglio con due titoli}
+
+\noindent Supponiamo di avere due titoli azionari
+con le seguenti caratteristiche:
+
+\begin{center}
+\begin{tabular}{|c|c|c|c|}
+\hline
+\textbf{Titolo} &
+\textbf{Rendimento atteso} &
+\textbf{Volatilità} &
+\textbf{Peso} \\
+\hline
+A & $6{,}3\%$ & $13{,}8\%$ & $60\%$ \\
+\hline
+B & $9{,}1\%$ & $19{,}8\%$ & $40\%$ \\
+\hline
+\end{tabular}
+\end{center}
+
+\noindent Il rendimento atteso del portafoglio è:
+
+\[
+\hat{r}_{portafoglio}
+=(0{,}60\cdot6{,}3\%)
++(0{,}40\cdot9{,}1\%)
+\]
+
+\[
+\boxed{
+\hat{r}_{portafoglio}=7{,}42\%
+}
+\]
+
+\noindent Il rischio viene invece calcolato attraverso:
+
+\[
+\sigma_{\text{portafoglio}} =
+\sqrt{
+\begin{aligned}
+&0{,}36(13{,}8\%)^2 + 0{,}16(19{,}8\%)^2 \\
+&+ 2(0{,}60)(0{,}40)\rho_{AB}(13{,}8\%)(19{,}8\%)
+\end{aligned}
+}
+\]
+
+\noindent Il risultato dipende dal coefficiente
+di correlazione tra i due titoli.
+
+\medskip
+
+\noindent \textbf{Caso 1: correlazione perfettamente positiva}
+
+\[
+\rho_{AB}=1
+\]
+
+\[
+\boxed{\sigma_{portafoglio}=16{,}2\%}
+\]
+
+\noindent I rendimenti dei due titoli si muovono
+nella stessa direzione e il beneficio
+della diversificazione è minimo.
+
+\medskip
+
+\noindent \textbf{Caso 2: correlazione positiva moderata}
+
+\[
+\rho_{AB}=0{,}33
+\]
+
+\[
+\boxed{\sigma_{portafoglio}\simeq13{,}2\%}
+\]
+
+\noindent Il rischio diminuisce grazie
+alla diversificazione del portafoglio.
+
+\medskip
+
+\noindent \textbf{Caso 3: correlazione perfettamente negativa}
+
+\[
+\rho_{AB}=-1
+\]
+
+\[
+\boxed{\sigma_{portafoglio}=0{,}36\%}
+\]
+
+\noindent Il rischio viene quasi completamente eliminato,
+poiché i due titoli presentano andamenti opposti
+che si compensano quasi perfettamente.
+
+\medskip
+
+\noindent Possiamo quindi osservare che:
+
+\[
+\boxed{
+\rho_{AB}\downarrow
+\quad\Longrightarrow\quad
+\sigma_{portafoglio}\downarrow
+}
+\]
+
+\noindent In generale, \textbf{minore è la correlazione
+tra i rendimenti, maggiore è il beneficio
+della diversificazione}.
+
+\subsubsection*{Diversificazione del portafoglio}
+
+\noindent In un portafoglio composto da due titoli,
+il rischio dipende sia dalle varianze dei singoli titoli
+sia dalla covarianza tra essi.
+
+\medskip
+
+\noindent All'aumentare del numero di titoli,
+il numero dei termini di covarianza cresce
+più rapidamente rispetto ai termini di varianza.
+
+\medskip
+
+\noindent Di conseguenza, in un portafoglio molto
+diversificato, il rischio complessivo dipende
+principalmente dalle \textbf{covarianze tra i titoli}.
+
+\medskip
+
+\noindent Supponiamo di avere $N$ titoli,
+ciascuno con lo stesso peso:
+
+\[
+x_i=\frac{1}{N}
+\]
+
+\noindent Indichiamo con:
+
+\begin{itemize}
+    \item $var_{media}$: varianza media dei singoli titoli;
+    \item $covar_{media}$: covarianza media tra titoli distinti.
+\end{itemize}
+
+\noindent Il rischio complessivo del portafoglio è:
+
+\[
+\sigma_{portafoglio}
+=
+\sqrt{
+N\left(\frac{1}{N}\right)^2var_{media}
++
+(N^2-N)\left(\frac{1}{N}\right)^2covar_{media}
+}
+\]
+
+\noindent Semplificando:
+
+\[
+\sigma_{portafoglio}
+=
+\sqrt{
+\frac{1}{N}var_{media}
++
+\left(1-\frac{1}{N}\right)covar_{media}
+}
+\]
+
+\noindent Riorganizzando i termini:
+
+\[
+\boxed{
+\sigma_{portafoglio}
+=
+\sqrt{
+\underbrace{covar_{media}}_{\text{Rischio sistematico}}
++
+\underbrace{
+\frac{1}{N}(var_{media}-covar_{media})
+}_{\text{Rischio specifico}}
+}
+}
+\]
+
+\noindent Dalla formula osserviamo che:
+
+\begin{itemize}
+    \item il \textbf{rischio sistematico} è legato
+    ai movimenti comuni dei titoli e non può
+    essere eliminato mediante la sola diversificazione;
+
+    \item il \textbf{rischio specifico} è legato
+    alle caratteristiche dei singoli titoli
+    e diminuisce all'aumentare del numero
+    di investimenti presenti nel portafoglio.
+\end{itemize}
+
+\noindent Infatti, per $N\to\infty$:
+
+\[
+\frac{1}{N}\to0
+\]
+
+\noindent Di conseguenza:
+
+\[
+\boxed{
+\lim_{N\to\infty}\sigma_{portafoglio}
+=
+\sqrt{covar_{media}}
+}
+\]
+
+\noindent Pertanto, \textbf{la diversificazione permette
+di ridurre progressivamente il rischio specifico},
+mentre il rischio sistematico rimane presente
+anche in portafogli molto diversificati.
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.7\linewidth]{../images/coccirocci.png}
+    \caption{Portfolio}
+    %\label{label}
+\end{figure}
