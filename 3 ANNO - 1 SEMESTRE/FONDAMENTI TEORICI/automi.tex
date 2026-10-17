@@ -863,7 +863,7 @@ dato un operatore qualunque $\star$ bisogna costruire un $\epsilon$-ASFND $A$ ta
 \end{proof}
 
 
-\section{Espressioni regolari}
+\section{Espressioni regolari} \label{regex}
 \colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
    Sia $\Sigma $ un alfabeto, e sia $\mathcal{O} = \{ +,*,(,), \cdot , \emptyset   \}$ con $\mathcal{O}\cap \Sigma = \emptyset$.
    Una \textbf{espressione regolare su} $\bm{\Sigma}$ è una stringa $r$ non vuota su $\Sigma \cup \mathcal{O}$ tale che $r$ è uguale 
@@ -1405,7 +1405,7 @@ Grazie alle grammatiche non contestuali che abbiamo definito, possiamo definire 
 Siccome un linguaggio non contestuale esiste se c'è una grammatica non contestuale che la genera, ne consegue che un linguaggio è 
 riconosciuto da un automa a pila se e solo se è generato da una grammatica non contestuale. 
 \[    \text{Automi a pila} \longleftrightarrow \text{grammatiche non contestuali} \longleftrightarrow \text{linguaggi non contestuali}   \]
-\[    \text{Altri automi} \longleftrightarrow \text{espressioni regolari} \longleftrightarrow \text{linguaggi regolari}   \]
+\[    \text{Altri automi} \longleftrightarrow \text{espressioni regolari (vd. \ref{regex})} \longleftrightarrow \text{linguaggi regolari}   \]
 
 \subsection{Pumping Lemma per linguaggi non contestuali}
 Dagli esempi che abbiamo visto prima possiamo constatare che anche i linguaggi non contestuali possono avere una struttura fissa

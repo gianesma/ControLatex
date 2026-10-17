@@ -152,8 +152,14 @@ Ora vediamo un esempio\smallskip\\
 
 
 \subsection{Esecuzioni}
-Sia $M = <\Sigma, \Gamma,Q,\delta,q_0,q_{yes},q_{no}>$ una macchina di Turing, siano $x,y,z \in \Gamma$ i simboli di nastro,
-siano $\sigma,\tau \in \Gamma^*$ stringhe di simboli di nastro e siano $q,q'\in Q$, definiamo come avviene una \textbf{esecuzione}: \smallskip\\
+Date le seguenti:
+\begin{itemize}[label=--]
+    \item $M = <\Sigma, \Gamma,Q,\delta,q_0,q_{yes},q_{no}>$ una macchina di Turing
+    \item $x,y,z \in \Gamma$ i simboli di nastro
+    \item $\sigma,\tau \in \Gamma^*$ stringhe di simboli di nastro
+    \item $q,q'\in Q$
+\end{itemize}
+definiamo come avviene una \textbf{esecuzione}: \smallskip\\
 \colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
    Una configurazione $C$ genera una configurazione $D$ in $M (C \Rightarrow_M D)$ se:
    \begin{itemize}
@@ -167,35 +173,35 @@ Ecco alcuni esempi:
 \begin{itemize}
     \item Sia $C = (aab, q, bcc)$ e $\delta(q, b) = (q', \#, \leftarrow)$ allora $C$ genera $D = (aa, q', b\#cc)$
     \begin{itemize}
-        \item[-] $C = (\sigma y, q, x\tau)$, $D = (\sigma, q', yz\tau)$ e $\delta(q, x) = (q', z, \leftarrow)$ (movimento a sinistra)
+        \item $C = (\sigma y, q, x\tau)$, $D = (\sigma, q', yz\tau)$ e $\delta(q, x) = (q', z, \leftarrow)$ (movimento a sinistra)
     \end{itemize}
     
     \vspace{0.3cm} % Aggiunge un po' di spazio per migliorare la leggibilità, simile alla foto
     
     \item Sia $C = (\epsilon, q, bcc)$ e $\delta(q, b) = (q', \#, \leftarrow)$ allora $C$ genera $D = (\epsilon, q', \#cc)$
     \begin{itemize}
-        \item[-] $C = (\epsilon, q, x\tau)$, $D = (\epsilon, q', z\tau)$ e $\delta(q, x) = (q', z, \leftarrow)$ (movimento a sinistra bloccato)
+        \item $C = (\epsilon, q, x\tau)$, $D = (\epsilon, q', z\tau)$ e $\delta(q, x) = (q', z, \leftarrow)$ (movimento a sinistra bloccato)
     \end{itemize}
     
     \vspace{0.3cm}
     
     \item Sia $C = (aab, q, bcc)$ e $\delta(q, b) = (q', \#, \rightarrow)$ allora $C$ genera $D = (aab\#, q', cc)$
     \begin{itemize}
-        \item[-] $C = (\sigma, q, x\tau)$, $D = (\sigma z, q', \tau)$ e $\delta(q, x) = (q', z, \rightarrow)$ (movimento a destra)
+        \item $C = (\sigma, q, x\tau)$, $D = (\sigma z, q', \tau)$ e $\delta(q, x) = (q', z, \rightarrow)$ (movimento a destra)
     \end{itemize}
     
     \vspace{0.3cm}
     
     \item Sia $C = (aab, q, \epsilon)$ e $\delta(q, \sqcup) = (q', \#, \rightarrow)$ allora $C$ genera $D = (aab\#, q', \epsilon)$
     \begin{itemize}
-        \item[-] $C = (\sigma, q, x\tau)$, $D = (\sigma z, q', \tau)$ e $\delta(q, x) = (q', z, \rightarrow)$ (movimento a destra)
+        \item $C = (\sigma, q, x\tau)$, $D = (\sigma z, q', \tau)$ e $\delta(q, x) = (q', z, \rightarrow)$ (movimento a destra)
     \end{itemize}
     
     \vspace{0.3cm}
     
     \item Sia $C = (aab, q, bcc)$ e $\delta(q, b) = (q', \#, -)$ allora $C$ genera $D = (aab, q', \#cc)$
     \begin{itemize}
-        \item[-] $C = (\sigma, q, x\tau)$, $D = (\sigma, q', z\tau)$ e $\delta(q, x) = (q', z, -)$ (nessun movimento)
+        \item $C = (\sigma, q, x\tau)$, $D = (\sigma, q', z\tau)$ e $\delta(q, x) = (q', z, -)$ (nessun movimento)
     \end{itemize}
 \end{itemize}
 \noindent \textit{Osservazione.} Le macchine di Turing sono modelli computazionali \textbf{deterministici}, infatti per ogni possibile simbolo in input c'è un passaggio ben definito e non 
@@ -240,13 +246,13 @@ La macchina $M$ \textbf{accetta} l'input $\bm{aab }\in \Sigma^*$ a causa di $(C_
 \colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
    Una macchina di Turing $M = <\Sigma, \Gamma,Q,\delta,q_0,q_{yes},q_{no}>$ è \textbf{terminante} se per ogni stringa $\sigma \in \Sigma^*$ abbiamo che $M$ accetta o rifiuta $\sigma$.
 \end{definition}}}\medskip\\
-\noindent Un linguaggio di stringhe $\mathcal{L}$ è detto \textbf{Turing Riconoscibile} se esiste una macchina di Turing $M$ che riconosce $\mathcal{L}$,
+\noindent Un linguaggio di stringhe $\mathcal{L}$ è detto \textbf{Turing Riconoscibile} \label{ric} se esiste una macchina di Turing $M$ che riconosce $\mathcal{L}$,
 ovvero:
 \[  \mathcal{L} = L(M)    \]
-Inoltre un linguaggio $\mathcal{L}$ è detto \textbf{Turing Decidibile} se esiste un \textbf{decisore}, ovvero una macchina di Turing terminante $M$
+Inoltre un linguaggio $\mathcal{L}$ è detto \textbf{Turing Decidibile} \label{dec} se esiste un \textbf{decisore}, ovvero una macchina di Turing terminante $M$
 che riconosce $\mathcal{L}$, ovvero come prima vale che $\mathcal{L} = L(M)$.\\
 Queste definizioni sono necessarie poichè può accadere che se una macchina non finisce nè in uno stato accettante o nè rifiutante, può rimanere bloccata
-in un ciclo infinito. \\Perciò definiamo anche cosa è una \textbf{macchina di Turing terminante}:\smallskip\\
+in un ciclo infinito.\smallskip\\
 \newpage
 \subsection{Esercizio esempio}
 Costruire una macchina di Turing che riconosca il seguente linguaggio:
@@ -265,5 +271,251 @@ Costruire una macchina di Turing che riconosca il seguente linguaggio:
 \end{figure}
 
 
-
+\newpage
     
+
+\section{Macchine di Turing Multi-Nastro}
+Le macchine di Turing Multi-Nastro sono un estensione delle macchine di Turing standard. Dal nome è chiaro
+che questa estensione si differenzia dalle macchine standard per la presenza di un \textbf{insieme finito di nastri}.\\
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.9\linewidth]{../../images/nastr.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent Prima di dare tutte le definizioni è importante capire che le macchine multi-nastro \textbf{non sono più potenti} delle macchine standard,
+quindi tutti linguaggi che riconosciamo con le macchine multi-nastro possono essere riconosciute anche da macchine standard.
+Questo accesso alla memoria parallelo però \textbf{semplifica} e rende più \textbf{efficente} la creazione di programmi, ed è questo il vero vantaggio.
+Vediamo la definizione formale:\smallskip\\
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
+   Una macchina di Turing con $k$-nastri (k-TM) $M$ è una 7-upla $M = <  \Sigma, \Gamma, Q,\delta,q_0,q_{yes}, q_{no}>$ tale che:
+   \begin{itemize}
+     \item $\bm{\Sigma}$ è un insieme finito di simboli, detto \textbf{insieme dei simboli di input}, che non include il simbolo blank $\sqcup$
+    \item $\bm{\Gamma}$ con $\Sigma \subseteq \Gamma$ è un insieme finito di simboli detto \textbf{insieme dei simboli del nastro},
+    che include il simbolo blank $\sqcup$
+    \item $\bm{Q}$ è un insieme finito e non vuoto di \textbf{stati} tale che:
+    \begin{itemize}
+        \item $q_0 \in Q$ è lo stato iniziale
+        \item $q_{yes} \in Q$ è lo stato accettante
+        \item $q_{no} \in Q$ con $q_{yes} \neq q_{no}$ è lo stato rifiutante
+    \end{itemize}
+    \item $\bm{\delta}$ è la \textbf{funzione di transizione}, definita come segue:
+    \[  \delta :\  Q' \times \Gamma^k\ \  \to \ \ Q \times (\Gamma \times \{ \leftarrow, \rightarrow, -  \})^k    \]
+    dove $Q' = Q\setminus \{ q_{yes}, q_{no}  \}$, quindi $Q'$ non contiene nè lo stato accettante nè quello rifiutante
+   \end{itemize}
+\end{definition}}}\smallskip\\
+La definizione è praticamente uguale a quella delle macchine standard, l'unica differenza sta nella funzione di transizione, poichè si deve 
+tenere conto della prensenza dei k-nastri. In questa estensione la funzione di transizione riceve in input la coppia
+\[ (q,\sigma) \in Q\times \Gamma^k  \]
+composta dallo stato interno $q \in Q$ e $k$ simboli correntemente letti da $k$ testine dei $k$ nastri della macchina e restituisce una terna composta da:
+\begin{itemize}
+    \item il prossimo stato interno $q \in Q $ della macchine (uno solo)
+    \item i $k$ simboli $\in \Gamma$ che sovrascrivono i correnti $k$ (letti da nastri paralleli)
+    \item i $k$ spostamenti $\in \{ \rightarrow, \leftarrow, -  \}$ delle testine (effettuati su nastri paralleli)
+\end{itemize}
+
+
+
+\subsection{Configurazioni}
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
+   Sia $M = <  \Sigma, \Gamma, Q,\delta,q_0,q_{yes}, q_{no}>$ una macchina di Turing con $k$ nastri (k-TM). 
+   Una \textbf{configurazione} $C$ di $M$ è una $(2k +1)$-upla $C = (q,\ \sigma_1,\tau_1, \ \sigma_2, \tau_2,...,\ \sigma_k,\tau_k)$ dove:
+   \begin{itemize}
+    \item $q \in Q$ è uno stato di $M$, lo stato corrente della configurazione
+    \item $\sigma_i$, per ogni $i = 1,...,k$ è una stringa sull'alfabeto $\Gamma$, rappresenta il nastro a sinistra della i-esima testina
+    \item $\tau_i$ per ogni $i = 1,...,k$ è una stringa sull'alfabeto $\Gamma$, rappresenta il nastro a destra della i-esima testina
+   \end{itemize}
+\end{definition}}}\smallskip\\
+Anche questa definizione è praticamente uguale a quella delle configurazioni delle macchine standard, l'unica differenza è che in $\sigma_1$ e $\tau_i$,
+si tiene conto dei k-nastri. Vediamo un esempio.\smallskip\\
+\textit{Esempio.} Sia $M = \langle \Sigma, \Gamma, Q, \delta, q_0, q_{yes}, q_{no} \rangle$ con $\Sigma = \{a, b\}$, $\Gamma = \Sigma \cup \{\sqcup\}$, $Q = \{q_0, q_1, q_{yes}, q_{no}\}$ una \textbf{2-TM}
+\begin{itemize}
+    \item $(q_0, \epsilon, aa, \epsilon, \epsilon)$ è una configurazione \textbf{Iniziale} di $M$
+    \begin{itemize}
+        \item Stato iniziale $q_0$ e ogni testina è in prima posizione
+    \end{itemize}
+    \item $(q_{yes}, abab, abb \sqcup, \sqcup, b)$ è una configurazione \textbf{Accettante} di $M$
+    \begin{itemize}
+        \item Stato accettante $q_{yes}$
+    \end{itemize}
+    \item $(q_{no}, aab, a \sqcup b, a, \sqcup b \sqcup)$ è una configurazione \textbf{Rifiutante} di $M$
+    \begin{itemize}
+        \item Stato rifiutante $q_{no}$
+    \end{itemize}
+    \item $(q_1, aab, ab, a, bb)$ è una configurazione di $M$ (\textbf{non finale non iniziale})
+    \begin{itemize}
+        \item Stato non finale e non iniziale
+    \end{itemize}
+    \item $(q_0, aab, a \sqcup b, a, \sqcup b \sqcup)$ è una configurazione di $M$
+    \begin{itemize}
+        \item Stato iniziale ma il simbolo $\sqcup$ non è per definizione in $\Sigma$, pertanto la macchina non può partire da questa configurazione
+    \end{itemize}
+\end{itemize}
+
+
+
+\subsection{Esecuzioni}
+Date le seguenti:
+\begin{itemize}[label =--]
+    \item $M  = < \Sigma, \Gamma, Q, \delta, q_0,q_{yes},q_{no}>$ una macchina di Touring 
+    \item $x,y,z \in \Gamma$ simboli di nastro 
+    \item $\sigma,\tau,\in \Gamma^*$ stringhe di simboli di nastro
+    \item $q,q' \in Q$
+\end{itemize}
+definiamo un esecuzione:\smallskip\\
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
+   Una configurazione $C$ genera una configurazione $D$ in $M (C \Rightarrow_M D)$ se:
+   \begin{itemize}
+    \item $C = (\sigma y, q, x\tau)$, $D = (\sigma, q', yz\tau)$ e $\delta(q,x) = (q',z,\leftarrow)$ (movimento a sinistra)
+    \item $C = (\epsilon, q, x\tau)$, $D = (\epsilon, q', z\tau)$ e $\delta(q,x) = (q',z,\leftarrow)$ (movimento a sinistra bloccato)
+    \item $C = (\sigma, q, x\tau)$, $D = (\sigma z, q', \tau)$ e $\delta(q,x) = (q',z,\rightarrow)$ (movimento a destra)
+    \item $C = (\sigma, q, x\tau)$, $D = (\sigma, q', z\tau)$ e $\delta(q,x) = (q',z,-)$ (nessun movimento)
+   \end{itemize}
+\end{definition}}}\smallskip\\
+Questa definizione invece è letteralmente identica a quella delle esecuzioni delle macchine standard. Infatti il processo di esecuzione è lo stesso
+ma quello che cambia sono le configurazioni, che tengono conto dei $k$ nastri.
+\subsection{Linguaggi riconosciuti}
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
+   La k-TM $M$ accetta/rifiuta l'input $\sigma \in \Sigma^*$ se esiste una sequenza finita di configurazioni
+   $C_1,C_2,...,C_n$ di $M$ tale che le seguenti proprietà sono soddisfatte:
+   \begin{itemize}
+    \item $C_1 = (q_0, \epsilon, \sigma, \epsilon,\epsilon,\epsilon,\epsilon,\epsilon,\epsilon,...,\epsilon,\epsilon,\epsilon,\epsilon)$
+    \item $C_n$ è una configurazione accettante/rifiutante
+    \item $C_i \Rightarrow_{M} C_{i+1}$ per ogni $i = 1,...,n-1$
+   \end{itemize}
+\end{definition}}}\smallskip\\
+L'insieme $L(M)$ delle stringhe che $M$ riconosce è detto il \textbf{linguaggio riconosciuto da M}.\\
+Inoltre la k-TM è \textbf{terminante} se per ogni stringa $\sigma \in \Sigma^*$, $M$ accetta o rifiuta, non rimanendo bloccato in un esecuzione infinita.\smallskip\\
+Per definire i linguaggi riconosciuti possiamo anche appoggiarci ai concetti di Turing Riconoscibilità e Decidibilità che abbiamo visto nelle macchine standard \smallskip\\
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{theorem}
+   Sia $\mathcal{L}$ un linguaggio di stringhe:
+   \begin{enumerate}
+    \item $\mathcal{L}$ è riconosciuto da un k-TM se e solo se $\mathcal{L}$ è \textbf{Turing riconoscibile} (vd. \ref{ric})
+    \item $\mathcal{L}$ è riconosciuto da un k-TM terminante se e solo se $\mathcal{L}$ è \textbf{Turing Decidibile} (vd. \ref{dec})
+   \end{enumerate}
+\end{theorem}}}
+
+\subsection{Equivalenza tra Macchine Multi-Nastro e Macchine Standard}
+Come abbiamo spiegato all'inizio della sezione, non ci sono linguaggi riconosciuti da una macchina a multi nastro che non siano riconosciuti anche da una macchina standard.
+Ora formalizziamo il concetto e cerchiamo di dare un'idea dimostrativa senza entrare nei dettagli tecnici. \smallskip\\
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{lemma}
+   Sia $M$ una k-TM. Esiste una macchina di Turing $M'$ tale che:
+   \begin{enumerate}
+    \item $L(M) = L(M')$
+    \item $M'$ è terminante se $M$ lo è
+   \end{enumerate}
+\end{lemma}}}
+\begin{proof}
+    L'idea della dimostrazione è quella di costruire una macchina standard 
+    \[M' = < \Sigma,\Gamma', Q',\delta',q'_0, q'_{yes},q'_{no}  >\]
+    che \textbf{simuli} il comportamento di una macchina multi-nastro
+    \[M = <\Sigma, \Gamma,Q,\delta,q_0,q_{yes},q_{no}>\]
+    \textbf{partizionando} il suo singolo nastro in k partizioni contigue che simulano i k nastri di $M$.\\
+    Quindi l'idea di base è semplice: prendiamo il singolo nastro della macchina standard e lo dividiamo internamente tramite dei simboli separatori
+    (es. $\#$). Visivamente la situazione è questa: \\
+\begin{figure}[htbp]
+    \centering
+    \begin{tikzpicture}[
+        cell/.style={
+            draw=black!65,
+            minimum width=1.15cm,
+            minimum height=0.85cm,
+            font=\large
+        },
+        head/.style={cell, fill=blue!15},
+        >=Stealth
+    ]
+
+    % MACCHINA ORIGINALE
+    \node[font=\bfseries] at (3.4,3.9)
+        {Macchina originale $M$, due nastri separati};
+
+    % Primo nastro
+    \node[anchor=east] at (-0.6,2.8) {Nastro 1};
+
+    \foreach \x/\sym in {0/a,1/b,2/c,3/\sqcup} {
+        \node[cell] at (1.15*\x,2.8) {$\sym$};
+    }
+
+    % Evidenzia la posizione della prima testina
+    \node[head] at (1.15,2.8) {$b$};
+    \draw[->,thick,orange!80!black]
+        (1.15,2.05) -- (1.15,2.32);
+
+    % Secondo nastro
+    \node[anchor=east] at (-0.6,1.4) {Nastro 2};
+
+    \foreach \x/\sym in {0/x,1/y,2/\sqcup,3/\sqcup} {
+        \node[cell] at (1.15*\x,1.4) {$\sym$};
+    }
+
+    % Evidenzia la posizione della seconda testina
+    \node[head] at (0,1.4) {$x$};
+    \draw[->,thick,orange!80!black]
+        (0,0.65) -- (0,0.92);
+
+    % Separazione
+    \draw[gray!50] (-2,-0.1) -- (7,-0.1);
+
+    % MACCHINA SIMULATRICE
+    \node[font=\bfseries] at (3.2,-0.65)
+        {Macchina simulatrice $M'$, un unico nastro};
+
+    % Nastro unico
+    \foreach \i/\sym in {
+        0/\#,
+        1/a,
+        2/\tilde{b},
+        3/c,
+        4/\#,
+        5/\tilde{x},
+        6/y,
+        7/\#
+    } {
+        \node[cell] at (-0.8+1.15*\i,-1.7) {$\sym$};
+    }
+
+    % Posizioni delle testine virtuali
+    \node[head] at (1.5,-1.7) {$\tilde{b}$};
+    \node[head] at (4.95,-1.7) {$\tilde{x}$};
+
+   
+
+    \end{tikzpicture}
+
+\end{figure}
+
+\noindent L'alfabeto di $M$ e $M'$ ovviamente è lo stesso mentre l'alfabeto di nastro $\Gamma'$ di $M'$ è definito come segue:
+\[  \Gamma' = \{ \hat{c} | c \in \Gamma \} \cup \Gamma \cup \{ \#  \}    \]
+\begin{itemize}
+    \item i simboli accentati $\hat{x}$ sono u
+\end{itemize}
+
+
+
+
+
+
+
+
+
+
+
+\end{proof}
+
+
+
+
+
+
+
+
+
+
+\newpage
+IDEA DIMOSTRATIVA:
+suddividere il nastro in partizioni e avere un comportamento equivalente
+
+
+\section{Macchina di Turing Non-Deterministica}
+nuovo ppt
