@@ -676,7 +676,7 @@ Esplorando in ampiezza (BFS) l'albero $\mathcal{T}_{\sigma,M}$:
     \item Se $M'$ esplora tutto l'albero senza trovare tale nodo allora \textbf{rifiuta}
 \end{itemize}
 Per tenere traccia dei cammini già controllati ed effettuare una BFS numeriamo le configurazioni, associando un numero intero ad ogni possibile risultato non deterministico della macchina e teniamo traccia 
-della sequenza delle scelte effettuate copiando tali numeri su un nastro a parte. Infatti per implementare una ricerca BFS su un albero di esecuzioni si utlizza una macchina multi-nastro dove:
+della sequenza delle scelte effettuate copiando tali numeri su un nastro a parte. Infatti per implementare una ricerca BFS su un albero di esecuzioni si utlizza una macchina \textbf{multi-nastro} dove:
 \begin{itemize}
     \item \textbf{Nastro 1}: mantiene inalterata la stringa $\sigma \in \Sigma^*$ durante l'esecuzione (nastro di input)
     \item \textbf{Nastro 2}: Viene utilizzato come nastro di memoria per eseguire la macchina $M$
@@ -696,9 +696,9 @@ della sequenza delle scelte effettuate copiando tali numeri su un nastro a parte
         \item Seguendo la numerazione definita nel punto precedente
         \item Rieseguendo tutti i passi fino ad arrivare alla configurazione
     \end{enumerate}
-    \item \textbf{Se} la configurazione ottenuta su \textbf{Nastro 2} è accettante, \textbf{accetta}, altrimenti
+    \item \textbf{Se} la configurazione ottenuta su \textbf{Nastro 2} è accettante, \textcolor{green}{\textbf{accetta}}, altrimenti
     \item Incrementa di 1 il contatore rappresentato da \textbf{Nastro 3}
-    \item Se non è più possibile generare cammini incrementando \textbf{Nastro 3} \textbf{rifiuta}
+    \item Se non è più possibile generare cammini incrementando \textbf{Nastro 3} \textcolor{red}{\textbf{rifiuta}}
     \begin{itemize}
         \item[-] Verifichiamo che tutti i numeri definibili al livello corrente non generino\\ 
         cammini validi
