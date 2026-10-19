@@ -299,3 +299,281 @@ di incapsulare e riutilizzare operazioni,
 centralizzare la logica applicativa e,
 attraverso un'adeguata gestione dei privilegi,
 migliorare la sicurezza e la coerenza dei dati.
+\subsection{Trigger in PL/pgSQL}
+
+Un \textbf{trigger} è un meccanismo del DBMS che permette
+di eseguire automaticamente una funzione quando si verifica
+un determinato evento su una tabella.\\
+Gli eventi principali che possono attivare un trigger sono:
+\begin{itemize}
+    \item \texttt{INSERT}: inserimento di nuove tuple;
+    \item \texttt{UPDATE}: modifica di tuple esistenti;
+    \item \texttt{DELETE}: eliminazione di tuple.
+\end{itemize}
+\noindent
+Un trigger viene quindi \textbf{associato a una tabella}
+e si attiva automaticamente quando si verifica
+l'evento per cui è stato definito.\\
+I trigger sono particolarmente utili per:
+\begin{itemize}
+    \item Controllare la validità dei dati;
+    \item Imporre vincoli e regole applicative;
+    \item Aggiornare automaticamente altre informazioni;
+    \item Registrare le modifiche effettuate nel database.
+\end{itemize}
+\noindent
+A differenza di una normale funzione, che viene richiamata
+esplicitamente tramite SQL, un trigger viene eseguito
+automaticamente dal DBMS.
+
+\subsubsection{Sintassi di un trigger}
+
+La sintassi generale in PostgreSQL è:
+
+\begin{verbatim}
+CREATE TRIGGER nome_trigger [ BEFORE | AFTER | INSTEAD OF ]
+[ INSERT | UPDATE | DELETE ] ON nome_tabella
+[ FOR EACH ROW | FOR EACH STATEMENT ]
+EXECUTE FUNCTION nome_funzione();
+\end{verbatim}
+
+\noindent
+La funzione richiamata dal trigger deve essere stata
+precedentemente definita con \texttt{RETURNS TRIGGER}.\\
+La creazione di un trigger richiede quindi due passaggi:
+\begin{enumerate}
+    \item Definire la funzione che contiene
+    le operazioni da eseguire;
+    \item Creare il trigger che associa tale funzione
+    a un evento su una tabella.
+\end{enumerate}
+
+\subsubsection{Semantica dei trigger}
+
+La definizione di un trigger specifica tre aspetti
+fondamentali:
+\begin{enumerate}
+    \item \textbf{Quando} deve essere eseguito;
+    \item \textbf{Quale evento} ne provoca l'attivazione;
+    \item \textbf{Quante volte} deve essere eseguito.
+\end{enumerate}
+
+\noindent
+\textbf{1. Momento di esecuzione: BEFORE, AFTER, INSTEAD OF}
+
+\begin{itemize}
+    \item \texttt{BEFORE}: il trigger viene eseguito
+    prima che l'operazione di modifica venga effettuata.\\
+    È utile per controllare o modificare i dati
+    prima che vengano memorizzati.
+
+    \item \texttt{AFTER}: il trigger viene eseguito
+    dopo che l'operazione di modifica è stata effettuata.\\
+    È utile, ad esempio, per registrare modifiche
+    o aggiornare informazioni correlate.
+
+    \item \texttt{INSTEAD OF}: il trigger viene eseguito
+    al posto dell'operazione richiesta.\\
+    In PostgreSQL viene utilizzato sulle viste
+    e permette di definire come gestire
+    operazioni di modifica su di esse.
+\end{itemize}
+
+\noindent
+\textbf{2. Evento di attivazione: INSERT, UPDATE, DELETE}
+Il trigger può essere attivato quando viene eseguita
+una delle seguenti operazioni:
+\begin{itemize}
+    \item \texttt{INSERT}: inserimento di una tupla;
+    \item \texttt{UPDATE}: aggiornamento di una tupla;
+    \item \texttt{DELETE}: eliminazione di una tupla.
+\end{itemize}
+\noindent
+È possibile associare lo stesso trigger
+anche a più eventi.\medskip\\
+\textbf{3. Frequenza di esecuzione: ROW e STATEMENT}
+
+\begin{itemize}
+    \item \texttt{FOR EACH ROW}: il trigger viene eseguito
+    una volta per ogni tupla coinvolta nell'operazione.
+
+    \item \texttt{FOR EACH STATEMENT}: il trigger viene
+    eseguito una sola volta per ogni istruzione SQL,
+    indipendentemente dal numero di tuple coinvolte.\\
+    È il comportamento predefinito.
+\end{itemize}
+
+\noindent
+\textbf{Esempio:}\\
+Supponiamo di eseguire:
+
+\begin{verbatim}
+UPDATE Studenti
+SET voto = voto + 1
+WHERE corso = 'Basi di Dati';
+\end{verbatim}
+
+Se l'istruzione modifica 10 tuple:
+\begin{itemize}
+    \item Con \texttt{FOR EACH ROW}, la funzione
+    del trigger viene eseguita \textbf{10 volte},
+    una per ogni tupla modificata.
+
+    \item Con \texttt{FOR EACH STATEMENT}, la funzione
+    del trigger viene eseguita \textbf{una sola volta},
+    indipendentemente dalle 10 tuple modificate.
+\end{itemize}
+\noindent
+\textbf{Attenzione:} un trigger
+\texttt{FOR EACH STATEMENT} viene eseguito anche
+se l'istruzione non modifica alcuna tupla.\\
+Un trigger \texttt{FOR EACH ROW}, invece,
+non viene eseguito se nessuna tupla è coinvolta.
+
+\subsubsection{Variabili speciali NEW e OLD}
+
+All'interno delle funzioni associate ai trigger
+\texttt{FOR EACH ROW}, PostgreSQL mette a disposizione
+due variabili speciali di tipo \texttt{RECORD}:
+
+\begin{itemize}
+    \item \texttt{NEW}: rappresenta la \textbf{nuova tupla},
+    cioè i valori dopo un inserimento o una modifica.
+
+    \item \texttt{OLD}: rappresenta la \textbf{vecchia tupla},
+    cioè i valori prima di una modifica o eliminazione.
+\end{itemize}
+
+\noindent
+La disponibilità delle variabili dipende
+dall'operazione eseguita:
+
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline
+\textbf{Operazione} & \textbf{NEW} & \textbf{OLD} \\
+\hline
+INSERT & Disponibile & NULL \\
+\hline
+UPDATE & Disponibile & Disponibile \\
+\hline
+DELETE & NULL & Disponibile \\
+\hline
+\end{tabular}
+\end{center}
+
+\noindent
+Nei trigger \texttt{FOR EACH STATEMENT},
+entrambe le variabili sono \texttt{NULL},
+poiché il trigger non fa riferimento
+a una singola tupla.
+\medskip\\
+\textbf{Esempio con UPDATE}
+Consideriamo la tabella:
+\begin{verbatim}
+Studenti(matricola, nome, voto)
+\end{verbatim}
+Supponiamo che una tupla contenga:
+
+\[
+(12345,\text{Mario},25)
+\]
+ed eseguiamo:
+
+\begin{verbatim}
+UPDATE Studenti
+SET voto = 28
+WHERE matricola = 12345;
+\end{verbatim}
+All'interno di un trigger \texttt{FOR EACH ROW}
+associato a questo aggiornamento avremo:
+
+\begin{itemize}
+    \item \texttt{OLD.voto = 25}: valore precedente;
+    \item \texttt{NEW.voto = 28}: nuovo valore.
+\end{itemize}
+
+\noindent
+Quindi, grazie a \texttt{OLD} e \texttt{NEW},
+possiamo confrontare i valori prima e dopo
+una modifica.
+
+\subsubsection{(da vedere se necessario in caso rimuovere) Esempio pratico: controllo dei voti}
+
+Supponiamo di voler impedire l'inserimento
+di voti non validi nella tabella \texttt{Studenti}.\\
+Un voto deve essere compreso tra 18 e 30.\\
+Possiamo definire una funzione trigger:
+
+\begin{verbatim}
+CREATE OR REPLACE FUNCTION controlla_voto()
+RETURNS TRIGGER AS
+$$
+BEGIN
+    IF NEW.voto < 18 OR NEW.voto > 30 THEN
+        RAISE EXCEPTION 'Voto non valido';
+    END IF;
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+\end{verbatim}
+
+\noindent
+Successivamente creiamo il trigger:
+
+\begin{verbatim}
+CREATE TRIGGER verifica_voto
+BEFORE INSERT OR UPDATE
+ON Studenti
+FOR EACH ROW
+EXECUTE FUNCTION controlla_voto();
+\end{verbatim}
+
+\noindent
+\textbf{Funzionamento:}
+\begin{enumerate}
+    \item Viene eseguita un'istruzione
+    \texttt{INSERT} oppure \texttt{UPDATE}
+    sulla tabella \texttt{Studenti}.
+
+    \item Prima della modifica, il trigger
+    richiama automaticamente
+    la funzione \texttt{controlla\_voto()}.
+
+    \item La funzione controlla il valore
+    di \texttt{NEW.voto}.
+
+    \item Se il voto non è valido,
+    \texttt{RAISE EXCEPTION} genera un errore
+    e impedisce l'operazione.
+
+    \item Se il voto è valido,
+    \texttt{RETURN NEW} permette di proseguire
+    con l'inserimento o l'aggiornamento.
+\end{enumerate}
+
+\noindent
+\textbf{Importante:} nei trigger
+\texttt{BEFORE FOR EACH ROW},
+il valore restituito dalla funzione
+influenza l'operazione:
+\begin{itemize}
+    \item \texttt{RETURN NEW}: permette di proseguire
+    utilizzando la nuova tupla, eventualmente modificata.
+
+    \item \texttt{RETURN NULL}: impedisce l'elaborazione
+    della tupla corrente, senza necessariamente
+    generare un errore.
+\end{itemize}
+\noindent
+Nei trigger \texttt{AFTER}, invece,
+il valore restituito dalla funzione viene ignorato.
+\noindent
+\textbf{Distinzione fondamentale:}\\
+Una funzione normale viene richiamata
+esplicitamente, mentre una funzione associata
+a un trigger viene eseguita automaticamente
+quando si verifica l'evento specificato.\\
+
+SLIDE: fino 17
