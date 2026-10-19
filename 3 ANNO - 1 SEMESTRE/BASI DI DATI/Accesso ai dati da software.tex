@@ -38,16 +38,15 @@ un valore utile, ma rimane comunque una funzione.
 La sintassi generale è:
 \begin{verbatim}
 CREATE OR REPLACE FUNCTION nome_funzione(arg1 arg_type, .., argn arg_type)
-RETURNS {return_type | TABLE(clo1 col_type,...) | TRIGGER} AS
+RETURNS {return_type | TABLE(col1 col_type,...) | TRIGGER} AS
 $$
 DECLARE
-    -- Dichiarazione delle variabili
+    <Dichiarazione delle variabili>
 BEGIN
-    -- Istruzioni da eseguire
+    <Istruzioni da eseguire>
 END;
 $$ LANGUAGE plpgsql;
 \end{verbatim}
-
 Analizziamo le parti principali:
 \begin{itemize}
     \item \texttt{CREATE FUNCTION}: crea una nuova funzione.
@@ -123,7 +122,6 @@ Per ogni fattura il totale viene calcolato come:
 \text{Imponibile}\cdot
 \frac{100+\text{Aliquota}}{100}
 \]
-
 Il totale complessivo è quindi:
 
 \[
@@ -132,7 +130,6 @@ T(s)=
 f.imponibile\cdot
 \frac{100+f.aliquota}{100}
 \]
-
 \textbf{Implementazione in PL/pgSQL}
 
 \begin{verbatim}
@@ -145,16 +142,16 @@ DECLARE
 BEGIN
     totale := 0;
 
-    FOR r IN
-        SELECT *
-        FROM Fattura
-        WHERE soggetto = sogg
+    FOR r IN SELECT * FROM Fattura WHERE soggetto = sogg
     LOOP
-        totale := totale +
-            r.imponibile * (100 + r.aliquota) / 100;
+        totale := totale + r.imponibile * (100 + r.aliquota) / 100;
     END LOOP;
 
-    RETURN QUERY SELECT sogg, totale;
+    DROP TABLE IF EXISTS return_table;
+    CREATE TEMPORARY TABLE return_table(sgt VARCHAR, tot REAL);
+    INSERT INTO return_table VALUES (sogg, totale);
+
+    RETURN QUERY SELECT * FROM return_table;
 END;
 $$ LANGUAGE plpgsql;
 \end{verbatim}
@@ -197,11 +194,29 @@ $$ LANGUAGE plpgsql;
     Termina il ciclo dopo aver elaborato
     tutte le fatture del soggetto.
 
-    \item \texttt{RETURN QUERY SELECT sogg, totale}:\\
-    Restituisce una riga contenente
-    il soggetto e il totale calcolato.
+    \item \texttt{DROP TABLE IF EXISTS return\_table}:\\
+     elimina la tabella \texttt{return\_table} se esiste già, evitando errori nel caso in cui la funzione venga eseguita più volte.
+
+    \item \texttt{CREATE TEMPORARY TABLE return\_table (sgt VARCHAR, tot REAL)}:\\
+     crea una tabella temporanea con due colonne:
+
+    \begin{itemize}
+
+        \item \texttt{sgt}: contiene il soggetto (tipo \texttt{VARCHAR}).
+
+        \item \texttt{tot}: contiene il totale calcolato (tipo \texttt{REAL}).
+
+    \end{itemize}
+
+    \noindent La tabella temporanea è visibile solo nella sessione corrente e viene eliminata automaticamente al termine della sessione.
+
+    \item \texttt{INSERT INTO return\_table VALUES (sogg, totale)}:\\
+     inserisce nella tabella temporanea una riga contenente il soggetto e il totale calcolato dal ciclo precedente.
+
+    \item \texttt{RETURN QUERY SELECT * FROM return\_table}:\\
+     restituisce tutte le righe della tabella temporanea come risultato della funzione. A differenza di \texttt{RETURN}, \texttt{RETURN QUERY} permette di restituire un insieme di righe (una tabella).
 \end{enumerate}
-\noindent \textbf{Esecuzione della funzione}
+\noindent \textbf{Esecuzione della funzione}\\
 Per richiamare la funzione scriviamo:
 \begin{verbatim}
 SELECT * FROM totale_fattura('a');
@@ -234,25 +249,6 @@ a & 1251.2 \\
 \end{tabular}
 \end{center}
 
-\subsection{Alternativa: calcolo tramite SQL}
-
-L'operazione precedente può essere eseguita
-anche direttamente attraverso una query SQL:
-
-\begin{verbatim}
-SELECT soggetto,
-       SUM(imponibile * (100 + aliquota) / 100)
-           AS totale
-FROM Fattura
-WHERE soggetto = 'a'
-GROUP BY soggetto;
-\end{verbatim}
-Questa query produce lo stesso risultato
-senza utilizzare cicli o variabili.\\
-Infatti, quando un'operazione può essere espressa
-facilmente attraverso SQL, generalmente è preferibile
-utilizzare una query rispetto a un ciclo procedurale.
-
 \subsection{Vantaggi delle Stored Procedure}
 
 Anche se molte operazioni possono essere realizzate
@@ -278,31 +274,17 @@ memorizzate nel database offrono importanti vantaggi.
     che gli utenti eseguano modifiche
     non coerenti con la logica applicativa.
 
-    \item \textbf{Centralizzazione della logica:}\\
-    Le regole applicative possono essere
-    implementate direttamente nel DBMS,
-    evitando di duplicarle nei diversi programmi
-    che accedono al database.
-
     \item \textbf{Integrazione con i trigger:}\\
     Le funzioni possono essere associate
     a trigger per eseguire automaticamente
     determinate operazioni quando si verificano
     eventi sul database.
 \end{enumerate}
-\noindent \textbf{Concetto fondamentale per l'esame:}\\
-SQL è un linguaggio dichiarativo, mentre PL/pgSQL
-aggiunge funzionalità procedurali come variabili,
-cicli e condizioni.\\
-Le funzioni memorizzate nel DBMS permettono
-di incapsulare e riutilizzare operazioni,
-centralizzare la logica applicativa e,
-attraverso un'adeguata gestione dei privilegi,
-migliorare la sicurezza e la coerenza dei dati.
+
 \subsection{Trigger in PL/pgSQL}
 
 Un \textbf{trigger} è un meccanismo del DBMS che permette
-di eseguire automaticamente una funzione quando si verifica
+di eseguire automaticamente una funzione o una certa sorted procedure quando si verifica
 un determinato evento su una tabella.\\
 Gli eventi principali che possono attivare un trigger sono:
 \begin{itemize}
@@ -314,14 +296,6 @@ Gli eventi principali che possono attivare un trigger sono:
 Un trigger viene quindi \textbf{associato a una tabella}
 e si attiva automaticamente quando si verifica
 l'evento per cui è stato definito.\\
-I trigger sono particolarmente utili per:
-\begin{itemize}
-    \item Controllare la validità dei dati;
-    \item Imporre vincoli e regole applicative;
-    \item Aggiornare automaticamente altre informazioni;
-    \item Registrare le modifiche effettuate nel database.
-\end{itemize}
-\noindent
 A differenza di una normale funzione, che viene richiamata
 esplicitamente tramite SQL, un trigger viene eseguito
 automaticamente dal DBMS.
@@ -333,12 +307,12 @@ La sintassi generale in PostgreSQL è:
 \begin{verbatim}
 CREATE TRIGGER nome_trigger [ BEFORE | AFTER | INSTEAD OF ]
 [ INSERT | UPDATE | DELETE ] ON nome_tabella
-[ FOR EACH ROW | FOR EACH STATEMENT ]
-EXECUTE FUNCTION nome_funzione();
+[ FOR EACH ROW | FOR EACH STATEMENT ] EXECUTE 
+PROCEDURE nome_procedura();
 \end{verbatim}
 
 \noindent
-La funzione richiamata dal trigger deve essere stata
+La procedura richiamata dal trigger deve essere stata
 precedentemente definita con \texttt{RETURNS TRIGGER}.\\
 La creazione di un trigger richiede quindi due passaggi:
 \begin{enumerate}
@@ -399,10 +373,9 @@ anche a più eventi.\medskip\\
 
     \item \texttt{FOR EACH STATEMENT}: il trigger viene
     eseguito una sola volta per ogni istruzione SQL,
-    indipendentemente dal numero di tuple coinvolte.\\
+    indipendentemente dal numero di tuple coinvolte.
     È il comportamento predefinito.
 \end{itemize}
-
 \noindent
 \textbf{Esempio:}\\
 Supponiamo di eseguire:
@@ -412,7 +385,6 @@ UPDATE Studenti
 SET voto = voto + 1
 WHERE corso = 'Basi di Dati';
 \end{verbatim}
-
 Se l'istruzione modifica 10 tuple:
 \begin{itemize}
     \item Con \texttt{FOR EACH ROW}, la funzione
@@ -423,12 +395,6 @@ Se l'istruzione modifica 10 tuple:
     del trigger viene eseguita \textbf{una sola volta},
     indipendentemente dalle 10 tuple modificate.
 \end{itemize}
-\noindent
-\textbf{Attenzione:} un trigger
-\texttt{FOR EACH STATEMENT} viene eseguito anche
-se l'istruzione non modifica alcuna tupla.\\
-Un trigger \texttt{FOR EACH ROW}, invece,
-non viene eseguito se nessuna tupla è coinvolta.
 
 \subsubsection{Variabili speciali NEW e OLD}
 
@@ -468,7 +434,7 @@ entrambe le variabili sono \texttt{NULL},
 poiché il trigger non fa riferimento
 a una singola tupla.
 \medskip\\
-\textbf{Esempio con UPDATE}
+\textbf{Esempio con UPDATE}\\
 Consideriamo la tabella:
 \begin{verbatim}
 Studenti(matricola, nome, voto)
@@ -497,83 +463,350 @@ associato a questo aggiornamento avremo:
 Quindi, grazie a \texttt{OLD} e \texttt{NEW},
 possiamo confrontare i valori prima e dopo
 una modifica.
+\subsection{Trigger: osservazioni importanti}
+\textbf{1. Trigger e transazioni}\\
+Quando un trigger viene attivato da un'operazione
+\texttt{INSERT}, \texttt{UPDATE} o \texttt{DELETE},
+le istruzioni eseguite al suo interno fanno parte
+della \textbf{stessa transazione} che ha attivato il trigger.\\
+Questo significa che:
+\begin{itemize}
+    \item Se la transazione viene confermata
+    (\texttt{COMMIT}), vengono confermate anche
+    le modifiche effettuate dal trigger.
+    \item Se la transazione viene annullata
+    (\texttt{ROLLBACK}), vengono annullate anche
+    le modifiche effettuate dal trigger.
+    \item Se il trigger genera un errore non gestito,
+    l'istruzione che lo ha attivato fallisce.
+\end{itemize}
+\noindent
+\textbf{Esempio:} se un trigger aggiorna il salario
+di alcuni lavoratori in seguito all'inserimento
+di un progetto, ma la transazione viene annullata,
+anche gli aggiornamenti dei salari vengono annullati.\\
+Questo comportamento garantisce
+l'\textbf{atomicità delle operazioni}.\medskip\\
+\textbf{2. Valore restituito da un trigger BEFORE FOR EACH ROW}\\
+Quando un trigger è definito con
+\texttt{BEFORE} e \texttt{FOR EACH ROW},
+il valore restituito dalla funzione determina
+come prosegue l'operazione sulla tupla corrente.
+\begin{itemize}
+    \item \textbf{RETURN NULL}: l'operazione
+    che ha attivato il trigger viene saltata
+    per la tupla corrente.\\
+    Ad esempio, durante un \texttt{INSERT},
+    quella specifica tupla non viene inserita.
 
-\subsubsection{(da vedere se necessario in caso rimuovere) Esempio pratico: controllo dei voti}
+    \item \textbf{RETURN NEW}: l'operazione
+    viene eseguita utilizzando la nuova tupla,
+    eventualmente modificata dal trigger.\\
+    Si utilizza normalmente nei trigger
+    \texttt{BEFORE INSERT} e \texttt{BEFORE UPDATE}.
 
-Supponiamo di voler impedire l'inserimento
-di voti non validi nella tabella \texttt{Studenti}.\\
-Un voto deve essere compreso tra 18 e 30.\\
-Possiamo definire una funzione trigger:
+    \item \textbf{RETURN OLD}: restituisce
+    la vecchia tupla.\\
+    È normalmente utilizzato nei trigger
+    \texttt{BEFORE DELETE}, nei quali il contenuto
+    della tupla restituita non modifica
+    l'operazione di eliminazione.
+\end{itemize}
+\noindent
+\textbf{Importante:} un trigger \texttt{BEFORE}
+può quindi impedire o modificare un'operazione
+prima che venga effettivamente eseguita.\medskip\\
+\textbf{3. Valore restituito da AFTER e FOR EACH STATEMENT}\\
+Se il trigger è definito come:
+\begin{itemize}
+    \item \texttt{AFTER};
+    \item \texttt{FOR EACH STATEMENT};
+\end{itemize}
+\noindent
+il valore restituito dalla funzione viene
+\textbf{ignorato dal DBMS}.\\
+In questi casi si utilizza generalmente
+\texttt{RETURN NULL}, poiché il valore
+di ritorno non influenza l'operazione.
 
+\subsection{Esempio 1: assegnazione automatica di un progetto}
+Consideriamo le seguenti relazioni:
 \begin{verbatim}
-CREATE OR REPLACE FUNCTION controlla_voto()
+lavoratore(
+    codice NUMERIC,
+    nome VARCHAR(20),
+    cognome VARCHAR,
+    inprogetto NUMERIC,
+    salario NUMERIC
+)
+
+progetto(
+    codice NUMERIC,
+    usura NUMERIC,
+    responsabile NUMERIC
+)
+\end{verbatim}
+\noindent
+Dove:
+\begin{itemize}
+    \item \texttt{lavoratore.codice}: identifica
+    univocamente un lavoratore.
+    \item \texttt{inprogetto}: codice del progetto
+    a cui è assegnato il lavoratore.
+    \item \texttt{salario}: stipendio del lavoratore.
+    \item \texttt{progetto.codice}: identifica
+    univocamente un progetto.
+    \item \texttt{usura}: livello di usura del progetto.
+    \item \texttt{responsabile}: identificativo
+    del responsabile del progetto.
+\end{itemize}
+\noindent
+\textbf{Obiettivo:}\\
+Ogni volta che viene inserito un nuovo progetto,
+vogliamo assegnarlo automaticamente a tutti
+i lavoratori che hanno \texttt{inprogetto = NULL},
+cioè ai lavoratori per i quali non è indicato
+alcun progetto.\medskip\\
+\textbf{Definizione della funzione trigger}
+\begin{verbatim}
+CREATE OR REPLACE FUNCTION assegna_progetto()
 RETURNS TRIGGER AS
 $$
 BEGIN
-    IF NEW.voto < 18 OR NEW.voto > 30 THEN
-        RAISE EXCEPTION 'Voto non valido';
+    UPDATE lavoratore
+    SET inprogetto = NEW.codice
+    WHERE inprogetto IS NULL;
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trigger_progetto
+AFTER INSERT ON progetto
+FOR EACH ROW
+EXECUTE FUNCTION assegna_progetto();
+\end{verbatim}
+\noindent
+\textbf{Spiegazione:}
+\begin{enumerate}
+    \item \texttt{RETURNS TRIGGER}: indica
+    che la funzione sarà utilizzata da un trigger.
+
+    \item \texttt{UPDATE lavoratore}: modifica
+    le tuple della tabella dei lavoratori.
+
+    \item \texttt{SET inprogetto = NEW.codice}: assegna
+    ai lavoratori il codice del nuovo progetto.\\
+    \texttt{NEW.codice} rappresenta infatti
+    il codice del progetto appena inserito.
+
+    \item \texttt{WHERE inprogetto IS NULL}: seleziona
+    esclusivamente i lavoratori che non hanno
+    un progetto assegnato.
+
+    \item \texttt{RETURN NEW}: restituisce
+    la nuova tupla del progetto.\\
+    In questo esempio il valore restituito
+    viene ignorato perché il trigger è \texttt{AFTER}.
+
+    \item \texttt{CREATE TRIGGER trigger$\_$progetto}: creazione del trigger
+    
+    \item \texttt{AFTER}: dopo l'inserimento
+    del progetto;
+    \item \texttt{INSERT}: quando viene inserito
+    un nuovo progetto;
+    \item \texttt{ON progetto}: sulla tabella
+    \texttt{progetto};
+    \item \texttt{FOR EACH ROW}: una volta
+    per ogni progetto inserito.
+\end{enumerate}
+\noindent
+\textbf{Esempio di esecuzione}\\
+Supponiamo di avere la tabella:
+\begin{center}
+\begin{tabular}{|c|c|}
+\hline
+Lavoratore & inprogetto \\
+\hline
+1 & NULL \\
+2 & 10 \\
+3 & NULL \\
+\hline
+\end{tabular}
+\end{center}
+\noindent
+Eseguiamo:
+\begin{verbatim}
+INSERT INTO progetto
+VALUES (20, 5, 1);
+\end{verbatim}
+\noindent
+L'inserimento attiva automaticamente il trigger,
+che assegna il progetto 20 ai lavoratori
+con \texttt{inprogetto IS NULL}.\\
+La tabella diventa:
+\begin{center}
+\begin{tabular}{|c|c|}
+\hline
+Lavoratore & inprogetto \\
+\hline
+1 & 20 \\
+2 & 10 \\
+3 & 20 \\
+\hline
+\end{tabular}
+\end{center}
+\noindent
+Il lavoratore 2 non viene modificato,
+perché è già assegnato al progetto 10.\\
+\textbf{Osservazione:} il trigger è
+\texttt{FOR EACH ROW}, quindi se vengono inseriti
+più progetti con una sola istruzione,
+la funzione viene eseguita per ciascun progetto.\\
+Tuttavia, dopo la prima assegnazione,
+i lavoratori aggiornati non hanno più
+\texttt{inprogetto = NULL} e quindi
+non vengono riassegnati dai trigger successivi.
+\subsubsection{Esempio 2: aumento automatico dei salari}
+Consideriamo le stesse relazioni dell'esempio precedente.\\
+\textbf{Obiettivo:}\\
+Quando aumenta il valore di \texttt{usura}
+di un progetto, vogliamo aumentare automaticamente
+del \textbf{10\%} il salario di tutti i lavoratori
+assegnati a quel progetto.\medskip\\
+\textbf{Definizione della funzione trigger}
+\begin{verbatim}
+CREATE OR REPLACE FUNCTION usura_progetto()
+RETURNS TRIGGER AS
+$$
+BEGIN
+    IF NEW.usura > OLD.usura THEN
+
+        UPDATE lavoratore
+        SET salario = salario * 1.1
+        WHERE inprogetto = NEW.codice;
+
     END IF;
 
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
-\end{verbatim}
 
-\noindent
-Successivamente creiamo il trigger:
-
-\begin{verbatim}
-CREATE TRIGGER verifica_voto
-BEFORE INSERT OR UPDATE
-ON Studenti
+CREATE TRIGGER trigger_piu_usura_progetto
+AFTER UPDATE ON progetto
 FOR EACH ROW
-EXECUTE FUNCTION controlla_voto();
+EXECUTE FUNCTION usura_progetto();
 \end{verbatim}
-
 \noindent
-\textbf{Funzionamento:}
+\textbf{Spiegazione:}
 \begin{enumerate}
-    \item Viene eseguita un'istruzione
-    \texttt{INSERT} oppure \texttt{UPDATE}
-    sulla tabella \texttt{Studenti}.
+    \item \texttt{NEW.usura}: rappresenta
+    il nuovo valore di usura del progetto.
 
-    \item Prima della modifica, il trigger
-    richiama automaticamente
-    la funzione \texttt{controlla\_voto()}.
+    \item \texttt{OLD.usura}: rappresenta
+    il valore di usura precedente alla modifica.
 
-    \item La funzione controlla il valore
-    di \texttt{NEW.voto}.
+    \item \texttt{IF NEW.usura > OLD.usura THEN}: controlla
+    se il valore di usura è aumentato.\\
+    Se non è aumentato, non viene eseguito
+    alcun aggiornamento dei salari.
 
-    \item Se il voto non è valido,
-    \texttt{RAISE EXCEPTION} genera un errore
-    e impedisce l'operazione.
+    \item \texttt{UPDATE lavoratore}: modifica
+    i salari dei lavoratori.
 
-    \item Se il voto è valido,
-    \texttt{RETURN NEW} permette di proseguire
-    con l'inserimento o l'aggiornamento.
+    \item \texttt{SET salario = salario * 1.1}:
+    aumenta il salario del 10\%.\\
+    Infatti:
+    \[
+    S_{\text{nuovo}} =
+    S_{\text{vecchio}}\cdot 1.1
+    \]
+
+    \item \texttt{WHERE inprogetto = NEW.codice}:
+    seleziona soltanto i lavoratori
+    assegnati al progetto modificato.
+
+    \item \texttt{RETURN NEW}: restituisce
+    la nuova tupla del progetto.\\
+    Anche in questo caso il valore è ignorato,
+    perché il trigger è \texttt{AFTER}.
+
+    \item \texttt{CREATE TRIGGER trigger\_piu\_usura\_progetto}: crea un trigger chiamato \texttt{trigger\_piu\_usura\_progetto}, che esegue automaticamente una funzione quando si verifica un determinato evento.
+    
+    \item \texttt{AFTER UPDATE ON progetto}: il trigger si attiva dopo un'operazione di aggiornamento (\texttt{UPDATE}) sulla tabella \texttt{progetto}.
+
+    \item \texttt{FOR EACH ROW}: il trigger viene eseguito una volta per ogni riga modificata dall'operazione di \texttt{UPDATE}.
+
+    \item \texttt{EXECUTE PROCEDURE usura\_progetto()}: richiama automaticamente la funzione \texttt{usura\_progetto()} per ogni riga aggiornata.
+
 \end{enumerate}
-
 \noindent
-\textbf{Importante:} nei trigger
-\texttt{BEFORE FOR EACH ROW},
-il valore restituito dalla funzione
-influenza l'operazione:
-\begin{itemize}
-    \item \texttt{RETURN NEW}: permette di proseguire
-    utilizzando la nuova tupla, eventualmente modificata.
+\textbf{Esempio di esecuzione}\\
+Supponiamo che il progetto 20 abbia:
 
-    \item \texttt{RETURN NULL}: impedisce l'elaborazione
-    della tupla corrente, senza necessariamente
-    generare un errore.
-\end{itemize}
+\[
+usura = 5
+\]
+e che due lavoratori assegnati a quel progetto
+abbiano i seguenti salari:
+\begin{center}
+\begin{tabular}{|c|c|}
+\hline
+Lavoratore & Salario \\
+\hline
+1 & 2000 \\
+3 & 3000 \\
+\hline
+\end{tabular}
+\end{center}
 \noindent
-Nei trigger \texttt{AFTER}, invece,
-il valore restituito dalla funzione viene ignorato.
+Eseguiamo:
+\begin{verbatim}
+UPDATE progetto
+SET usura = 8
+WHERE codice = 20;
+\end{verbatim}
 \noindent
-\textbf{Distinzione fondamentale:}\\
-Una funzione normale viene richiamata
-esplicitamente, mentre una funzione associata
-a un trigger viene eseguita automaticamente
-quando si verifica l'evento specificato.\\
+Il trigger confronta:
 
-SLIDE: fino 17
+\[
+NEW.usura = 8
+\qquad
+OLD.usura = 5
+\]
+Poiché:
+\[
+8 > 5
+\]
+la condizione dell'\texttt{IF} è vera
+e vengono aumentati i salari:
+
+\[
+S_1 = 2000 \cdot 1.1 = 2200
+\]
+
+\[
+S_3 = 3000 \cdot 1.1 = 3300
+\]
+La tabella aggiornata sarà:
+\begin{center}
+\begin{tabular}{|c|c|}
+\hline
+Lavoratore & Salario \\
+\hline
+1 & 2200 \\
+3 & 3300 \\
+\hline
+\end{tabular}
+\end{center}
+\noindent
+Se invece il valore di usura diminuisce
+oppure rimane invariato, i salari
+non vengono modificati.\medskip\\
+\textbf{Osservazione importante}\\
+Il trigger è definito con \texttt{AFTER UPDATE},
+quindi viene attivato per qualsiasi aggiornamento
+della tupla del progetto, anche quando
+non viene modificato il campo \texttt{usura}.\\
+La condizione \texttt{IF} impedisce comunque
+l'aumento dei salari quando l'usura non aumenta.
