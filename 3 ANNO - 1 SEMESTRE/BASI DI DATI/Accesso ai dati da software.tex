@@ -1,0 +1,301 @@
+\chapter{Accesso ai dati da software}
+
+\section{PL/pgSQL e Stored Procedure}
+\textbf{PL/pgSQL} è un linguaggio di programmazione procedurale
+supportato da PostgreSQL, che permette di eseguire operazioni
+complesse direttamente all'interno del DBMS.\\
+A differenza di SQL, che è un linguaggio dichiarativo
+(dichiariamo \textit{cosa} vogliamo ottenere), PL/pgSQL
+permette di specificare anche \textit{come} eseguire
+le operazioni, utilizzando:
+\begin{itemize}
+    \item Variabili locali;
+    \item Cicli (\texttt{FOR}, \texttt{WHILE});
+    \item Strutture condizionali (\texttt{IF}, \texttt{ELSE});
+    \item Query SQL all'interno del codice.
+\end{itemize}
+\noindent Queste funzionalità permettono di implementare logiche
+complesse che sarebbero difficili da esprimere
+attraverso semplici query SQL.
+\subsection{Funzioni e Stored Procedure}
+In PostgreSQL possiamo definire delle \textbf{funzioni},
+ovvero blocchi di codice memorizzati nel database
+ed eseguibili ogni volta che vengono richiamati.\\
+Una funzione può:
+\begin{itemize}
+    \item Ricevere parametri in ingresso;
+    \item Eseguire operazioni sui dati;
+    \item Restituire un valore oppure una tabella;
+    \item Essere richiamata tramite istruzioni SQL;
+    \item Essere utilizzata da un trigger.
+\end{itemize}
+\noindent Una volta creata, la funzione viene memorizzata
+nel database e può essere riutilizzata senza
+dover riscrivere ogni volta le istruzioni.\\
+Una funzione con \texttt{RETURNS VOID} non restituisce
+un valore utile, ma rimane comunque una funzione.
+\subsection{Struttura di una funzione PL/pgSQL}
+La sintassi generale è:
+\begin{verbatim}
+CREATE OR REPLACE FUNCTION nome_funzione(arg1 arg_type, .., argn arg_type)
+RETURNS {return_type | TABLE(clo1 col_type,...) | TRIGGER} AS
+$$
+DECLARE
+    -- Dichiarazione delle variabili
+BEGIN
+    -- Istruzioni da eseguire
+END;
+$$ LANGUAGE plpgsql;
+\end{verbatim}
+
+Analizziamo le parti principali:
+\begin{itemize}
+    \item \texttt{CREATE FUNCTION}: crea una nuova funzione.
+    \item \texttt{OR REPLACE}: permette di sostituire
+    una funzione già esistente con la stessa
+    identità (nome e tipi dei parametri di ingresso).
+    \item \texttt{parametri}: valori ricevuti
+    in ingresso dalla funzione.
+    \item \texttt{RETURNS}: specifica il tipo
+    di risultato restituito.
+    \item \texttt{\$\$}: delimita il corpo della funzione.
+    \item \texttt{DECLARE}: sezione opzionale
+    in cui vengono dichiarate le variabili locali.
+    \item \texttt{BEGIN ... END}: contiene
+    le istruzioni da eseguire.
+    \item \texttt{LANGUAGE plpgsql}: specifica
+    il linguaggio utilizzato.
+\end{itemize}
+
+Il tipo di ritorno può essere:
+\begin{itemize}
+    \item \texttt{RETURNS INTEGER}: restituisce un intero.
+    \item \texttt{RETURNS REAL}: restituisce un numero reale.
+    \item \texttt{RETURNS VOID}: non restituisce
+    un valore utile.
+    \item \texttt{RETURNS TABLE(...)}: restituisce
+    una tabella con colonne specificate.
+    \item \texttt{RETURNS TRIGGER}: definisce
+    una funzione utilizzabile da un trigger.
+\end{itemize}
+\textcolor{verdeEsempio}{Esempio:} calcolo del totale delle fatture
+Consideriamo la relazione:
+
+\begin{verbatim}
+Fattura(
+    soggetto VARCHAR(100),
+    imponibile REAL,
+    aliquota INTEGER
+)
+\end{verbatim}
+\noindent 
+dove:
+\begin{itemize}
+    \item \texttt{soggetto}: identifica il soggetto
+    a cui è associata la fattura.
+    \item \texttt{imponibile}: importo della fattura
+    prima dell'applicazione dell'imposta.
+    \item \texttt{aliquota}: percentuale di imposta
+    applicata.
+\end{itemize}
+\noindent
+Supponiamo che la tabella contenga:
+
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline
+Soggetto & Imponibile & Aliquota \\
+\hline
+a & 1000 & 22 \\
+a & 30 & 4 \\
+b & 10000 & 10 \\
+\hline
+\end{tabular}
+\end{center}
+\noindent
+Vogliamo creare una funzione che, dato un soggetto,
+restituisca una tabella contenente il suo identificativo
+e il totale delle fatture comprensivo delle imposte.\\
+Per ogni fattura il totale viene calcolato come:
+
+\[
+\text{Totale fattura} =
+\text{Imponibile}\cdot
+\frac{100+\text{Aliquota}}{100}
+\]
+
+Il totale complessivo è quindi:
+
+\[
+T(s)=
+\sum_{\substack{f\in Fattura\\f.soggetto=s}}
+f.imponibile\cdot
+\frac{100+f.aliquota}{100}
+\]
+
+\textbf{Implementazione in PL/pgSQL}
+
+\begin{verbatim}
+CREATE OR REPLACE FUNCTION totale_fattura(sogg VARCHAR)
+RETURNS TABLE (sgt VARCHAR, tot REAL) AS
+$$
+DECLARE
+    r RECORD;
+    totale REAL;
+BEGIN
+    totale := 0;
+
+    FOR r IN
+        SELECT *
+        FROM Fattura
+        WHERE soggetto = sogg
+    LOOP
+        totale := totale +
+            r.imponibile * (100 + r.aliquota) / 100;
+    END LOOP;
+
+    RETURN QUERY SELECT sogg, totale;
+END;
+$$ LANGUAGE plpgsql;
+\end{verbatim}
+\textbf{Spiegazione passo per passo:}
+
+\begin{enumerate}
+    \item \texttt{totale\_fattura(sogg VARCHAR)}:\\
+    La funzione riceve il nome del soggetto
+    di cui vogliamo calcolare il totale.
+
+    \item \texttt{RETURNS TABLE (sgt VARCHAR, tot REAL)}:\\
+    La funzione restituisce una tabella con due colonne:
+    il soggetto e il totale calcolato.
+
+    \item \texttt{r RECORD}:\\
+    Dichiara una variabile capace di contenere
+    una riga restituita da una query.
+
+    \item \texttt{totale REAL}:\\
+    Dichiara una variabile utilizzata
+    per accumulare il totale.
+
+    \item \texttt{totale := 0}:\\
+    Inizializza il totale a zero.
+    L'operatore \texttt{:=} rappresenta
+    l'assegnazione in PL/pgSQL.
+
+    \item \texttt{FOR r IN SELECT ... LOOP}:\\
+    Scorre tutte le fatture appartenenti
+    al soggetto passato come parametro.\\
+    A ogni iterazione, \texttt{r} contiene
+    una diversa riga della query.
+
+    \item \texttt{totale := totale + ...}:\\
+    Calcola l'importo comprensivo di imposta
+    della fattura corrente e lo aggiunge
+    al totale accumulato.
+
+    \item \texttt{END LOOP}:\\
+    Termina il ciclo dopo aver elaborato
+    tutte le fatture del soggetto.
+
+    \item \texttt{RETURN QUERY SELECT sogg, totale}:\\
+    Restituisce una riga contenente
+    il soggetto e il totale calcolato.
+\end{enumerate}
+\noindent \textbf{Esecuzione della funzione}
+Per richiamare la funzione scriviamo:
+\begin{verbatim}
+SELECT * FROM totale_fattura('a');
+\end{verbatim}
+Per il soggetto \texttt{a} abbiamo due fatture:
+
+\[
+1000\cdot\frac{100+22}{100}=1220
+\]
+
+\[
+30\cdot\frac{100+4}{100}=31.2
+\]
+
+Quindi:
+
+\[
+T(a)=1220+31.2=\boxed{1251.2}
+\]
+
+Il risultato sarà:
+
+\begin{center}
+\begin{tabular}{|c|c|}
+\hline
+sgt & tot \\
+\hline
+a & 1251.2 \\
+\hline
+\end{tabular}
+\end{center}
+
+\subsection{Alternativa: calcolo tramite SQL}
+
+L'operazione precedente può essere eseguita
+anche direttamente attraverso una query SQL:
+
+\begin{verbatim}
+SELECT soggetto,
+       SUM(imponibile * (100 + aliquota) / 100)
+           AS totale
+FROM Fattura
+WHERE soggetto = 'a'
+GROUP BY soggetto;
+\end{verbatim}
+Questa query produce lo stesso risultato
+senza utilizzare cicli o variabili.\\
+Infatti, quando un'operazione può essere espressa
+facilmente attraverso SQL, generalmente è preferibile
+utilizzare una query rispetto a un ciclo procedurale.
+
+\subsection{Vantaggi delle Stored Procedure}
+
+Anche se molte operazioni possono essere realizzate
+direttamente tramite SQL, le funzioni e le procedure
+memorizzate nel database offrono importanti vantaggi.
+
+\begin{enumerate}
+    \item \textbf{Riutilizzabilità del codice:}\\
+    La logica viene definita una sola volta
+    e può essere richiamata più volte.
+
+    \item \textbf{Maggiore sicurezza:}\\
+    È possibile concedere agli utenti
+    il permesso di eseguire determinate funzioni
+    senza concedere necessariamente l'accesso
+    diretto alle tabelle sottostanti.\\
+    Questo richiede una corretta configurazione
+    dei privilegi e delle funzioni.
+
+    \item \textbf{Coerenza dei dati:}\\
+    Le operazioni vengono eseguite secondo
+    regole prestabilite, riducendo il rischio
+    che gli utenti eseguano modifiche
+    non coerenti con la logica applicativa.
+
+    \item \textbf{Centralizzazione della logica:}\\
+    Le regole applicative possono essere
+    implementate direttamente nel DBMS,
+    evitando di duplicarle nei diversi programmi
+    che accedono al database.
+
+    \item \textbf{Integrazione con i trigger:}\\
+    Le funzioni possono essere associate
+    a trigger per eseguire automaticamente
+    determinate operazioni quando si verificano
+    eventi sul database.
+\end{enumerate}
+\noindent \textbf{Concetto fondamentale per l'esame:}\\
+SQL è un linguaggio dichiarativo, mentre PL/pgSQL
+aggiunge funzionalità procedurali come variabili,
+cicli e condizioni.\\
+Le funzioni memorizzate nel DBMS permettono
+di incapsulare e riutilizzare operazioni,
+centralizzare la logica applicativa e,
+attraverso un'adeguata gestione dei privilegi,
+migliorare la sicurezza e la coerenza dei dati.
