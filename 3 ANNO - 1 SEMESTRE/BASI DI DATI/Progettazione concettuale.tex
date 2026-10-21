@@ -83,10 +83,6 @@ dell'applicazione.
     l'intero sistema, compresa la base di dati.
 \end{itemize}
 
-\noindent
-\textbf{Conseguenza:} la progettazione della base di dati deve
-essere coerente con le funzioni e le esigenze dell'applicazione.
-
 \section{Progettazione della base di dati}
 
 La progettazione si articola in \textbf{tre livelli},
@@ -110,46 +106,28 @@ progressivamente più vicini alla realizzazione concreta.
 \end{gathered}
 \]
 
-\subsection{Progettazione concettuale}
+\subsubsection{Progettazione concettuale}
 
 \begin{itemize}
-    \item \textbf{Domanda:} quali informazioni bisogna rappresentare?
     \item \textbf{Ingresso:} requisiti della base di dati.
     \item \textbf{Attività:} individuare dati, relazioni e vincoli
     del dominio applicativo.
     \item \textbf{Risultato:} schema concettuale,
     ad esempio un diagramma Entità--Relazione.
-    \item \textbf{Caratteristica:} indipendenza dal DBMS
-    e dai dettagli di memorizzazione.
 \end{itemize}
 
-\noindent
-Pur chiamandosi ``progettazione'', nella distinzione delle slide
-questa fase appartiene all'\textbf{analisi}: descrive il
-\textbf{cosa}.
-
-\subsection{Progettazione logica}
+\subsubsection{Progettazione logica}
 
 \begin{itemize}
-    \item \textbf{Domanda:} come organizzare i dati nel modello
-    adottato dal DBMS?
     \item \textbf{Ingresso:} schema concettuale e caratteristiche
     del modello supportato dal DBMS.
     \item \textbf{Attività:} tradurre lo schema concettuale
     in strutture logiche.
     \item \textbf{Risultato:} schema logico.
 \end{itemize}
-
-\noindent
-Nel modello relazionale lo schema logico descrive
-\textbf{tabelle, attributi, chiavi e vincoli}.
-Non definisce ancora i dettagli fisici della memorizzazione.
-
-\subsection{Progettazione fisica e tuning}
+\subsubsection{Progettazione fisica e tuning}
 
 \begin{itemize}
-    \item \textbf{Domanda:} come memorizzare e accedere ai dati
-    in modo efficiente?
     \item \textbf{Ingresso:} schema logico, DBMS utilizzato
     e carico applicativo.
     \item \textbf{Attività:} scegliere strutture di memorizzazione,
@@ -158,12 +136,10 @@ Non definisce ancora i dettagli fisici della memorizzazione.
 \end{itemize}
 
 \noindent
-Il \textbf{carico applicativo} comprende le operazioni eseguite,
-la loro frequenza e la quantità di dati coinvolta.
 Il \textbf{tuning} consiste nel regolare le scelte tecniche
 per migliorare le prestazioni.
 
-\subsection{Esempio: gestione di un'università}
+\subsubsection{Esempio: gestione di un'università}
 
 \begin{description}
     \item[Livello concettuale.]
@@ -205,10 +181,12 @@ Consideriamo una tabella \texttt{Studente(Matricola, Nome, Cognome)}.
     \item Lo \textbf{schema} è costituito dal nome della tabella e dai suoi attributi.
     \item L'\textbf{istanza} è costituita dalle tuple (righe) presenti nella tabella in un determinato momento.
 \end{itemize}
-\noindent Uno stesso schema può avere molte istanze differenti, ma in un preciso istante si considera una sola istanza corrente.\\
-In generale, se $S$ è uno schema che descrive un universo di interesse, un'istanza di $S$ rappresenta una \textbf{fotografia dello stato di tale universo} in un determinato momento.
+\noindent Uno stesso schema può avere molte istanze differenti, ma in un preciso istante si considera una sola istanza corrente.\medskip\\
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{
+In generale, se $S$ è uno schema che descrive un universo di interesse, un'istanza di $S$ rappresenta una \textbf{fotografia dello stato di tale universo} in un determinato momento.   
+}}
 
-\subsection{Costrutti fondamentali del modello ER}
+\subsubsection{Costrutti fondamentali del modello ER}
 
 I principali costrutti utilizzati nel modello ER sono:
 \begin{itemize}
@@ -223,7 +201,7 @@ I principali costrutti utilizzati nel modello ER sono:
     \item \textbf{Altri vincoli}: ulteriori regole che i dati devono rispettare.
 \end{itemize}
 
-\subsection{La nozione di entità}
+\subsection{Entità}
 
 Un'\textbf{entità} è una \textbf{classe di oggetti} (persone, cose o fatti) che:
 \begin{itemize}
@@ -250,7 +228,7 @@ Nel diagramma ER, ogni entità:
 
 \subsubsection{Semantica delle entità}
 
-A livello \textbf{estensionale}, un'entità è rappresentata dall'\textbf{insieme delle sue istanze}, dette anche \textbf{occorrenze} o \textbf{esemplari}.\\
+A livello \textbf{estensionale}, un'entità è rappresentata dal \textbf{un insieme di oggetti}, che sono chiamati le sue \textbf{istanze} o \textbf{occorrenze}.\\
 Formalmente, dato:
 \begin{itemize}
     \item $S$: uno schema concettuale.
@@ -262,7 +240,7 @@ Formalmente, dato:
 \operatorname{istanze}(I,E) = \{e_1,e_2,e_3,\ldots\}
 \]
 Tale insieme prende il nome di \textbf{estensione dell'entità $E$}.\\
-\textbf{Esempio}: se $E = \texttt{Studente}$, la sua estensione contiene tutti gli studenti presenti nella base di dati in quel momento.\\
+\textcolor{verdeEsempio}{Esempio}: se $E = \texttt{Studente}$, la sua estensione contiene tutti gli studenti presenti nella base di dati in quel momento.\\
 \textbf{Osservazione importante}: un'istanza di entità rappresenta \textbf{l'oggetto stesso}, non il valore di una sua proprietà. Ad esempio, uno specifico studente è un'istanza dell'entità \texttt{Studente}, mentre il suo nome o la sua matricola sono valori di attributi.\\
 Per identificare un oggetto si può utilizzare un \textbf{identificatore univoco} (\textit{object identifier}), che lo distingue dagli altri oggetti.
 
@@ -273,7 +251,7 @@ Nel modello ER è importante distinguere tra \textbf{entità} e \textbf{istanza 
     \item \textbf{Entità}: rappresenta, nello schema concettuale $S$, una classe di oggetti simili, caratterizzati da proprietà comuni.
     \item \textbf{Istanza di entità}: rappresenta un singolo oggetto appartenente alla classe definita dall'entità, in una determinata istanza dello schema.
 \end{itemize}
-\noindent \textbf{Esempio}: \texttt{Studente} è un'entità, mentre uno specifico studente, come Mario Rossi, è una sua istanza.\\
+\noindent \textcolor{verdeEsempio}{Esempio}: \texttt{Studente} è un'entità, mentre uno specifico studente, come Mario Rossi, è una sua istanza.\\
 \textbf{Osservazione}: nello schema concettuale vengono rappresentate le \textbf{entità}, non le singole istanze. Questo principio prende il nome di \textbf{astrazione}, perché si descrivono le caratteristiche comuni degli oggetti senza elencarli singolarmente.
 
 \subsection{Attributi di entità}
@@ -297,7 +275,7 @@ Nel diagramma ER:
     \item Il nome dell'attributo viene scritto vicino al cerchio.
     \item Gli attributi della stessa entità devono avere \textbf{nomi distinti}.
 \end{itemize}
-\noindent \textbf{Esempio}: rappresentazione dell'entità \texttt{Impiegato} con i suoi attributi.
+\noindent \textcolor{verdeEsempio}{Esempio}: rappresentazione dell'entità \texttt{Impiegato} con i suoi attributi.
 
 \begin{center}
 \begin{tikzpicture}[scale=1, every node/.style={font=\small}]
@@ -360,16 +338,14 @@ Questo significa che:
     \item \textbf{Totale}: ogni istanza dell'entità deve avere un valore associato all'attributo.
     \item \textbf{Univoca}: a ogni istanza viene associato esattamente un valore dell'attributo.
 \end{itemize}
-\noindent Dal punto di vista matematico, l'attributo può essere rappresentato come un insieme di coppie $(x,y)$, dove $x$ è un'istanza dell'entità e $y$ è il valore dell'attributo associato.\\
-\textbf{Esempio}: considerando l'attributo \texttt{Età} dell'entità \texttt{Impiegato}:
+\noindent Dal punto di vista matematico, l'attributo può essere rappresentato come un insieme di coppie $(x,y)$, dove $x$ è un'istanza dell'entità e $y$ è il valore dell'attributo associato.\medskip\\
+\textcolor{verdeEsempio}{Esempio}: considerando l'attributo \texttt{Età} dell'entità \texttt{Impiegato}:
 \[
 \operatorname{istanze}(I,\texttt{Età}) =
 \{(e_1,25),(e_2,30),(e_3,42)\}
 \]
-Ogni impiegato è associato a un unico valore di età.\\
-\textbf{Nota}: questa definizione riguarda gli attributi semplici e monovalore delle slide; eventuali attributi opzionali o multivalore richiedono una trattazione specifica.
-
-\subsection{Esercizi sulle istanze degli attributi}
+Ogni impiegato è associato a un unico valore di età.
+\subsubsection{Esercizi sulle istanze degli attributi}
 
 Consideriamo uno schema ER contenente l'entità \texttt{Impiegato} e l'attributo \texttt{Età}, il cui dominio è l'insieme dei numeri interi.\\
 L'attributo \texttt{Età} deve essere una \textbf{funzione totale}:
@@ -383,12 +359,12 @@ Vediamo tre casi per capire quando un insieme di dati rappresenta un'istanza val
 \subsubsection{Esercizio 1: istanza valida}
 
 Consideriamo quattro impiegati e le seguenti associazioni:
-\begin{itemize}
-    \item $S_1 \rightarrow 37$
-    \item $S_2 \rightarrow 37$
-    \item $S_3 \rightarrow 29$
-    \item $S_4 \rightarrow 34$
-\end{itemize}
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.4\linewidth]{../images/attributi_1.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
 \noindent \textbf{Risposta: SÌ, è un'istanza valida.}\\
 Ogni impiegato possiede uno e un solo valore di età.\\
 \textbf{Osservazione}: due impiegati diversi possono avere la stessa età (come $S_1$ e $S_2$). Infatti, un attributo deve essere una funzione totale, ma \textbf{non necessariamente iniettiva}.
@@ -396,36 +372,25 @@ Ogni impiegato possiede uno e un solo valore di età.\\
 \subsubsection{Esercizio 2a: più valori per la stessa istanza}
 
 Consideriamo le associazioni:
-\begin{itemize}
-    \item $S_1 \rightarrow 37$
-    \item $S_2 \rightarrow 37$
-    \item $S_3 \rightarrow 29$ e $S_3 \rightarrow 34$
-    \item $S_4 \rightarrow 34$
-\end{itemize}
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.4\linewidth]{../images/attributi_2.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
 \noindent \textbf{Risposta: NO, non è un'istanza valida.}\\
 L'impiegato $S_3$ è associato a \textbf{due valori differenti} dell'attributo \texttt{Età}.\\
-Questo viola la definizione di funzione, perché \textbf{a ogni elemento del dominio deve corrispondere un unico valore}.\\
-Quindi, un attributo semplice non può associare contemporaneamente due valori diversi alla stessa istanza di entità.
+Questo viola la definizione di funzione, perché \textbf{a ogni elemento del dominio deve corrispondere un unico valore}.
 
 \subsubsection{Esercizio 2b: valore mancante}
 
 Consideriamo le associazioni:
-\begin{itemize}
-    \item $S_1 \rightarrow 37$
-    \item $S_2 \rightarrow$ nessun valore
-    \item $S_3 \rightarrow 29$
-    \item $S_4 \rightarrow 34$
-\end{itemize}
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.4\linewidth]{../images/attributi_3.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
 \noindent \textbf{Risposta: NO, non è un'istanza valida.}\\
 L'impiegato $S_2$ non possiede alcun valore associato all'attributo \texttt{Età}.\\
 Questo viola la proprietà di \textbf{totalità}, secondo cui ogni istanza dell'entità deve avere un valore dell'attributo.
-
-\subsubsection{Conclusione}
-
-Un attributo di entità, secondo la definizione vista nelle slide, deve rispettare due proprietà fondamentali:
-\begin{itemize}
-    \item \textbf{Univocità}: ogni istanza di entità deve essere associata a un solo valore dell'attributo.
-    \item \textbf{Totalità}: ogni istanza di entità deve avere un valore associato.
-\end{itemize}
-\noindent \textbf{Importante}: più istanze possono condividere lo stesso valore, ma una singola istanza non può avere più valori né essere priva di un valore.\\
-Queste proprietà derivano dal fatto che un attributo viene modellato come una \textbf{funzione totale}, non necessariamente iniettiva.
