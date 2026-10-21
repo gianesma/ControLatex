@@ -1,0 +1,181 @@
+\chapter{Progettazione concettuale}
+\section{Ciclo di vita di un'applicazione software}
+
+Il \textbf{ciclo di vita} comprende tutte le fasi necessarie per
+sviluppare, verificare e aggiornare un'applicazione software.
+
+\subsection{Le fasi principali}
+
+\begin{enumerate}
+    \item \textbf{Studio di fattibilità e raccolta dei requisiti}
+    \begin{itemize}
+        \item Valutare costi e benefici del progetto.
+        \item Pianificare attività, tempi e risorse.
+        \item Raccogliere i \textbf{requisiti}, cioè le esigenze
+        degli utenti e le funzionalità richieste al sistema.
+    \end{itemize}
+
+    \item \textbf{Analisi: che cosa deve fare il sistema?}
+    \begin{itemize}
+        \item Descrivere il \textbf{dominio applicativo},
+        cioè la realtà nella quale opera l'applicazione.
+        \item Precisare dati, vincoli e funzioni delle componenti.
+        \item Costruire una descrizione concettuale del sistema,
+        senza entrare nei dettagli della sua realizzazione.
+    \end{itemize}
+
+    \item \textbf{Progetto e realizzazione: come costruire il sistema?}
+    \begin{itemize}
+        \item Definire l'architettura del programma e le soluzioni
+        tecniche.
+        \item Scrivere il codice.
+        \item Produrre la documentazione.
+    \end{itemize}
+
+    \item \textbf{Verifica}
+    \begin{itemize}
+        \item Controllare che il programma soddisfi i requisiti.
+        \item Valutare \textbf{correttezza}, \textbf{completezza}
+        ed \textbf{efficienza}.
+    \end{itemize}
+
+    \item \textbf{Manutenzione}
+    \begin{itemize}
+        \item Correggere gli errori.
+        \item Aggiornare il programma e adattarlo a nuove esigenze.
+    \end{itemize}
+\end{enumerate}
+
+\paragraph{Distinzione fondamentale}
+\[
+\boxed{\text{Analisi} = \text{COSA}}
+\qquad
+\boxed{\text{Progetto e realizzazione} = \text{COME}}
+\]
+
+\subsection{Il modello a spirale}
+
+Nel modello a spirale le fasi vengono \textbf{ripetute ciclicamente}:
+lo sviluppo procede attraverso successive revisioni e miglioramenti.
+
+\[
+\text{Requisiti}
+\longrightarrow
+\text{Analisi}
+\longrightarrow
+\text{Progetto e realizzazione}
+\longrightarrow
+\text{Verifica e manutenzione}
+\]
+
+\section{Sistema informatico e base di dati}
+
+La \textbf{base di dati} è una componente del sistema informatico:
+la sua progettazione si inserisce nello sviluppo complessivo
+dell'applicazione.
+
+\begin{itemize}
+    \item Nell'\textbf{analisi del sistema} si studiano anche
+    i dati da rappresentare e i vincoli da rispettare.
+    \item Nel \textbf{progetto e nella realizzazione} si definisce
+    anche come organizzare e memorizzare tali dati.
+    \item La \textbf{verifica e la manutenzione} riguardano
+    l'intero sistema, compresa la base di dati.
+\end{itemize}
+
+\noindent
+\textbf{Conseguenza:} la progettazione della base di dati deve
+essere coerente con le funzioni e le esigenze dell'applicazione.
+
+\section{Progettazione della base di dati}
+
+La progettazione si articola in \textbf{tre livelli},
+progressivamente più vicini alla realizzazione concreta.
+
+\[
+\begin{gathered}
+\text{Requisiti della base di dati}\\
+\downarrow\\
+\text{Progettazione concettuale}\\
+\downarrow\\
+\boxed{\text{Schema concettuale}}\\
+\downarrow\\
+\text{Progettazione logica}\\
+\downarrow\\
+\boxed{\text{Schema logico}}\\
+\downarrow\\
+\text{Progettazione fisica e tuning}\\
+\downarrow\\
+\boxed{\text{Schema fisico}}
+\end{gathered}
+\]
+
+\subsection{Progettazione concettuale}
+
+\begin{itemize}
+    \item \textbf{Domanda:} quali informazioni bisogna rappresentare?
+    \item \textbf{Ingresso:} requisiti della base di dati.
+    \item \textbf{Attività:} individuare dati, relazioni e vincoli
+    del dominio applicativo.
+    \item \textbf{Risultato:} schema concettuale,
+    ad esempio un diagramma Entità--Relazione.
+    \item \textbf{Caratteristica:} indipendenza dal DBMS
+    e dai dettagli di memorizzazione.
+\end{itemize}
+
+\noindent
+Pur chiamandosi ``progettazione'', nella distinzione delle slide
+questa fase appartiene all'\textbf{analisi}: descrive il
+\textbf{cosa}.
+
+\subsection{Progettazione logica}
+
+\begin{itemize}
+    \item \textbf{Domanda:} come organizzare i dati nel modello
+    adottato dal DBMS?
+    \item \textbf{Ingresso:} schema concettuale e caratteristiche
+    del modello supportato dal DBMS.
+    \item \textbf{Attività:} tradurre lo schema concettuale
+    in strutture logiche.
+    \item \textbf{Risultato:} schema logico.
+\end{itemize}
+
+\noindent
+Nel modello relazionale lo schema logico descrive
+\textbf{tabelle, attributi, chiavi e vincoli}.
+Non definisce ancora i dettagli fisici della memorizzazione.
+
+\subsection{Progettazione fisica e tuning}
+
+\begin{itemize}
+    \item \textbf{Domanda:} come memorizzare e accedere ai dati
+    in modo efficiente?
+    \item \textbf{Ingresso:} schema logico, DBMS utilizzato
+    e carico applicativo.
+    \item \textbf{Attività:} scegliere strutture di memorizzazione,
+    indici e modalità di accesso.
+    \item \textbf{Risultato:} schema fisico.
+\end{itemize}
+
+\noindent
+Il \textbf{carico applicativo} comprende le operazioni eseguite,
+la loro frequenza e la quantità di dati coinvolta.
+Il \textbf{tuning} consiste nel regolare le scelte tecniche
+per migliorare le prestazioni.
+
+\subsection{Esempio: gestione di un'università}
+
+\begin{description}
+    \item[Livello concettuale.]
+    Si rappresentano studenti, corsi e iscrizioni:
+    uno studente può iscriversi a più corsi.
+
+    \item[Livello logico.]
+    Si definiscono le tabelle
+    \texttt{Studente}, \texttt{Corso} e \texttt{Iscrizione},
+    con le rispettive chiavi e i collegamenti.
+
+    \item[Livello fisico.]
+    Si scelgono gli indici utili, ad esempio sulla matricola,
+    considerando le ricerche più frequenti.
+\end{description}
