@@ -760,33 +760,52 @@ Successivamente fu dimostrato che $\lambda-$calculus e macchine di Touring hanno
 può essere applicata anche alle macchine di Turing.
 
 
-slide 31 - problemi funzionali decisionali - dimostrazione, turing calcolabile, turing decidibile
+% slide 31 - problemi funzionali decisionali - dimostrazione, turing calcolabile, turing decidibile
 
 
 
 \section{Macchine di Turing Universali}
+La macchina di Turing universale è il modello computazionale che più si avvicina a ai computer moderni, infatti essa può \textbf{simulare} il funzionamento di qualsiasi altra macchina Turing. E' proprio questa caratteristica che 
+rende questo tipo di macchine simili ai computer moderni, poichè un computer non è costruito per eseguire un solo programma ma può eseguire programmi diversi a seconda delle istruzioni che riceve. Allo stesso modo, in base alle 
+istruzione che riceve, la macchina di Turing universale può simulare il funzionamento di qualsiasi altra macchina di Turing. Vediamo la definizione formale:\smallskip\\
 \colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
    Una \textbf{macchina di Turing Universale} $U$ è una macchina di Turing che, data in input la descrizione $M_d$
-   di una macchina di Turing $M$ e un input $x$ per $M$, $U$ accetta $(M_d,x)$ se e solo se $M$ accetta $x$.
+   di una macchina di Turing $M$ e un input $x$ per $M$, accetta $(M_d,x)$ se e solo se $M$ accetta $x$.
 \end{definition}}}\smallskip\\
-spiegazione in altre parole.
+In altre parole, una macchina di Turing universale riceve una descrizione (codifica) di una macchina di Turing e un input e simula il comportamento della macchina ricevuta con l'input ricevuto. Ora vedremo bene
+cosa significa codificare (encoding) una macchina di Turing, per fare in modo che tale codifica diventi l'input di una macchina universale.
+
+
+\subsection{Encoding (Codifica) dell'input}
+L'obiettivo della codifica è quello di trasformare una macchina di Turing $M$ e il suo input $\sigma$ in una sequenza di simboli in modo che una macchina di Turing universale 
+possa leggerli e simulare l'esecuzione di $M$ con input $\sigma$.\smallskip\\
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
+   Per $n \in \mathbb{N}$, sia $b(n) \in \{0,1,\#\}^*$ la stringa che rappresenta $n$ in binario seguito da $\#$
+\end{definition}}}\smallskip\\
+La codifica quindi consiste nel trasformare tutte le informazioni di una macchina e il suo input in numeri binari separati dal separatore $\#$. Ma siccome le informazioni di una macchina non sono composte da numeri, ma da stati, simboli
+e transizioni, come facciamo a trasformare queste informazioni in numeri binari?
+\begin{itemize}
+    \item \textbf{Stati}: non utilizziamo più nomi come $q_0,q_1,q_2...$, ma direttamente numeri: $Q = \{ 0,1,2,...,n_q \}$ dove:
+    \[     q_0 \to 0 \qquad q_{yes} \to 1 \qquad q_{no} \to 2      \]
+    \item \textbf{Simboli}: analogamente agli stati, i simboli del nastro vengono rappresentati con numeri: $\Gamma = \{ 0,1, ...,n_{g}  \}$ dove:
+    \[  \sqcup \to 0   \]
+    \item \textbf{Transizioni}: una transizione di una macchina di Turing è $\delta (q,c) = (q',c',m)$, che significa che se la macchina si trova nello stato $q$ e legge il simbolo $c$, passa nello stato $q'$, scrive $c'$ sul nastro e si muovo nella direzione $m$.
+    Per codificare una transizione è necessario codificare ogni singolo elemento della transizione. Ovvero $e(q,c)$ (encoding di $\delta (q,c)$) è:
+    \[  e(q,c) = \Big(    b(q),\quad b(c), \quad b(q'), \quad b(c'),\quad m       \Big)     \]
+    Se però $q \in \{  q_{yes}, q_{no}\}$ al posto della codifica $b(q)$ si mette $\epsilon$.
+\end{itemize}
+
+\noindent \textit{Esempio.}
+\[  \text{\textbf{ESEMPIO SLIDE 10}}\]
 
 
 
 
-Accept problem con dimostrazione della non-decidibilità (F come macchina universale che fa subroutine)
 
 
 
 
-
-Halting Problem con dimostrazine della non-decidibilità (primo tentativo di analisi del codice)
-
-
-
-
-Linguaggi non turing riconoscibili
-
-
-
-Nozione di Riduzione 
+% ---Accept problem con dimostrazione della non-decidibilità (F come macchina universale che fa subroutine)
+% ---Halting Problem con dimostrazine della non-decidibilità (primo tentativo di analisi del codice)
+% ---Linguaggi non turing riconoscibili
+% ---Nozione di Riduzione 
