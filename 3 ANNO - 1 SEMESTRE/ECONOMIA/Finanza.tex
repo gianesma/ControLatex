@@ -3334,3 +3334,2083 @@ anche in portafogli molto diversificati.
     \caption{Portfolio}
     %\label{label}
 \end{figure}
+
+\subsection{Capital Asset Pricing Model (CAPM)}
+
+\noindent Il \textbf{Capital Asset Pricing Model (CAPM)}
+è un modello che permette di capire quale rendimento
+un investitore dovrebbe richiedere per acquistare
+un titolo, considerando il rischio che esso presenta.
+
+\medskip
+
+\noindent Il modello nasce dagli studi di Markowitz
+sulla diversificazione dei portafogli.
+
+\medskip
+
+\noindent Il ragionamento che porta al CAPM
+può essere riassunto in quattro passaggi:
+
+\begin{enumerate}
+    \item \textbf{Diversificazione}: investendo in titoli
+    differenti è possibile ridurre parte del rischio.
+
+    \item \textbf{Frontiera efficiente}: tra tutti i
+    portafogli possibili, si individuano quelli
+    che offrono il rendimento atteso maggiore
+    per un determinato livello di rischio.
+
+    \item \textbf{Attività priva di rischio}: viene
+    introdotta la possibilità di investire
+    a un tasso privo di rischio $r_f$.
+
+    \item \textbf{Portafoglio tangente}: è il portafoglio
+    rischioso che massimizza il rapporto di Sharpe,
+    cioè il rendimento aggiuntivo rispetto al
+    tasso privo di rischio per unità di rischio.
+\end{enumerate}
+
+\noindent Il rapporto di Sharpe è espresso come:
+
+\[
+\boxed{
+S=\frac{\hat{r}_P-r_f}{\sigma_P}
+}
+\]
+
+\noindent dove $\hat{r}_P$ rappresenta il rendimento
+atteso del portafoglio e $\sigma_P$ la sua volatilità.
+
+\medskip
+
+\noindent Il problema fondamentale diventa quindi:
+\textbf{quale parte del rischio viene effettivamente
+remunerata dal mercato?}
+
+\medskip
+
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.7\linewidth]{../images/whatislove.png}
+    \caption{Diversificazione di Markowitz al CAPM}
+    %\label{label}
+\end{figure}
+
+
+\subsubsection*{Rischio specifico e rischio sistematico}
+
+\noindent Il rischio di un investimento può essere
+suddiviso in due componenti:
+
+\begin{itemize}
+    \item \textbf{Rischio specifico}: dipende dalle
+    caratteristiche della singola impresa,
+    come problemi produttivi, gestionali o finanziari.
+
+    \noindent Può essere ridotto attraverso la
+    \textbf{diversificazione}, investendo in più titoli.
+    Per questo motivo, in equilibrio, il mercato
+    non riconosce un premio per questo rischio.
+
+    \item \textbf{Rischio sistematico}: dipende
+    dai movimenti generali del mercato, come crisi
+    economiche, variazioni dei tassi di interesse
+    o cambiamenti dell'economia.
+
+    \noindent Non può essere eliminato semplicemente
+    diversificando il portafoglio ed è quindi
+    il \textbf{rischio rilevante per il CAPM}.
+\end{itemize}
+
+\noindent In sintesi, il CAPM afferma che
+\textbf{il mercato remunera il rischio sistematico
+e non quello specifico}.
+
+
+\subsubsection*{Il coefficiente Beta}
+
+\noindent Il \textbf{Beta}, indicato con $\beta$,
+misura quanto il rendimento di un titolo
+è sensibile alle variazioni del rendimento del mercato.
+
+\medskip
+
+\noindent In parole semplici, ci dice
+\textbf{quanto un'azione tende a muoversi
+quando il mercato sale oppure scende}.
+
+\medskip
+
+\noindent Il Beta si calcola attraverso:
+
+\[
+\boxed{
+\beta_i=
+\frac{\sigma_{iM}}{\sigma_M^2}
+=
+\frac{\operatorname{Cov}(r_i,r_M)}
+{\operatorname{Var}(r_M)}
+}
+\]
+
+\noindent dove:
+
+\begin{itemize}
+    \item $\sigma_{iM}$ = covarianza tra il
+    rendimento del titolo e quello del mercato;
+
+    \item $\sigma_M^2$ = varianza del rendimento
+    del mercato;
+
+    \item $r_i$ = rendimento del titolo;
+
+    \item $r_M$ = rendimento del mercato.
+\end{itemize}
+
+\noindent Il significato del Beta dipende
+dal valore che assume:
+
+\begin{itemize}
+    \item $\boldsymbol{\beta<0}$: il titolo tende
+    a muoversi in direzione opposta al mercato;
+
+    \item $\boldsymbol{0<\beta<1}$: il titolo
+    è meno sensibile alle variazioni del mercato;
+
+    \item $\boldsymbol{\beta=1}$: il titolo
+    presenta la stessa sensibilità del mercato;
+
+    \item $\boldsymbol{\beta>1}$: il titolo
+    è più sensibile alle variazioni del mercato.
+\end{itemize}
+
+\noindent Ad esempio, se un'azione presenta:
+
+\[
+\boxed{\beta=1{,}5}
+\]
+
+\noindent significa che, quando il mercato cresce
+dell'1\%, il titolo tende mediamente a crescere
+dell'1,5\%.
+
+\medskip
+
+\noindent Analogamente, se il mercato diminuisce
+dell'1\%, il titolo tende a diminuire dell'1,5\%.
+
+\medskip
+
+\noindent Si tratta di una \textbf{relazione media},
+non di un movimento garantito.
+
+\medskip
+
+\noindent \textbf{Attenzione:} il Beta non misura
+tutta la volatilità del titolo, ma solamente
+la sua \textbf{sensibilità al rischio di mercato}.
+
+
+\subsubsection*{Legame tra correlazione e Beta}
+
+\noindent Ricordiamo che la covarianza tra
+due rendimenti può essere scritta come:
+
+\[
+\sigma_{iM}=\rho_{iM}\sigma_i\sigma_M
+\]
+
+\noindent Sostituendo questa relazione
+nella formula del Beta:
+
+\[
+\beta_i=
+\frac{\rho_{iM}\sigma_i\sigma_M}{\sigma_M^2}
+\]
+
+\noindent Semplificando:
+
+\[
+\boxed{
+\beta_i=\rho_{iM}\frac{\sigma_i}{\sigma_M}
+}
+\]
+
+\noindent Da questa formula comprendiamo
+che il Beta dipende sia dalla volatilità del titolo
+sia dalla sua correlazione con il mercato.
+
+\medskip
+
+\noindent La componente di rischio collegata
+ai movimenti del mercato è:
+
+\[
+\boxed{
+\rho_{iM}\sigma_i=\beta_i\sigma_M
+}
+\]
+
+\noindent Il rischio complessivo del titolo
+comprende quindi una componente sistematica,
+legata al mercato, e una componente specifica.
+
+\medskip
+
+\noindent \textbf{Precisazione:} la slide rappresenta
+questa suddivisione in modo schematico.
+Le deviazioni standard delle due componenti
+non si sommano direttamente.
+
+\medskip
+
+\noindent Nel modello in cui il rischio specifico
+è incorrelato con quello di mercato,
+la relazione corretta tra le varianze è:
+
+\[
+\boxed{
+\sigma_i^2=
+\underbrace{\beta_i^2\sigma_M^2}
+_{\text{Rischio sistematico}}
++
+\underbrace{\sigma_{\varepsilon_i}^2}
+_{\text{Rischio specifico}}
+}
+\]
+
+\noindent Questo conferma che il Beta
+misura la sensibilità alla componente di mercato,
+non tutto il rischio del titolo.
+
+
+\subsubsection*{Come viene stimato il Beta}
+
+\noindent Per stimare il Beta si osservano
+i rendimenti passati di un titolo e li si confronta
+con quelli del mercato.
+
+\medskip
+
+\noindent Possiamo rappresentare la relazione attraverso:
+
+\[
+\boxed{
+r_i=\alpha+\beta_i r_M+\varepsilon_i
+}
+\]
+
+\noindent dove:
+
+\begin{itemize}
+    \item $\alpha$ = intercetta della retta,
+    cioè la componente media non spiegata
+    dal rendimento del mercato;
+
+    \item $\beta_i$ = inclinazione della retta,
+    che misura la sensibilità del titolo al mercato;
+
+    \item $\varepsilon_i$ = componente casuale
+    del rendimento non spiegata dal modello.
+\end{itemize}
+
+\noindent In una regressione costruita sui
+rendimenti in eccesso rispetto al tasso privo
+di rischio, l'intercetta può essere interpretata
+come \textbf{Alpha di Jensen}.
+
+\medskip
+
+\noindent Il Beta corrisponde quindi
+alla \textbf{pendenza della retta}
+che descrive la relazione tra i rendimenti
+del titolo e quelli del mercato.
+
+\medskip
+
+\noindent La statistica ci permette di calcolare
+questa pendenza attraverso:
+
+\[
+\boxed{
+\beta_i=
+\frac{\operatorname{Cov}(r_i,r_M)}
+{\operatorname{Var}(r_M)}
+}
+\]
+
+\noindent Vediamo ora come applicare la formula.
+
+
+\subsubsection*{Esercizio esempio: calcolo del Beta}
+
+\noindent Supponiamo di conoscere i rendimenti
+di un titolo e quelli del mercato
+osservati durante sei mesi.
+
+\medskip
+
+\noindent Vogliamo calcolare il Beta del titolo,
+per capire quanto è sensibile
+ai movimenti del mercato.
+
+\begin{center}
+\small
+\begin{tabular}{|c|r|r|}
+\hline
+\textbf{Mese} &
+\textbf{Rendimento mercato} &
+\textbf{Rendimento titolo} \\
+\hline
+1 & $-8\%$ & $-11\%$ \\
+\hline
+2 & $4\%$ & $8\%$ \\
+\hline
+3 & $12\%$ & $19\%$ \\
+\hline
+4 & $-6\%$ & $-13\%$ \\
+\hline
+5 & $2\%$ & $3\%$ \\
+\hline
+6 & $8\%$ & $6\%$ \\
+\hline
+\end{tabular}
+\end{center}
+
+\noindent Per calcolare il Beta dobbiamo
+seguire quattro passaggi.
+
+
+\subsubsection*{1. Calcolo dei rendimenti medi}
+
+\noindent Calcoliamo prima il rendimento medio
+del mercato, sommando i sei rendimenti
+e dividendo per il numero dei mesi:
+
+\[
+\bar{r}_M=
+\frac{-8+4+12-6+2+8}{6}
+\]
+
+\[
+\boxed{\bar{r}_M=2\%}
+\]
+
+\noindent Facciamo la stessa cosa
+per il titolo:
+
+\[
+\bar{r}_i=
+\frac{-11+8+19-13+3+6}{6}
+\]
+
+\[
+\boxed{\bar{r}_i=2\%}
+\]
+
+\noindent Entrambi presentano quindi
+un rendimento medio del 2\%.
+
+
+\subsubsection*{2. Calcolo degli scarti dalla media}
+
+\noindent Per ogni mese calcoliamo
+la differenza tra il rendimento osservato
+e quello medio.
+
+\medskip
+
+\noindent Ad esempio, nel primo mese:
+
+\[
+r_{M,1}-\bar{r}_M=-8-2=-10
+\]
+
+\[
+r_{i,1}-\bar{r}_i=-11-2=-13
+\]
+
+\noindent Ripetiamo il procedimento
+per tutti i mesi.
+
+\medskip
+
+\noindent Successivamente calcoliamo:
+
+\begin{itemize}
+    \item il \textbf{quadrato dello scarto del mercato},
+    necessario per ottenere la varianza;
+
+    \item il \textbf{prodotto tra i due scarti},
+    necessario per ottenere la covarianza.
+\end{itemize}
+
+\noindent Nel primo mese otteniamo:
+
+\[
+(-10)^2=100
+\]
+
+\[
+(-10)(-13)=130
+\]
+
+\noindent Anche se entrambi gli scarti
+sono negativi, il loro prodotto è positivo.
+
+
+\subsubsection*{3. Completamento della tabella}
+
+\noindent Ripetendo i calcoli per tutti i mesi,
+otteniamo:
+
+\begin{center}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|c|r|r|r|r|r|r|}
+\hline
+\textbf{Mese} &
+$\mathbf{r_M}$ &
+$\mathbf{r_i}$ &
+$\mathbf{r_M-\bar{r}_M}$ &
+$\mathbf{r_i-\bar{r}_i}$ &
+$\mathbf{(r_M-\bar{r}_M)^2}$ &
+$\mathbf{(r_M-\bar{r}_M)(r_i-\bar{r}_i)}$ \\
+\hline
+1 & -8 & -11 & -10 & -13 & 100 & 130 \\
+\hline
+2 & 4 & 8 & 2 & 6 & 4 & 12 \\
+\hline
+3 & 12 & 19 & 10 & 17 & 100 & 170 \\
+\hline
+4 & -6 & -13 & -8 & -15 & 64 & 120 \\
+\hline
+5 & 2 & 3 & 0 & 1 & 0 & 0 \\
+\hline
+6 & 8 & 6 & 6 & 4 & 36 & 24 \\
+\hline
+\textbf{Totale} & & & & &
+\textbf{304} & \textbf{456} \\
+\hline
+\end{tabular}%
+}
+\end{center}
+
+\noindent Le ultime due colonne
+sono quelle che ci interessano maggiormente.
+
+\medskip
+
+\noindent Sommando gli scarti quadratici
+del mercato otteniamo:
+
+\[
+100+4+100+64+0+36=\boxed{304}
+\]
+
+\noindent Sommando invece i prodotti
+degli scarti otteniamo:
+
+\[
+130+12+170+120+0+24=\boxed{456}
+\]
+
+
+\subsubsection*{4. Calcolo di varianza, covarianza e Beta}
+
+\noindent La \textbf{varianza del mercato}
+si ottiene dividendo il totale
+degli scarti quadratici per il numero
+delle osservazioni:
+
+\[
+\sigma_M^2=\frac{304}{6}
+\]
+
+\[
+\boxed{\sigma_M^2\simeq50{,}67}
+\]
+
+\noindent La \textbf{covarianza tra titolo e mercato}
+si ottiene dividendo per 6 la somma
+dei prodotti degli scarti:
+
+\[
+\sigma_{iM}=\frac{456}{6}
+\]
+
+\[
+\boxed{\sigma_{iM}=76}
+\]
+
+\noindent A questo punto abbiamo
+tutti i dati necessari per calcolare il Beta:
+
+\[
+\beta_i=\frac{\sigma_{iM}}{\sigma_M^2}
+\]
+
+\[
+\beta_i=\frac{76}{50{,}67}
+\]
+
+\[
+\boxed{\beta_i\simeq1{,}50}
+\]
+
+\noindent Avremmo potuto ottenere
+lo stesso risultato anche direttamente:
+
+\[
+\beta_i=\frac{456}{304}
+\]
+
+\[
+\boxed{\beta_i=1{,}50}
+\]
+
+\noindent Questo perché il divisore 6
+è presente sia nella varianza sia
+nella covarianza e quindi si semplifica.
+
+\medskip
+
+\noindent \textbf{Interpretazione del risultato:}
+
+\noindent Il nostro titolo presenta un Beta pari a 1,50.
+Ciò significa che è mediamente
+\textbf{il 50\% più sensibile alle variazioni
+del mercato rispetto al mercato stesso}.
+
+\medskip
+
+\noindent Ad esempio:
+
+\begin{itemize}
+    \item Se il mercato cresce dell'1\%,
+    il titolo tende a crescere dell'1,5\%.
+
+    \item Se il mercato diminuisce del 2\%,
+    il titolo tende a diminuire del 3\%.
+\end{itemize}
+
+\noindent Queste variazioni rappresentano
+la sensibilità media stimata e non
+movimenti certi del titolo.
+
+\medskip
+
+\noindent Il Beta misura quindi
+\textbf{il contributo al rischio sistematico
+che il titolo apporta a un portafoglio
+ben diversificato}.
+
+
+\subsubsection*{Relazione tra Beta e rendimento atteso}
+
+\noindent Dopo aver calcolato il Beta,
+possiamo utilizzarlo nel CAPM per determinare
+il rendimento che un investitore dovrebbe richiedere.
+
+\medskip
+
+\noindent La formula fondamentale del CAPM è:
+
+\[
+\boxed{
+\hat{r}_i=
+r_f+\beta_i(\hat{r}_M-r_f)
+}
+\]
+
+\noindent dove:
+
+\begin{itemize}
+    \item $\hat{r}_i$ = rendimento atteso richiesto
+    per il titolo;
+
+    \item $r_f$ = tasso di rendimento
+    privo di rischio;
+
+    \item $\beta_i$ = sensibilità del titolo
+    al rischio di mercato;
+
+    \item $\hat{r}_M-r_f$ = premio per il rischio
+    del mercato.
+\end{itemize}
+
+\noindent Il significato della formula è semplice:
+un investitore richiede almeno il rendimento
+privo di rischio, al quale aggiunge un premio
+proporzionale al Beta del titolo.
+
+\medskip
+
+\noindent Di conseguenza, a parità di altre condizioni,
+\textbf{maggiore è il Beta, maggiore sarà
+il rendimento richiesto dall'investitore}.
+
+\medskip
+
+\noindent Questa relazione riguarda il rendimento
+richiesto in equilibrio, non il rendimento
+che il titolo realizzerà sicuramente.
+
+
+\subsubsection*{Beta e volatilità: sono la stessa cosa?}
+
+\noindent Potremmo pensare che un titolo
+con una volatilità maggiore debba
+avere necessariamente anche un Beta maggiore.
+
+\medskip
+
+\noindent In realtà \textbf{non è sempre così},
+perché i due indicatori misurano
+due caratteristiche differenti:
+
+\begin{itemize}
+    \item \textbf{Volatilità ($\sigma$)}:
+    misura quanto il rendimento del titolo
+    varia complessivamente.
+
+    \item \textbf{Beta ($\beta$)}:
+    misura quanto il rendimento del titolo
+    è sensibile ai movimenti del mercato.
+\end{itemize}
+
+\noindent Consideriamo alcuni titoli azionari italiani,
+utilizzando i dati storici riportati nelle slide.
+
+\begin{center}
+\begin{tabular}{|l|c|c|}
+\hline
+\textbf{Azione} &
+\textbf{Beta} &
+\textbf{Volatilità} \\
+\hline
+ENI & 1,2 & 33,9\% \\
+\hline
+Stellantis & 1,3 & 39,9\% \\
+\hline
+Ferrari & 1,0 & 24,4\% \\
+\hline
+Intesa Sanpaolo & 1,4 & 36,5\% \\
+\hline
+UniCredit & 1,7 & 46,9\% \\
+\hline
+Assicurazioni Generali & 1,1 & 25,3\% \\
+\hline
+Moncler & 1,1 & 27,1\% \\
+\hline
+Tenaris & 1,6 & 45,9\% \\
+\hline
+\end{tabular}
+\end{center}
+
+\noindent \textit{I Beta sono riferiti ai dati riportati
+nelle slide del 12 aprile 2023; le volatilità
+al periodo aprile 2018--marzo 2023.}
+
+\medskip
+
+\noindent Consideriamo in particolare
+\textbf{Stellantis e Intesa Sanpaolo}.
+
+\medskip
+
+\noindent Stellantis presenta una volatilità
+maggiore rispetto a Intesa Sanpaolo:
+
+\[
+\sigma_{\text{Stellantis}}=39{,}9\%
+\]
+
+\[
+\sigma_{\text{Intesa}}=36{,}5\%
+\]
+
+\noindent Quindi:
+
+\[
+\boxed{
+\sigma_{\text{Stellantis}}>
+\sigma_{\text{Intesa}}
+}
+\]
+
+\noindent Tuttavia, confrontando i Beta:
+
+\[
+\beta_{\text{Stellantis}}=1{,}3
+\]
+
+\[
+\beta_{\text{Intesa}}=1{,}4
+\]
+
+\noindent Otteniamo:
+
+\[
+\boxed{
+\beta_{\text{Stellantis}}<
+\beta_{\text{Intesa}}
+}
+\]
+
+\noindent Questo significa che Stellantis,
+pur presentando una volatilità complessiva maggiore,
+risulta meno sensibile ai movimenti del mercato
+rispetto a Intesa Sanpaolo.
+
+\medskip
+
+\noindent Il motivo è che una parte maggiore
+della volatilità di Stellantis può dipendere
+da fattori specifici dell'impresa,
+non necessariamente legati al mercato.
+
+\medskip
+
+\noindent \textbf{Conclusione:} una maggiore volatilità
+non implica necessariamente un Beta maggiore.
+
+\medskip
+
+\noindent Il concetto fondamentale del CAPM
+è quindi che \textbf{il rendimento richiesto
+dipende dal rischio sistematico misurato dal Beta,
+non dalla volatilità totale del titolo}.
+
+
+
+\subsection{Il Beta di portafoglio}
+
+\noindent Abbiamo visto che la diversificazione permette di
+ridurre il rischio specifico di un investimento.
+
+\medskip
+
+\noindent Quando un portafoglio contiene molti titoli,
+il rischio specifico tende a diminuire, mentre
+rimane il \textbf{rischio sistematico}, cioè quello
+legato ai movimenti generali del mercato.
+
+\medskip
+
+\noindent Il \textbf{Beta} misura proprio la sensibilità
+di un titolo a questi movimenti.
+
+\medskip
+
+\noindent Consideriamo tre possibili situazioni:
+
+\begin{itemize}
+    \item \textbf{Portafoglio con sensibilità simile al mercato}:
+    diversificando, il rischio specifico diminuisce
+    e rimane principalmente il rischio di mercato.
+
+    \item \textbf{Portafoglio molto sensibile al mercato}:
+    anche dopo la diversificazione può mantenere
+    un rischio elevato, perché risente fortemente
+    delle variazioni del mercato.
+
+    \item \textbf{Portafoglio poco sensibile al mercato}:
+    dopo la diversificazione può presentare
+    un rischio inferiore rispetto a quello del mercato.
+\end{itemize}
+
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.9\linewidth]{../images/camion.png}
+    %\label{label}
+\end{figure}
+
+
+\medskip
+
+\noindent Il Beta di un portafoglio si calcola
+attraverso la \textbf{media ponderata dei Beta}
+dei titoli che lo compongono:
+
+\[
+\boxed{
+\beta_P=\sum_{i=1}^{N}x_i\beta_i
+}
+\]
+
+\noindent dove:
+
+\begin{itemize}
+    \item $x_i$ = peso del titolo nel portafoglio;
+    \item $\beta_i$ = Beta del singolo titolo;
+    \item $N$ = numero di titoli.
+\end{itemize}
+
+\noindent Ad esempio, consideriamo un portafoglio con:
+
+\begin{itemize}
+    \item 60\% investito nel titolo A, con $\beta_A=1{,}5$;
+    \item 40\% investito nel titolo B, con $\beta_B=0{,}5$.
+\end{itemize}
+
+\noindent Il Beta complessivo sarà:
+
+\[
+\beta_P=0{,}60\cdot1{,}5+0{,}40\cdot0{,}5
+\]
+
+\[
+\boxed{\beta_P=1{,}1}
+\]
+
+\noindent Questo significa che il portafoglio tende
+a essere leggermente più sensibile ai movimenti
+del mercato rispetto al mercato stesso.
+
+\medskip
+
+\noindent \textbf{Attenzione:} un Beta più elevato
+non implica necessariamente una volatilità totale
+maggiore, perché la volatilità comprende anche
+il rischio specifico.
+
+
+\subsection{Il portafoglio di mercato}
+
+\noindent Il \textbf{portafoglio di mercato} è un
+portafoglio teorico che contiene tutte le attività
+rischiose disponibili, considerate secondo
+il rispettivo valore di mercato.
+
+\medskip
+
+\noindent In pratica, non possiamo osservare
+perfettamente questo portafoglio, quindi
+utilizziamo come riferimento grandi indici
+di mercato.
+
+\medskip
+
+\noindent Il portafoglio di mercato rappresenta
+il punto di riferimento del CAPM, perché
+il Beta dei singoli titoli viene misurato
+rispetto ai suoi rendimenti.
+
+\medskip
+
+\noindent Per definizione, il Beta del mercato è:
+
+\[
+\boxed{\beta_M=1}
+\]
+
+\noindent Di conseguenza:
+
+\begin{itemize}
+    \item $\beta_i>1$: il titolo è più sensibile del mercato;
+    \item $\beta_i=1$: il titolo ha la stessa sensibilità;
+    \item $\beta_i<1$: il titolo è meno sensibile del mercato.
+\end{itemize}
+
+\noindent \textbf{Limite pratico}: la scelta dell'indice
+utilizzato per rappresentare il mercato può modificare
+la stima del Beta di un titolo.
+
+
+\subsection{Dal rischio sistematico al rendimento richiesto}
+
+\noindent Il CAPM parte da un concetto fondamentale:
+\textbf{gli investitori devono essere remunerati
+solamente per il rischio che non possono eliminare
+attraverso la diversificazione}.
+
+\medskip
+
+\noindent Il rendimento richiesto si compone quindi
+di due elementi:
+
+\begin{enumerate}
+    \item \textbf{Compensazione per il tempo}:
+    rappresentata dal tasso privo di rischio $r_f$.
+
+    \item \textbf{Compensazione per il rischio}:
+    rappresentata dal premio per il rischio sistematico.
+\end{enumerate}
+
+\noindent Il ragionamento si collega al
+\textbf{teorema della separazione in due fondi},
+secondo il quale, nelle ipotesi del modello,
+un investitore può combinare un'attività priva
+di rischio e il portafoglio di mercato.
+
+\medskip
+
+\noindent Per un portafoglio efficiente, il rendimento
+atteso è espresso dalla relazione:
+
+\[
+\boxed{
+\hat{r}_P=
+r_f+\frac{\hat{r}_M-r_f}{\sigma_M}\sigma_P
+}
+\]
+
+\noindent dove:
+
+\begin{itemize}
+    \item $\hat{r}_P$ = rendimento atteso del portafoglio;
+    \item $r_f$ = tasso privo di rischio;
+    \item $\hat{r}_M$ = rendimento atteso del mercato;
+    \item $\sigma_M$ = volatilità del mercato;
+    \item $\sigma_P$ = volatilità del portafoglio.
+\end{itemize}
+
+\noindent Quando invece vogliamo valutare il
+rendimento richiesto per un singolo titolo,
+dobbiamo considerare la sua esposizione
+al rischio sistematico.
+
+\medskip
+
+\noindent Ricordando che:
+
+\[
+\beta_i\sigma_M=\rho_{iM}\sigma_i
+\]
+
+\noindent possiamo scrivere:
+
+\[
+\hat{r}_i=
+r_f+\frac{\hat{r}_M-r_f}{\sigma_M}
+\beta_i\sigma_M
+\]
+
+\noindent Semplificando $\sigma_M$, otteniamo
+la formula fondamentale del CAPM:
+
+\[
+\boxed{
+\hat{r}_i=r_f+\beta_i(\hat{r}_M-r_f)
+}
+\]
+
+\noindent La formula ci dice che il rendimento
+richiesto dipende da tre elementi:
+
+\begin{itemize}
+    \item $r_f$: rendimento garantito teoricamente
+    dall'attività priva di rischio;
+
+    \item $\hat{r}_M-r_f$: premio per il rischio
+    del mercato;
+
+    \item $\beta_i$: quantità di rischio sistematico
+    a cui il titolo è esposto.
+\end{itemize}
+
+\noindent In sintesi:
+
+\[
+\boxed{
+\text{Rendimento richiesto}
+=
+\text{Compensazione per il tempo}
++
+\text{Compensazione per il rischio}
+}
+\]
+
+
+\subsection{Security Market Line (SML)}
+
+\noindent La \textbf{Security Market Line (SML)}
+è la rappresentazione grafica della formula del CAPM.
+
+\medskip
+
+\noindent Mostra la relazione tra il
+\textbf{Beta di un titolo} e il
+\textbf{rendimento atteso richiesto}.
+
+\medskip
+
+\noindent Nel grafico:
+
+\begin{itemize}
+    \item sull'asse orizzontale troviamo il Beta;
+    \item sull'asse verticale troviamo il rendimento atteso;
+    \item la retta indica il rendimento richiesto
+    per ciascun livello di rischio sistematico.
+\end{itemize}
+
+\noindent La formula è:
+
+\[
+\boxed{
+\hat{r}_i=r_f+\beta_i(\hat{r}_M-r_f)
+}
+\]
+
+\noindent La retta parte dal tasso privo di rischio
+quando $\beta=0$ e passa per il rendimento
+del mercato quando $\beta=1$.
+
+\medskip
+
+\noindent La sua \textbf{pendenza} è il premio
+per il rischio di mercato:
+
+\[
+\boxed{
+\text{Pendenza SML}=\hat{r}_M-r_f
+}
+\]
+
+\subsubsection*{Esempio}
+
+\noindent Supponiamo di avere:
+
+\[
+r_f=3\%
+\qquad
+\hat{r}_M=9\%
+\qquad
+\beta_i=1{,}4
+\]
+
+\noindent Vogliamo determinare quale rendimento
+richiedere al titolo.
+
+\medskip
+
+\noindent Calcoliamo innanzitutto il premio
+per il rischio di mercato:
+
+\[
+\hat{r}_M-r_f=9\%-3\%=\boxed{6\%}
+\]
+
+\noindent Successivamente applichiamo il CAPM:
+
+\[
+\hat{r}_i=3\%+1{,}4(9\%-3\%)
+\]
+
+\[
+\hat{r}_i=3\%+1{,}4\cdot6\%
+\]
+
+\[
+\hat{r}_i=3\%+8{,}4\%
+\]
+
+\[
+\boxed{\hat{r}_i=11{,}4\%}
+\]
+
+\noindent Il titolo presenta un Beta maggiore di 1,
+quindi gli investitori richiedono un rendimento
+superiore a quello del mercato.
+
+\medskip
+
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.9\linewidth]{../images/bloccano.png}
+    %\label{label}
+\end{figure}
+
+
+\subsubsection*{Titoli sopra e sotto la SML}
+
+\noindent In equilibrio, secondo il CAPM,
+ogni titolo dovrebbe trovarsi sulla
+\textbf{Security Market Line}.
+
+\medskip
+
+\noindent Se un titolo si trova sopra oppure
+sotto la retta, il suo rendimento atteso
+non è coerente con quello richiesto
+per il rischio sistematico che presenta.
+
+\medskip
+
+\noindent Possiamo distinguere due situazioni.
+
+\medskip
+
+\noindent \textbf{Titolo sopra la SML}
+
+\noindent Il rendimento atteso è maggiore
+di quello richiesto dal CAPM.
+
+\[
+\boxed{
+\hat{r}_{\text{titolo}}>
+\hat{r}_{\text{richiesto}}
+}
+\]
+
+\noindent Il titolo offre un rendimento
+più elevato rispetto al rischio sopportato
+e appare quindi \textbf{sottovalutato}.
+
+\medskip
+
+\noindent Gli investitori saranno maggiormente
+interessati ad acquistarlo:
+
+\[
+\text{Domanda}\uparrow
+\quad\Rightarrow\quad
+\text{Prezzo}\uparrow
+\]
+
+\noindent A parità di flussi futuri attesi,
+l'aumento del prezzo provoca una riduzione
+del rendimento atteso, riportando il titolo
+verso la SML.
+
+\medskip
+
+\noindent \textbf{Titolo sotto la SML}
+
+\noindent Il rendimento atteso è inferiore
+a quello richiesto dal CAPM.
+
+\[
+\boxed{
+\hat{r}_{\text{titolo}}<
+\hat{r}_{\text{richiesto}}
+}
+\]
+
+\noindent Il titolo offre un rendimento
+troppo basso rispetto al rischio sopportato
+e appare quindi \textbf{sopravvalutato}.
+
+\medskip
+
+\noindent Gli investitori saranno meno
+interessati ad acquistarlo:
+
+\[
+\text{Domanda}\downarrow
+\quad\Rightarrow\quad
+\text{Prezzo}\downarrow
+\]
+
+\noindent A parità di flussi futuri attesi,
+la riduzione del prezzo provoca un aumento
+del rendimento atteso, riportando il titolo
+verso la SML.
+
+\medskip
+
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.9\linewidth]{../images/italia.png}
+    %\label{label}
+\end{figure}
+
+
+\medskip
+
+\noindent \textbf{Da ricordare:}
+
+\begin{itemize}
+    \item \textbf{Sopra SML}: titolo sottovalutato,
+    prezzo che tende a salire.
+
+    \item \textbf{Sotto SML}: titolo sopravvalutato,
+    prezzo che tende a scendere.
+
+    \item \textbf{Sulla SML}: rendimento coerente
+    con il rischio sistematico.
+\end{itemize}
+
+
+\subsection{Differenza tra CML e SML}
+
+\noindent La \textbf{Capital Market Line (CML)}
+e la \textbf{Security Market Line (SML)}
+collegano entrambe rischio e rendimento,
+ma considerano due misure differenti di rischio.
+
+\medskip
+
+\noindent La differenza principale è:
+
+\begin{itemize}
+    \item \textbf{CML}: utilizza il rischio totale
+    del portafoglio, misurato dalla volatilità
+    $\sigma$.
+
+    \item \textbf{SML}: utilizza solamente il rischio
+    sistematico, misurato dal Beta $\beta$.
+\end{itemize}
+
+\noindent Le rispettive formule sono:
+
+\medskip
+
+\noindent \textbf{Capital Market Line}
+
+\[
+\boxed{
+\hat{r}_P=
+r_f+\frac{\hat{r}_M-r_f}{\sigma_M}\sigma_P
+}
+\]
+
+\noindent \textbf{Security Market Line}
+
+\[
+\boxed{
+\hat{r}_i=
+r_f+\beta_i(\hat{r}_M-r_f)
+}
+\]
+
+\noindent Possiamo riassumere le differenze
+nella seguente tabella:
+
+\begin{center}
+\small
+\begin{tabular}{|l|l|l|}
+\hline
+\textbf{Caratteristica} &
+\textbf{CML} &
+\textbf{SML} \\
+\hline
+Asse orizzontale & Rischio totale $\sigma$ & Beta $\beta$ \\
+\hline
+Applicazione & Portafogli efficienti & Titoli e portafogli \\
+\hline
+Origine & Portafoglio tangente & CAPM \\
+\hline
+Pendenza & Rapporto di Sharpe & Premio di mercato \\
+\hline
+\end{tabular}
+\end{center}
+
+\subsubsection*{Promemoria: rischio totale e sistematico}
+
+\noindent Il \textbf{rischio totale} comprende
+sia il rischio sistematico sia quello specifico.
+
+\medskip
+
+\noindent Considerando le varianze delle componenti
+sistematica e specifica incorrelate:
+
+\[
+\boxed{
+\sigma_i^2=
+\underbrace{\beta_i^2\sigma_M^2}_{\text{Sistematico}}
++
+\underbrace{\sigma_{\varepsilon_i}^2}_{\text{Specifico}}
+}
+\]
+
+\noindent Il rischio sistematico dipende dal mercato
+e non può essere eliminato semplicemente
+diversificando.
+
+\medskip
+
+\noindent Il rischio specifico dipende invece
+dalla singola impresa e può essere ridotto
+investendo in titoli differenti.
+
+\medskip
+
+\noindent \textbf{Attenzione alla differenza:}
+
+\begin{itemize}
+    \item La \textbf{CML} si applica esclusivamente
+    ai portafogli efficienti, cioè alle combinazioni
+    ottimali di attività priva di rischio
+    e portafoglio tangente.
+
+    \item La \textbf{SML} si applica sia alle singole azioni
+    sia ai portafogli, anche se non efficienti,
+    per individuare il rendimento richiesto dal CAPM.
+\end{itemize}
+
+\noindent Pertanto, la CML può riguardare anche
+un portafoglio composto da molte azioni:
+la condizione necessaria è che sia
+\textbf{efficiente}.
+
+\medskip
+
+\noindent \textbf{In conclusione:}
+
+\[
+\boxed{
+\begin{aligned}
+\text{CML}&\rightarrow\text{Rischio totale}\\
+\text{SML}&\rightarrow\text{Rischio sistematico}
+\end{aligned}
+}
+\]
+
+
+\subsection{Utilizzo del CAPM per stimare i rendimenti attesi}
+
+\noindent Il CAPM permette di stimare il rendimento
+che gli investitori richiedono per acquistare
+un determinato titolo.
+
+\medskip
+
+\noindent Consideriamo i dati dell'aprile 2023,
+riportati nelle slide:
+
+\begin{itemize}
+    \item tasso privo di rischio $r_f=4\%$;
+    \item premio atteso per il rischio
+    di mercato pari al $6\%$.
+\end{itemize}
+
+\noindent La formula da utilizzare è:
+
+\[
+\boxed{
+\hat{r}_i=r_f+\beta_i(\hat{r}_M-r_f)
+}
+\]
+
+\subsubsection*{Esempio: Assicurazioni Generali}
+
+\noindent Supponiamo che il Beta del titolo
+Assicurazioni Generali sia:
+
+\[
+\beta_i=1{,}06
+\]
+
+\noindent Applichiamo la formula:
+
+\[
+\hat{r}_i=4\%+1{,}06\cdot6\%
+\]
+
+\[
+\hat{r}_i=4\%+6{,}36\%
+\]
+
+\[
+\boxed{\hat{r}_i\simeq10{,}4\%}
+\]
+
+\noindent Il risultato significa che,
+per acquistare il titolo, un investitore
+richiederebbe un rendimento atteso
+di circa il 10,4\%, secondo il CAPM.
+
+\medskip
+
+\noindent Applicando il modello agli altri
+titoli riportati nelle slide otteniamo:
+
+\begin{center}
+\begin{tabular}{|l|c|c|}
+\hline
+\textbf{Azione} &
+\textbf{Beta} &
+\textbf{Rendimento atteso} \\
+\hline
+ENI & 1,17 & 11,0\% \\
+\hline
+Stellantis & 1,30 & 11,8\% \\
+\hline
+Ferrari & 0,99 & 9,9\% \\
+\hline
+Intesa Sanpaolo & 1,44 & 12,6\% \\
+\hline
+UniCredit & 1,70 & 14,2\% \\
+\hline
+Assicurazioni Generali & 1,06 & 10,4\% \\
+\hline
+Moncler & 1,08 & 10,5\% \\
+\hline
+Tenaris & 1,60 & 13,6\% \\
+\hline
+\end{tabular}
+\end{center}
+
+\noindent I valori mostrano che,
+a parità di premio per il rischio di mercato,
+i titoli con Beta più elevato presentano
+un rendimento richiesto maggiore.
+
+\medskip
+
+\noindent \textbf{Attenzione:} si tratta di stime
+riferite ai dati storici utilizzati nell'esempio,
+non di rendimenti futuri garantiti.
+
+
+\subsection{Perché il CAPM è utile nel Capital Budgeting}
+
+\noindent Il \textbf{Capital Budgeting} serve a valutare
+se un progetto di investimento conviene
+e se permette di creare valore per l'impresa.
+
+\medskip
+
+\noindent Abbiamo già visto che, per calcolare
+il VAN, dobbiamo attualizzare i flussi di cassa
+attraverso un opportuno tasso di sconto.
+
+\medskip
+
+\noindent Il problema è capire
+\textbf{quale tasso utilizzare}.
+
+\medskip
+
+\noindent Il CAPM ci aiuta a stimarlo,
+considerando il rischio sistematico
+dell'investimento.
+
+\medskip
+
+\noindent Il procedimento è:
+
+\begin{enumerate}
+    \item \textbf{Stimiamo il Beta} del progetto,
+    per capire quanto è esposto ai movimenti
+    generali del mercato.
+
+    \item \textbf{Applichiamo il CAPM},
+    ottenendo il rendimento richiesto
+    dagli investitori.
+
+    \item \textbf{Utilizziamo il rendimento come
+    costo opportunità del capitale}, se coerente
+    con il rischio e i flussi del progetto.
+
+    \item \textbf{Calcoliamo il VAN}
+    per valutare se l'investimento crea valore.
+\end{enumerate}
+
+\noindent La formula del VAN è:
+
+\[
+\boxed{
+VAN=F_0+\sum_{t=1}^{N}\frac{F_t}{(1+k)^t}
+}
+\]
+
+\noindent dove:
+
+\begin{itemize}
+    \item $F_0$ = investimento iniziale,
+    generalmente negativo;
+
+    \item $F_t$ = flussi di cassa futuri;
+
+    \item $k$ = tasso di sconto coerente
+    con il rischio del progetto.
+\end{itemize}
+
+\noindent Se il progetto è valutabile attraverso
+il rendimento richiesto dal CAPM, possiamo stimare:
+
+\[
+k=r_f+\beta_{\text{progetto}}(\hat{r}_M-r_f)
+\]
+
+\noindent Per semplicità, consideriamo
+un progetto finanziato interamente con
+capitale proprio.
+
+\medskip
+
+\noindent Se il CAPM fornisce un rendimento
+richiesto del 10\%, utilizzeremo:
+
+\[
+k=10\%
+\]
+
+\noindent nella formula del VAN.
+
+\medskip
+
+\noindent La regola di valutazione resta:
+
+\[
+\boxed{
+\begin{aligned}
+VAN>0&\rightarrow\text{Investimento conveniente}\\
+VAN<0&\rightarrow\text{Investimento non conveniente}
+\end{aligned}
+}
+\]
+
+\noindent \textbf{Conclusione:} il CAPM permette
+di attribuire un significato economico
+al tasso di sconto, collegandolo
+al rischio sistematico dell'investimento.
+
+\medskip
+
+\noindent Nel caso di imprese finanziate
+sia con debito sia con capitale proprio,
+per valutare i flussi operativi del progetto
+può essere necessario utilizzare
+un costo medio ponderato del capitale (WACC).
+
+
+\subsection{Le ipotesi del CAPM}
+
+\noindent Il CAPM si basa su alcune ipotesi
+che semplificano il funzionamento
+dei mercati finanziari.
+
+\medskip
+
+\noindent Le principali sono:
+
+\begin{itemize}
+    \item \textbf{Scelte media-varianza}:
+    gli investitori valutano gli investimenti
+    considerando rendimento atteso e varianza.
+
+    \item \textbf{Aspettative omogenee}:
+    tutti gli investitori stimano nello stesso
+    modo rendimenti, varianze e covarianze.
+
+    \item \textbf{Mercati senza frizioni}:
+    si ipotizza l'assenza di imposte
+    e costi di transazione, con possibilità
+    di negoziare e frazionare le attività.
+
+    \item \textbf{Prestito al tasso privo di rischio}:
+    gli investitori possono prestare
+    e prendere in prestito denaro allo
+    stesso tasso $r_f$.
+
+    \item \textbf{Price takers}:
+    nessun singolo investitore è abbastanza
+    grande da influenzare i prezzi del mercato.
+
+    \item \textbf{Offerta data}:
+    la quantità complessiva delle attività
+    rischiose viene considerata fissa.
+\end{itemize}
+
+\noindent Queste ipotesi permettono
+di costruire un modello matematico semplice.
+
+\medskip
+
+\noindent Tuttavia, nella realtà i mercati
+non rispettano perfettamente tutte
+queste condizioni.
+
+\medskip
+
+\noindent Per questo motivo il CAPM va considerato
+un \textbf{modello teorico di riferimento},
+non una descrizione esatta del mercato.
+
+
+\subsection{Limiti del CAPM}
+
+\noindent Nonostante la sua utilità,
+il CAPM presenta alcuni limiti.
+
+\medskip
+
+\noindent \textbf{1. Portafoglio di mercato}
+
+\noindent Il vero portafoglio di mercato
+comprende teoricamente tutte le attività rischiose,
+ma non può essere osservato completamente.
+
+\medskip
+
+\noindent Per questo motivo viene rappresentato
+attraverso indici di mercato, che costituiscono
+solamente un'approssimazione.
+
+\medskip
+
+\noindent \textbf{2. Beta instabile}
+
+\noindent Il Beta viene normalmente stimato
+attraverso i rendimenti passati.
+
+\medskip
+
+\noindent Tuttavia, la sensibilità di un titolo
+al mercato può cambiare nel tempo.
+
+\medskip
+
+\noindent Di conseguenza, anche il Beta stimato
+può variare in base al periodo analizzato.
+
+\medskip
+
+\noindent \textbf{3. Relazione Beta-rendimento}
+
+\noindent Il CAPM prevede che un Beta più elevato
+corrisponda a un rendimento atteso richiesto maggiore.
+
+\medskip
+
+\noindent Nella pratica, questa relazione
+non è sempre forte quanto previsto
+dal modello teorico.
+
+\medskip
+
+\noindent \textbf{4. Altri fattori di rischio}
+
+\noindent I rendimenti possono dipendere
+anche da elementi non rappresentati
+direttamente dal Beta di mercato.
+
+\medskip
+
+\noindent Ad esempio:
+
+\begin{itemize}
+    \item dimensione dell'impresa;
+    \item caratteristiche value o growth;
+    \item altri fattori economici e finanziari.
+\end{itemize}
+
+\noindent \textbf{Conclusione:} il limite principale
+del CAPM è la sua semplicità, perché utilizza
+\textbf{un solo fattore sistematico}
+per spiegare i rendimenti richiesti.
+
+
+\subsection{Perché continuiamo a utilizzare il CAPM?}
+
+\noindent Nonostante i suoi limiti,
+il CAPM viene ancora utilizzato
+per diverse ragioni.
+
+\begin{itemize}
+    \item \textbf{Semplicità}: richiede pochi dati
+    ed è facile da applicare.
+
+    \item \textbf{Interpretabilità}: collega
+    chiaramente rischio sistematico
+    e rendimento richiesto.
+
+    \item \textbf{Benchmark}: permette
+    di confrontare titoli, progetti
+    e differenti stime di rendimento.
+
+    \item \textbf{Utilità operativa}: viene
+    utilizzato per stimare il costo
+    del capitale proprio delle imprese.
+\end{itemize}
+
+\noindent In conclusione, il CAPM resta
+un importante \textbf{punto di riferimento},
+anche quando vengono impiegati
+modelli più articolati.
+
+
+\subsection{Arbitrage Pricing Theory (APT)}
+
+\noindent L'\textbf{Arbitrage Pricing Theory (APT)}
+è un modello che amplia il ragionamento
+utilizzato dal CAPM.
+
+\medskip
+
+\noindent Il CAPM considera un solo fattore
+di rischio sistematico, cioè il mercato.
+
+\medskip
+
+\noindent L'APT parte invece dall'idea che
+i rendimenti di un titolo possano dipendere
+da \textbf{più fattori sistematici}.
+
+\medskip
+
+\noindent Ad esempio, un'impresa potrebbe
+essere influenzata da:
+
+\begin{itemize}
+    \item andamento generale del mercato;
+    \item variazioni dei tassi di interesse;
+    \item inflazione inattesa;
+    \item crescita economica;
+    \item variazioni degli spread.
+\end{itemize}
+
+\noindent Ogni titolo può reagire in maniera
+differente a questi fattori.
+
+\medskip
+
+\noindent L'APT mantiene comunque
+un principio fondamentale del CAPM:
+\textbf{il rischio specifico può essere diversificato,
+mentre vengono remunerate le esposizioni
+ai fattori di rischio sistematico}.
+
+
+\subsubsection*{Formula dell'APT}
+
+\noindent Nel CAPM il premio per il rischio
+dipende da un solo Beta:
+
+\[
+\hat{r}_i-r_f=
+\beta_i(\hat{r}_M-r_f)
+\]
+
+\noindent Nell'APT, invece, il premio
+per il rischio è dato dalla somma
+dei premi associati a diversi fattori:
+
+\[
+\boxed{
+\hat{r}_i-r_f=
+b_{i1}\lambda_1+
+b_{i2}\lambda_2+
+\cdots+
+b_{ik}\lambda_k
+}
+\]
+
+\noindent dove:
+
+\begin{itemize}
+    \item $\hat{r}_i$ = rendimento atteso del titolo;
+    \item $r_f$ = tasso privo di rischio;
+    \item $b_{ij}$ = sensibilità del titolo $i$
+    al fattore di rischio $j$;
+    \item $\lambda_j$ = premio per il rischio
+    associato al fattore $j$;
+    \item $k$ = numero dei fattori considerati.
+\end{itemize}
+
+\noindent Il significato è semplice:
+\textbf{ogni fattore contribuisce al rendimento
+richiesto in base a quanto il titolo è sensibile
+a quel fattore}.
+
+\medskip
+
+\noindent Ad esempio, se consideriamo due fattori:
+
+\[
+\hat{r}_i=
+r_f+b_{i1}\lambda_1+b_{i2}\lambda_2
+\]
+
+\noindent Supponiamo:
+
+\[
+r_f=3\%
+\qquad
+b_{i1}=1{,}2
+\qquad
+\lambda_1=4\%
+\]
+
+\[
+b_{i2}=0{,}5
+\qquad
+\lambda_2=2\%
+\]
+
+\noindent Il rendimento atteso sarà:
+
+\[
+\hat{r}_i=3\%+1{,}2\cdot4\%+0{,}5\cdot2\%
+\]
+
+\[
+\hat{r}_i=3\%+4{,}8\%+1\%
+\]
+
+\[
+\boxed{\hat{r}_i=8{,}8\%}
+\]
+
+\noindent Questo esempio serve solamente
+a mostrare il funzionamento della formula.
+
+\medskip
+
+\noindent La componente di rischio specifico,
+spesso indicata con $\varepsilon_i$,
+non viene remunerata in equilibrio,
+poiché può essere ridotta attraverso
+la diversificazione.
+
+
+\subsubsection*{Vantaggi e limiti dell'APT}
+
+\noindent Il principale vantaggio dell'APT
+è la sua \textbf{flessibilità}.
+
+\medskip
+
+\noindent Permette infatti di considerare
+più fonti di rischio sistematico,
+anziché utilizzare solamente il mercato.
+
+\medskip
+
+\noindent Tuttavia, il modello non stabilisce
+a priori quali debbano essere
+i fattori da utilizzare.
+
+\medskip
+
+\noindent La scelta dei fattori diventa quindi
+un aspetto fondamentale e delicato
+dell'applicazione del modello.
+
+\medskip
+
+\noindent In sintesi:
+
+\[
+\boxed{
+\begin{aligned}
+CAPM&\rightarrow\text{Un fattore di rischio}\\
+APT&\rightarrow\text{Più fattori di rischio}
+\end{aligned}
+}
+\]
+
+
+\subsection{Esempio di modello multifattoriale}
+
+\noindent Un esempio di approccio multifattoriale
+è rappresentato dal modello a tre fattori
+di \textbf{Fama-French}.
+
+\medskip
+
+\noindent Questo modello considera,
+oltre al mercato, altre due caratteristiche:
+
+\begin{itemize}
+    \item \textbf{Dimensione dell'impresa}:
+    differenza nei rendimenti associata
+    alla dimensione delle società.
+
+    \item \textbf{Rapporto tra valore contabile
+    e valore di mercato}: differenza
+    nei rendimenti associata alle
+    caratteristiche value e growth.
+\end{itemize}
+
+\noindent Il modello a tre fattori è un esempio
+di modello multifattoriale empirico,
+collegato all'idea di considerare più rischi,
+ma non coincide necessariamente
+con la formulazione generale dell'APT.
+
+\medskip
+
+\noindent La tabella seguente riporta le stime
+presentate nelle slide per diversi settori:
+
+\begin{center}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|l|c|c|c|c|c|}
+\hline
+\textbf{Settore} &
+\textbf{$b_M$} &
+\textbf{$b_D$} &
+\textbf{$b_V$} &
+\textbf{Tre fattori} &
+\textbf{CAPM} \\
+\hline
+Automobili & 1,12 & 0,26 & 0,31 & 11,9\% & 10,2\% \\
+\hline
+Banche & 1,18 & 0,09 & 0,65 & 13,1\% & 10,5\% \\
+\hline
+Chimica & 1,19 & 0,26 & 0,41 & 12,8\% & 10,7\% \\
+\hline
+Informatica & 1,30 & -0,18 & 0,03 & 10,5\% & 10,9\% \\
+\hline
+Costruzioni & 0,96 & 0,49 & 0,04 & 10,4\% & 9,3\% \\
+\hline
+Alimentare & 0,67 & -0,38 & 0,02 & 5,6\% & 6,3\% \\
+\hline
+Petrolio e gas & 1,17 & 0,49 & 0,90 & 15,3\% & 11,0\% \\
+\hline
+Farmaceutica & 0,91 & 0,20 & -0,38 & 7,5\% & 8,5\% \\
+\hline
+Telecomunicazioni & 0,78 & -0,24 & 0,12 & 7,2\% & 7,2\% \\
+\hline
+Servizi pubblici & 0,46 & -0,36 & -0,08 & 3,7\% & 4,8\% \\
+\hline
+\end{tabular}%
+}
+\end{center}
+
+\noindent Nella tabella:
+
+\begin{itemize}
+    \item $b_M$ = sensibilità al fattore di mercato;
+    \item $b_D$ = sensibilità al fattore dimensione;
+    \item $b_V$ = sensibilità al fattore value.
+\end{itemize}
+
+\noindent Osserviamo, ad esempio,
+il settore del petrolio e gas naturale.
+
+\medskip
+
+\noindent Il CAPM fornisce un rendimento
+atteso pari all'11,0\%, mentre il modello
+a tre fattori fornisce il 15,3\%.
+
+\medskip
+
+\noindent La differenza nasce dal fatto
+che il modello multifattoriale considera
+anche altre caratteristiche oltre
+alla sola sensibilità al mercato.
+
+\medskip
+
+\noindent \textbf{Attenzione:} non significa
+che il modello multifattoriale produca
+sempre rendimenti più elevati.
+
+\medskip
+
+\noindent Ad esempio, per il settore informatico:
+
+\[
+\hat{r}_{\text{Tre fattori}}=10{,}5\%
+\]
+
+\[
+\hat{r}_{CAPM}=10{,}9\%
+\]
+
+\noindent In questo caso il modello a tre fattori
+fornisce un rendimento atteso inferiore.
+
+\medskip
+
+\noindent Il risultato dipende dalle sensibilità
+ai diversi fattori e dai rispettivi premi
+per il rischio.
+
+
+\subsection{Confronto tra CAPM e APT}
+
+\noindent Il CAPM e l'APT cercano entrambi
+di spiegare quale rendimento un investitore
+dovrebbe richiedere per assumersi
+un determinato rischio.
+
+\medskip
+
+\noindent La differenza fondamentale è
+il numero di fattori sistematici considerati.
+
+\begin{center}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|l|l|l|}
+\hline
+\textbf{Caratteristica} &
+\textbf{CAPM} &
+\textbf{APT} \\
+\hline
+Fattori & Uno: mercato & Più fattori sistematici \\
+\hline
+Mercato & Portafoglio centrale & Non necessario \\
+\hline
+Rischio remunerato & Beta di mercato & Sensibilità ai fattori \\
+\hline
+Vantaggio & Semplicità & Flessibilità \\
+\hline
+Limite & Un solo fattore & Scelta dei fattori \\
+\hline
+\end{tabular}%
+}
+\end{center}
+
+\noindent Il \textbf{CAPM} è particolarmente utile
+quando vogliamo ottenere rapidamente
+un rendimento richiesto utilizzando
+il Beta di mercato.
+
+\medskip
+
+\noindent L'\textbf{APT} permette invece
+di rappresentare situazioni più articolate,
+nelle quali il rendimento dipende
+da più fonti di rischio sistematico.
+
+\medskip
+
+\noindent In conclusione, i due modelli
+non affrontano problemi differenti:
+cercano entrambi di collegare
+\textbf{rischio sistematico e rendimento richiesto},
+ma utilizzano livelli diversi di complessità.
+
+
+\subsubsection*{Riepilogo finale}
+
+\noindent I concetti fondamentali da ricordare sono:
+
+\begin{itemize}
+    \item Il \textbf{Beta} misura la sensibilità
+    di un titolo ai movimenti del mercato.
+
+    \item Il \textbf{CAPM} utilizza il Beta
+    per determinare il rendimento richiesto.
+
+    \item La \textbf{SML} rappresenta graficamente
+    il CAPM e può essere applicata
+    a titoli e portafogli.
+
+    \item La \textbf{CML} collega rendimento
+    e rischio totale dei portafogli efficienti.
+
+    \item Il \textbf{CAPM} è utile nel Capital Budgeting
+    per stimare il costo opportunità del capitale.
+
+    \item L'\textbf{APT} considera più fattori
+    sistematici per spiegare il rendimento richiesto.
+\end{itemize}
+
+\noindent La differenza fondamentale tra i due modelli è:
+
+\[
+\boxed{
+\begin{aligned}
+CAPM:\quad&
+\hat{r}_i=r_f+\beta_i(\hat{r}_M-r_f)\\[6pt]
+APT:\quad&
+\hat{r}_i=r_f+\sum_{j=1}^{k}b_{ij}\lambda_j
+\end{aligned}
+}
+\]
+
+\noindent Entrambi si basano sull'idea
+che \textbf{il rischio specifico può essere
+diversificato e non richiede un premio
+in equilibrio}, mentre il rischio sistematico
+deve essere remunerato.
