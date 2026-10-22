@@ -745,4 +745,48 @@ Ad esempio in un albero di profondità $n$ dove ogni nodo ha 2 successori i camm
 
 
 
+\section{Teoria della Computabilità}
+Fin dai primi anni del 1900 ci si interogava come risolvere problemi definendo una procedura automatica.
+E' proprio da questo quesito che nascono i primi modelli computazionali come la \textbf{macchina di Turing} che abbiamo visto nel capitolo precedente,
+ideata da \textbf{Alan Turing}. Un altro intellettuale che provò a rispondere alla domanda fu \textbf{Alonzo Church}, il quale ideò un modello di calcolo chiamato
+$\bm{\lambda -}$\textbf{calculus}.\\
+I due intellettuali collaborarono e il loro lavoro portò allaa definizione della \textbf{tesi di Church-Turing}\smallskip\\
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{theorem}
+   Una funzione è effettivamente computabile se e solo se è T-computabile 
+\end{theorem}}}\smallskip\\
+Ma cosa vuol dire che una funzione è T-computabile? Una funzione è T-computabile se e solo se è $\lambda-$computabile,
+ovvero se la funzione può essere calcolata tramite un $\lambda-$calculus.
+Successivamente fu dimostrato che $\lambda-$calculus e macchine di Touring hanno lo stesso potere computazionale, quindi la definizione di T-computabilità e la tesi di Church-Turing
+può essere applicata anche alle macchine di Turing.
 
+
+slide 31 - problemi funzionali decisionali - dimostrazione, turing calcolabile, turing decidibile
+
+
+
+\section{Macchine di Turing Universali}
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
+   Una \textbf{macchina di Turing Universale} $U$ è una macchina di Turing che, data in input la descrizione $M_d$
+   di una macchina di Turing $M$ e un input $x$ per $M$, $U$ accetta $(M_d,x)$ se e solo se $M$ accetta $x$.
+\end{definition}}}\smallskip\\
+spiegazione in altre parole.
+
+
+
+
+Accept problem con dimostrazione della non-decidibilità (F come macchina universale che fa subroutine)
+
+
+
+
+
+Halting Problem con dimostrazine della non-decidibilità (primo tentativo di analisi del codice)
+
+
+
+
+Linguaggi non turing riconoscibili
+
+
+
+Nozione di Riduzione 
