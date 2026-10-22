@@ -397,7 +397,7 @@ Per definire i linguaggi riconosciuti possiamo anche appoggiarci ai concetti di 
    \end{enumerate}
 \end{theorem}}}
 
-\subsection{Equivalenza tra Macchine Multi-Nastro e Macchine Standard}
+\subsection{Equivalenza tra Macchine Multi-Nastro e Macchine Standard} \label{dimo}
 Come abbiamo spiegato all'inizio della sezione, non ci sono linguaggi riconosciuti da una macchina a multi nastro che non siano riconosciuti anche da una macchina standard.
 Ora formalizziamo il concetto e cerchiamo di dare un'idea dimostrativa senza entrare nei dettagli tecnici. \smallskip\\
 \colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{lemma}
@@ -653,7 +653,6 @@ iniziale è la radice dell'albero.
     \begin{itemize}
         \item \textbf{Nodo Distinto} = se $C_j$ è generata da più di una $C_i$, $N$ contiene più nodi per $C_j$
         \item Questo di garantisce che $\mathcal{T}_{\sigma,M}$ \textbf{rimanga una albero} anche se la $C_j$ è generata più volte
-        \item Non è una richiesta necessaria per la prova, ma semplifica di molto la costruzione
     \end{itemize}
 \end{itemize}
 \end{definition}}}\smallskip\\
@@ -717,3 +716,33 @@ della sequenza delle scelte effettuate copiando tali numeri su un nastro a parte
     %\caption{caption}
     %\label{label}
 \end{figure}
+\noindent Le configurazioni colorate in giallo rappresentano l'esecuzione che stiamo considerando. Tutte le configurazioni finali sono rifiutanti (colorate in rosso),
+pertanto tutte le esecuzioni possibili portano ad una configurazione rifiutante e quindi la stringa in input viene rifiutata.
+
+\subsection{Equivalenza con macchine standard}
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{theorem}
+   Sia $\mathcal{L}$ un linguaggio di stringhe:
+   \begin{itemize}
+    \item $\mathcal{L}$ è riconosciuto da un MTND se e solo se $\mathcal{L}$ è \textbf{Turing Riconoscibile} (vd. \ref{dec})
+    \item $\mathcal{L}$ è riconosciuto da un MTND terminante se e solo se $\mathcal{L}$ è \textbf{Turing Decidibile} (vd. \ref{dec})
+   \end{itemize}
+\end{theorem}}}\smallskip\\
+\begin{proof}
+    Nella dimostrazione vengono sfruttate le proprietà delle MTND:\\
+    Abbiamo visto che le configurazioni generate da una macchina non deterministica $M$
+    con input $\sigma \in \Sigma^*$ definiscono un albero. Esplorando tale albero abbiamo due opzioni:
+    \begin{itemize}[label=--]
+        \item trovare la configurazione accettante se esiste
+        \item rifiutare se non esiste una configurazione accettante e tutte le esecuzioni possibili sono finite
+    \end{itemize}
+    E abbiamo visto che questo processo può essere implementato con una macchina di Turing multinastro 3-TM, che abbiamo già dimostrato essere equivalente 
+    ad una macchina standard. (vd. \ref{dimo})
+\end{proof}
+
+\noindent La conversione di una macchina di Turing in versione non deterministica porta ad un grande svantaggio, ovvero l'\textbf{efficienza}.
+Infatti, come abbiamo visto, le MTND simulano tutte le possibili esecuzioni e questo comporta un costo computazionale enorme.
+Ad esempio in un albero di profondità $n$ dove ogni nodo ha 2 successori i cammini possibili sono $2^n$ (costo computazionale esponenziale).
+
+
+
+
