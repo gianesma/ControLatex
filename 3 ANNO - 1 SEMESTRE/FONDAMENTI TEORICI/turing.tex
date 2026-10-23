@@ -795,12 +795,47 @@ e transizioni, come facciamo a trasformare queste informazioni in numeri binari?
     Se però $q \in \{  q_{yes}, q_{no}\}$ al posto della codifica $b(q)$ si mette $\epsilon$.
 \end{itemize}
 
-\noindent \textit{Esempio.}
-\[  \text{\textbf{ESEMPIO SLIDE 10}}\]
+\noindent \textit{Esempio.}  Facciamo l'encoding della macchina\smallskip\\
+\begin{minipage}{0.45\textwidth}
+    $M = <\Sigma, \Gamma,Q,\delta,q_0,q_{yes},q_{no}>$ con 
+  \begin{itemize}[label=--]
+    \item $\Sigma = \{ 1,2,3  \}$
+    \item $\Gamma = \{0,1,2,3\}$
+    \item $Q = \{ 0,1,2 \}$
+\end{itemize}
+Avente input $\sigma = 3312$  
+\end{minipage}
+\begin{minipage}{0.45\textwidth}
+    \[
+\begin{array}{|c|c|}
+    \hline   
+     (q,x) & \delta(q,x) \\
+    \hline 
+    (0,0) & (0,0,\to) \\
+    (0,1) & (2,1,-) \\
+    (0,2) & (1,2,-) \\
+    (0,3) & (0,3, \to) \\
+    \hline
+\end{array}
+    \]
+\end{minipage}\smallskip\\
+Stati, simboli e input sono numeri, quindi codifichiamo le transizioni date in tabella in binario, utilizzando il simbolo $\#$ 
+per separare i vari numeri in binario:\\
+\[  (0,0) (0,0,\to)  \quad \to \quad (0\#,0\#)(0\#,0\#,\to)   \]
+\[  (0,1) (2,1,-) \quad \to \quad (0\#,1\#)(10\#,1\#,-)   \]
+\[ (0,2)(1,2,-) \quad \to \quad (0\#,10\#)(1\#,10\#,-)\]
+\[ (0.3)(0,3,\to)  \quad \to \quad (0\#,11\#)(0\#,11\#,\to)\]
+Mentre l'input codificato è:
+\[  3312 \quad \to \quad 11\#11\#1\#10\#\sqcup \sqcup ...   \]
 
 
-
-
+\subsection{Esecuzione di una macchina di Turing Universale}
+L'esecuzione di una macchina di Turing Universale $U$ si comporta come una macchina multi-nastro a tre nastri avente come input ($<M,\sigma>$):
+\begin{itemize}
+    \item \textbf{Nastro 1}: Riceve l'input $(M,\sigma)$ e lo utilizza per tenere traccia delle transizioni di $M$
+    \item \textbf{Nstro 2}: Nastro di lavoro per la computazione di $M$
+    \item \textbf{Nastro 3}: Tiene traccia dello stato di $M$ durante la simulazione 
+\end{itemize} 
 
 
 
