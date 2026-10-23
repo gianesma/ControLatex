@@ -745,4 +745,102 @@ Ad esempio in un albero di profondità $n$ dove ogni nodo ha 2 successori i camm
 
 
 
+\section{Teoria della Computabilità}
+Fin dai primi anni del 1900 ci si interogava come risolvere problemi definendo una procedura automatica.
+E' proprio da questo quesito che nascono i primi modelli computazionali come la \textbf{macchina di Turing} che abbiamo visto nel capitolo precedente,
+ideata da \textbf{Alan Turing}. Un altro intellettuale che provò a rispondere alla domanda fu \textbf{Alonzo Church}, il quale ideò un modello di calcolo chiamato
+$\bm{\lambda -}$\textbf{calculus}.\\
+I due intellettuali collaborarono e il loro lavoro portò allaa definizione della \textbf{tesi di Church-Turing}\smallskip\\
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{theorem}
+   Una funzione è effettivamente computabile se e solo se è T-computabile 
+\end{theorem}}}\smallskip\\
+Ma cosa vuol dire che una funzione è T-computabile? Una funzione è T-computabile se e solo se è $\lambda-$computabile,
+ovvero se la funzione può essere calcolata tramite un $\lambda-$calculus.
+Successivamente fu dimostrato che $\lambda-$calculus e macchine di Touring hanno lo stesso potere computazionale, quindi la definizione di T-computabilità e la tesi di Church-Turing
+può essere applicata anche alle macchine di Turing.
 
+
+% slide 31 - problemi funzionali decisionali - dimostrazione, turing calcolabile, turing decidibile
+
+
+
+\section{Macchine di Turing Universali}
+La macchina di Turing universale è il modello computazionale che più si avvicina a ai computer moderni, infatti essa può \textbf{simulare} il funzionamento di qualsiasi altra macchina Turing. E' proprio questa caratteristica che 
+rende questo tipo di macchine simili ai computer moderni, poichè un computer non è costruito per eseguire un solo programma ma può eseguire programmi diversi a seconda delle istruzioni che riceve. Allo stesso modo, in base alle 
+istruzione che riceve, la macchina di Turing universale può simulare il funzionamento di qualsiasi altra macchina di Turing. Vediamo la definizione formale:\smallskip\\
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
+   Una \textbf{macchina di Turing Universale} $U$ è una macchina di Turing che, data in input la descrizione $M_d$
+   di una macchina di Turing $M$ e un input $x$ per $M$, accetta $(M_d,x)$ se e solo se $M$ accetta $x$.
+\end{definition}}}\smallskip\\
+In altre parole, una macchina di Turing universale riceve una descrizione (codifica) di una macchina di Turing e un input e simula il comportamento della macchina ricevuta con l'input ricevuto. Ora vedremo bene
+cosa significa codificare (encoding) una macchina di Turing, per fare in modo che tale codifica diventi l'input di una macchina universale.
+
+
+\subsection{Encoding (Codifica) dell'input}
+L'obiettivo della codifica è quello di trasformare una macchina di Turing $M$ e il suo input $\sigma$ in una sequenza di simboli in modo che una macchina di Turing universale 
+possa leggerli e simulare l'esecuzione di $M$ con input $\sigma$.\smallskip\\
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
+   Per $n \in \mathbb{N}$, sia $b(n) \in \{0,1,\#\}^*$ la stringa che rappresenta $n$ in binario seguito da $\#$
+\end{definition}}}\smallskip\\
+La codifica quindi consiste nel trasformare tutte le informazioni di una macchina e il suo input in numeri binari separati dal separatore $\#$. Ma siccome le informazioni di una macchina non sono composte da numeri, ma da stati, simboli
+e transizioni, come facciamo a trasformare queste informazioni in numeri binari?
+\begin{itemize}
+    \item \textbf{Stati}: non utilizziamo più nomi come $q_0,q_1,q_2...$, ma direttamente numeri: $Q = \{ 0,1,2,...,n_q \}$ dove:
+    \[     q_0 \to 0 \qquad q_{yes} \to 1 \qquad q_{no} \to 2      \]
+    \item \textbf{Simboli}: analogamente agli stati, i simboli del nastro vengono rappresentati con numeri: $\Gamma = \{ 0,1, ...,n_{g}  \}$ dove:
+    \[  \sqcup \to 0   \]
+    \item \textbf{Transizioni}: una transizione di una macchina di Turing è $\delta (q,c) = (q',c',m)$, che significa che se la macchina si trova nello stato $q$ e legge il simbolo $c$, passa nello stato $q'$, scrive $c'$ sul nastro e si muovo nella direzione $m$.
+    Per codificare una transizione è necessario codificare ogni singolo elemento della transizione. Ovvero $e(q,c)$ (encoding di $\delta (q,c)$) è:
+    \[  e(q,c) = \Big(    b(q),\quad b(c), \quad b(q'), \quad b(c'),\quad m       \Big)     \]
+    Se però $q \in \{  q_{yes}, q_{no}\}$ al posto della codifica $b(q)$ si mette $\epsilon$.
+\end{itemize}
+
+\noindent \textit{Esempio.}  Facciamo l'encoding della macchina\smallskip\\
+\begin{minipage}{0.45\textwidth}
+    $M = <\Sigma, \Gamma,Q,\delta,q_0,q_{yes},q_{no}>$ con 
+  \begin{itemize}[label=--]
+    \item $\Sigma = \{ 1,2,3  \}$
+    \item $\Gamma = \{0,1,2,3\}$
+    \item $Q = \{ 0,1,2 \}$
+\end{itemize}
+Avente input $\sigma = 3312$  
+\end{minipage}
+\begin{minipage}{0.45\textwidth}
+    \[
+\begin{array}{|c|c|}
+    \hline   
+     (q,x) & \delta(q,x) \\
+    \hline 
+    (0,0) & (0,0,\to) \\
+    (0,1) & (2,1,-) \\
+    (0,2) & (1,2,-) \\
+    (0,3) & (0,3, \to) \\
+    \hline
+\end{array}
+    \]
+\end{minipage}\smallskip\\
+Stati, simboli e input sono numeri, quindi codifichiamo le transizioni date in tabella in binario, utilizzando il simbolo $\#$ 
+per separare i vari numeri in binario:\\
+\[  (0,0) (0,0,\to)  \quad \to \quad (0\#,0\#)(0\#,0\#,\to)   \]
+\[  (0,1) (2,1,-) \quad \to \quad (0\#,1\#)(10\#,1\#,-)   \]
+\[ (0,2)(1,2,-) \quad \to \quad (0\#,10\#)(1\#,10\#,-)\]
+\[ (0.3)(0,3,\to)  \quad \to \quad (0\#,11\#)(0\#,11\#,\to)\]
+Mentre l'input codificato è:
+\[  3312 \quad \to \quad 11\#11\#1\#10\#\sqcup \sqcup ...   \]
+
+
+\subsection{Esecuzione di una macchina di Turing Universale}
+L'esecuzione di una macchina di Turing Universale $U$ si comporta come una macchina multi-nastro a tre nastri avente come input ($<M,\sigma>$):
+\begin{itemize}
+    \item \textbf{Nastro 1}: Riceve l'input $(M,\sigma)$ e lo utilizza per tenere traccia delle transizioni di $M$
+    \item \textbf{Nstro 2}: Nastro di lavoro per la computazione di $M$
+    \item \textbf{Nastro 3}: Tiene traccia dello stato di $M$ durante la simulazione 
+\end{itemize} 
+
+
+
+
+% ---Accept problem con dimostrazione della non-decidibilità (F come macchina universale che fa subroutine)
+% ---Halting Problem con dimostrazine della non-decidibilità (primo tentativo di analisi del codice)
+% ---Linguaggi non turing riconoscibili
+% ---Nozione di Riduzione 
