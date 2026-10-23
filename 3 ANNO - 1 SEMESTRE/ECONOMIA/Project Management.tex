@@ -3321,3 +3321,2008 @@ permette di stimare \textbf{l'impegno, la durata
 e il costo di un progetto software}
 partendo dal numero e dalla complessità
 delle funzionalità da sviluppare.
+
+
+
+
+\subsection{Approcci Bottom-Up}
+
+\noindent L'approccio \textbf{Bottom-Up} permette di stimare
+il costo di un progetto partendo dalle singole attività
+e dai Work Package della WBS.
+
+\noindent A differenza del Top-Down, che parte dal costo
+complessivo, il Bottom-Up calcola prima i costi
+delle attività più piccole e successivamente li somma.
+
+\medskip
+
+\noindent I principali metodi Bottom-Up sono:
+
+\begin{itemize}
+    \item Metodo dei modelli (template);
+    \item Procedure parametriche applicate alle attività;
+    \item Stima per intervalli dei Work Package;
+    \item Stima per fasi, che combina Top-Down e Bottom-Up.
+\end{itemize}
+
+\subsubsection*{Metodo dei modelli (Template)}
+
+\noindent Il \textbf{metodo dei modelli} viene utilizzato
+quando dobbiamo realizzare un progetto simile
+ad altri già completati.
+
+\noindent Si parte dai costi e dai tempi del progetto
+precedente e si apportano le modifiche necessarie
+per adattarlo al nuovo progetto.
+
+\medskip
+
+\noindent Ad esempio, un'impresa che ripara navi può
+utilizzare modelli già esistenti per interventi
+di manutenzione, riparazioni elettriche
+o sostituzione di parti meccaniche.
+
+\noindent Il procedimento è semplice:
+
+\begin{enumerate}
+    \item Si sceglie un progetto passato simile.
+    \item Si individuano le differenze rispetto al nuovo progetto.
+    \item Si modificano tempi, costi e risorse necessari.
+\end{enumerate}
+
+\noindent Questo metodo permette di risparmiare tempo,
+purché i dati dei progetti precedenti siano affidabili.
+
+\subsubsection*{Stima per intervalli}
+
+\noindent La \textbf{stima per intervalli} viene utilizzata
+quando non siamo sicuri del tempo o del costo
+necessario per completare un Work Package.
+
+\noindent Invece di fornire un unico valore,
+si utilizzano tre stime:
+
+\begin{itemize}
+    \item \textbf{Minima}: valore più favorevole;
+    \item \textbf{Media}: valore considerato più realistico;
+    \item \textbf{Massima}: valore più sfavorevole.
+\end{itemize}
+
+\noindent Il metodo riprende il ragionamento del PERT
+e permette di rappresentare l'incertezza
+delle attività.
+
+\medskip
+
+\noindent L'ampiezza dell'intervallo è:
+
+\[
+\boxed{
+I=\text{Stima massima}-\text{Stima minima}
+}
+\]
+
+\noindent Più l'intervallo è ampio,
+maggiore può essere l'incertezza della stima.
+
+\medskip
+
+\noindent La stima dipende da elementi come
+complessità, tecnologia, novità del lavoro
+ed esperienza dell'organizzazione.
+
+\subsubsection*{Esempio di stima per intervalli}
+
+\noindent Consideriamo un progetto per il lancio
+di un vino biologico.
+
+\noindent Per alcune attività della WBS
+sono state effettuate le seguenti stime
+di durata, espresse in giorni:
+
+\begin{center}
+\scriptsize
+\begin{tabular}{|c|p{3.5cm}|c|c|c|c|}
+\hline
+\textbf{WBS} & \textbf{Attività} &
+\textbf{Min.} & \textbf{Media} &
+\textbf{Max.} & \textbf{Rischio} \\
+\hline
+102 & Approvazione & 1 & 1 & 3 & Basso \\
+\hline
+103 & Progettazione confezione & 4 & 7 & 12 & Medio \\
+\hline
+104 & Identificazione clienti & 14 & 21 & 35 & Alto \\
+\hline
+105 & Progettazione logo & 5 & 7 & 10 & Basso \\
+\hline
+106 & Contratto spazio chiosco & 8 & 10 & 15 & Medio \\
+\hline
+107 & Costruzione chiosco & 4 & 4 & 8 & Medio \\
+\hline
+108 & Progettazione brochure & 6 & 7 & 12 & Alto \\
+\hline
+109 & Pubblicità su riviste & 10 & 12 & 15 & Medio \\
+\hline
+110 & Test di produzione & 10 & 14 & 20 & Alto \\
+\hline
+111 & Produzione magazzino & 5 & 5 & 10 & Alto \\
+\hline
+112 & Collegamento scanner & 1 & 2 & 3 & Basso \\
+\hline
+113 & Collegamento video & 2 & 2 & 4 & Medio \\
+\hline
+114 & Prova generale evento & 2 & 2 & 5 & Alto \\
+\hline
+\end{tabular}
+\end{center}
+
+\noindent Ad esempio, per l'identificazione
+dei potenziali clienti:
+
+\[
+I=35-14=\boxed{21\text{ giorni}}
+\]
+
+\noindent L'intervallo è particolarmente ampio,
+quindi la durata dell'attività presenta
+una forte incertezza.
+
+\medskip
+
+\noindent \textbf{Attenzione:} la stima media
+è una valutazione dell'attività e non deve
+necessariamente coincidere con la media
+aritmetica della stima minima e massima.
+
+\subsubsection*{Stima per fasi}
+
+\noindent La \textbf{stima per fasi} combina
+l'approccio Top-Down con il Bottom-Up.
+
+\noindent All'inizio del progetto conosciamo
+ancora pochi dettagli, quindi possiamo
+effettuare soltanto una stima generale.
+
+\noindent Procedendo con le attività,
+le informazioni aumentano e possiamo
+effettuare stime sempre più precise.
+
+\medskip
+
+\noindent Ad esempio, possiamo distinguere
+le seguenti fasi:
+
+\[
+\text{Bisogni}\rightarrow
+\text{Specifiche}\rightarrow
+\text{Progettazione}\rightarrow
+\text{Produzione}\rightarrow
+\text{Consegna}
+\]
+
+\noindent Nelle fasi lontane utilizziamo
+\textbf{stime generali}, mentre per quelle
+più vicine utilizziamo \textbf{stime dettagliate}.
+
+\medskip
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{../images/stima_per_fasi.png}
+    \caption{Stima per fasi: integrazione degli approcci Top-Down e Bottom-Up.}
+    %\label{fig:stima_per_fasi}
+\end{figure}
+
+\medskip
+
+\noindent In questo modo non dobbiamo conoscere
+tutti i dettagli fin dall'inizio:
+le stime vengono progressivamente aggiornate.
+
+\subsubsection*{Livello di dettaglio delle stime}
+
+\noindent Quando stimiamo i costi dobbiamo scegliere
+quanto approfondire la suddivisione delle attività.
+
+\noindent Il livello di dettaglio dipende
+dalla complessità, dalla durata, dalle dimensioni
+e dalla necessità di controllo del progetto.
+
+\medskip
+
+\noindent Un \textbf{dettaglio eccessivo}
+produce troppa documentazione e burocrazia,
+facendo perdere di vista i risultati principali.
+
+\noindent Un \textbf{dettaglio insufficiente},
+invece, rende difficile controllare il progetto
+e può causare sprechi di risorse.
+
+\medskip
+
+\noindent L'obiettivo è quindi trovare
+\textbf{il giusto livello di dettaglio},
+sufficiente per controllare costi e attività
+senza complicare inutilmente la gestione.
+
+
+\subsection{Pianificazione dettagliata dei costi}
+
+\noindent Nel \textbf{Cost Estimating di dettaglio}
+si individuano le quantità di risorse necessarie
+per realizzare ogni Work Package o attività.
+
+\noindent Le risorse possono comprendere
+personale, materiali, macchinari e servizi.
+
+\medskip
+
+\noindent La stima diventa più precisa
+man mano che vengono definite le caratteristiche
+del progetto.
+
+\noindent Per attribuire correttamente i costi
+è necessario distinguere tra
+\textbf{costi diretti e costi indiretti}.
+
+\subsubsection*{Costi diretti}
+
+\noindent I \textbf{costi diretti} sono quelli
+che possiamo collegare direttamente
+a una determinata attività o produzione.
+
+\noindent Sono spesso variabili:
+se aumenta la quantità prodotta,
+aumentano anche i costi necessari.
+
+\medskip
+
+\noindent Possiamo distinguere quattro attività
+che generano costi:
+
+\begin{enumerate}
+    \item \textbf{Produzione}: manodopera,
+    materiali ed energia, generalmente collegati
+    al volume produttivo.
+
+    \item \textbf{Supporto agli impianti}:
+    attività necessarie al funzionamento,
+    come la manutenzione.
+
+    \item \textbf{Supporto alla produzione}:
+    attività come l'attrezzaggio delle macchine.
+
+    \item \textbf{Supporto al prodotto}:
+    attività come lo sviluppo di un nuovo prodotto.
+\end{enumerate}
+
+\noindent Per capire da cosa dipende un costo
+utilizziamo il concetto di \textbf{Cost Driver},
+cioè il fattore che provoca o influenza
+il consumo di risorse.
+
+\medskip
+
+\noindent Ad esempio, un costo può dipendere da:
+
+\begin{itemize}
+    \item Numero di prodotti realizzati;
+    \item Numero di ordini o lotti;
+    \item Numero di attrezzaggi;
+    \item Numero di componenti;
+    \item Numero di movimentazioni;
+    \item Numero di difetti o reclami.
+\end{itemize}
+
+\noindent Quindi non tutti i costi dipendono
+semplicemente dal volume produttivo:
+alcuni dipendono dalla complessità
+delle attività necessarie.
+
+\subsubsection*{Costi indiretti}
+
+\noindent I \textbf{costi indiretti} sono costi
+che non possono essere attribuiti direttamente
+a un singolo prodotto o progetto senza
+utilizzare un criterio di ripartizione.
+
+\noindent Nelle slide vengono collegati
+a quattro tipologie di transazioni:
+
+\begin{enumerate}
+    \item \textbf{Logistiche}: gestione degli ordini
+    e movimentazione dei materiali.
+
+    \item \textbf{Di bilanciamento}: organizzazione
+    della disponibilità di personale,
+    materiali e macchinari.
+
+    \item \textbf{Per la qualità}: verifiche,
+    controlli e procedure di qualità.
+
+    \item \textbf{Di cambiamento}: modifiche
+    di progetti esistenti o avvio di nuovi progetti.
+\end{enumerate}
+
+\noindent Ad esempio, il personale amministrativo
+può lavorare per più progetti:
+il relativo costo deve quindi essere
+suddiviso tra quelli che ne utilizzano le attività.
+
+\medskip
+
+\noindent \textbf{Ridurre la durata di un progetto}
+può contribuire a ridurre alcuni costi indiretti
+legati al tempo, come quelli di coordinamento
+e gestione.
+
+\noindent Tuttavia, la riduzione non è automatica
+per tutti i costi indiretti, perché alcuni
+non dipendono dalla durata.
+
+\subsubsection*{Limiti dell'approccio tradizionale}
+
+\noindent Tradizionalmente, i costi indiretti
+venivano spesso distribuiti utilizzando
+come riferimento i costi diretti.
+
+\noindent Questo criterio può produrre errori,
+perché due attività con lo stesso costo
+di manodopera potrebbero utilizzare
+quantità molto diverse di risorse indirette.
+
+\medskip
+
+\noindent Inoltre, nelle moderne strutture produttive,
+i costi indiretti possono rappresentare
+una parte rilevante dei costi complessivi.
+
+\noindent Per questo motivo viene introdotto
+un approccio più preciso:
+l'\textbf{Activity-Based Costing (ABC)}.
+
+
+\subsection{Activity-Based Costing (ABC)}
+
+\noindent L'\textbf{Activity-Based Costing (ABC)}
+è una tecnica che permette di calcolare
+il costo completo di un prodotto o progetto
+partendo dalle attività necessarie
+per realizzarlo.
+
+\medskip
+
+\noindent Il principio fondamentale è:
+
+\begin{center}
+\textbf{Le attività consumano risorse,
+mentre i prodotti e i progetti richiedono attività.}
+\end{center}
+
+\noindent Questo significa che non dobbiamo
+assegnare i costi direttamente ai prodotti
+utilizzando una percentuale generica.
+
+\noindent Dobbiamo invece capire prima
+\textbf{quali attività utilizzano le risorse}
+e successivamente \textbf{quali progetti
+utilizzano quelle attività}.
+
+\subsubsection*{Le due fasi dell'ABC}
+
+\noindent Il metodo ABC si sviluppa in due passaggi.
+
+\medskip
+
+\noindent \textbf{Prima fase: dalle risorse alle attività}
+
+\noindent I costi delle risorse vengono
+attribuiti alle attività che le utilizzano.
+
+\noindent Per farlo utilizziamo i
+\textbf{Resource Drivers}, chiamati anche
+First-Stage Drivers.
+
+\medskip
+
+\noindent Ad esempio, se una macchina
+costa complessivamente 10.000
+e viene utilizzata per il 60\%
+nell'attività A:
+
+\[
+C_A=10.000\cdot0{,}60=\boxed{6.000}
+\]
+
+\noindent I restanti 4.000 saranno attribuiti
+alle altre attività che utilizzano la macchina.
+
+\medskip
+
+\noindent \textbf{Seconda fase: dalle attività ai progetti}
+
+\noindent Una volta determinato il costo
+delle attività, lo distribuiamo
+tra i progetti che le utilizzano.
+
+\noindent In questo caso utilizziamo
+gli \textbf{Activity Drivers},
+chiamati anche Second-Stage Drivers.
+
+\medskip
+
+\noindent Ad esempio, se un'attività costa
+complessivamente 6.000 e il progetto 1
+ne utilizza il 70\%:
+
+\[
+C_{\text{Progetto 1}}=6.000\cdot0{,}70
+=\boxed{4.200}
+\]
+
+\noindent Il progetto 2, utilizzando il restante 30\%,
+riceverà un costo pari a:
+
+\[
+C_{\text{Progetto 2}}=6.000\cdot0{,}30
+=\boxed{1.800}
+\]
+
+\medskip
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{../images/schema_abc.png}
+    \caption{Schema Activity-Based Costing: dalle risorse alle attività e ai progetti.}
+    %\label{fig:schema_abc}
+\end{figure}
+
+\medskip
+
+\noindent In sintesi:
+
+\[
+\boxed{
+\text{Risorse}
+\xrightarrow{\text{Resource Drivers}}
+\text{Attività}
+\xrightarrow{\text{Activity Drivers}}
+\text{Progetti}
+}
+\]
+
+\subsubsection*{ABC nel Project Management}
+
+\noindent Nel Project Management,
+la metodologia ABC viene applicata
+alla preventivazione dei costi delle commesse.
+
+\noindent Il procedimento parte dalle
+strutture organizzative già studiate:
+
+\begin{enumerate}
+    \item Si individuano le attività attraverso la
+    \textbf{WBS}.
+
+    \item Si associano le risorse disponibili
+    attraverso la \textbf{POBS}.
+
+    \item Si distribuiscono i costi delle risorse
+    tra le attività usando i Resource Drivers.
+
+    \item Si distribuiscono i costi delle attività
+    tra i progetti usando gli Activity Drivers.
+\end{enumerate}
+
+\noindent Il risultato è il \textbf{costo pieno
+di progetto}, cioè il costo complessivo
+delle risorse e delle attività attribuite
+al progetto.
+
+
+\subsubsection*{Principali tipologie di costo}
+
+\noindent Nel calcolo dei costi di progetto
+consideriamo principalmente:
+
+\begin{itemize}
+    \item \textbf{Costo del lavoro}: dipende
+    dalle ore lavorate e dal costo orario.
+
+    \[
+    \boxed{
+    C_{\text{lavoro}}=
+    \text{Ore lavorate}\cdot\text{Costo orario}
+    }
+    \]
+
+    \item \textbf{Costo delle attrezzature interne}:
+    comprende gli oneri relativi
+    alle attrezzature utilizzate.
+
+    \item \textbf{Altri costi}: materiali,
+    componenti, servizi esterni, trasporti,
+    assicurazioni e trasferte.
+
+    \item \textbf{Spese generali}: costi
+    amministrativi, affitti, utenze
+    e altre spese generali dell'organizzazione.
+\end{itemize}
+
+
+\subsubsection*{Esercizio esempio: azienda Domus}
+
+\noindent Consideriamo l'azienda \textbf{Domus},
+che si occupa di ristrutturazioni immobiliari.
+
+\noindent L'azienda deve stimare i costi
+di due progetti da realizzare contemporaneamente:
+
+\begin{itemize}
+    \item \textbf{Progetto 1}: ristrutturazione
+    di una villetta;
+
+    \item \textbf{Progetto 2}: ristrutturazione
+    di un condominio.
+\end{itemize}
+
+\noindent Poiché i due progetti condividono
+personale e attrezzature, utilizziamo
+il metodo ABC per attribuire correttamente
+i costi a ciascuno.
+
+\medskip
+
+\noindent Le principali attività individuate
+attraverso le WBS sono:
+
+\begin{itemize}
+    \item Demolizione delle murature;
+    \item Rimozione dei pavimenti;
+    \item Rimpiazzo di muri e pavimenti;
+    \item Intonacatura;
+    \item Sostituzione dell'impianto elettrico;
+    \item Trasporto dei materiali di rifiuto;
+    \item Project Management.
+\end{itemize}
+
+\subsubsection*{1. Individuazione dei costi delle risorse}
+
+\noindent L'azienda presenta i seguenti costi
+complessivi delle risorse umane e strumentali:
+
+\begin{center}
+\begin{tabular}{|l|r|}
+\hline
+\textbf{Risorsa} & \textbf{Costo} \\
+\hline
+Manodopera costruzione & 50.000 \\
+\hline
+Macchinari costruzione & 30.000 \\
+\hline
+Manodopera impiantistica & 40.000 \\
+\hline
+Attrezzature impiantistica & 8.000 \\
+\hline
+Salari autisti & 30.000 \\
+\hline
+Ammortamento vetture & 20.000 \\
+\hline
+Salari PMO & 11.000 \\
+\hline
+Salari amministrativi & 40.000 \\
+\hline
+Attrezzature amministrative & 5.000 \\
+\hline
+\textbf{Totale} & \textbf{234.000} \\
+\hline
+\end{tabular}
+\end{center}
+
+\noindent Quindi:
+
+\[
+\boxed{C_{\text{totale}}=234.000}
+\]
+
+\noindent Ora dobbiamo capire
+\textbf{come distribuire questi costi
+tra le singole attività}.
+
+\subsubsection*{2. Applicazione dei Resource Drivers}
+
+\noindent Attraverso i Resource Drivers
+stabiliamo quale percentuale di ciascuna
+risorsa viene consumata dalle attività.
+
+\medskip
+
+\noindent Ad esempio, la manodopera
+del reparto costruzione costa 50.000
+e viene distribuita nel seguente modo:
+
+\begin{itemize}
+    \item 40\% demolizione;
+    \item 30\% rimozione pavimenti;
+    \item 20\% rimpiazzo muri e pavimenti;
+    \item 10\% intonacatura.
+\end{itemize}
+
+\noindent Il costo della manodopera
+attribuito alla demolizione sarà:
+
+\[
+50.000\cdot0{,}40=\boxed{20.000}
+\]
+
+\noindent Analogamente, il 70\%
+dei 30.000 relativi ai macchinari
+viene attribuito alla demolizione:
+
+\[
+30.000\cdot0{,}70=\boxed{21.000}
+\]
+
+\noindent Ripetendo questa procedura
+per tutte le risorse, otteniamo
+il costo complessivo delle attività.
+
+\begin{center}
+\begin{tabular}{|l|r|}
+\hline
+\textbf{Attività} & \textbf{Costo} \\
+\hline
+Demolizione murature & 58.000 \\
+\hline
+Rimozione pavimenti & 34.500 \\
+\hline
+Rimpiazzo muri e pavimenti & 21.250 \\
+\hline
+Intonacatura & 7.500 \\
+\hline
+Sostituzione impianto elettrico & 42.250 \\
+\hline
+Trasporto materiali di rifiuto & 46.000 \\
+\hline
+Project Management & 24.500 \\
+\hline
+\textbf{Totale} & \textbf{234.000} \\
+\hline
+\end{tabular}
+\end{center}
+
+\noindent Il costo totale non cambia:
+abbiamo semplicemente distribuito
+i 234.000 iniziali tra le attività.
+
+\subsubsection*{3. Applicazione degli Activity Drivers}
+
+\noindent Ora dobbiamo distribuire
+il costo delle attività tra i due progetti.
+
+\noindent Utilizziamo gli \textbf{Activity Drivers},
+che misurano quanta parte di un'attività
+viene utilizzata da ogni progetto.
+
+\medskip
+
+\noindent Ad esempio, il rimpiazzo di muri
+e pavimenti costa complessivamente 21.250.
+
+\noindent Il Progetto 1 richiede 50 metri quadrati,
+mentre il Progetto 2 ne richiede 450.
+
+\noindent Il totale è:
+
+\[
+50+450=500\text{ metri quadrati}
+\]
+
+\noindent Quindi il Progetto 1 utilizza:
+
+\[
+\frac{50}{500}=0{,}10=10\%
+\]
+
+\noindent mentre il Progetto 2 utilizza:
+
+\[
+\frac{450}{500}=0{,}90=90\%
+\]
+
+\noindent Possiamo quindi distribuire il costo:
+
+\[
+C_1=21.250\cdot0{,}10=\boxed{2.125}
+\]
+
+\[
+C_2=21.250\cdot0{,}90=\boxed{19.125}
+\]
+
+\noindent Lo stesso procedimento viene applicato
+a tutte le altre attività.
+
+\begin{center}
+\scriptsize
+\begin{tabular}{|p{4cm}|r|r|r|}
+\hline
+\textbf{Attività} &
+\textbf{Totale} &
+\textbf{Prog. 1} &
+\textbf{Prog. 2} \\
+\hline
+Demolizione murature & 58.000 & 58.000 & 0 \\
+\hline
+Rimozione pavimenti & 34.500 & 0 & 34.500 \\
+\hline
+Rimpiazzo muri e pavimenti & 21.250 & 2.125 & 19.125 \\
+\hline
+Intonacatura & 7.500 & 1.875 & 5.625 \\
+\hline
+Sostituzione impianto elettrico & 42.250 & 42.250 & 0 \\
+\hline
+Trasporto rifiuti & 46.000 & 9.200 & 36.800 \\
+\hline
+Project Management & 24.500 & 7.350 & 17.150 \\
+\hline
+\textbf{Totale} &
+\textbf{234.000} &
+\textbf{120.800} &
+\textbf{113.200} \\
+\hline
+\end{tabular}
+\end{center}
+
+\noindent Abbiamo così determinato
+il costo pieno dei due progetti:
+
+\[
+\boxed{
+C_{\text{Progetto 1}}=120.800
+}
+\]
+
+\[
+\boxed{
+C_{\text{Progetto 2}}=113.200
+}
+\]
+
+\noindent Verifichiamo:
+
+\[
+120.800+113.200=\boxed{234.000}
+\]
+
+\noindent La somma coincide con il costo
+complessivo delle risorse iniziali.
+
+\medskip
+
+\noindent \textbf{Conclusione:} il metodo ABC
+permette di attribuire i costi ai progetti
+in base all'effettivo utilizzo delle attività,
+anziché suddividerli con una percentuale generica.
+
+
+\subsubsection*{4. Costruzione della Cost Baseline}
+
+\noindent Dopo aver determinato il costo
+dei due progetti, possiamo distribuire
+le spese nel tempo.
+
+\noindent Si costruisce così la
+\textbf{Cost Baseline}, che rappresenta
+l'andamento dei costi pianificati.
+
+\medskip
+
+\noindent Nell'esempio, i costi cumulati
+delle nove settimane sono:
+
+\begin{center}
+\scriptsize
+\begin{tabular}{|c|r|r|r|}
+\hline
+\textbf{Sett.} &
+\textbf{Prog. 1} &
+\textbf{Prog. 2} &
+\textbf{Totale} \\
+\hline
+1 & 20.150 & 1.906 & 22.055 \\
+\hline
+2 & 40.300 & 15.311 & 55.611 \\
+\hline
+3 & 60.450 & 28.717 & 89.166 \\
+\hline
+4 & 86.992 & 46.903 & 133.895 \\
+\hline
+5 & 114.596 & 65.857 & 180.452 \\
+\hline
+6 & 116.475 & 84.810 & 201.285 \\
+\hline
+7 & 119.167 & 106.576 & 225.743 \\
+\hline
+8 & 119.983 & 111.294 & 231.277 \\
+\hline
+9 & 120.800 & 113.200 & 234.000 \\
+\hline
+\end{tabular}
+\end{center}
+
+\noindent I valori rappresentano
+la \textbf{spesa cumulata},
+cioè quanto si prevede di aver speso
+complessivamente fino a quella settimana.
+
+\medskip
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{../images/baseline_domus.png}
+    \caption{Cost Baseline dei due progetti Domus.}
+    %\label{fig:baseline_domus}
+\end{figure}
+
+\medskip
+
+\noindent Osserviamo che la spesa aumenta
+nel corso del progetto fino a raggiungere
+il costo totale previsto di 234.000.
+
+\noindent La baseline sarà utilizzata
+successivamente per verificare
+se le spese effettive rispettano
+quelle pianificate.
+
+
+\subsection{Cost Budgeting}
+
+\noindent Il \textbf{Cost Budgeting} è la fase
+in cui i costi stimati vengono organizzati
+all'interno del budget del progetto.
+
+\noindent Non basta conoscere il costo totale:
+bisogna anche stabilire
+\textbf{quando e per quali attività
+verranno utilizzate le risorse}.
+
+\subsubsection*{Top-Down e Bottom-Up nel budget}
+
+\noindent I due approcci possono essere
+utilizzati insieme.
+
+\medskip
+
+\noindent Con il \textbf{Top-Down} la direzione
+stabilisce un budget complessivo
+e lo distribuisce ai diversi responsabili.
+
+\noindent Con il \textbf{Bottom-Up},
+invece, i responsabili stimano
+i costi delle singole attività
+e successivamente li sommano.
+
+\medskip
+
+\noindent Il Bottom-Up può aumentare
+il coinvolgimento dei responsabili,
+perché sono proprio loro a stimare
+i costi delle attività che dovranno realizzare.
+
+\noindent Tuttavia, non garantisce automaticamente
+stime accurate.
+
+\medskip
+
+\noindent Il Top-Down permette invece
+di rispettare più facilmente
+un limite complessivo di budget,
+ma può generare competizione
+per ottenere le risorse disponibili.
+
+\noindent In generale, è utile confrontare
+le stime ottenute con entrambi i metodi.
+
+\subsubsection*{Documentazione delle stime}
+
+\noindent Ogni stima dovrebbe essere accompagnata
+da informazioni che permettano di comprenderla
+e verificarla.
+
+\medskip
+
+\noindent In particolare, il documento
+deve riportare:
+
+\begin{itemize}
+    \item Ambito dell'attività;
+    \item Metodo utilizzato per stimare i costi;
+    \item Ipotesi adottate;
+    \item Vincoli delle attività;
+    \item Intervallo entro cui può variare il costo;
+    \item Possibili rischi e costi di Crashing.
+\end{itemize}
+
+\noindent Chi effettua la stima deve quindi
+considerare non soltanto il costo previsto,
+ma anche le possibili variazioni future.
+
+
+\subsubsection*{Decisioni e momenti di spesa}
+
+\noindent Nelle prime fasi di un progetto
+vengono prese decisioni che possono
+influenzare gran parte dei costi futuri.
+
+\medskip
+
+\noindent Tuttavia, la maggior parte della
+\textbf{spesa effettiva} viene sostenuta
+durante la realizzazione del progetto.
+
+\medskip
+
+\noindent Questo significa che molte spese
+vengono determinate da decisioni prese
+molto prima del momento in cui
+il denaro viene effettivamente utilizzato.
+
+\medskip
+
+\noindent Per questo motivo è fondamentale
+effettuare una buona pianificazione
+economica fin dall'inizio.
+
+
+\subsubsection*{Struttura del budget di progetto}
+
+\noindent Il \textbf{budget di progetto}
+è un programma economico che indica
+le risorse finanziarie necessarie
+per realizzare il progetto.
+
+\medskip
+
+\noindent Deve essere:
+
+\begin{itemize}
+    \item Espresso in termini monetari;
+    \item Riferito a uno specifico progetto;
+    \item Comprensivo delle risorse necessarie;
+    \item Distribuito nel tempo;
+    \item Suddiviso in conti di costo.
+\end{itemize}
+
+\noindent Il budget viene organizzato
+attraverso la \textbf{Project Budget
+Breakdown Structure (PBBS)}.
+
+\medskip
+
+\noindent Se il progetto viene realizzato
+per un cliente, dal prezzo della commessa
+deve essere sottratto il margine
+di guadagno previsto.
+
+\[
+\boxed{
+\text{Budget disponibile}=
+\text{Prezzo della commessa}-\text{Utile atteso}
+}
+\]
+
+\noindent Il budget può comprendere
+costi target negoziati e costi stimati
+sulla base delle attività previste.
+
+
+\subsubsection*{Baseline e Management Reserve}
+
+\noindent Il budget complessivo viene
+suddiviso in due componenti principali:
+
+\begin{itemize}
+    \item \textbf{Cost Baseline}: rappresenta
+    i costi pianificati del progetto
+    e la loro distribuzione nel tempo.
+
+    \item \textbf{Management Reserve}: rappresenta
+    una riserva di sicurezza utilizzabile
+    per esigenze impreviste.
+\end{itemize}
+
+\noindent Possiamo rappresentare
+la relazione attraverso:
+
+\[
+\boxed{
+\text{Project Budget}=
+\text{Cost Baseline}+\text{Management Reserve}
+}
+\]
+
+\noindent All'interno della baseline troviamo
+i costi attribuiti alle attività e ai
+\textbf{Cost Account}, insieme alle riserve
+previste e alle eventuali quote
+ancora da distribuire.
+
+\medskip
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{../images/project_budget.png}
+    \caption{Scomposizione del Project Budget.}
+    %\label{fig:project_budget}
+\end{figure}
+
+
+\subsubsection*{Cost Account e collegamento WBS--POBS}
+
+\noindent I \textbf{Cost Account (CA)}
+sono elementi utilizzati
+per controllare i costi del progetto.
+
+\medskip
+
+\noindent Nascono dal collegamento tra:
+
+\begin{itemize}
+    \item \textbf{WBS}: indica quali attività
+    devono essere realizzate;
+
+    \item \textbf{POBS}: indica chi è responsabile
+    della loro realizzazione.
+\end{itemize}
+
+\noindent In pratica, per ogni Work Package
+possiamo individuare un responsabile
+e il relativo conto di costo.
+
+\medskip
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{../images/cost_account_wbs_pobs.png}
+    \caption{Origine dei Cost Account mediante la relazione tra WBS e POBS.}
+    %\label{fig:cost_account_wbs_pobs}
+\end{figure}
+
+\medskip
+
+\noindent Il principio fondamentale è:
+
+\[
+\boxed{
+\text{Cost Account}=
+\text{Attività da realizzare}
++
+\text{Responsabilità}
+}
+\]
+
+\noindent Più la struttura dei costi segue
+la suddivisione della WBS,
+più diventa semplice controllare
+l'andamento economico del progetto.
+
+
+\subsection{Cost Control}
+
+\noindent Il \textbf{Cost Control}
+è la fase durante la quale confrontiamo
+i costi e l'avanzamento effettivo
+del progetto con quelli pianificati.
+
+\medskip
+
+\noindent L'obiettivo è capire:
+
+\begin{itemize}
+    \item Se stiamo spendendo troppo;
+    \item Se siamo in ritardo;
+    \item Se le attività procedono come previsto;
+    \item Quale potrebbe essere il costo finale.
+\end{itemize}
+
+\noindent Per effettuare questi controlli
+utilizziamo tre grandezze fondamentali:
+\textbf{PV, AC ed EV}.
+
+
+\subsubsection*{Planned Value (PV)}
+
+\noindent Il \textbf{Planned Value (PV)}
+rappresenta il costo previsto,
+secondo il budget, del lavoro
+che avremmo dovuto completare
+entro una determinata data.
+
+\medskip
+
+\noindent È anche chiamato:
+
+\[
+\boxed{
+PV=BCWS
+}
+\]
+
+\noindent dove BCWS significa
+\textit{Budgeted Cost of Work Scheduled}.
+
+\medskip
+
+\noindent Ad esempio, se entro oggi
+avevamo previsto di svolgere
+attività per un valore di 10.000:
+
+\[
+\boxed{PV=10.000}
+\]
+
+
+\subsubsection*{Actual Cost (AC)}
+
+\noindent L'\textbf{Actual Cost (AC)}
+rappresenta il costo realmente
+sostenuto fino alla data considerata.
+
+\medskip
+
+\noindent È anche chiamato:
+
+\[
+\boxed{
+AC=ACWP
+}
+\]
+
+\noindent dove ACWP significa
+\textit{Actual Cost of Work Performed}.
+
+\medskip
+
+\noindent Se per realizzare il lavoro
+abbiamo speso effettivamente 12.000:
+
+\[
+\boxed{AC=12.000}
+\]
+
+
+\subsubsection*{Earned Value (EV)}
+
+\noindent L'\textbf{Earned Value (EV)}
+rappresenta il valore, secondo il budget,
+del lavoro \textbf{realmente completato}.
+
+\medskip
+
+\noindent È anche chiamato:
+
+\[
+\boxed{
+EV=BCWP
+}
+\]
+
+\noindent dove BCWP significa
+\textit{Budgeted Cost of Work Performed}.
+
+\medskip
+
+\noindent Se il budget totale di un'attività
+è 10.000 e ne abbiamo completato il 60\%:
+
+\[
+EV=10.000\cdot0{,}60
+\]
+
+\[
+\boxed{EV=6.000}
+\]
+
+\noindent Quindi l'EV non ci dice
+quanto abbiamo speso, ma quanto
+\textbf{vale il lavoro che abbiamo realizzato},
+utilizzando i costi previsti a budget.
+
+\medskip
+
+\noindent Indicando con BAC
+il budget complessivo del progetto
+e con $\%L$ la percentuale
+di avanzamento fisico:
+
+\[
+\boxed{
+EV=BAC\cdot\%L
+}
+\]
+
+\noindent Questa formula si applica
+quando la percentuale di avanzamento
+è riferita all'intero progetto.
+
+\medskip
+
+\noindent \textbf{Promemoria fondamentale:}
+
+\begin{itemize}
+    \item \textbf{PV}: quanto lavoro avevamo
+    previsto di completare, espresso in valore;
+
+    \item \textbf{AC}: quanto abbiamo speso davvero;
+
+    \item \textbf{EV}: quanto vale il lavoro
+    che abbiamo effettivamente completato.
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{../images/curve_pv_ac_ev.png}
+    \caption{Curve del controllo dei costi: Planned Value, Actual Cost ed Earned Value.}
+    %\label{fig:curve_pv_ac_ev}
+\end{figure}
+
+
+\subsection{Earned Value Method (EVM)}
+
+\noindent L'\textbf{Earned Value Method (EVM)}
+è un metodo che permette di controllare
+contemporaneamente le prestazioni
+di \textbf{tempo e costo} di un progetto.
+
+\medskip
+
+\noindent Utilizzando PV, AC ed EV possiamo
+calcolare scostamenti e indici
+di efficienza.
+
+\subsubsection*{Cost Variance (CV)}
+
+\noindent La \textbf{Cost Variance}
+misura lo scostamento dei costi.
+
+\[
+\boxed{
+CV=EV-AC
+}
+\]
+
+\noindent Possiamo avere tre situazioni:
+
+\begin{itemize}
+    \item $CV>0$: abbiamo speso meno
+    del valore del lavoro realizzato;
+
+    \item $CV=0$: siamo in linea con il budget;
+
+    \item $CV<0$: abbiamo speso più
+    del valore del lavoro realizzato.
+\end{itemize}
+
+\noindent Ad esempio:
+
+\[
+CV=8.000-10.000=\boxed{-2.000}
+\]
+
+\noindent Il risultato negativo indica
+un \textbf{sovracosto}.
+
+
+\subsubsection*{Schedule Variance (SV)}
+
+\noindent La \textbf{Schedule Variance}
+misura lo scostamento rispetto
+all'avanzamento pianificato.
+
+\[
+\boxed{
+SV=EV-PV
+}
+\]
+
+\noindent Anche in questo caso:
+
+\begin{itemize}
+    \item $SV>0$: siamo in anticipo;
+    \item $SV=0$: siamo in linea con il piano;
+    \item $SV<0$: siamo in ritardo.
+\end{itemize}
+
+\noindent Ad esempio:
+
+\[
+SV=8.000-10.000=\boxed{-2.000}
+\]
+
+\noindent Il risultato indica che
+abbiamo completato meno lavoro
+rispetto a quanto previsto.
+
+\medskip
+
+\noindent \textbf{Attenzione:} la Schedule Variance
+è espressa in valore monetario,
+non direttamente in giorni
+o settimane di ritardo.
+
+
+\subsubsection*{Cost Performance Index (CPI)}
+
+\noindent Il \textbf{CPI} misura
+l'efficienza con cui stiamo utilizzando
+il denaro disponibile.
+
+\[
+\boxed{
+CPI=\frac{EV}{AC}
+}
+\]
+
+\noindent Il significato è:
+
+\begin{itemize}
+    \item $CPI>1$: buona efficienza dei costi;
+    \item $CPI=1$: costi in linea con il budget;
+    \item $CPI<1$: inefficienza dei costi.
+\end{itemize}
+
+\noindent Ad esempio:
+
+\[
+CPI=\frac{8.000}{10.000}=\boxed{0{,}80}
+\]
+
+\noindent Significa che per ogni unità
+monetaria spesa stiamo ottenendo
+soltanto 0,80 unità di valore a budget.
+
+
+\subsubsection*{Schedule Performance Index (SPI)}
+
+\noindent Lo \textbf{SPI} misura
+l'efficienza dell'avanzamento
+rispetto alla programmazione.
+
+\[
+\boxed{
+SPI=\frac{EV}{PV}
+}
+\]
+
+\noindent Possiamo avere:
+
+\begin{itemize}
+    \item $SPI>1$: avanzamento superiore al previsto;
+    \item $SPI=1$: avanzamento in linea con il piano;
+    \item $SPI<1$: avanzamento inferiore al previsto.
+\end{itemize}
+
+\noindent Ad esempio:
+
+\[
+SPI=\frac{8.000}{10.000}=\boxed{0{,}80}
+\]
+
+\noindent Abbiamo realizzato soltanto
+l'80\% del valore di lavoro
+che avremmo dovuto completare.
+
+
+\subsubsection*{Riepilogo degli indicatori}
+
+\begin{center}
+\begin{tabular}{|c|c|p{6cm}|}
+\hline
+\textbf{Indice} &
+\textbf{Formula} &
+\textbf{Significato} \\
+\hline
+CV & $EV-AC$ &
+Scostamento dei costi \\
+\hline
+SV & $EV-PV$ &
+Scostamento dell'avanzamento \\
+\hline
+CPI & $\frac{EV}{AC}$ &
+Efficienza dei costi \\
+\hline
+SPI & $\frac{EV}{PV}$ &
+Efficienza dell'avanzamento \\
+\hline
+\end{tabular}
+\end{center}
+
+\noindent La regola più importante è:
+
+\[
+\boxed{
+\begin{aligned}
+CV<0,\ CPI<1
+&\Rightarrow\text{Sopra il budget}\\
+SV<0,\ SPI<1
+&\Rightarrow\text{In ritardo}
+\end{aligned}
+}
+\]
+
+\noindent Combinando i due indicatori
+possiamo capire se il progetto
+è in anticipo o in ritardo
+e se sta rispettando il budget.
+
+
+\subsubsection*{Esercizio esempio: Earned Value}
+
+\noindent Consideriamo un progetto
+con un budget complessivo di:
+
+\[
+\boxed{BAC=21.000}
+\]
+
+\noindent Alla data di controllo
+del 30 settembre conosciamo
+i costi previsti, quelli effettivi
+e la percentuale di avanzamento
+delle attività.
+
+\begin{center}
+\scriptsize
+\begin{tabular}{|p{3.5cm}|r|r|c|r|}
+\hline
+\textbf{Attività} &
+\textbf{PV} &
+\textbf{AC} &
+\textbf{Avanz.} &
+\textbf{EV} \\
+\hline
+Literature Review & 3.000 & 2.000 & 100\% & 3.000 \\
+\hline
+Process Analysis & 7.500 & 6.000 & 80\% & 6.000 \\
+\hline
+Evaluation of Proposals & 5.000 & 5.000 & 75\% & 3.750 \\
+\hline
+Change Implementation & 1.500 & 3.000 & 60\% & 2.700 \\
+\hline
+Project Closure & 0 & 0 & 0\% & 0 \\
+\hline
+\textbf{Totale} &
+\textbf{17.000} &
+\textbf{16.000} &
+-- &
+\textbf{15.450} \\
+\hline
+\end{tabular}
+\end{center}
+
+\noindent \textbf{Attenzione:} il PV indica
+il valore pianificato fino alla data di controllo,
+mentre l'EV è calcolato applicando
+l'avanzamento effettivo al budget
+complessivo delle singole attività.
+
+\medskip
+
+\noindent Ad esempio, l'attività
+\textit{Change Implementation}
+ha un budget complessivo di 4.500
+ed è completata al 60\%.
+
+\[
+EV=4.500\cdot0{,}60
+\]
+
+\[
+\boxed{EV=2.700}
+\]
+
+\noindent Sommando tutti gli Earned Value
+otteniamo:
+
+\[
+EV=3.000+6.000+3.750+2.700
+\]
+
+\[
+\boxed{EV=15.450}
+\]
+
+\noindent Quindi, alla data di controllo,
+abbiamo tre valori fondamentali:
+
+\[
+\boxed{
+\begin{aligned}
+PV&=17.000\\
+AC&=16.000\\
+EV&=15.450
+\end{aligned}
+}
+\]
+
+
+\subsubsection*{Calcolo degli scostamenti}
+
+\noindent Calcoliamo innanzitutto
+lo scostamento dei costi:
+
+\[
+CV=EV-AC
+\]
+
+\[
+CV=15.450-16.000
+\]
+
+\[
+\boxed{CV=-550}
+\]
+
+\noindent Il risultato è negativo:
+abbiamo speso 550 in più rispetto
+al valore a budget del lavoro realizzato.
+
+\medskip
+
+\noindent Calcoliamo ora
+lo scostamento dell'avanzamento:
+
+\[
+SV=EV-PV
+\]
+
+\[
+SV=15.450-17.000
+\]
+
+\[
+\boxed{SV=-1.550}
+\]
+
+\noindent Anche questo risultato è negativo:
+abbiamo realizzato meno lavoro
+rispetto a quello pianificato.
+
+\medskip
+
+\noindent Quindi il progetto è
+\textbf{sopra il budget e in ritardo}.
+
+
+\subsubsection*{Calcolo degli indici di efficienza}
+
+\noindent Calcoliamo il CPI:
+
+\[
+CPI=\frac{15.450}{16.000}
+\]
+
+\[
+\boxed{CPI\simeq0{,}97}
+\]
+
+\noindent Poiché il CPI è minore di 1,
+stiamo ottenendo circa 0,97
+unità di valore a budget
+per ogni unità monetaria spesa.
+
+\medskip
+
+\noindent Calcoliamo lo SPI:
+
+\[
+SPI=\frac{15.450}{17.000}
+\]
+
+\[
+\boxed{SPI\simeq0{,}91}
+\]
+
+\noindent Poiché lo SPI è minore di 1,
+abbiamo completato circa il 91\%
+del valore del lavoro che avevamo
+previsto di realizzare.
+
+\medskip
+
+\noindent In conclusione:
+
+\[
+\boxed{
+\begin{aligned}
+CV&=-550\\
+SV&=-1.550\\
+CPI&=0{,}97\\
+SPI&=0{,}91
+\end{aligned}
+}
+\]
+
+\noindent Il progetto presenta quindi
+\textbf{inefficienza sia nei costi
+sia nell'avanzamento temporale}.
+
+\medskip
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{../images/earned_value_esempio.png}
+    \caption{Grafico Earned Value relativo all'esercizio.}
+    %\label{fig:earned_value_esempio}
+\end{figure}
+
+
+\subsection{Curve a S}
+
+\noindent Le \textbf{curve a S} rappresentano
+l'andamento cumulato dei costi
+e dell'avanzamento nel tempo.
+
+\noindent Generalmente hanno una forma
+simile alla lettera S, perché:
+
+\begin{itemize}
+    \item all'inizio del progetto la spesa cresce lentamente;
+    \item durante l'esecuzione cresce più rapidamente;
+    \item verso la conclusione tende a stabilizzarsi.
+\end{itemize}
+
+\noindent Confrontando le curve di PV, AC ed EV
+possiamo capire visivamente
+la situazione del progetto.
+
+\medskip
+
+\noindent Ad esempio:
+
+\[
+AC>EV
+\]
+
+\noindent significa che abbiamo speso
+più del valore del lavoro realizzato.
+
+\[
+PV>EV
+\]
+
+\noindent significa che il lavoro completato
+è inferiore a quello pianificato.
+
+\medskip
+
+\noindent Le curve a S permettono quindi
+di visualizzare facilmente
+gli stessi risultati che otteniamo
+attraverso CV, SV, CPI e SPI.
+
+
+\subsection{Previsioni a finire}
+
+\noindent Dopo aver controllato l'andamento
+del progetto, possiamo cercare di prevedere
+\textbf{quanto costerà complessivamente
+quando sarà terminato}.
+
+\medskip
+
+\noindent Per effettuare questa previsione
+utilizziamo l'\textbf{Estimate At Completion (EAC)}.
+
+\medskip
+
+\noindent La formula generale è:
+
+\[
+\boxed{
+EAC=AC+ETC
+}
+\]
+
+\noindent dove:
+
+\begin{itemize}
+    \item $EAC$ = costo totale previsto
+    alla fine del progetto;
+
+    \item $AC$ = costo già sostenuto;
+
+    \item $ETC$ = costo stimato
+    per completare il lavoro rimanente.
+\end{itemize}
+
+\noindent Il significato è semplice:
+\textbf{al costo già sostenuto
+aggiungiamo quanto pensiamo
+di spendere per finire il progetto}.
+
+\medskip
+
+\noindent Possiamo calcolare l'EAC
+in tre modi differenti.
+
+
+\subsubsection*{1. Previsione basata sui costi previsti}
+
+\noindent Il primo metodo suppone
+che le inefficienze osservate fino a oggi
+non si ripetano in futuro.
+
+\medskip
+
+\noindent Quindi il lavoro rimanente
+viene completato rispettando
+i costi originariamente previsti.
+
+\[
+\boxed{
+EAC=AC+(BAC-EV)
+}
+\]
+
+\noindent Nell'esempio precedente:
+
+\[
+AC=16.000,\qquad
+BAC=21.000,\qquad
+EV=15.450
+\]
+
+\noindent Sostituendo:
+
+\[
+EAC=16.000+(21.000-15.450)
+\]
+
+\[
+EAC=16.000+5.550
+\]
+
+\[
+\boxed{EAC_1=21.550}
+\]
+
+\noindent Il costo finale previsto
+è quindi 21.550.
+
+\medskip
+
+\noindent Questo metodo è adatto
+quando consideriamo gli scostamenti
+precedenti come eventi eccezionali.
+
+
+\subsubsection*{2. Previsione basata sull'efficienza dei costi}
+
+\noindent Il secondo metodo suppone
+che l'inefficienza osservata fino a oggi
+continui anche in futuro.
+
+\medskip
+
+\noindent Per questo motivo correggiamo
+il costo del lavoro rimanente
+attraverso il CPI.
+
+\[
+\boxed{
+EAC=AC+\frac{BAC-EV}{CPI}
+}
+\]
+
+\noindent Utilizzando il CPI arrotondato
+dell'esempio:
+
+\[
+CPI=0{,}97
+\]
+
+\noindent Otteniamo:
+
+\[
+EAC=16.000+\frac{21.000-15.450}{0{,}97}
+\]
+
+\[
+EAC=16.000+\frac{5.550}{0{,}97}
+\]
+
+\[
+\boxed{EAC_2\simeq21.722}
+\]
+
+\noindent Il risultato è maggiore
+rispetto al metodo precedente,
+perché stiamo ipotizzando
+che l'inefficienza nei costi continui.
+
+\medskip
+
+\noindent Questo metodo è utile
+quando consideriamo gli scostamenti
+già osservati come rappresentativi
+delle prestazioni future.
+
+
+\subsubsection*{3. Previsione basata sui costi e sui tempi}
+
+\noindent Il terzo metodo considera
+sia l'inefficienza nei costi
+sia quella nell'avanzamento.
+
+\medskip
+
+\noindent Utilizziamo quindi
+sia il CPI sia lo SPI:
+
+\[
+\boxed{
+EAC=AC+\frac{BAC-EV}{CPI\cdot SPI}
+}
+\]
+
+\noindent Nell'esempio:
+
+\[
+CPI=0{,}97
+\qquad
+SPI=0{,}91
+\]
+
+\noindent Sostituendo:
+
+\[
+EAC=16.000+
+\frac{21.000-15.450}{0{,}97\cdot0{,}91}
+\]
+
+\[
+EAC=16.000+
+\frac{5.550}{0{,}8827}
+\]
+
+\[
+\boxed{EAC_3\simeq22.288}
+\]
+
+\noindent In questo caso il costo finale
+previsto aumenta ulteriormente,
+perché ipotizziamo che continuino
+sia le inefficienze economiche
+sia quelle di avanzamento.
+
+\medskip
+
+\noindent Anche questo metodo è una previsione:
+la sua attendibilità dipende dal fatto
+che i ritardi influenzino davvero
+i costi del lavoro ancora da completare.
+
+
+\subsubsection*{Confronto tra le tre previsioni}
+
+\noindent I risultati ottenuti sono:
+
+\begin{center}
+\begin{tabular}{|p{7cm}|r|}
+\hline
+\textbf{Metodo} & \textbf{EAC} \\
+\hline
+Costi previsti & 21.550 \\
+\hline
+Performance dei costi & 21.722 \\
+\hline
+Performance dei costi e tempi & 22.288 \\
+\hline
+\end{tabular}
+\end{center}
+
+\noindent Il budget originario era:
+
+\[
+\boxed{BAC=21.000}
+\]
+
+\noindent Tutte e tre le previsioni
+indicano quindi un costo finale
+superiore al budget iniziale.
+
+\medskip
+
+\noindent \textbf{Quale previsione dobbiamo scegliere?}
+
+\noindent Dipende dalle informazioni
+disponibili sull'andamento del progetto:
+
+\begin{itemize}
+    \item \textbf{EAC 1}: se gli scostamenti passati
+    sono eccezionali e non si ripeteranno;
+
+    \item \textbf{EAC 2}: se l'inefficienza
+    dei costi continuerà nel lavoro rimanente;
+
+    \item \textbf{EAC 3}: se le inefficienze
+    nei costi e nei tempi continueranno
+    entrambe a influenzare il progetto.
+\end{itemize}
+
+\medskip
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{../images/previsioni_eac.png}
+    \caption{Confronto delle tre previsioni del costo a finire (EAC).}
+    %\label{fig:previsioni_eac}
+\end{figure}
+
+\medskip
+
+\noindent \textbf{Conclusione:} le previsioni
+a finire permettono di individuare
+in anticipo eventuali superamenti
+del budget e di adottare
+azioni correttive prima
+della conclusione del progetto.
+
+
+\subsubsection*{Riepilogo delle formule fondamentali}
+
+\noindent Per gli esercizi sul controllo dei costi
+è importante ricordare:
+
+\[
+\boxed{
+\begin{aligned}
+CV &= EV-AC\\[4pt]
+SV &= EV-PV\\[4pt]
+CPI &= \frac{EV}{AC}\\[4pt]
+SPI &= \frac{EV}{PV}
+\end{aligned}
+}
+\]
+
+\noindent Per stimare il costo finale:
+
+\[
+\boxed{
+EAC=AC+ETC
+}
+\]
+
+\[
+\boxed{
+EAC_1=AC+(BAC-EV)
+}
+\]
+
+\[
+\boxed{
+EAC_2=AC+\frac{BAC-EV}{CPI}
+}
+\]
+
+\[
+\boxed{
+EAC_3=AC+\frac{BAC-EV}{CPI\cdot SPI}
+}
+\]
+
+\noindent Il concetto più importante
+è che \textbf{PV rappresenta il pianificato,
+AC il costo realmente sostenuto
+ed EV il valore del lavoro completato}.
+
+\noindent Attraverso questi tre valori
+possiamo capire se il progetto
+sta rispettando il budget,
+se è in ritardo e quanto
+potrebbe costare alla conclusione.
