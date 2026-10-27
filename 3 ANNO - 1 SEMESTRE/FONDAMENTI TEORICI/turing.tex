@@ -1042,7 +1042,7 @@ Ovviamente il linguaggio corrispondente all'\textsc{accept} è il seguente:
 
 
 \subsection{Halting Problem}
-
+\label{hpro}
 \colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
    Il \textbf{prolema della terminazione} (halting problem) è il problema associato alla funzione \textsc{halting}:$\Sigma^*\to \{0,1\}$:
    \[ \textsc{halting}(\sigma) = \begin{cases}
@@ -1066,8 +1066,57 @@ Il linguaggio corrispondente all'\textsc{halting} è il seguente:
 
 
 \section{Riduzioni}
+Per definire il concetto di riduzione dobbiamo definire cosa è una funzione \textbf{Turing calcolabile}:\smallskip\\
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
+   Una funzione $f:\Sigma_A^* \to \Sigma_B^*$ è \textbf{(Turing) calcolabile} se esiste una MT terminante M talce che, per ogni $x \in \Sigma_A^*$, $M$ con input $x$ accetta avendo sul nastro l'encoding $f(x)$
+\end{definition}}}\smallskip\\
+In altre parole una funzione è Turing calcolabile se esiste un algoritmo che riesce sempre a calcolarne il risultato in un numero finito di passaggi. Ora possiamo definire formalmente cosa è una riduzione:\smallskip\\
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
+   Siano $A$ e $B$ due linguaggi sugli alfabeti $\Sigma_A$ e $\Sigma_B$ (non necessariamente distinti). \\$A$ è \textbf{riducibile (molti a uno)} a $B$ se esiste una funzione Turing calcolabile $f:\Sigma_A^* \to \Sigma_B^*$ tale che, per ogni $x \in \Sigma_A^*$,
+   $x \in A$ se e solo se $f(x) = B$  
+\end{definition}}}\smallskip\\
+Se $A$ riducibile molti a uno a $B$ e utilizziamo la seguente notazione:
+\[    A \le_{m} B        \]
+E si può dire sia \textbf{riducibile molti a uno} oppure semplicemente \textbf{riducibile}.\\
+Inoltre la funzione $f$ viene chiamata \textbf{riduzione molti a uno} o anche semplicemente \textbf{riduzione}.\newpage
+\noindent Per poter effettuare una riduzione la funzione $f$ deve comportarsi nel seguente modo:
+\begin{itemize}
+    \item Se $x$ appartiene ad $A$, allora $f(x)$ deve appartenere a $B$
+    \item Se $x$ non appartiene ad $A$, allora $f(x)$ non deve appartenere a $B$
+\end{itemize}
+Ma a cosa ci serve effettuare una riduzione? Ci fornisce uno strumento per dimostrare la decidibilità o l'indecibilità dei linguaggi (problemi) mettendoli a confronto con altri problemi di cui la decidibilità è nota. Infatti
+potremo dimostrare che un linguaggio $\mathcal{L}$ è decidibile \textbf{riducendolo} ad un linguaggio $\mathcal{L}'$ di cui conosciamo la decidiilità. In maniera analoga si può dimostrare anche la non decidibilità. Formalmente vale il lemma:\smallskip\\
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{lemma}
+   Siano $A$ e $B$ due linguaggi sugli alfabeti $\Sigma_A$ e $\Sigma_B$, rispettivamente, tale per cui 
+   \[A \le_m B\]
+   se $B$ è decidibile anche $A$ è decidibile 
+\end{lemma}}}\smallskip\\
+Per quanto riguarda la non decidibilità invece vale il seguente lemma:\smallskip\\
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{lemma}
+   Siano $A$ e $B$ due linguaggi sugli alfabeti $\Sigma_A$ e $\Sigma_B$, rispettivamente, tale per cui 
+   \[A \le_m B\]
+   se $A$ non è decidibile anche $B$ non è decidibile 
+\end{lemma}}}\smallskip\\
+%mettere dimostrazioni
 
 
+\subsection{AlwaysHalt}
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
+   Il \textbf{problema Always Halt} è il problema associato alla funzione \textsc{always halt}: $\Sigma^*\to \{0,1 \}$:
+   \[   \textsc{always halt}(\sigma) = \begin{cases}
+    1 \qquad \text{se } M \text{ termina su ogni input } x \\
+    0 \qquad \text{altrimenti}
+   \end{cases}         \]
+\end{definition}}}\smallskip\\
+Dove:
+\begin{itemize}
+    \item \textsc{always halt}$(\sigma) = 1$: la macchina $M$ termina per ogni possibile stringa in input, accettandola oppure rifiutandola.
+    \item \textsc{always halt}$(\sigma) = 0$: esiste almeno una stringa di input sulla quale $M$ non termina mai
+\end{itemize}
+Questo problema è strettamente collegato all'Halting Problem (vd. \ref{hpro}) ma con una differenza fondamentale, mentre l'Halting Problem considera una macchina e uno specifico input, Always Halt considera una macchina e \textbf{tutti}
+i suoi possibili input. Di conseguenza il linguaggio corrispondente all'\textsc{always halt} è il seguente:
+\[     AH = \{  d_M \ |\ M(x) \text{ termina oer ogni input } x \text{ per }  M\}   \]
+%Dimostrazione della non decidiblità con riduzioni
 
 
 
