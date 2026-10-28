@@ -876,7 +876,7 @@ In questa sezione vedremo la differenza tra problemi funzionali e problemi decis
 tramite l'applicazioni di una funzione. Vediamo le definizioni formali:\smallskip\\
 \colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
    Sia fissata una funzione $f: \Sigma_1^* \to \Sigma_2^*$. Il \textbf{problema funzionale} $\bm{P_f}$ di $f$ chiede, per ogni $a \in \Sigma_1^*$, il valore $f(a)$, per un qualche alfabeto $\Sigma$.
-\end{definition}}}\smallskip\\
+\end{definition}}}\smallskip\\ \label{deci}
 Un \textbf{problema decisionale} è un problema funzionale, dove la funzione è una funzione booleana, che ha quindi solo 2 risultati possibili (true o false, si o no ecc$\ldots$). Chiamando $M$ una macchina di Turing terminante, utilizziamo $\bm{M(x)}$
 per denotare lo \textbf{stato del nastro di} $\bm{M}$ alla fine della comuputazione se $M$ termina per $x$, in altre parole $M(x)$ rappresenta il contenuto del nastro della macchina di Turing $M$ al termine della computazione sull'input $x$.
 Vediamo ora quando un problema funzionale è decidibile:\smallskip\\
@@ -1042,7 +1042,7 @@ Ovviamente il linguaggio corrispondente all'\textsc{accept} è il seguente:
 
 
 \subsection{Halting Problem}
-
+\label{hpro}
 \colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
    Il \textbf{prolema della terminazione} (halting problem) è il problema associato alla funzione \textsc{halting}:$\Sigma^*\to \{0,1\}$:
    \[ \textsc{halting}(\sigma) = \begin{cases}
@@ -1066,6 +1066,57 @@ Il linguaggio corrispondente all'\textsc{halting} è il seguente:
 
 
 \section{Riduzioni}
+Per definire il concetto di riduzione dobbiamo definire cosa è una funzione \textbf{Turing calcolabile}:\smallskip\\
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
+   Una funzione $f:\Sigma_A^* \to \Sigma_B^*$ è \textbf{(Turing) calcolabile} se esiste una MT terminante M talce che, per ogni $x \in \Sigma_A^*$, $M$ con input $x$ accetta avendo sul nastro l'encoding $f(x)$
+\end{definition}}}\smallskip\\
+In altre parole una funzione è Turing calcolabile se esiste un algoritmo che riesce sempre a calcolarne il risultato in un numero finito di passaggi. Ora possiamo definire formalmente cosa è una riduzione:\smallskip\\
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
+   Siano $A$ e $B$ due linguaggi sugli alfabeti $\Sigma_A$ e $\Sigma_B$ (non necessariamente distinti). \\$A$ è \textbf{riducibile (molti a uno)} a $B$ se esiste una funzione Turing calcolabile $f:\Sigma_A^* \to \Sigma_B^*$ tale che, per ogni $x \in \Sigma_A^*$,
+   $x \in A$ se e solo se $f(x) = B$  
+\end{definition}}}\smallskip\\
+Se $A$ riducibile molti a uno a $B$ e utilizziamo la seguente notazione:
+\[    A \le_{m} B        \]
+E si può dire sia \textbf{riducibile molti a uno} oppure semplicemente \textbf{riducibile}.\\
+Inoltre la funzione $f$ viene chiamata \textbf{riduzione molti a uno} o anche semplicemente \textbf{riduzione}.\newpage
+\noindent Per poter effettuare una riduzione la funzione $f$ deve comportarsi nel seguente modo:
+\begin{itemize}
+    \item Se $x$ appartiene ad $A$, allora $f(x)$ deve appartenere a $B$
+    \item Se $x$ non appartiene ad $A$, allora $f(x)$ non deve appartenere a $B$
+\end{itemize}
+Ma a cosa ci serve effettuare una riduzione? Ci fornisce uno strumento per dimostrare la decidibilità o l'indecibilità dei linguaggi (problemi) mettendoli a confronto con altri problemi di cui la decidibilità è nota. Infatti
+potremo dimostrare che un linguaggio $\mathcal{L}$ è decidibile \textbf{riducendolo} ad un linguaggio $\mathcal{L}'$ di cui conosciamo la decidiilità. In maniera analoga si può dimostrare anche la non decidibilità. Formalmente vale il lemma:\smallskip\\
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{lemma}
+   Siano $A$ e $B$ due linguaggi sugli alfabeti $\Sigma_A$ e $\Sigma_B$, rispettivamente, tale per cui 
+   \[A \le_m B\]
+   se $B$ è decidibile anche $A$ è decidibile 
+\end{lemma}}}\smallskip\\
+Per quanto riguarda la non decidibilità invece vale il seguente lemma:\smallskip\\
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{lemma}
+   Siano $A$ e $B$ due linguaggi sugli alfabeti $\Sigma_A$ e $\Sigma_B$, rispettivamente, tale per cui 
+   \[A \le_m B\]
+   se $A$ non è decidibile anche $B$ non è decidibile 
+\end{lemma}}}\smallskip\\
+%mettere dimostrazioni
+
+
+\subsection{AlwaysHalt}
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
+   Il \textbf{problema Always Halt} è il problema associato alla funzione \textsc{always halt}: $\Sigma^*\to \{0,1 \}$:
+   \[   \textsc{always halt}(\sigma) = \begin{cases}
+    1 \qquad \text{se } M \text{ termina su ogni input } x \\
+    0 \qquad \text{altrimenti}
+   \end{cases}         \]
+\end{definition}}}\smallskip\\
+Dove:
+\begin{itemize}
+    \item \textsc{always halt}$(\sigma) = 1$: la macchina $M$ termina per ogni possibile stringa in input, accettandola oppure rifiutandola.
+    \item \textsc{always halt}$(\sigma) = 0$: esiste almeno una stringa di input sulla quale $M$ non termina mai
+\end{itemize}
+Questo problema è strettamente collegato all'Halting Problem (vd. \ref{hpro}) ma con una differenza fondamentale, mentre l'Halting Problem considera una macchina e uno specifico input, Always Halt considera una macchina e \textbf{tutti}
+i suoi possibili input. Di conseguenza il linguaggio corrispondente all'\textsc{always halt} è il seguente:
+\[     AH = \{  d_M \ |\ M(x) \text{ termina oer ogni input } x \text{ per }  M\}   \]
+%Dimostrazione della non decidiblità con riduzioni
 
 
 
@@ -1075,18 +1126,74 @@ Il linguaggio corrispondente all'\textsc{halting} è il seguente:
 
 
 
+\section{Problemi indecidibili} 
+In questa sezione vedremo come determinare l'indecidibilità di un linguaggio (problema) 
+senza utilizzare le riduzioni. Per procedere dobbiamo dare alcune definizioni sulle proprietà dei linguaggi:\smallskip\\
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
+   Sia $\Sigma$ un alfabeto. Una \textbf{proprietà dei liguaggi su }$\bm{\Sigma}$ è una famiglia $\mathcal{P}$
+   di linguaggi su $\Sigma$
+\end{definition}}}\smallskip\\
+Un linguaggio $\mathcal{L}$ soddisfa $\mathcal{P}$ se e solo se $\mathcal{L} \in \mathcal{P}$. Una
+proprietà dei linguaggi su $\Sigma$ è detta \textbf{triviale} se:
+\[     \text{contiene tutti oppure nessuno i linguaggi su } \Sigma \text{ che sono riconoscibili}     \]
+Si ricorda che un linguaggio $\mathcal{L}$ è riconoscibile se esite una macchina di Turing $M$ tale che $\mathcal{L} = L(M)$.\\
+Vediamo un esempio:\smallskip\\
+\textit{Esempio.} La famiglia $\mathcal{P}_1$ di tutti i linguaggi su $\Sigma$ che consistono solo di encoding
+di numeri pari è una proprietà su $\Sigma$. Una \textbf{proprietà non triviale} è:
+\[    \mathcal{L}_1 = \{10,100 \} \text{ è in } \mathcal{P}_1 \qquad \text{e} \qquad  \mathcal{L}_1 = \{11,100 \} \text{ non è in } \mathcal{P}_1 \]
+ed entrambi sono riconoscibili.\smallskip\\
+\textit{Esempio.} La famiglia $\mathcal{P}_2$ di tutti i linguaggi su $\Sigma$ che contengono la stringa \textit{aaa} è una proprietà su $\Sigma$.
+Una \textbf{proprietà triviale} è che nessun linguaggio è in $\mathcal{P}_2$ con $\mathcal{P}_2 = \emptyset$
+visto che \textit{a} non è un simbolo in $\Sigma$.
+
+\subsection{Problema dell'appartenenza}
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
+   Il \textbf{problema dell'appartenenza} per una proprietà $\mathcal{P}$ dei linguaggi su $\Sigma$
+   (Belongs-$\mathcal{P}$ Problema) è il problema decisionale (vd. \ref{deci}) associato alla funzione \textsc{belongs}($\mathcal{P}$):$\mathcal{M}^*\to \{0,1\}$
+   \[  \textsc{belongs}(x) = \begin{cases}
+    1 \qquad \text{se e solo se } x = e(M) \text{ e } L(M) \text{ è uno dei linguaggi in } \mathcal{P}\\
+    0 \qquad \text{altrimenti}
+   \end{cases} \]
+\end{definition}}}\smallskip\\
+Dove:
+\begin{itemize}
+    \item $\mathcal{M}$ è l'alfabeto dell'encoding delle macchine di Turing 
+\end{itemize}
+Il linguaggio corrispondente alla funzione \textsc{belongs} è il seguente:
+\[   B_{\mathcal{P}} = \{   x \in \mathcal{M}^* \ | \ x = e(M) \text{ e } M \text{ riconosce un linguaggio in } \mathcal{P} \}  \]
+Con questo problema ci interroghiamo se, dato un pezzo di codice $P$, possiamo stabilire algoritmicamente se $P$ riconosce un linguaggio desiderato.
+
+
+
+\subsection{Teorema di (Declan) Rice}
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{theorem}
+   Sia $\mathcal{P}$ una proprietà dei linguaggi su un alfabeto $\Sigma$.
+   \[  \text{Se } \mathcal{P} \text{ non è triviale allora } B_{\mathcal{P}} \text{ non è decidibile}    \]
+\end{theorem}}}\smallskip\\
+Come dicevamo all'inizio della sezione, questo teorema ci servirà per dimostrare l'indecidibilità di un linguaggio (problemi)
+senza utilizzare le riduzioni. L'idea sarà quella di, data la descrizione di una macchina di Turing $M$,
+stabilire se il linguaggio che $M$ riconosce soddisfa una proprietà non triviale fissata non è Turing decidibile.\smallskip\\
+Vediamo una \textbf{dimostrazione dell'indecibilità} di un linguaggio \textbf{mediante il teorema di Rice}.\\
+\textit{Esempio.} Sia $\mathcal{M}$ l'alfabeto degli encoding di una macchina di Turing.
+Sia $\mathcal{P}_{fin}$ la famiglia di tutti i linguaggi su cardinalità finita sull'alfabeto 
+$\Sigma = (0,1)$ e definiamo il linguaggio:
+\[   B_{fin} = \{   x \in \mathcal{M^*} \ | \ x = e(M) \text{ e } M \text{ è una } MT \text{ che riconosce un linguaggio in } \mathcal{P}_{fin}
+ \}  \]
+ Dimostriamo che $B_{fin}$ non è decidibile.\\
+ Possiamo osservare che:
+ \begin{itemize}
+    \item $\mathcal{P}_{fin}$ contiene almeno un linguaggio riconoscibile su $\Sigma$ (tutti i linguaggi finiti sono riconoscibili)
+    \item $\mathcal{P}_{fin}$ non contiene ogni linguaggio riconoscibile 
+ \end{itemize}
+Concludiamo che $\mathcal{P}_{fin}$ \textbf{non è una proprietà triviale} dei linguaggi su $\Sigma$, quindi applicando il teorema di Rice $B_{fin}$ \textbf{non è decidibile}. 
+
+
+
+
+\section{Diagonalizzazione}
 
 
 
 
 
 
-
-
-
-
-
-% ---Accept problem con dimostrazione della non-decidibilità (F come macchina universale che fa subroutine)
-% ---Halting Problem con dimostrazine della non-decidibilità (primo tentativo di analisi del codice)
-% ---Linguaggi non turing riconoscibili
-% ---Nozione di Riduzione 
