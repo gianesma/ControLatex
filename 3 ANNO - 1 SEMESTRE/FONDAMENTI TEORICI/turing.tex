@@ -760,7 +760,7 @@ Successivamente fu dimostrato che $\lambda-$calculus e macchine di Touring hanno
 può essere applicata anche alle macchine di Turing.
 
 
-% slide 31 - problemi funzionali decisionali - dimostrazione, turing calcolabile, turing decidibile
+
 
 
 
@@ -776,7 +776,7 @@ In altre parole, una macchina di Turing universale riceve una descrizione (codif
 cosa significa codificare (encoding) una macchina di Turing, per fare in modo che tale codifica diventi l'input di una macchina universale.
 
 
-\subsection{Encoding (Codifica) dell'input}
+\subsection{Encoding (Codifica) dell'input} \label{cod}
 L'obiettivo della codifica è quello di trasformare una macchina di Turing $M$ e il suo input $\sigma$ in una sequenza di simboli in modo che una macchina di Turing universale 
 possa leggerli e simulare l'esecuzione di $M$ con input $\sigma$.\smallskip\\
 \colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
@@ -1191,9 +1191,101 @@ Concludiamo che $\mathcal{P}_{fin}$ \textbf{non è una proprietà triviale} dei 
 
 
 \section{Diagonalizzazione}
+In questa sezione introduciamo un concetto molto importante, ovvero quello che esistono linguaggi che \textbf{nessuna} macchina di Turing è in grado di riconoscere, quindi esistono
+linguaggi \textbf{non Turing riconoscibili}. Ricordiamo che un linguaggio è Turing riconoscibile se esiste una macchina che accetta tutte e sole le stringhe appartenenti al linguaggio. 
+Per dimostrare la non riconoscibilità utilizzeremo i concetti di \textbf{numerabilità degli inisiemi} e la tecnica di \textbf{diagonalizzazione}. Cominciamo con la definizione formale di un \textbf{insieme numerabile}:
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
+   Un insieme $A$ è \textbf{numerabile} se esiste una biiezione tra $\mathbb{N}_+ = \{ 1,2,3,...  \}$ e $A$
+\end{definition}}}\smallskip\\ 
+Ma che cazzo vuol dire biiezione tra $\mathbb{N}_+$ e $A$? Niente paura, vuol dire semplicemente che esiste una funzione biiettiva (funzione in cui ad ogni elemento del codominio corrisponde uno e un solo elemento del dominio):
+\[ f:\mathbb{N}_+ \to A    \]
+dove ad ogni numero naturale positivo viene associato uno e un solo elemento $a_i$ dell'inisieme $A$, ovvero:
+\[      A = \{ a_1,a_2,a_3,...  \} \qquad f(i) = a_i   \]  
+In altre parole un insieme è numerabile se possiamo elencare tutti i suoi elementi in una sequenza infinita, assegnando a ciascuno una posizione precisa. La proprietà importante è che ogni elemento deve comparire in una posizione finita dell'elenco. 
+Vediamo un esempio di un insieme numerabile:\smallskip\\
+\textit{Esempio.} L'insieme $\Sigma^*$ delle stringhe finite sull'alfabeto $\Sigma = \{  0,1 \}$ è numerabile.\\
+Possiamo numerare le stringhe in ordine di lunghezza:\\
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline
+\textbf{Lunghezza} & \textbf{Stringhe} & \textbf{Numero}\\
+\hline
+\textbf{0} & $\epsilon$ & 1\\
+\textbf{1} & $0,1$ & 2 \\
+\textbf{2} & $00,01,10,11$ & 4\\
+\textbf{3} & $000,001,010,011,100,101,110,111$ & 8\\
+\hline 
 
 
 
+\end{tabular}
+\end{center}
+\noindent Gli insiemi sono \textbf{numerabili} se tali insiemi sono \textbf{finiti}. 
+
+
+\subsection{Gödelizzazione e Numerabilità}
+La gödelizzazione consiste nell'assegnare a ogni macchina di Turing un numero naturale che la identifichi. 
+Prima di poter assegnare il numero alla macchina, bisogna prima passare per la codifica della descrizione della macchina di Turing, che avevamo già visto in precedenza (vd. \ref{cod}). Prendiamo un esempio di una codifica di una transizione:
+\[       \delta(q_3,a_1) = (q_4,a_2,R) \qquad \to \qquad (3,1,4,2,1)    \]
+Codificando tutta la descrizione della macchina e convertendo i numeri in binario, otteniamo una stringa binaria finita:
+\[   M \quad\to\quad <M> \ \ \in \{ 0,1 \}^*  \]
+Quindi rappresentiamo con $<M>$ la stringa che rappresenta la codifica di una descrizione di una macchina. Dalla codifica ora possiamo passare alla gödelizzazione:
+\[  M \quad \to \quad <M> \quad \to \quad g(M) \ \in \mathbb{N}\]
+Dove $g(M)$ rappresenta il \textbf{numero di Gödel}, che è il numero che associamo alla macchina di Turing.\\
+Per assegnare un numero ad ogni macchina di Turing procediamo nel medesimo modo in cui abbiamo agito nell'esempio precedente sugli insiemi numerabili, quindi ordiniamo le codifiche per ordine di lunghezza.\\
+Ci ritroveremo con una numerazione del genere:
+\[    M_1,M_2,M_3,...  \]
+Di conseguenza possiamo affermare che \textbf{l'insieme delle macchine di Turing è numerabile}.
 
 
 
+\subsection{Linguaggio e sequenze caratteristiche}
+Abbiamo visto nella sezione precedente che tramite la gödelizzazione si può affermare che l'insieme delle macchine di Turing è numerabile. Ora invece 
+vedremo che l'\textbf{insieme di tutti i possibili linguaggi non è numerabile}.\\
+Ricordiamo che un linguaggio è un qualsiasi sottoinsieme di $\Sigma^*$. Supponiamo di avere il seguente alfabeto $\Sigma$:
+\[    \Sigma = \{ 0,1\}  \]
+e ordiniamo tutte le stringhe finite:
+\[  \Sigma ^* = \{ s_1,s_2,s_3,...  \}  \]
+Visto che un linguaggio $L$ è un qualsiasi sottoinsieme di $\Sigma^*$ si ha che:
+\[  L \subseteq \Sigma^*   \]
+A ogni linguaggio possiamo associare una \textbf{sequenza caratteristica}, che è una sequenza infinita di bit che segue la seguente regola:
+\[    \text{Nella posizione } i \text{ della sequenza mettiamo:} \begin{cases}
+    1 \qquad \text{se } s_i \in L \\
+    0 \qquad \text{se } s_i \notin L 
+\end{cases}      \]
+Quindi, se la stringa appartiene al linguaggio in esame mettiamo 1 nella sequenza, 0 altrimenti.\\
+Vediamo un esempio:\smallskip\\ \newpage
+\noindent \textit{Esempio.} $L$ contiene le stringhe che iniziano con 0, una sequenza caratteristica può essere:
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.8\linewidth]{../../images/seq.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent In corrispondenza delle stringhe che iniziano con 0, mettiamo nella sequenza caratteristica 1 poichè rispettano il linguaggio $L$, negli altri casi mettiamo 0. In questo caso la sequenza caratteristica è:
+\[    \text{Sequenza caratteristica: } 0101100...   \]
+Si conclude che ogni linguaggio determina una sequenza infinita di bit. Ora utilizzeremo questo concetto di sequenza caratteristica e la \textbf{diagonalizzazione} per dimostrare che l'insieme di tutti i possibili linguaggi non è numerabile.
+Supponiamo, \textbf{per assurdo}, di poter elencare tutti i linguaggi su $\Sigma$:
+\[  L_1,L_2,L_3,...  \]
+e date delle stringhe $s_1,s_2,s_3,...$ possiamo costruire una tabella con le sequenze caratteristiche dei singoli linguaggi. A questo punto avremo una matrice dove per ogni riga si ha la sequenza caratteristica di un linguaggio $i$.
+Definiamo un linguaggio $D$ che consiste nell'invertire ogni bit della diagonale principale della matrice. Per capire e visualizzare meglio, vediamo la tabella:
+ \begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.7\linewidth]{../../images/tab.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent Dalla tabella la costruzione di $D$ è ben chiara. Si prendono i bit della diagonale principale e se valgono 1, in D mettiamo 0, e viceversa. Visto che in $D$ invertiamo ogni bit della diagonale, $D$ è definito come:
+\[    D = \{   s_i \in \Sigma^*: s_i \notin L_i   \}   \]
+Infatti in $D$ mettiamo 1 quando nella diagonale il bit è 0, e quindi $s_i \notin L_i$. E qui ora troviamo la contraddizione.\\
+Infatti, consideriamo una riga qualsiasi $L_k$ della tabella, per come abbiamo costruito $D$ sappiamo che:
+\[    s_k \in D \quad \Longleftrightarrow \quad s_k \notin L_k    \]
+Quindi ci sono 2 possibilità:
+\begin{itemize}
+    \item Se $s_k \in L_k$, allora $s_k \notin D$
+    \item Se $s_k \notin L_k$, allora $s_k \in D$
+\end{itemize} 
+In entrambi i casi $D$ e $L_k$ \textbf{differiscono} almeno per una stringa ($D \neq L_k$). E qui c'è la \textbf{contraddizione}, infatti siccome $D \subseteq \Sigma^*$, $D$ è a tutti gli effetti un linguaggio. E visto che la nostra supposizione era quella di elencare 
+tutti i possibili linguaggi $L_1,L_2,L_3,...$, possiamo sempre trovare un linguaggio non elencato, di conseguenza l'insieme di tutti i possibili linguaggi \textbf{non è numerabile}.
+
+%ultime 2 slide del ppt teorema di rice
