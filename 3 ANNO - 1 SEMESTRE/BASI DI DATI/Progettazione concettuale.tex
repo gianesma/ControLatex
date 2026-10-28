@@ -394,3 +394,1218 @@ Consideriamo le associazioni:
 \noindent \textbf{Risposta: NO, non è un'istanza valida.}\\
 L'impiegato $S_2$ non possiede alcun valore associato all'attributo \texttt{Età}.\\
 Questo viola la proprietà di \textbf{totalità}, secondo cui ogni istanza dell'entità deve avere un valore dell'attributo.
+
+\subsection{Relazioni}
+
+Nel modello Entità-Relazione (ER), una \textbf{relazione}
+(o associazione) rappresenta un \textbf{legame logico}
+tra due o più entità.
+Il numero di entità coinvolte, più precisamente
+il numero di ruoli o partecipazioni, determina
+il \textbf{grado della relazione}:
+\begin{itemize}
+    \item \textbf{Relazione binaria}: coinvolge due
+    partecipazioni di entità (grado 2).
+    \item \textbf{Relazione ternaria}: coinvolge tre
+    partecipazioni (grado 3).
+    \item \textbf{Relazione n-aria}: coinvolge
+    $n$ partecipazioni (grado $n$).
+\end{itemize}
+\noindent
+\textbf{Esempi:}
+\begin{itemize}
+    \item \textit{Residenza}: collega Persona e Città.
+    \item \textit{Afferenza}: collega Impiegato e Dipartimento.
+    \item \textit{EsameSuperato}: collega Studente e Corso.
+\end{itemize}
+\noindent
+Una relazione non descrive le caratteristiche
+di una singola entità, ma il legame esistente
+tra le entità coinvolte.
+
+\subsubsection{Rappresentazione grafica delle relazioni}
+
+Nel diagramma ER, una relazione è rappresentata
+attraverso un \textbf{rombo}, contenente il nome
+della relazione e collegato alle entità partecipanti.\\
+Ogni relazione possiede un nome che la identifica
+univocamente all'interno dello schema.\\
+Ad esempio, consideriamo:
+\begin{itemize}
+    \item \textbf{Studente}, con attributi Cognome ed Età.
+    \item \textbf{Corso}, con attributi Nome e Crediti.
+    \item \textbf{EsameSuperato}, relazione che collega
+    Studente e Corso.
+\end{itemize}
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.4\linewidth]{../images/rel1.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+
+\subsubsection{Semantica delle relazioni binarie}
+
+Per comprendere il significato di una relazione
+distinguiamo:
+\begin{itemize}
+    \item \textbf{Livello intensionale}: descrive
+    la struttura della relazione, cioè quali
+    entità collega.
+    \item \textbf{Livello estensionale}: descrive
+    le effettive associazioni tra le istanze
+    delle entità in un determinato momento.
+\end{itemize}
+\noindent
+Consideriamo una relazione binaria $R$
+tra le entità $E$ ed $F$.\\
+A livello estensionale, ogni \textbf{istanza
+della relazione} è una coppia etichettata:
+\[
+(E:x,\;F:y)
+\]
+dove:
+\begin{itemize}
+    \item $x$ è un'istanza dell'entità $E$;
+    \item $y$ è un'istanza dell'entità $F$.
+\end{itemize}
+\noindent
+Le etichette $E$ ed $F$ specificano
+il ruolo delle due componenti nella relazione.\\
+L'insieme di tutte le coppie che partecipano
+alla relazione costituisce la sua
+\textbf{estensione}.
+
+\subsubsection{Definizione matematica}
+
+Sia $S$ uno schema ER e $I$ una sua istanza.\\
+Indichiamo con:
+\begin{itemize}
+    \item $\operatorname{istanze}(I,E)$:
+    l'insieme delle istanze dell'entità $E$;
+    \item $\operatorname{istanze}(I,F)$:
+    l'insieme delle istanze dell'entità $F$;
+    \item $\operatorname{istanze}(I,R)$:
+    l'insieme delle istanze della relazione $R$.
+\end{itemize}
+\noindent
+Una relazione binaria è, dal punto di vista
+matematico, un sottoinsieme del prodotto
+cartesiano delle istanze delle entità:
+\[
+\boxed{
+\operatorname{istanze}(I,R)
+\subseteq
+\operatorname{istanze}(I,E)
+\times
+\operatorname{istanze}(I,F)
+}
+\]
+Le coppie sono considerate etichettate
+in base alle entità partecipanti.\\
+\textbf{Significato:} il prodotto cartesiano
+contiene tutte le possibili coppie tra
+le istanze di $E$ ed $F$, mentre la relazione
+contiene soltanto quelle per cui
+il legame esiste effettivamente.\medskip\\
+\textbf{Esempio: EsameSuperato}\\
+Supponiamo di avere:
+\[
+Studente=\{S1,S2,S3,S4\}
+\]
+\[
+Corso=\{C1,C2,C3,C4\}
+\]
+L'estensione della relazione potrebbe essere:
+\[
+\begin{aligned}
+EsameSuperato=\{&
+(S1,C1),\\
+&(S2,C2),\\
+&(S2,C3),\\
+&(S3,C3)\}
+\end{aligned}
+\]
+Questo significa che:
+\begin{itemize}
+    \item $S1$ ha superato l'esame $C1$;
+    \item $S2$ ha superato gli esami $C2$ e $C3$;
+    \item $S3$ ha superato l'esame $C3$;
+    \item $S4$ non compare nella relazione,
+    perché non risulta aver superato alcun esame.
+\end{itemize}
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.4\linewidth]{../images/rel2.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent
+\textbf{Osservazione fondamentale:}\\
+Una stessa istanza di entità può partecipare
+a più istanze della relazione, purché
+le coppie siano diverse.\\
+Ad esempio, lo studente $S2$ può essere
+associato sia a $C2$ sia a $C3$.
+
+\subsubsection{Unicità delle istanze di relazione}
+
+Una proprietà fondamentale del modello ER è che
+\textbf{non possono esistere due istanze distinte
+della stessa relazione che coinvolgano
+esattamente le stesse istanze di entità},
+negli stessi ruoli.\\
+Infatti, una relazione è matematicamente
+un \textbf{insieme di tuple}, e negli insiemi
+non sono ammesse ripetizioni.
+
+\subsection*{Relazioni n-arie}
+
+Una \textbf{relazione n-aria} è una relazione
+che coinvolge $n$ partecipazioni di entità.\\
+Quando il grado è maggiore di 2, si parla
+di relazione n-aria non binaria.\\
+Un esempio è la relazione ternaria
+\textbf{Fornitura}, che coinvolge:
+\begin{itemize}
+    \item \textbf{Fornitore}: chi fornisce il prodotto;
+    \item \textbf{Dipartimento}: chi riceve il prodotto;
+    \item \textbf{Prodotto}: il bene fornito.
+\end{itemize}
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.4\linewidth]{../images/rel3.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent
+Ogni istanza della relazione rappresenta
+una specifica fornitura effettuata da
+un fornitore, verso un dipartimento,
+per un determinato prodotto.\\
+Essendo coinvolte tre entità,
+la relazione ha \textbf{grado 3}.
+
+\subsubsection{Semantica delle relazioni n-arie}
+
+Consideriamo una relazione $R$ definita
+sulle entità $E_1,E_2,\ldots,E_n$,
+inizialmente supposte distinte.\\
+Ogni istanza della relazione è una
+\textbf{n-pla etichettata}:
+\[
+(E_1:x_1,\;E_2:x_2,\;\ldots,\;E_n:x_n)
+\]
+dove ogni $x_i$ è un'istanza
+dell'entità $E_i$.\\
+L'estensione della relazione è quindi
+un sottoinsieme del prodotto cartesiano:
+\[
+\boxed{
+\operatorname{istanze}(I,R)
+\subseteq
+\prod_{i=1}^{n}
+\operatorname{istanze}(I,E_i)
+}
+\]
+Ovvero:
+\[
+\operatorname{istanze}(I,R)
+\subseteq
+\operatorname{istanze}(I,E_1)
+\times\cdots\times
+\operatorname{istanze}(I,E_n)
+\]
+Anche in questo caso le tuple
+sono etichettate e non possono
+comparire duplicati.\medskip\\
+\textbf{Esempio: Fornitura}\\
+Supponiamo che l'estensione della relazione
+sia composta dalle seguenti triple:
+\[
+\begin{aligned}
+Fornitura=\{&
+(F1,D1,P1),\\
+&(F3,D2,P3),\\
+&(F3,D4,P3)\}
+\end{aligned}
+\]
+Queste triple rappresentano tre forniture:
+\begin{itemize}
+    \item $F1$ fornisce $P1$ al dipartimento $D1$;
+    \item $F3$ fornisce $P3$ al dipartimento $D2$;
+    \item $F3$ fornisce $P3$ al dipartimento $D4$.
+\end{itemize}
+\noindent
+Le ultime due triple sono distinte,
+anche se coinvolgono lo stesso fornitore
+e lo stesso prodotto, perché il dipartimento
+è diverso.\\
+Non sarebbe invece possibile inserire
+due volte la tripla $(F3,D2,P3)$
+come due istanze distinte della relazione.
+
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.5\linewidth]{../images/rel4.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+
+\subsection*{Più relazioni tra le stesse entità}
+
+Le stesse entità possono essere coinvolte
+in \textbf{più relazioni differenti},
+purché ciascuna rappresenti
+un legame con un significato diverso.\\
+Ad esempio, consideriamo le entità:
+\begin{itemize}
+    \item \textbf{Impiegato};
+    \item \textbf{Città}.
+\end{itemize}
+\noindent
+Tra queste entità possiamo definire:
+\begin{itemize}
+    \item \textbf{Residenza}: indica la città
+    in cui risiede l'impiegato;
+    \item \textbf{SedeDiLavoro}: indica la città
+    in cui l'impiegato lavora.
+\end{itemize}
+\noindent
+Le due relazioni sono indipendenti,
+anche se collegano le stesse entità.\\
+Ad esempio, un impiegato può risiedere
+a Roma ma lavorare a Milano.
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.4\linewidth]{../images/rel5.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+
+\subsection*{Attributi di relazione}
+
+Un \textbf{attributo di relazione} rappresenta
+una proprietà del \textbf{legame tra le entità},
+e non una proprietà delle singole entità.\\
+Analogamente agli attributi delle entità,
+ogni attributo di relazione:
+\begin{itemize}
+    \item Ha un nome univoco nell'ambito
+    della relazione;
+    \item Possiede un dominio, cioè
+    un insieme di valori ammissibili;
+    \item Associa un valore a ogni istanza
+    della relazione.
+\end{itemize}
+\noindent
+Nel diagramma ER, un attributo di relazione
+viene rappresentato con un \textbf{cerchio}
+collegato direttamente al rombo
+della relazione.
+
+\subsubsection{Esempio: attributo Voto}
+
+Consideriamo la relazione:
+\[
+EsameSuperato(Studente,Corso)
+\]
+Possiamo aggiungere l'attributo
+\textbf{Voto}, che indica il voto
+ottenuto da uno studente in un corso.\\
+Il voto non è una proprietà dello studente,
+perché uno studente può ottenere
+voti diversi in corsi diversi.\\
+Non è nemmeno una proprietà del corso,
+perché studenti diversi possono ottenere
+voti diversi nello stesso corso.\\
+È quindi una proprietà del
+\textbf{legame Studente-Corso}.\medskip\\
+\textbf{Esempio concreto:}
+\[
+\begin{aligned}
+(S2,C2)&\longrightarrow 25\\
+(S2,C3)&\longrightarrow 19\\
+(S3,C3)&\longrightarrow 25
+\end{aligned}
+\]
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.4\linewidth]{../images/rel6.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+
+\subsection*{Semantica degli attributi di relazione}
+
+Dal punto di vista matematico,
+un attributo di relazione è una
+\textbf{funzione totale}.\\
+Sia:
+\begin{itemize}
+    \item $S$ uno schema ER;
+    \item $I$ un'istanza dello schema;
+    \item $R$ una relazione;
+    \item $A$ un attributo di $R$;
+    \item $D$ il dominio dell'attributo $A$.
+\end{itemize}
+\noindent
+Allora l'attributo $A$ è definito come:
+\[
+\boxed{
+A:\operatorname{istanze}(I,R)\rightarrow D
+}
+\]
+Questo significa che \textbf{a ogni istanza
+della relazione viene associato
+uno e un solo valore del dominio}.\\
+\textbf{Osservazione fondamentale:}\\
+Gli attributi di relazione
+\textbf{non distinguono istanze diverse
+della stessa relazione}.\\
+Infatti, l'identità di un'istanza
+dipende esclusivamente dalle istanze
+di entità coinvolte nel legame.\\
+Quindi, anche se due voti sono diversi,
+non possiamo rappresentare due istanze
+distinte di \textit{EsameSuperato}
+che coinvolgono lo stesso studente
+e lo stesso corso.\\
+Per rappresentare più eventi distinti
+servirebbe modificare il modello concettuale.
+
+\subsection*{Attributi di relazioni n-arie}
+
+Anche una relazione n-aria può possedere
+attributi che descrivono proprietà
+del legame tra tutte le entità coinvolte.\\
+Consideriamo la relazione ternaria:
+\[
+Fornitura(Fornitore,Dipartimento,Prodotto)
+\]
+Possiamo introdurre l'attributo
+\textbf{Quantità}, che rappresenta
+la quantità di prodotto fornita
+da un determinato fornitore
+a un determinato dipartimento.\\
+La quantità non dipende soltanto
+dal fornitore, dal dipartimento
+o dal prodotto considerati singolarmente,
+ma dalla \textbf{specifica tripla}
+che costituisce la fornitura.
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.4\linewidth]{../images/rel7.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent \textbf{Esempio:}
+\[
+\begin{aligned}
+(F1,D1,P1)&\longrightarrow 89\\
+\end{aligned}
+\]
+Ogni tripla rappresenta una diversa
+istanza della relazione \textit{Fornitura},
+alla quale viene associata una quantità.\\
+Formalmente:
+\[
+Quantita:
+\operatorname{istanze}(I,Fornitura)
+\rightarrow \mathbb{N}
+\]
+dove $\mathbb{N}$ rappresenta
+il dominio dei numeri naturali,
+assumendo che le quantità siano intere
+e non negative.
+\subsubsection{Esercizio}
+Descrivere lo schema concettuale della seguente realtà:\\
+I docenti hanno un codice fiscale ed una età. I docenti
+operano nei corsi di laurea (si dice che afferiscono ai
+corsi di laurea). Interessa la data di afferenza dei
+docenti ai corsi di laurea. I corsi di laurea hanno un
+codice ed un nome, ed appartengono alle facoltà.
+Ogni facoltà ha un nome.\\
+\underline{soluzione}:\\
+\begin{figure}[H]
+      
+    \includegraphics[width=0.5\linewidth]{../images/rel8.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+
+\subsection*{Relazioni sulla stessa entità}
+Una relazione può coinvolgere \textbf{la stessa entità più volte}.
+In questo caso è necessario distinguere il significato di ciascuna
+partecipazione attraverso i \textbf{ruoli}.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\linewidth]{../images/rel9.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent
+L'entità Sovrano partecipa due volte alla relazione Successione,
+ma con ruoli differenti:
+\begin{itemize}
+    \item \textbf{Predecessore}: il sovrano che viene prima;
+    \item \textbf{Successore}: il sovrano che viene dopo.
+\end{itemize}
+
+\noindent
+Senza i ruoli non sarebbe possibile distinguere chi precede
+e chi succede all'interno della relazione.
+
+\subsubsection*{Definizione di ruolo}
+
+Un \textbf{ruolo} specifica la funzione che un'entità svolge
+all'interno di una relazione.\\
+Se un'entità $E$ partecipa a una relazione $R$ con ruolo $U$,
+significa che ogni sua partecipazione a $R$ viene identificata
+attraverso il ruolo $U$.
+
+\subsubsection*{Rappresentazione grafica dei ruoli}
+
+Nel diagramma Entità-Relazione:
+\begin{itemize}
+    \item il nome del ruolo viene scritto vicino al collegamento
+    tra l'entità e la relazione;
+    \item ogni partecipazione a una relazione deve avere un ruolo,
+    anche quando le entità coinvolte sono differenti;
+    \item se il nome del ruolo non viene specificato, si assume
+    che coincida con il nome dell'entità;
+    \item due collegamenti della stessa relazione non possono
+    avere lo stesso nome di ruolo.
+\end{itemize}
+
+\noindent
+\textbf{Importante:} i ruoli sono particolarmente necessari
+nelle relazioni ricorsive, cioè quelle in cui una stessa entità
+partecipa più volte alla medesima relazione.
+
+\subsection*{Semantica dei ruoli e delle relazioni}
+
+L'introduzione dei ruoli modifica il modo in cui rappresentiamo
+le istanze delle relazioni.
+In precedenza, le tuple erano etichettate con i nomi delle entità.
+Ora, invece, vengono etichettate con i \textbf{nomi dei ruoli}.\\
+Consideriamo una relazione $R$ tra le entità
+$E_1,E_2,\ldots,E_n$, con rispettivi ruoli
+$U_1,U_2,\ldots,U_n$.\\
+Le entità coinvolte non devono necessariamente essere tutte
+differenti, mentre i nomi dei ruoli devono essere distinti.
+In una determinata istanza $I$ dello schema $S$,
+ogni istanza della relazione $R$ è una tupla etichettata
+della forma:
+
+\[
+(U_1:x_1,\ U_2:x_2,\ \ldots,\ U_n:x_n)
+\]
+dove:
+\begin{itemize}
+    \item $U_i$ rappresenta il ruolo;
+    \item $x_i$ rappresenta un'istanza dell'entità $E_i$;
+    \item $x_i \in istanze(I,E_i)$.
+\end{itemize}
+\noindent
+L'insieme di tutte queste tuple costituisce
+l'\textbf{estensione della relazione} $R$ nell'istanza $I$,
+indicata con:
+
+\[
+istanze(I,R)
+\]
+
+\subsubsection*{Esempio: Successione tra sovrani}
+
+Consideriamo l'entità:
+
+\[
+Sovrano
+\]
+
+e la relazione:
+
+\[
+Successione
+\]
+
+con i due ruoli:
+\begin{itemize}
+    \item \textbf{Predecessore};
+    \item \textbf{Successore}.
+\end{itemize}
+
+\noindent
+Supponiamo che nell'istanza $I$ siano presenti i sovrani:
+\[
+istanze(I,Sovrano)=
+\{romolo,numa,tullo,anco\}
+\]
+L'estensione della relazione Successione è:
+
+\[
+\begin{aligned}
+istanze(I,Successione)=\{&
+(Predecessore:romolo,\ Successore:numa),\\
+&(Predecessore:numa,\ Successore:tullo),\\
+&(Predecessore:tullo,\ Successore:anco)
+\}
+\end{aligned}
+\]
+
+\noindent
+\textbf{Osservazione importante:} ogni tupla contiene
+due istanze dell'entità Sovrano, ma i ruoli permettono
+di distinguere il predecessore dal successore.
+
+
+
+% ============================================================
+% SCELTA TRA ENTITÀ E RELAZIONE
+% ============================================================
+
+\subsection{Scelta tra entità e relazione}
+
+Durante la progettazione concettuale è necessario stabilire
+se un determinato concetto debba essere rappresentato
+mediante un'\textbf{entità} oppure mediante una
+\textbf{relazione}.\\
+La scelta dipende principalmente dal significato che
+il concetto assume nel contesto applicativo.
+
+\subsubsection*{Quando utilizzare un'entità}
+
+Un concetto dovrebbe essere modellato come
+\textbf{entità} quando:
+
+\begin{itemize}
+    \item Le sue istanze hanno un significato autonomo,
+    indipendentemente dall'esistenza di altre istanze.
+
+    \item Possiede, oppure potrebbe possedere,
+    attributi propri.
+
+    \item Può partecipare a relazioni con altri concetti.
+\end{itemize}
+\noindent
+\textcolor{verdeEsempio}{\textbf{Esempio.}}
+Il concetto di \textit{Persona} deve essere rappresentato
+come entità, perché ogni persona esiste indipendentemente
+dalle sue proprietà, come cognome, età e città di nascita.
+
+\subsubsection*{Quando utilizzare una relazione}
+
+Un concetto dovrebbe essere modellato come
+\textbf{relazione} quando:
+
+\begin{itemize}
+    \item Le sue istanze non hanno significato autonomo,
+    ma rappresentano associazioni tra istanze
+    di altre entità.
+
+    \item Non ha senso considerare le sue istanze
+    come oggetti che partecipano autonomamente
+    ad altre relazioni.
+\end{itemize}
+\noindent
+\textcolor{verdeEsempio}{\textbf{Esempio.}}
+Il concetto di \textit{Frequenta}, che associa
+uno studente a un corso, può essere rappresentato
+come relazione tra le entità \textit{Studente}
+e \textit{Corso}.
+
+\subsubsection*{Esercizio 10: scelta tra entità e relazione}
+
+Si consideri uno schema:
+\begin{center}
+\begin{tikzpicture}
+
+% Relazione Persona (rombo disegnato manualmente)
+\draw[thick, fill=lightblue]
+    (0,1) -- (1.5,0) -- (0,-1) -- (-1.5,0) -- cycle;
+
+\node at (0,0) {\textbf{Persona}};
+
+% Entità
+\node[draw, rectangle, fill=lightblue,
+      minimum width=2.8cm, minimum height=1cm]
+      (c) at (-4,0) {Cognome};
+
+\node[draw, rectangle, fill=lightblue,
+      minimum width=2.8cm, minimum height=1cm]
+      (e) at (4,0) {Età};
+
+\node[draw, rectangle, fill=lightblue,
+      minimum width=2.8cm, minimum height=1cm]
+      (ci) at (0,-3) {Città};
+
+% Collegamenti
+\draw[thick] (c.east) -- (-1.5,0);
+\draw[thick] (e.west) -- (1.5,0);
+\draw[thick] (ci.north) -- (0,-1);
+
+\end{tikzpicture}
+\end{center}
+\noindent
+\textbf{Perché questo schema è sbagliato?}
+
+\begin{enumerate}
+    \item \textbf{Persona non è rappresentata
+    come entità autonoma.}
+
+    Ogni persona viene identificata attraverso
+    una tupla della relazione Persona.
+
+    Questo significa che una persona esiste
+    nello schema soltanto in quanto associazione
+    tra un cognome, un'età e una città.
+
+    \item \textbf{Cognome ed Età sono modellati
+    erroneamente come entità.}
+
+    Nel contesto considerato, cognome ed età
+    sono semplicemente proprietà delle persone,
+    non oggetti autonomi.
+
+    \item \textbf{Non è possibile distinguere
+    persone con le stesse proprietà.}
+
+    Una relazione è un insieme di tuple,
+    quindi non può contenere due tuple identiche.
+
+    Di conseguenza, due persone aventi lo stesso
+    cognome, la stessa età e la stessa città
+    di nascita verrebbero rappresentate
+    dalla medesima tupla.
+\end{enumerate}
+\noindent
+\textcolor{verdeEsempio}{\textbf{Soluzione corretta.}}
+Il concetto di Persona deve essere modellato
+come un'entità, mentre Cognome, Età e Città
+di nascita devono essere rappresentati
+come attributi.
+
+\begin{center}
+\begin{tikzpicture}[
+    entity/.style={
+        rectangle, draw, fill=lightblue,
+        minimum width=3cm,
+        minimum height=1.1cm
+    },
+    attr/.style={
+        circle, draw,
+        minimum size=0.2cm,
+        inner sep=0pt
+    }
+]
+
+\node[entity] (p) at (0,0) {Persona};
+
+\node[attr] (a1) at (-3,1.8) {};
+\node[attr] (a2) at (0,2) {};
+\node[attr] (a3) at (3,1.8) {};
+
+\draw (p) -- (a1);
+\draw (p) -- (a2);
+\draw (p) -- (a3);
+
+\node[above] at (a1) {Cognome};
+\node[above] at (a2) {Età};
+\node[above, align=center] at (a3) {Città di nascita};
+
+\end{tikzpicture}
+\end{center}
+
+
+% ============================================================
+% RELAZIONE ISA
+% ============================================================
+
+\subsection{Relazione ISA tra entità}
+
+Nel modello Entità-Relazione può accadere che
+due entità abbiano istanze in comune.
+Un caso particolarmente importante è quello
+in cui tutte le istanze di un'entità appartengono
+anche a un'altra entità.\\
+Questa situazione viene rappresentata attraverso
+la \textbf{relazione ISA}, detta anche
+\textbf{relazione di sottoinsieme}.
+\subsubsection*{Definizione}
+
+Date due entità $E_1$ ed $E_2$, si dice che
+
+\[
+E_1 \text{ ISA } E_2
+\]
+quando ogni istanza di $E_1$ è anche
+un'istanza di $E_2$.\\
+In particolare:
+\begin{itemize}
+    \item $E_1$ è detta \textbf{sottoentità}
+    oppure \textbf{entità figlia};
+
+    \item $E_2$ è detta \textbf{entità padre}.
+\end{itemize}
+\noindent
+\textcolor{verdeEsempio}{\textbf{Esempio.}}
+Si considerino le entità Persona e Studente.
+Ogni studente è una persona, ma non ogni
+persona è necessariamente uno studente.
+Pertanto:
+
+\[
+\text{Studente ISA Persona}
+\]
+
+\subsubsection*{Rappresentazione grafica}
+
+La relazione ISA viene rappresentata mediante
+una freccia che parte dalla sottoentità
+e punta verso l'entità padre.
+
+\begin{center}
+\begin{tikzpicture}[
+    entity/.style={
+        rectangle, draw, fill=lightblue,
+        minimum width=3.2cm,
+        minimum height=1cm
+    }
+]
+
+\node[entity] (p) at (0,2.5) {Persona};
+\node[entity] (s) at (0,0) {Studente};
+
+\draw[->, thick, >=stealth]
+(s.north) -- (p.south);
+
+\end{tikzpicture}
+\end{center}
+
+\subsubsection*{Regole della relazione ISA}
+
+Nel modello ER considerato, una sottoentità
+può avere \textbf{al massimo un'entità padre}.
+Di conseguenza, non è ammessa
+l'\textbf{ereditarietà multipla}.
+Ad esempio, non è possibile rappresentare
+direttamente StudenteLavoratore come sottoentità
+sia di Studente sia di Lavoratore.
+
+\subsubsection*{Semantica della relazione ISA}
+
+A livello estensionale, la relazione ISA
+impone un vincolo di inclusione tra
+gli insiemi delle istanze.
+Se
+\[
+E_1 \text{ ISA } E_2
+\]
+allora, per ogni istanza $I$ dello schema:
+\[
+\boxed{
+\operatorname{istanze}(I,E_1)
+\subseteq
+\operatorname{istanze}(I,E_2)
+}
+\]
+Questo significa che tutte le istanze
+della sottoentità devono appartenere
+anche all'entità padre.\\
+\textcolor{verdeEsempio}{\textbf{Esempio.}}
+Si considerino:
+\[
+\operatorname{istanze}(I,\text{Persona})
+=
+\{a,b,c,d\}
+\]
+\[
+\operatorname{istanze}(I,\text{Studente})
+=
+\{b,d\}
+\]
+Questa è un'istanza valida, perché:
+\[
+\{b,d\}\subseteq\{a,b,c,d\}
+\]
+Sono valide anche le situazioni in cui:
+\[
+\operatorname{istanze}(I,\text{Studente})
+=
+\{a,b,c,d\}
+\]
+oppure:
+\[
+\operatorname{istanze}(I,\text{Studente})
+=
+\varnothing
+\]
+Non sarebbe invece valida la situazione:
+\[
+\operatorname{istanze}(I,\text{Persona})
+=
+\{a\}
+\]
+\[
+\operatorname{istanze}(I,\text{Studente})
+=
+\{a,b\}
+\]
+poiché $b$ è uno studente ma non appartiene
+all'insieme delle persone.
+
+\subsubsection*{Proprietà della relazione ISA}
+
+La relazione ISA gode di due proprietà
+fondamentali.\\
+\textbf{1. Riflessività}\\
+Ogni entità è in relazione ISA con sé stessa:
+\[
+E \text{ ISA } E
+\]
+Infatti:
+\[
+\operatorname{istanze}(I,E)
+\subseteq
+\operatorname{istanze}(I,E)
+\]
+\textbf{2. Transitività}\\
+Se:
+\[
+E_1 \text{ ISA } E_2
+\]
+e:
+\[
+E_2 \text{ ISA } E_3
+\]
+allora:
+\[
+\boxed{E_1 \text{ ISA } E_3}
+\]
+\textcolor{verdeEsempio}{\textbf{Esempio.}}
+\[
+\text{FuoriCorso ISA Studente}
+\]
+\[
+\text{Studente ISA Persona}
+\]
+Di conseguenza:
+\[
+\boxed{\text{FuoriCorso ISA Persona}}
+\]
+
+% ============================================================
+% EREDITARIETÀ
+% ============================================================
+
+\subsection{Ereditarietà nel modello ER}
+
+Una conseguenza fondamentale della relazione ISA
+è il \textbf{principio di ereditarietà}.
+Secondo questo principio, una sottoentità
+eredita tutte le proprietà dell'entità padre.
+In particolare, eredita:
+
+\begin{itemize}
+    \item gli attributi;
+    \item la possibilità di partecipare
+    alle relazioni dell'entità padre;
+    \item le relazioni ISA degli antenati.
+\end{itemize}
+\noindent
+La sottoentità può inoltre possedere
+attributi e proprietà aggiuntive.
+
+\subsubsection*{Ereditarietà degli attributi}
+
+Si considerino le entità:
+
+\begin{itemize}
+    \item Persona, con attributi Cognome ed Età;
+    \item Studente, con attributo Matricola.
+\end{itemize}
+\noindent
+Poiché:
+\[
+\text{Studente ISA Persona}
+\]
+ogni studente eredita gli attributi
+Cognome ed Età.
+\begin{center}
+\begin{tikzpicture}[
+    entity/.style={
+        rectangle, draw, fill=lightblue,
+        minimum width=3cm,
+        minimum height=1cm
+    },
+    attr/.style={
+        circle, draw,
+        minimum size=0.18cm,
+        inner sep=0pt
+    }
+]
+
+\node[entity] (p) at (0,3) {Persona};
+\node[entity] (s) at (0,0) {Studente};
+
+\draw[->, thick, >=stealth]
+(s.north) -- (p.south);
+
+\node[attr] (c) at (-3,4) {};
+\node[attr] (e) at (3,4) {};
+\node[attr] (m) at (3,0) {};
+
+\draw (p) -- (c);
+\draw (p) -- (e);
+\draw (s) -- (m);
+
+\node[above] at (c) {Cognome};
+\node[above] at (e) {Età};
+\node[above] at (m) {Matricola};
+
+\end{tikzpicture}
+\end{center}
+\noindent
+Gli attributi effettivamente posseduti
+da Studente sono quindi:
+\[
+\{
+\text{Cognome},
+\text{Età},
+\text{Matricola}
+\}
+\]
+Tuttavia, Cognome ed Età non vengono
+ripetuti graficamente nella sottoentità,
+perché sono già ereditati da Persona.
+
+\subsubsection*{Ereditarietà a livello estensionale}
+Supponiamo che l'attributo Età sia
+una funzione totale sull'entità Persona:
+\[
+\text{Età}:
+\operatorname{istanze}(I,\text{Persona})
+\longrightarrow \mathbb{N}
+\]
+Poiché:
+\[
+\operatorname{istanze}(I,\text{Studente})
+\subseteq
+\operatorname{istanze}(I,\text{Persona})
+\]
+la funzione Età è definita anche
+per ogni istanza di Studente.
+Quindi:
+\[
+\forall x \in
+\operatorname{istanze}(I,\text{Studente}),
+\quad
+\text{Età}(x)\text{ è definita}
+\]
+
+\subsubsection*{Ereditarietà delle relazioni}
+Una sottoentità eredita anche la possibilità
+di partecipare alle relazioni
+dell'entità padre.\\
+\textcolor{verdeEsempio}{\textbf{Esempio}}
+\begin{center}
+\begin{tikzpicture}[
+    entity/.style={
+        rectangle, draw, fill=lightblue,
+        minimum width=2.7cm,
+        minimum height=1cm
+    }
+]
+
+% Entità
+\node[entity] (p) at (0,2.5) {Persona};
+\node[entity] (s) at (0,0) {Studente};
+\node[entity] (sp) at (7,2.5) {Sport};
+
+% Relazione Pratica: rombo manuale
+\draw[thick, fill=lightblue]
+    (3.5,3.3) -- (4.7,2.5) --
+    (3.5,1.7) -- (2.3,2.5) -- cycle;
+
+\node at (3.5,2.5) {\textbf{Pratica}};
+
+% Relazione ISA
+\draw[->, thick, >=stealth]
+    (s.north) -- (p.south);
+
+% Collegamenti alla relazione Pratica
+\draw[thick] (p.east) -- (2.3,2.5);
+\draw[thick] (4.7,2.5) -- (sp.west);
+
+\end{tikzpicture}
+\end{center}
+\noindent
+Poiché ogni studente è anche una persona,
+uno studente può partecipare alla relazione
+Pratica senza dover definire una nuova
+relazione tra Studente e Sport.
+In generale, se:
+\[
+E_1 \text{ ISA } E_2
+\]
+allora ogni istanza di $E_1$ può partecipare
+alle relazioni previste per $E_2$,
+nel rispetto dei relativi vincoli.
+
+\subsubsection*{Ereditarietà transitiva}
+Anche la relazione ISA viene ereditata
+attraverso una catena di sottoentità.
+Si consideri:
+\[
+\text{FuoriCorso ISA Studente}
+\]
+\[
+\text{Studente ISA Persona}
+\]
+Ne segue che:
+\[
+\text{FuoriCorso ISA Persona}
+\]
+Quindi FuoriCorso eredita:
+\begin{itemize}
+    \item Cognome ed Età da Persona;
+    \item Matricola da Studente;
+    \item eventuali relazioni a cui possono
+    partecipare Persona e Studente.
+\end{itemize}
+\noindent
+Può inoltre avere un proprio attributo,
+ad esempio AnnoFC.
+\begin{center}
+\begin{tikzpicture}[
+    entity/.style={
+        rectangle, draw, fill=lightblue,
+        minimum width=3cm,
+        minimum height=1cm
+    },
+    attr/.style={
+        circle, draw,
+        minimum size=0.18cm,
+        inner sep=0pt
+    }
+]
+
+\node[entity] (p) at (0,5) {Persona};
+\node[entity] (s) at (0,2.5) {Studente};
+\node[entity] (f) at (0,0) {FuoriCorso};
+
+\draw[->, thick, >=stealth]
+(s.north) -- (p.south);
+
+\draw[->, thick, >=stealth]
+(f.north) -- (s.south);
+
+\node[attr] (c) at (-3,5.5) {};
+\node[attr] (e) at (3,5.5) {};
+\node[attr] (m) at (3,2.5) {};
+\node[attr] (a) at (3,0) {};
+
+\draw (p) -- (c);
+\draw (p) -- (e);
+\draw (s) -- (m);
+\draw (f) -- (a);
+
+\node[above] at (c) {Cognome};
+\node[above] at (e) {Età};
+\node[above] at (m) {Matricola};
+\node[above] at (a) {AnnoFC};
+
+\end{tikzpicture}
+\end{center}
+
+% ============================================================
+% ESERCIZIO 11
+% ============================================================
+
+\subsubsection*{Esercizio 11: verifica di un'istanza}
+
+Si consideri lo schema:
+\[
+\text{FuoriCorso ISA Studente ISA Persona}
+\]
+con i seguenti attributi:
+\begin{itemize}
+    \item Persona: Cognome;
+    \item Studente: Matricola;
+    \item FuoriCorso: AnnoFC.
+\end{itemize}
+\noindent
+Sia data un'interpretazione $I_1$ tale che:
+\[
+\operatorname{istanze}(I_1,\text{Persona})
+=
+\{a,b,d\}
+\]
+\[
+\operatorname{istanze}(I_1,\text{Studente})
+=
+\{b,d\}
+\]
+\[
+\operatorname{istanze}(I_1,\text{FuoriCorso})
+=
+\{b,d\}
+\]
+Gli attributi sono interpretati come:
+\[
+\operatorname{istanze}(I_1,\text{Cognome})
+=
+\{(a,a'),(b,b'),(d,d')\}
+\]
+\[
+\operatorname{istanze}(I_1,\text{Matricola})
+=
+\{(b,12),(d,34),(a,89)\}
+\]
+\[
+\operatorname{istanze}(I_1,\text{AnnoFC})
+=
+\{(b,2)\}
+\]
+\textbf{Domanda:} $I_1$ è un'istanza valida
+dello schema?\\
+\textcolor{red}{\textbf{Risposta: NO.}}\\
+I vincoli ISA sono rispettati:
+\[
+\{b,d\}\subseteq\{a,b,d\}
+\]
+\[
+\{b,d\}\subseteq\{b,d\}
+\]
+Tuttavia, sono violati due vincoli
+relativi agli attributi.\\
+\textbf{Primo errore: Matricola.}\\
+La coppia:
+\[
+(a,89)
+\]
+non è ammissibile, perché:
+\[
+a\notin
+\operatorname{istanze}(I_1,\text{Studente})
+\]
+L'attributo Matricola appartiene a Studente
+e quindi non può essere associato
+a un'istanza che non è uno studente.\\
+\textbf{Secondo errore: AnnoFC.}\\
+L'istanza $d$ appartiene a FuoriCorso:
+\[
+d\in
+\operatorname{istanze}(I_1,\text{FuoriCorso})
+\]
+ma non ha un valore associato
+per l'attributo AnnoFC.
+Poiché AnnoFC è considerato un attributo
+totale, ogni istanza di FuoriCorso
+deve avere esattamente un valore.\\
+\textbf{Conclusione.}
+L'interpretazione $I_1$ non è un'istanza
+valida dello schema perché viola
+i vincoli sugli attributi,
+pur rispettando quelli ISA.
