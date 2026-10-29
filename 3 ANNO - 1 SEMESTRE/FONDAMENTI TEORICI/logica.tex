@@ -27,8 +27,13 @@ Il significato dei connettivi è il seguente:
    \end{itemize}
    Nello spiegare la logica proposizionale, spesso faremo riferimento a definizioni di insiemi e funzioni in maniera \textbf{induttivo}.
    Lavorare con l'induzione significa fornire uno o più passi base, seguiti dal passo induttivo.\smallskip\\
-   ESEMPIO NUMERI NATURALI\smallskip\\
-   Definiamo in maniera induttiva delle \textbf{formule} (o frasi) \textbf{ben formate}\smallskip\\
+   \textit{Esempio.} L'insieme dei numeri naturali \textsc{nat} è definito induttivamente come segue:
+   \begin{itemize}
+    \item \textbf{Passo base}: $0 \in \textsc{nat}$
+    \item \textbf{Passo induttivo}: se $x\in \textsc{nat}$ allora $s(x) \in \textsc{nat}$
+   \end{itemize}
+   Dove $s(x)$ è la funzione successore che associa ad ogni numero $x$ il suo successore $x +1$.\newpage
+   \noindent Definiamo in maniera induttiva le \textbf{formule} (o frasi) \textbf{ben formate}\smallskip\\
 \colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
    Una formula (frase) della logica proposizionale dell'alfabeto $\mathcal{P}$ è un espressione finita costruita secondo la seguente
    definizione induttiva:
@@ -46,16 +51,41 @@ Il significato dei connettivi è il seguente:
     \end{itemize}
    \end{itemize}
 \end{definition}}}\smallskip\\
-METTERE ESEMPI DI FORMULE E NON FORMULE \smallskip\\
-In che ordine dobbiamo considerare le formule? Prendiamo ad esempio le seguenti formule:
+Ecco alcuni esempi di formule ben formate:
+\[  P \to Q    \]
+\[  P \to (P \to R)    \]
+\[   P \wedge Q \to R   \]
+Ecco invece alcuni esempi di non formule:
+\[  PQ \qquad \text{non c'è alcun connettivo}    \]
+\[  (P \to \wedge ((Q \to R)  \qquad \text{le parentesi non sono ben formate}  \]
+\[   P \wedge Q \to \neg R \neg  \qquad \text{connettivi messi a cazzo}   \]
+Ma quando non ci sono le parentesi, in che ordine dobbiamo calcolare le formule? \\Prendiamo ad esempio le seguenti formule:
 \[     (P \wedge Q) \to R \qquad P\wedge (Q\to R)       \]
-hanno gli stessi connettori, ma non sono assolutamente due formule equivalente. Per risolvere il problema di come intendere l'ordine di una formula
-esiste una \textbf{tabella della priorità}:\smallskip\\
-METTERE TABELLA PRIORITA' \smallskip\\
-Una formula può essere rappresentato come un \textbf{albero} dove le foglie sono associate ad una variabile proposizionale,
-mentre gli altri nodi sono associati ai connettivi:\smallskip\\
-METTERE ESEMPIO DELL ALBERO DELLA FORMULA $(A \wedge \neg B)\equiv(B \to C)$\smallskip\\
-Dalla rappresentazione ad albero delle formule è chiaro che esitano delle \textbf{sottoformule}:
+hanno gli stessi connettori, ma non sono assolutamente due formule equivalenti. Per risolvere il problema di come intendere l'ordine di una formula
+esiste una \textbf{tabella della priorità}:
+\begin{center}
+\begin{tabular}{|c|c|}
+    \hline
+    Connettivo & Priorità \\
+    \hline
+    $\neg$ & 1 \\
+    $\wedge$ & 2 \\
+    $\vee$ & 3 \\
+    $\to $ & 4 \\
+    $\equiv$ & 5 \\
+    \hline
+\end{tabular}
+\end{center}
+Una formula può essere rappresentata come un \textbf{albero} dove le foglie sono associate ad una variabile proposizionale,
+mentre gli altri nodi sono associati ai connettivi.\smallskip\\
+\textit{Esempio.} Ecco l'albero della formula $(A \wedge \neg B)\equiv(B \to C)$
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.6\linewidth]{../../images/albe.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent Dalla rappresentazione ad albero delle formule è chiaro che esitano delle \textbf{sottoformule}:
 \begin{itemize}
     \item $A$ è una sottoformula di se stessa
     \item $A$ è una sottoformula di di $\neg A$, e $A$ è una sottoformula di $(A)$
@@ -64,7 +94,7 @@ Dalla rappresentazione ad albero delle formule è chiaro che esitano delle \text
     \item $A$ è una sottoformula "proper" di $B$ se $A$ è una sottoformula di $B$ e $A$ è diversa da $B$
 \end{itemize}
 Fino ad ora abbiamo visto il lessico, ora passiamo alla \textbf{semantica}. Si assegna ad ogni proposizione dell'alfabeto un
-\textbf{valore di verità}. Per valutare la verdicità di una formula abbiamo bisgono di un \textbf{contesto}, infatti non posso vedere una formula e 
+\textbf{valore di verità}. Per valutare la verdicità di una formula abbiamo bisogno di un \textbf{contesto}, infatti non posso vedere una formula e 
 dire a priori se è vera o falsa. Ad esempio la proposizione "Oggi piove" non possiamo dire se è vera o falsa senza un contesto,
 ma dobbiamo sapere se è sta effettivamente piovendo o no.\smallskip\\
 \colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
