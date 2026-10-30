@@ -1050,3 +1050,2094 @@ PBP_{\text{att}} &\simeq5{,}51\text{ anni}
 \noindent Il Payback attualizzato è maggiore di quello semplice,
 poiché considera il valore temporale del denaro.
 \newpage
+\section{Esempio Esonero}
+
+\subsection{Breve richiamo alla teoria e alle formule}
+
+\subsubsection*{Attualizzazione}
+
+\noindent Attualizzare significa riportare
+una somma futura al suo valore di oggi:
+
+\[
+\boxed{
+VA=\frac{F_t}{(1+i)^t}
+}
+\]
+
+\begin{itemize}
+    \item $VA$: valore attuale;
+    \item $F_t$: flusso disponibile al tempo $t$;
+    \item $i$: tasso per periodo;
+    \item $t$: numero di periodi
+    che separano il flusso da oggi.
+\end{itemize}
+
+\noindent Con un tasso positivo,
+un'entrata futura vale oggi meno
+del suo importo nominale.
+
+
+\subsubsection*{Valore Attuale Netto}
+
+\noindent Il \textbf{Valore Attuale Netto},
+indicato con $VAN$,
+misura il valore attuale delle entrate
+al netto dell'investimento iniziale:
+
+\[
+\boxed{
+VAN=-I_0+\sum_{t=1}^{n}
+\frac{F_t}{(1+i)^t}
+}
+\]
+
+\begin{itemize}
+    \item $I_0$: investimento iniziale,
+    espresso come importo positivo;
+    \item $F_t$: flusso netto del periodo $t$;
+    \item $n$: numero complessivo dei periodi.
+\end{itemize}
+
+\noindent Il segno meno davanti a $I_0$
+indica un'uscita iniziale di denaro.
+
+\[
+\begin{aligned}
+VAN>0
+&\Rightarrow \text{il progetto crea valore};\\
+VAN=0
+&\Rightarrow \text{remunera esattamente il tasso richiesto};\\
+VAN<0
+&\Rightarrow \text{non remunera il tasso richiesto}.
+\end{aligned}
+\]
+
+
+\subsubsection*{Tasso Interno di Rendimento}
+
+\noindent Il \textbf{TIR}
+è il tasso che rende nullo il $VAN$:
+
+\[
+\boxed{
+0=-I_0+\sum_{t=1}^{n}
+\frac{F_t}{(1+TIR)^t}
+}
+\]
+
+\noindent Per questi progetti,
+con un'uscita iniziale
+seguita da entrate positive:
+
+\[
+\boxed{
+TIR>i
+\Rightarrow
+\text{progetto accettabile}
+}
+\]
+
+\noindent \textbf{In questo esercizio
+non serve trovare il TIR preciso.}
+
+\noindent Ci basta sapere
+se supera il tasso richiesto del 10\%.
+
+\[
+\boxed{
+VAN(10\%)>0
+\Longleftrightarrow
+TIR>10\%
+}
+\]
+
+\noindent Infatti,
+aumentando il tasso diminuisce
+il valore attuale delle entrate.
+
+\noindent Se al 10\% il $VAN$
+è ancora positivo,
+il tasso che lo porta a zero
+deve essere più alto.
+
+
+\subsubsection*{Rendite costanti}
+
+\noindent Una \textbf{rendita costante}
+è una successione di pagamenti
+dello stesso importo,
+effettuati a intervalli regolari.
+
+\noindent Se i pagamenti vengono ricevuti
+alla fine di ogni periodo,
+la rendita è \textbf{posticipata}.
+
+\begin{itemize}
+    \item $R$: importo di ciascun pagamento;
+    \item $i$: tasso per periodo;
+    \item $n$: numero dei pagamenti.
+\end{itemize}
+
+\noindent Il tasso deve riferirsi
+allo stesso intervallo dei pagamenti:
+con pagamenti annuali
+utilizziamo un tasso annuo.
+
+
+\subsubsection*{Coefficiente di attualizzazione:
+il CAF}
+
+\noindent Il valore attuale
+dei pagamenti costanti è:
+
+\[
+VA=
+\frac{R}{1+i}
++
+\frac{R}{(1+i)^2}
++
+\cdots
++
+\frac{R}{(1+i)^n}.
+\]
+
+\noindent Raccogliendo il pagamento $R$:
+
+\[
+VA=
+R\left[
+\frac{1}{1+i}
++
+\frac{1}{(1+i)^2}
++
+\cdots
++
+\frac{1}{(1+i)^n}
+\right].
+\]
+
+\noindent La quantità tra parentesi
+è il \textbf{coefficiente di attualizzazione
+di una rendita costante},
+indicato con $CAF$:
+
+\[
+\boxed{
+CAF(i,n)
+=
+\sum_{t=1}^{n}\frac{1}{(1+i)^t}
+}
+\]
+
+\noindent La somma si può scrivere:
+
+\[
+CAF(i,n)
+=
+\frac{1-(1+i)^{-n}}{i}.
+\]
+
+\noindent Separando i termini:
+
+\[
+\boxed{
+CAF(i,n)
+=
+\frac{1}{i}
+-
+\frac{1}{i(1+i)^n}
+}
+\]
+
+\noindent Quindi:
+
+\[
+\boxed{
+VA=CAF(i,n)\cdot R
+}
+\]
+
+\noindent Se il pagamento è indicato con $C$:
+
+\[
+\boxed{
+VA=C\cdot CAF(i,n)
+}
+\]
+
+\noindent Cambia soltanto la lettera
+utilizzata per il pagamento.
+
+
+\subsubsection*{Collegamento con la notazione degli appunti}
+
+\noindent Negli appunti il tasso
+può essere indicato con $r$
+e il numero di periodi con $t$:
+
+\[
+\boxed{
+i=r,
+\qquad
+n=t
+}
+\]
+
+\noindent Pertanto:
+
+\[
+CAF(r,t)
+=
+\frac{1}{r}
+-
+\frac{1}{r(1+r)^t}.
+\]
+
+\noindent In questa scrittura $t$
+indica il numero totale dei pagamenti.
+
+
+\subsubsection*{VAN con rendite costanti}
+
+\noindent Sottraiamo l'investimento iniziale
+dal valore attuale delle entrate:
+
+\[
+\boxed{
+VAN=-I_0+CAF(i,n)\cdot R
+}
+\]
+
+\begin{enumerate}
+    \item Calcoliamo il $CAF$.
+    \item Lo moltiplichiamo per il flusso annuo.
+    \item Sottraiamo l'investimento iniziale.
+\end{enumerate}
+
+
+\subsubsection*{Esempio: tasso del 10\% e cinque pagamenti}
+
+\[
+i=10\%=0{,}10,
+\qquad
+n=5.
+\]
+
+\[
+CAF(10\%,5)
+=
+\frac{1}{0{,}10}
+-
+\frac{1}{0{,}10(1{,}10)^5}.
+\]
+
+\noindent Il primo termine è:
+
+\[
+\frac{1}{0{,}10}=10{,}00.
+\]
+
+\noindent Il secondo termine vale circa:
+
+\[
+\frac{1}{0{,}10(1{,}10)^5}
+\simeq6{,}21.
+\]
+
+\noindent Quindi:
+
+\[
+CAF(10\%,5)
+\simeq10{,}00-6{,}21
+=
+\boxed{3{,}79}.
+\]
+
+\noindent Cinque pagamenti annuali di 1
+valgono oggi circa 3,79,
+con un tasso del 10\%.
+
+\medskip
+
+\noindent \textbf{Convenzione utilizzata:}
+nei punti a, b e d utilizziamo
+direttamente il coefficiente arrotondato
+dello svolgimento del professore:
+
+\[
+\boxed{CAF=3{,}79}
+\]
+
+\noindent I VAN ottenuti sono quindi
+approssimati con questo coefficiente.
+
+
+\subsubsection*{VAN aggiornato con una spesa aggiuntiva}
+
+\noindent Una spesa aggiuntiva
+riduce il VAN del progetto.
+
+\noindent Prima attualizziamo la spesa,
+poi la sottraiamo al VAN precedente.
+
+\noindent Se la spesa si verifica
+alla fine del primo anno:
+
+\[
+\boxed{
+VAN_{\text{aggiornato}}
+=
+VAN_{\text{precedente}}
+-
+\frac{\text{Spesa}}{(1+i)^1}
+}
+\]
+
+\begin{enumerate}
+    \item Riportiamo la spesa futura a oggi.
+    \item La sottraiamo al VAN precedente.
+    \item Controlliamo se il VAN aggiornato
+    è ancora positivo.
+\end{enumerate}
+
+\[
+\boxed{
+VAN_{\text{aggiornato}}>0
+\Rightarrow
+\text{progetto ancora accettabile}
+}
+\]
+
+\noindent Il confronto è con zero,
+non con la soglia del punto b.
+
+
+\subsubsection*{Indice di redditività:
+il PI}
+
+\noindent Seguendo la definizione
+utilizzata dal professore,
+l'indice di redditività è:
+
+\[
+\boxed{
+PI=\frac{VAN}{I_0}
+}
+\]
+
+\noindent Il $PI$ misura il valore attuale
+netto creato per ogni unità
+di investimento iniziale.
+
+\noindent Per esprimerlo in percentuale
+moltiplichiamo il rapporto per 100.
+
+\medskip
+
+\noindent Per esempio,
+un $PI$ del 20\% significa che,
+per ogni 100 investiti inizialmente,
+il progetto genera un VAN di 20.
+
+\noindent \textbf{Attenzione:}
+il PI così definito
+non è un rendimento annuo
+e non coincide con il TIR.
+
+
+\subsubsection*{PI di un paniere:
+media ponderata}
+
+\noindent Per un paniere di progetti indipendenti,
+sommiamo i VAN e gli investimenti:
+
+\[
+\boxed{
+PI_{\text{paniere}}
+=
+\frac{\sum_j VAN_j}{\sum_j I_{0,j}}
+}
+\]
+
+\noindent Poiché:
+
+\[
+VAN_j=PI_j\cdot I_{0,j},
+\]
+
+\noindent possiamo scrivere:
+
+\[
+\boxed{
+PI_{\text{paniere}}
+=
+\frac{
+\sum_j PI_j\cdot I_{0,j}
+}{
+\sum_j I_{0,j}
+}
+}
+\]
+
+\noindent È una \textbf{media ponderata}
+dei PI dei singoli progetti,
+con gli investimenti iniziali come pesi.
+
+\noindent Un progetto che richiede
+un investimento maggiore
+pesa di più nella media.
+
+\medskip
+
+\noindent Per un paniere formato da B e F:
+
+\[
+\boxed{
+PI_{B+F}
+=
+\frac{
+PI_B\cdot I_{0,B}
++
+PI_F\cdot I_{0,F}
+}{
+I_{0,B}+I_{0,F}
+}
+}
+\]
+
+\noindent Non utilizziamo la media semplice,
+perché B e F richiedono investimenti diversi.
+
+\noindent Nei calcoli dei pesi utilizziamo
+i PI come rapporti;
+i risultati vengono poi espressi in percentuale.
+
+
+\subsubsection*{Recupero attualizzato:
+saldo cumulato}
+
+\noindent Per verificare quando recuperiamo
+l'investimento,
+partiamo dall'uscita iniziale
+e aggiungiamo ogni anno
+il flusso attualizzato.
+
+\noindent Chiamiamo $S_t$
+il \textbf{saldo cumulato attualizzato}
+alla fine dell'anno $t$.
+
+\noindent Al tempo iniziale:
+
+\[
+\boxed{S_0=-I_0}
+\]
+
+\noindent Alla fine del primo anno:
+
+\[
+S_1=-I_0+\frac{R}{1+i}.
+\]
+
+\noindent Alla fine del secondo anno:
+
+\[
+S_2=S_1+\frac{R}{(1+i)^2}.
+\]
+
+\noindent Alla fine del terzo anno:
+
+\[
+S_3=S_2+\frac{R}{(1+i)^3}.
+\]
+
+\noindent In generale:
+
+\[
+\boxed{
+S_t=S_{t-1}+\frac{R}{(1+i)^t}
+}
+\]
+
+\noindent Equivalentemente:
+
+\[
+\boxed{
+S_t=-I_0+\sum_{k=1}^{t}
+\frac{R}{(1+i)^k}
+}
+\]
+
+\noindent Il significato è semplice:
+
+\begin{itemize}
+    \item se $S_t<0$,
+    dobbiamo ancora recuperare
+    una parte dell'investimento;
+
+    \item se $S_t=0$,
+    abbiamo recuperato esattamente
+    l'investimento attualizzato;
+
+    \item se $S_t>0$,
+    l'investimento è stato recuperato
+    e rimane un margine positivo.
+\end{itemize}
+
+\noindent Per recuperare entro tre anni:
+
+\[
+\boxed{S_3\geq0}
+\]
+
+\noindent Non basta sommare
+i flussi nominali:
+ogni entrata deve prima
+essere attualizzata.
+
+
+\subsection{Testo e dati dell'esercizio}
+
+\noindent Una società informatica valuta
+sei progetti di cybersecurity.
+
+\noindent Ogni progetto presenta:
+
+\begin{itemize}
+    \item durata di cinque anni;
+    \item valore di recupero finale nullo;
+    \item investimento iniziale al tempo zero;
+    \item flussi annui costanti.
+\end{itemize}
+
+\noindent Interpretiamo la redditività annua
+come il flusso netto ricevuto
+alla fine di ogni anno.
+
+\begin{center}
+    \begin{tabular}{|c|r|r|}
+        \hline
+        \textbf{Progetto}
+        & \textbf{Investimento iniziale}
+        & \textbf{Flusso annuo} \\
+        \hline
+        A & 80.000,00 & 12.500,00 \\
+        B & 90.000,00 & 27.500,00 \\
+        C & 50.000,00 & 5.000,00 \\
+        D & 65.000,00 & 10.500,00 \\
+        E & 100.000,00 & 35.000,00 \\
+        F & 55.000,00 & 24.000,00 \\
+        \hline
+    \end{tabular}
+\end{center}
+
+\noindent Il tasso richiesto è:
+
+\[
+\boxed{i=10\%=0{,}10}
+\]
+
+\noindent Non aggiungiamo un ricavo finale,
+perché il valore di recupero è nullo.
+
+
+\subsection{Punto a:
+progetti accettabili secondo il TIR}
+
+\subsubsection*{Che cosa viene richiesto}
+
+\noindent I progetti sono indipendenti
+e le risorse finanziarie sono illimitate.
+
+\noindent Possiamo accettare
+tutti i progetti con:
+
+\[
+\boxed{TIR>10\%}
+\]
+
+\noindent Non dobbiamo scegliere
+necessariamente un solo progetto.
+
+
+\subsubsection*{1. Progetto A:
+formula completa del TIR}
+
+\noindent Il progetto A richiede 80.000,00
+e genera cinque entrate di 12.500,00.
+
+\noindent L'equazione del TIR è:
+
+\[
+\begin{aligned}
+0={}&-80.000{,}00
++\frac{12.500{,}00}{1+TIR_A}
++\frac{12.500{,}00}{(1+TIR_A)^2}\\
+&+\frac{12.500{,}00}{(1+TIR_A)^3}
++\frac{12.500{,}00}{(1+TIR_A)^4}
++\frac{12.500{,}00}{(1+TIR_A)^5}.
+\end{aligned}
+\]
+
+\noindent Non cerchiamo il TIR preciso.
+
+\noindent Sostituiamo il tasso del 10\%
+per controllare il segno del VAN:
+
+\[
+\begin{aligned}
+VAN_A={}&-80.000{,}00
++\frac{12.500{,}00}{1{,}10}
++\frac{12.500{,}00}{(1{,}10)^2}\\
+&+\frac{12.500{,}00}{(1{,}10)^3}
++\frac{12.500{,}00}{(1{,}10)^4}
++\frac{12.500{,}00}{(1{,}10)^5}.
+\end{aligned}
+\]
+
+\noindent Raccogliendo 12.500,00,
+riconosciamo il CAF:
+
+\[
+VAN_A
+=
+-80.000{,}00
++
+12.500{,}00\cdot CAF(10\%,5).
+\]
+
+\noindent La formula completa
+e quella con il CAF sono equivalenti.
+
+\noindent Utilizzando il CAF arrotondato:
+
+\[
+VAN_A
+\simeq
+-80.000{,}00
++
+3{,}79\cdot12.500{,}00.
+\]
+
+\[
+3{,}79\cdot12.500{,}00
+=
+47.375{,}00.
+\]
+
+\[
+VAN_A
+\simeq
+-80.000{,}00+47.375{,}00
+=
+\boxed{-32.625{,}00}.
+\]
+
+\[
+\boxed{
+TIR_A<10\%
+\Rightarrow
+\text{A non accettabile}
+}
+\]
+
+
+\subsubsection*{2. Progetto B}
+
+\noindent Utilizziamo direttamente:
+
+\[
+VAN=-I_0+CAF(i,n)\cdot R.
+\]
+
+\[
+VAN_B
+\simeq
+-90.000{,}00+3{,}79\cdot27.500{,}00.
+\]
+
+\[
+3{,}79\cdot27.500{,}00
+=
+104.225{,}00.
+\]
+
+\[
+VAN_B
+\simeq
+-90.000{,}00+104.225{,}00
+=
+\boxed{14.225{,}00}.
+\]
+
+\[
+\boxed{
+TIR_B>10\%
+\Rightarrow
+\text{B accettabile}
+}
+\]
+
+
+\subsubsection*{3. Progetto C}
+
+\[
+VAN_C
+\simeq
+-50.000{,}00+3{,}79\cdot5.000{,}00.
+\]
+
+\[
+3{,}79\cdot5.000{,}00
+=
+18.950{,}00.
+\]
+
+\[
+VAN_C
+\simeq
+-50.000{,}00+18.950{,}00
+=
+\boxed{-31.050{,}00}.
+\]
+
+\[
+\boxed{
+TIR_C<10\%
+\Rightarrow
+\text{C non accettabile}
+}
+\]
+
+
+\subsubsection*{4. Progetto D}
+
+\[
+VAN_D
+\simeq
+-65.000{,}00+3{,}79\cdot10.500{,}00.
+\]
+
+\[
+3{,}79\cdot10.500{,}00
+=
+39.795{,}00.
+\]
+
+\[
+VAN_D
+\simeq
+-65.000{,}00+39.795{,}00
+=
+\boxed{-25.205{,}00}.
+\]
+
+\[
+\boxed{
+TIR_D<10\%
+\Rightarrow
+\text{D non accettabile}
+}
+\]
+
+
+\subsubsection*{5. Progetto E}
+
+\[
+VAN_E
+\simeq
+-100.000{,}00+3{,}79\cdot35.000{,}00.
+\]
+
+\[
+3{,}79\cdot35.000{,}00
+=
+132.650{,}00.
+\]
+
+\[
+VAN_E
+\simeq
+-100.000{,}00+132.650{,}00
+=
+\boxed{32.650{,}00}.
+\]
+
+\[
+\boxed{
+TIR_E>10\%
+\Rightarrow
+\text{E accettabile}
+}
+\]
+
+
+\subsubsection*{6. Progetto F}
+
+\[
+VAN_F
+\simeq
+-55.000{,}00+3{,}79\cdot24.000{,}00.
+\]
+
+\[
+3{,}79\cdot24.000{,}00
+=
+90.960{,}00.
+\]
+
+\[
+VAN_F
+\simeq
+-55.000{,}00+90.960{,}00
+=
+\boxed{35.960{,}00}.
+\]
+
+\[
+\boxed{
+TIR_F>10\%
+\Rightarrow
+\text{F accettabile}
+}
+\]
+
+
+\subsubsection*{Risposta al punto a}
+
+\begin{center}
+    \begin{tabular}{|c|r|c|}
+        \hline
+        \textbf{Progetto}
+        & \textbf{VAN approssimato}
+        & \textbf{Accettabile} \\
+        \hline
+        A & -32.625,00 & No \\
+        B & 14.225,00 & Sì \\
+        C & -31.050,00 & No \\
+        D & -25.205,00 & No \\
+        E & 32.650,00 & Sì \\
+        F & 35.960,00 & Sì \\
+        \hline
+    \end{tabular}
+\end{center}
+
+\[
+\boxed{
+\text{Progetti accettabili: B, E e F}
+}
+\]
+
+\noindent Abbiamo controllato
+se il TIR supera il 10\%,
+senza calcolarne il valore preciso.
+
+
+\subsection{Punto b:
+valore generato di almeno 30.000,00}
+
+\subsubsection*{Che cosa viene richiesto}
+
+\noindent Consideriamo soltanto
+i progetti accettati al punto a:
+
+\[
+B,\qquad E,\qquad F.
+\]
+
+\noindent Seguendo lo svolgimento
+del professore,
+verifichiamo il requisito sul VAN:
+
+\[
+\boxed{VAN\geq30.000{,}00}
+\]
+
+\noindent Non calcoliamo
+il valore futuro netto.
+
+\noindent Utilizziamo:
+
+\[
+VAN=-I_0+CAF(i,n)\cdot R,
+\]
+
+\noindent con:
+
+\[
+CAF(10\%,5)\simeq3{,}79.
+\]
+
+
+\subsubsection*{1. Progetto B}
+
+\[
+I_{0,B}=90.000{,}00,
+\qquad
+R_B=27.500{,}00.
+\]
+
+\[
+VAN_B
+=
+-I_{0,B}+CAF(10\%,5)\cdot R_B.
+\]
+
+\[
+VAN_B
+\simeq
+-90.000{,}00+3{,}79\cdot27.500{,}00.
+\]
+
+\[
+3{,}79\cdot27.500{,}00
+=
+104.225{,}00.
+\]
+
+\[
+VAN_B
+\simeq
+-90.000{,}00+104.225{,}00
+=
+\boxed{14.225{,}00}.
+\]
+
+\noindent Confrontiamo con la soglia:
+
+\[
+14.225{,}00<30.000{,}00.
+\]
+
+\[
+\boxed{
+\text{B non soddisfa il requisito}
+}
+\]
+
+
+\subsubsection*{2. Progetto E}
+
+\[
+I_{0,E}=100.000{,}00,
+\qquad
+R_E=35.000{,}00.
+\]
+
+\[
+VAN_E
+=
+-I_{0,E}+CAF(10\%,5)\cdot R_E.
+\]
+
+\[
+VAN_E
+\simeq
+-100.000{,}00+3{,}79\cdot35.000{,}00.
+\]
+
+\[
+3{,}79\cdot35.000{,}00
+=
+132.650{,}00.
+\]
+
+\[
+VAN_E
+\simeq
+-100.000{,}00+132.650{,}00
+=
+\boxed{32.650{,}00}.
+\]
+
+\noindent Confrontiamo con la soglia:
+
+\[
+32.650{,}00>30.000{,}00.
+\]
+
+\[
+\boxed{
+\text{E soddisfa il requisito}
+}
+\]
+
+
+\subsubsection*{3. Progetto F}
+
+\[
+I_{0,F}=55.000{,}00,
+\qquad
+R_F=24.000{,}00.
+\]
+
+\[
+VAN_F
+=
+-I_{0,F}+CAF(10\%,5)\cdot R_F.
+\]
+
+\[
+VAN_F
+\simeq
+-55.000{,}00+3{,}79\cdot24.000{,}00.
+\]
+
+\[
+3{,}79\cdot24.000{,}00
+=
+90.960{,}00.
+\]
+
+\[
+VAN_F
+\simeq
+-55.000{,}00+90.960{,}00
+=
+\boxed{35.960{,}00}.
+\]
+
+\noindent Confrontiamo con la soglia:
+
+\[
+35.960{,}00>30.000{,}00.
+\]
+
+\[
+\boxed{
+\text{F soddisfa il requisito}
+}
+\]
+
+
+\subsubsection*{Risposta al punto b}
+
+\[
+\boxed{
+\text{Progetti accettabili: E e F}
+}
+\]
+
+\noindent B era accettabile al punto a,
+ma non raggiunge
+la nuova soglia di 30.000,00.
+
+
+\subsection{Punto c:
+spesa aggiuntiva di 10.000,00 al primo anno}
+
+\subsubsection*{Che cosa viene richiesto}
+
+\noindent Consideriamo i progetti
+risultati idonei al punto b:
+
+\[
+E,\qquad F.
+\]
+
+\noindent Verifichiamo se rimangono accettabili
+dopo una spesa aggiuntiva di 10.000,00
+alla fine del primo anno.
+
+\noindent Utilizziamo i VAN del punto b:
+
+\[
+VAN_E\simeq32.650{,}00,
+\qquad
+VAN_F\simeq35.960{,}00.
+\]
+
+\noindent Aggiorniamo il VAN
+dell'intero progetto:
+
+\[
+\boxed{
+VAN_{\text{aggiornato}}
+=
+VAN_{\text{precedente}}
+-
+\frac{\text{Spesa}}{(1+i)^1}
+}
+\]
+
+
+\subsubsection*{1. Attualizziamo la spesa}
+
+\[
+VA_{\text{spesa}}
+=
+\frac{10.000{,}00}{(1+0{,}10)^1}.
+\]
+
+\[
+VA_{\text{spesa}}
+=
+\frac{10.000{,}00}{1{,}10}
+\simeq
+\boxed{9.090{,}91}.
+\]
+
+\noindent Sottraiamo questo importo,
+perché sia la spesa attualizzata
+sia il VAN sono riferiti a oggi.
+
+
+\subsubsection*{2. Progetto E}
+
+\[
+VAN_{E,\text{aggiornato}}
+=
+VAN_E-\frac{10.000{,}00}{1{,}10}.
+\]
+
+\[
+VAN_{E,\text{aggiornato}}
+\simeq
+32.650{,}00-9.090{,}91.
+\]
+
+\[
+\boxed{
+VAN_{E,\text{aggiornato}}
+\simeq23.559{,}09
+}
+\]
+
+\noindent Confrontiamo con zero:
+
+\[
+23.559{,}09>0.
+\]
+
+\[
+\boxed{
+\text{E resta accettabile}
+}
+\]
+
+
+\subsubsection*{3. Progetto F}
+
+\[
+VAN_{F,\text{aggiornato}}
+=
+VAN_F-\frac{10.000{,}00}{1{,}10}.
+\]
+
+\[
+VAN_{F,\text{aggiornato}}
+\simeq
+35.960{,}00-9.090{,}91.
+\]
+
+\[
+\boxed{
+VAN_{F,\text{aggiornato}}
+\simeq26.869{,}09
+}
+\]
+
+\noindent Confrontiamo con zero:
+
+\[
+26.869{,}09>0.
+\]
+
+\[
+\boxed{
+\text{F resta accettabile}
+}
+\]
+
+
+\subsubsection*{Risposta al punto c}
+
+\begin{center}
+    \small
+    \begin{tabular}{|c|r|r|c|}
+        \hline
+        \textbf{Progetto}
+        & \textbf{VAN precedente}
+        & \textbf{VAN aggiornato}
+        & \textbf{Accettabile} \\
+        \hline
+        E & 32.650,00 & 23.559,09 & Sì \\
+        F & 35.960,00 & 26.869,09 & Sì \\
+        \hline
+    \end{tabular}
+\end{center}
+
+\[
+\boxed{
+\text{Entrambi i progetti: E e F}
+}
+\]
+
+\noindent Nel punto b il confronto
+era con 30.000,00.
+
+\noindent Nel punto c il confronto
+è invece con zero:
+
+\[
+\boxed{
+VAN_{\text{aggiornato}}>0
+}
+\]
+
+\noindent Entrambi restano accettabili,
+anche se il VAN aggiornato
+è inferiore a 30.000,00.
+
+
+\subsection{Punto d:
+scelta del paniere attraverso il PI}
+
+\subsubsection*{Che cosa viene richiesto}
+
+\noindent Torniamo ai progetti
+del \textbf{punto a}:
+
+\[
+B,\qquad E,\qquad F.
+\]
+
+\noindent Il budget massimo è:
+
+\[
+\boxed{150.000{,}00}
+\]
+
+\noindent Seguiamo il metodo del professore:
+calcoliamo il PI dei progetti
+e confrontiamo i panieri ammissibili.
+
+\noindent Utilizziamo i VAN ottenuti
+con CAF pari a 3,79,
+senza applicare la spesa del punto c.
+
+
+\subsubsection*{1. PI del progetto B}
+
+\noindent Applichiamo:
+
+\[
+PI_B=\frac{VAN_B}{I_{0,B}}.
+\]
+
+\noindent Sostituiamo i dati:
+
+\[
+PI_B
+\simeq
+\frac{14.225{,}00}{90.000{,}00}.
+\]
+
+\noindent Espress- oefd % should remove typo
+\noindent Esprimendo il rapporto in percentuale:
+
+\[
+PI_B
+\simeq
+\frac{14.225{,}00}{90.000{,}00}\cdot100\%
+=
+\boxed{15{,}81\%}.
+\]
+
+\noindent Per ogni 100 investiti,
+B genera un VAN di circa 15,81.
+
+
+\subsubsection*{2. PI del progetto E}
+
+\[
+PI_E=\frac{VAN_E}{I_{0,E}}.
+\]
+
+\[
+PI_E
+\simeq
+\frac{32.650{,}00}{100.000{,}00}.
+\]
+
+\noindent In percentuale:
+
+\[
+PI_E
+\simeq
+\frac{32.650{,}00}{100.000{,}00}\cdot100\%
+=
+\boxed{32{,}65\%}.
+\]
+
+
+\subsubsection*{3. PI del progetto F}
+
+\[
+PI_F=\frac{VAN_F}{I_{0,F}}.
+\]
+
+\[
+PI_F
+\simeq
+\frac{35.960{,}00}{55.000{,}00}.
+\]
+
+\noindent In percentuale:
+
+\[
+PI_F
+\simeq
+\frac{35.960{,}00}{55.000{,}00}\cdot100\%
+=
+\boxed{65{,}38\%}.
+\]
+
+
+\subsubsection*{4. Riepilogo dei PI}
+
+\begin{center}
+    \begin{tabular}{|c|r|r|r|}
+        \hline
+        \textbf{Progetto}
+        & \textbf{Investimento}
+        & \textbf{VAN}
+        & \textbf{PI} \\
+        \hline
+        B & 90.000,00 & 14.225,00 & 15,81\% \\
+        E & 100.000,00 & 32.650,00 & 32,65\% \\
+        F & 55.000,00 & 35.960,00 & 65,38\% \\
+        \hline
+    \end{tabular}
+\end{center}
+
+\noindent Il progetto F ha il PI più alto.
+
+\noindent Se scegliamo F,
+rimane disponibile un budget di:
+
+\[
+150.000{,}00-55.000{,}00
+=
+95.000{,}00.
+\]
+
+\noindent Possiamo aggiungere B,
+che richiede 90.000,00,
+ma non E,
+che richiede 100.000,00.
+
+
+\subsubsection*{5. Verifichiamo tutte le combinazioni}
+
+\begin{center}
+    \small
+    \begin{tabular}{|c|r|c|}
+        \hline
+        \textbf{Paniere}
+        & \textbf{Investimento totale}
+        & \textbf{Entro il budget} \\
+        \hline
+        B & 90.000,00 & Sì \\
+        E & 100.000,00 & Sì \\
+        F & 55.000,00 & Sì \\
+        B+E & 190.000,00 & No \\
+        B+F & 145.000,00 & Sì \\
+        E+F & 155.000,00 & No \\
+        B+E+F & 245.000,00 & No \\
+        \hline
+    \end{tabular}
+\end{center}
+
+\noindent I panieri ammissibili sono:
+
+\[
+B,\qquad E,\qquad F,\qquad B+F.
+\]
+
+\noindent Il confronto richiesto
+dal procedimento del professore
+è tra E e il paniere B+F.
+
+
+\subsubsection*{6. Investimento del paniere B+F}
+
+\[
+I_{0,B+F}
+=
+90.000{,}00+55.000{,}00
+=
+\boxed{145.000{,}00}.
+\]
+
+\noindent Il vincolo è rispettato:
+
+\[
+145.000{,}00\leq150.000{,}00.
+\]
+
+\noindent Il budget inutilizzato è:
+
+\[
+150.000{,}00-145.000{,}00
+=
+\boxed{5.000{,}00}.
+\]
+
+
+\subsubsection*{7. PI del paniere B+F}
+
+\noindent Utilizziamo la media ponderata,
+con gli investimenti iniziali come pesi:
+
+\[
+PI_{B+F}
+=
+\frac{
+PI_B\cdot90.000{,}00
++
+PI_F\cdot55.000{,}00
+}{
+145.000{,}00
+}.
+\]
+
+\noindent Sostituendo i PI percentuali
+mostrati con due decimali:
+
+\[
+PI_{B+F}
+\simeq
+\frac{
+15{,}81\%\cdot90.000{,}00
++
+65{,}38\%\cdot55.000{,}00
+}{
+145.000{,}00
+}.
+\]
+
+\noindent I due prodotti sono:
+
+\[
+15{,}81\%\cdot90.000{,}00
+=
+14.229{,}00,
+\]
+
+\[
+65{,}38\%\cdot55.000{,}00
+=
+35.959{,}00.
+\]
+
+\noindent Quindi:
+
+\[
+PI_{B+F}
+\simeq
+\frac{14.229{,}00+35.959{,}00}
+{145.000{,}00}.
+\]
+
+\[
+PI_{B+F}
+\simeq
+\frac{50.188{,}00}{145.000{,}00}
+\simeq
+\boxed{34{,}61\%}.
+\]
+
+\medskip
+
+\noindent \textbf{Attenzione agli arrotondamenti:}
+i PI 15,81\% e 65,38\%
+sono già arrotondati.
+
+\noindent Per ritrovare esattamente
+il VAN complessivo del paniere,
+utilizziamo i rapporti prima
+dell'arrotondamento:
+
+\[
+PI_{B+F}
+=
+\frac{
+\left(\frac{14.225{,}00}{90.000{,}00}\right)
+90.000{,}00
++
+\left(\frac{35.960{,}00}{55.000{,}00}\right)
+55.000{,}00
+}{
+145.000{,}00
+}.
+\]
+
+\noindent Semplificando:
+
+\[
+PI_{B+F}
+=
+\frac{
+14.225{,}00+35.960{,}00
+}{
+145.000{,}00
+}.
+\]
+
+\[
+PI_{B+F}
+=
+\frac{50.185{,}00}{145.000{,}00}
+\simeq
+\boxed{34{,}61\%}.
+\]
+
+\noindent Il PI percentuale finale
+è lo stesso con due decimali.
+
+
+\subsubsection*{8. Confronto tra E e B+F}
+
+\[
+PI_E=32{,}65\%,
+\]
+
+\[
+PI_{B+F}\simeq34{,}61\%.
+\]
+
+\noindent Poiché:
+
+\[
+34{,}61\%>32{,}65\%,
+\]
+
+\noindent il paniere B+F
+presenta un PI maggiore
+rispetto al progetto E.
+
+
+\subsubsection*{9. VAN complessivo del paniere}
+
+\noindent I progetti sono indipendenti,
+quindi i loro VAN si sommano:
+
+\[
+VAN_{B+F}=VAN_B+VAN_F.
+\]
+
+\[
+VAN_{B+F}
+\simeq
+14.225{,}00+35.960{,}00.
+\]
+
+\[
+\boxed{
+VAN_{B+F}\simeq50.185{,}00
+}
+\]
+
+\noindent Il paniere B+F
+ha anche il VAN totale più alto
+tra tutte le combinazioni ammissibili:
+
+\[
+\begin{aligned}
+VAN_B&\simeq14.225{,}00;\\
+VAN_E&\simeq32.650{,}00;\\
+VAN_F&\simeq35.960{,}00;\\
+VAN_{B+F}&\simeq50.185{,}00.
+\end{aligned}
+\]
+
+\noindent Anche scegliere soltanto F
+sarebbe possibile e darebbe un PI più alto,
+ma lascerebbe inutilizzata
+una parte maggiore del budget.
+
+\noindent Aggiungere B a F
+è finanziariamente possibile
+e aumenta il VAN totale di 14.225,00.
+
+\noindent Per questo scegliamo B+F:
+non stiamo cercando soltanto
+il massimo PI percentuale
+del singolo progetto.
+
+
+\subsubsection*{Risposta al punto d}
+
+\[
+\boxed{
+\text{Paniere scelto: B+F}
+}
+\]
+
+\[
+\boxed{
+\begin{aligned}
+\text{Investimento totale}&=145.000{,}00;\\
+PI_{B+F}&\simeq34{,}61\%;\\
+VAN_{B+F}&\simeq50.185{,}00.
+\end{aligned}
+}
+\]
+
+
+\subsection{Punto e:
+recupero dell'investimento entro tre anni}
+
+\subsubsection*{Che cosa viene richiesto}
+
+\noindent Dobbiamo verificare
+quali progetti recuperano
+l'investimento iniziale
+entro i primi tre anni,
+utilizzando i flussi attualizzati.
+
+\noindent Il testo richiede
+i progetti del punto b:
+
+\[
+E,\qquad F.
+\]
+
+\noindent Nello svolgimento del professore
+compare anche B:
+lo riportiamo come confronto,
+ma era già escluso dal punto b.
+
+\medskip
+
+\noindent Seguiamo il procedimento
+del \textbf{saldo cumulato}:
+
+\begin{enumerate}
+    \item partiamo dall'investimento
+    con segno negativo;
+
+    \item aggiungiamo il flusso attualizzato
+    del primo anno;
+
+    \item aggiungiamo quello del secondo anno;
+
+    \item aggiungiamo quello del terzo anno;
+
+    \item controlliamo quando il saldo
+    raggiunge o supera zero.
+\end{enumerate}
+
+\noindent Utilizziamo:
+
+\[
+\boxed{
+S_t=S_{t-1}+\frac{R}{(1{,}10)^t}
+}
+\]
+
+\noindent I risultati sono mostrati
+con due cifre decimali.
+
+\noindent Per evitare errori nella somma,
+manteniamo la precisione interna.
+Piccole differenze rispetto ai valori
+scritti a mano dipendono
+dagli arrotondamenti.
+
+
+\subsubsection*{1. Progetto B:
+confronto con la tabella del professore}
+
+\noindent I dati sono:
+
+\[
+I_{0,B}=90.000{,}00,
+\qquad
+R_B=27.500{,}00.
+\]
+
+\noindent Partiamo dall'investimento:
+
+\[
+S_{B,0}=-90.000{,}00.
+\]
+
+\noindent Primo anno:
+
+\[
+VA_{B,1}
+=
+\frac{27.500{,}00}{1{,}10}
+=
+25.000{,}00.
+\]
+
+\[
+S_{B,1}
+=
+-90.000{,}00+25.000{,}00
+=
+\boxed{-65.000{,}00}.
+\]
+
+\noindent Secondo anno:
+
+\[
+VA_{B,2}
+=
+\frac{27.500{,}00}{(1{,}10)^2}
+\simeq22.727{,}27.
+\]
+
+\[
+S_{B,2}
+=
+S_{B,1}
++
+\frac{27.500{,}00}{(1{,}10)^2}
+\simeq
+\boxed{-42.272{,}73}.
+\]
+
+\noindent Terzo anno:
+
+\[
+VA_{B,3}
+=
+\frac{27.500{,}00}{(1{,}10)^3}
+\simeq20.661{,}16.
+\]
+
+\[
+S_{B,3}
+=
+S_{B,2}
++
+\frac{27.500{,}00}{(1{,}10)^3}
+\simeq
+\boxed{-21.611{,}57}.
+\]
+
+\noindent Il saldo dopo tre anni
+è ancora negativo.
+
+\[
+\boxed{
+\text{B non recupera l'investimento entro tre anni}
+}
+\]
+
+
+\subsubsection*{2. Progetto E}
+
+\noindent I dati sono:
+
+\[
+I_{0,E}=100.000{,}00,
+\qquad
+R_E=35.000{,}00.
+\]
+
+\noindent Partiamo dall'investimento:
+
+\[
+S_{E,0}=-100.000{,}00.
+\]
+
+\medskip
+
+\noindent \textbf{Primo anno}
+
+\[
+VA_{E,1}
+=
+\frac{35.000{,}00}{1{,}10}
+\simeq31.818{,}18.
+\]
+
+\[
+S_{E,1}
+=
+-100.000{,}00
++
+\frac{35.000{,}00}{1{,}10}
+\simeq
+\boxed{-68.181{,}82}.
+\]
+
+\noindent Il saldo è negativo:
+l'investimento non è ancora recuperato.
+
+\medskip
+
+\noindent \textbf{Secondo anno}
+
+\[
+VA_{E,2}
+=
+\frac{35.000{,}00}{(1{,}10)^2}
+\simeq28.925{,}62.
+\]
+
+\[
+S_{E,2}
+=
+S_{E,1}
++
+\frac{35.000{,}00}{(1{,}10)^2}
+\simeq
+\boxed{-39.256{,}20}.
+\]
+
+\noindent Anche dopo due anni
+il saldo è negativo.
+
+\medskip
+
+\noindent \textbf{Terzo anno}
+
+\[
+VA_{E,3}
+=
+\frac{35.000{,}00}{(1{,}10)^3}
+\simeq26.296{,}02.
+\]
+
+\[
+S_{E,3}
+=
+S_{E,2}
++
+\frac{35.000{,}00}{(1{,}10)^3}
+\simeq
+\boxed{-12.960{,}18}.
+\]
+
+\noindent Dopo tre anni
+mancano ancora circa 12.960,18
+per recuperare l'investimento.
+
+\[
+\boxed{
+\text{E non recupera l'investimento entro tre anni}
+}
+\]
+
+
+\subsubsection*{3. Progetto F}
+
+\noindent I dati sono:
+
+\[
+I_{0,F}=55.000{,}00,
+\qquad
+R_F=24.000{,}00.
+\]
+
+\noindent Partiamo dall'investimento:
+
+\[
+S_{F,0}=-55.000{,}00.
+\]
+
+\medskip
+
+\noindent \textbf{Primo anno}
+
+\[
+VA_{F,1}
+=
+\frac{24.000{,}00}{1{,}10}
+\simeq21.818{,}18.
+\]
+
+\[
+S_{F,1}
+=
+-55.000{,}00
++
+\frac{24.000{,}00}{1{,}10}
+\simeq
+\boxed{-33.181{,}82}.
+\]
+
+\noindent Il saldo è ancora negativo.
+
+\medskip
+
+\noindent \textbf{Secondo anno}
+
+\[
+VA_{F,2}
+=
+\frac{24.000{,}00}{(1{,}10)^2}
+\simeq19.834{,}71.
+\]
+
+\[
+S_{F,2}
+=
+S_{F,1}
++
+\frac{24.000{,}00}{(1{,}10)^2}
+\simeq
+\boxed{-13.347{,}11}.
+\]
+
+\noindent Anche dopo due anni
+il saldo è negativo:
+il recupero non è ancora avvenuto.
+
+\medskip
+
+\noindent \textbf{Terzo anno}
+
+\[
+VA_{F,3}
+=
+\frac{24.000{,}00}{(1{,}10)^3}
+\simeq18.031{,}56.
+\]
+
+\[
+S_{F,3}
+=
+S_{F,2}
++
+\frac{24.000{,}00}{(1{,}10)^3}
+\simeq
+\boxed{4.684{,}45}.
+\]
+
+\noindent Il saldo diventa positivo.
+
+\noindent Con l'incasso del terzo anno,
+il progetto ha recuperato
+l'investimento iniziale attualizzato
+e presenta un margine positivo.
+
+\[
+\boxed{
+\text{F recupera l'investimento al terzo anno}
+}
+\]
+
+
+\subsubsection*{Tabella dei flussi attualizzati}
+
+\begin{center}
+    \small
+    \begin{tabular}{|l|r|r|r|}
+        \hline
+        \textbf{Voce}
+        & \textbf{B}
+        & \textbf{E}
+        & \textbf{F} \\
+        \hline
+        Investimento iniziale
+        & -90.000,00 & -100.000,00 & -55.000,00 \\
+        \hline
+        Flusso annuo
+        & 27.500,00 & 35.000,00 & 24.000,00 \\
+        \hline
+        Flusso attualizzato anno 1
+        & 25.000,00 & 31.818,18 & 21.818,18 \\
+        \hline
+        Flusso attualizzato anno 2
+        & 22.727,27 & 28.925,62 & 19.834,71 \\
+        \hline
+        Flusso attualizzato anno 3
+        & 20.661,16 & 26.296,02 & 18.031,56 \\
+        \hline
+    \end{tabular}
+\end{center}
+
+
+\subsubsection*{Tabella dei saldi cumulati}
+
+\begin{center}
+    \small
+    \begin{tabular}{|l|r|r|r|}
+        \hline
+        \textbf{Momento}
+        & \textbf{B}
+        & \textbf{E}
+        & \textbf{F} \\
+        \hline
+        Tempo iniziale
+        & -90.000,00 & -100.000,00 & -55.000,00 \\
+        \hline
+        Fine anno 1
+        & -65.000,00 & -68.181,82 & -33.181,82 \\
+        \hline
+        Fine anno 2
+        & -42.272,73 & -39.256,20 & -13.347,11 \\
+        \hline
+        Fine anno 3
+        & -21.611,57 & -12.960,18 & 4.684,45 \\
+        \hline
+    \end{tabular}
+\end{center}
+
+\noindent \textbf{Come si legge la tabella:}
+cerchiamo il primo saldo
+uguale o maggiore di zero.
+
+\noindent Soltanto F presenta
+un saldo positivo entro il terzo anno.
+
+
+\subsubsection*{Risposta al punto e}
+
+\[
+\boxed{
+\text{Si sceglie soltanto F}
+}
+\]
+
+\noindent E non recupera entro tre anni.
+
+\noindent B, riportato soltanto
+per confronto con lo svolgimento,
+non recupera entro tre anni
+ed era già escluso dal punto b.
+
+
+\subsection{Riepilogo delle risposte}
+
+\begin{center}
+    \begin{tabular}{|c|p{9cm}|}
+        \hline
+        \textbf{Punto} & \textbf{Risposta} \\
+        \hline
+        a &
+        B, E e F:
+        hanno $TIR>10\%$. \\
+        \hline
+        b &
+        E e F:
+        hanno $VAN\geq30.000{,}00$,
+        utilizzando CAF pari a 3,79. \\
+        \hline
+        c &
+        E e F:
+        i VAN aggiornati sono positivi.
+        E circa 23.559,09;
+        F circa 26.869,09. \\
+        \hline
+        d &
+        B+F:
+        investimento 145.000,00;
+        $PI\simeq34{,}61\%$;
+        $VAN\simeq50.185{,}00$. \\
+        \hline
+        e &
+        Soltanto F:
+        il saldo cumulato attualizzato
+        diventa positivo al terzo anno,
+        raggiungendo circa 4.684,45. \\
+        \hline
+    \end{tabular}
+\end{center}
