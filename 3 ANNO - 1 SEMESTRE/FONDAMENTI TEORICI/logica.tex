@@ -124,7 +124,7 @@ Ora definiamo induttivamente la \textbf{valutazione} di una formula all'interno 
     \item $\mathcal{I}\models A\equiv B$ se e solo se valgono sia $\mathcal{I}\models A\to B$ sia $\mathcal{I}\models B \to A$
    \end{itemize}
 \end{definition}}}\smallskip\\
-Quindi, possiamo leggere $\mathcal{I\models} \models A$ come se fosse:
+Quindi, possiamo leggere $\mathcal{I} \models A$ come se fosse:
 \[  \text{L'interpretazione } \mathcal{I} \text{ soddisfa la formula } A   \]
 Vediamo un esempio di come arrivare alla valutazione di una formula:\smallskip\\
 \textit{Esempio.} Consideriamo l'interpretazione $\mathcal{I} = \{ P  \}$, e valutiamo l'interpretazione $\mathcal{I} \models (P \wedge Q) \vee (R \to S) $.\\
@@ -133,13 +133,12 @@ In questo caso allora $P$ è true, mentre $Q,R$ e $S$ sono false. Per valutare l
 \[   \underbrace{(\text{True } \wedge \text{ False})}_{\text{False}}  \vee \underbrace{(\text{False }\to \text{ False})}_{\text{True}}   \]
 \[ \text{False } \vee \text{ True}  \]
 \[   \boxed{\text{True}} \] 
+Ora vediamo degli algoritmi  per valutare il valore di verità di una formula:  
 
 
 
 
-
- il costo computazionale dell'algoritmo per la valutazione della formula esempio è lineare, poichè analizzo ogni nodo
-dell'albero una sola volta, collegala a sotto dove ho messo l'algortimo.\smallskip\\
+ 
 Ecco alcune osservazioni sui connettivi nella logica proposizionale:
 \begin{itemize}
     \item $A \to B$ ha lo stesso significato di $\neg A \vee B$
@@ -155,7 +154,7 @@ Ecco alcune osservazioni sui connettivi nella logica proposizionale:
 \end{itemize}
 Due formule hanno lo stesso significato se per ogni interpretazione hanno lo stesso valore di verità. Tutte le formule 
 della logica proposizionale si possono scrivere con una serie di NOT ($\neg$) oppure una serie di AND ($\wedge$).\smallskip\\
-Ora vediamo un algoritmo per valutare il valore di verità di una formula:
+In base a queste osservazioni possiamo costruire dei semplici \textbf{algoritmi} per la valutazione di formule:
     \begin{verbatim}
         (A is p)                        check(I |= p):
                                             if I(p) = true
@@ -171,9 +170,7 @@ Ora vediamo un algoritmo per valutare il valore di verità di una formula:
                                             if check(I |= B)
                                                 then return YES
                                             else return check(I |= C)
-\end{verbatim}
-Un altro algoritmo è:
-\begin{verbatim}
+
         (A is B -> C)                   check(I |= B -> C):
                                             if check(I |= B)
                                                 then return check(I |= C)
@@ -184,14 +181,15 @@ Un altro algoritmo è:
                                                 then return check(I |= C)
                                             else return not(check(I |= C))
 
-            (A is (B))                      check(I |= (B)):
+        (A is (B))                      check(I |= (B)):
                                             return(I |= B)
 \end{verbatim}
+Osserviamo che il \textbf{costo} computazionale degli algoritmi per la valutazione di una formula  è \textbf{lineare}, poichè analizzo ogni nodo
+dell'albero (riferito alla formula in esame) una sola volta.
 
-
-
-\noindent Vediamo un \textbf{esercizio} sulla logica proposizionale (simile a quello che potrebbe essere il primo esercizio di esame):\smallskip\\
-Consideriamo un linguaggio proposizionale dove $p$ significa "Paola è felice", $q$ significa "Paola dipinge" e $r$
+\subsubsection{Esericizi}
+Vediamo un esercizio sulla logica proposizionale (simile a quello che potrebbe essere il primo esercizio di esame):\smallskip\\
+$\bullet$ Consideriamo un linguaggio proposizionale in cui $p$ significa "Paola è felice", $q$ significa "Paola dipinge" e $r$
 significa "Renzo è felice". Formalizza le seguenti frasi:
 \begin{enumerate}
     \item \textit{se Paola è felice e dipinge allora Renzo non è felice}
@@ -200,15 +198,13 @@ significa "Renzo è felice". Formalizza le seguenti frasi:
 \end{enumerate}
 Le soluzioni sono:
 \begin{enumerate}
-    \item $p \wedge q \to r$ ($\{p,q,r \not\models f\}, \ \{ p,q \models f\}$)
+    \item $p \wedge q \to r$  $\big(\{p,q,r \not\models f\}, \ \{ p,q \models f\}\big)$
     \item $p \to q$
     \item $\neg(p \wedge \neg A)$ oppure $\neg q \to \neg p$ oppure $p \to q$, sono tutte formule equivalenti
 \end{enumerate}
 
 
-
-\noindent Altro \textbf{esercizio}:\smallskip\\
-Consideriamo un linguaggio proposizionale in cui $r$ significa "\textit{rigore nei conti pubblici}", 
+\noindent $\bullet$ Consideriamo un linguaggio proposizionale in cui $r$ significa "\textit{rigore nei conti pubblici}", 
 $e$ significa "\textit{sviluppo dell'economia}", $s$ significa "\textit{stagnazione}" e $f$ significa "\textit{spesa facile}". 
 Formalizza le seguenti frasi: 
 
