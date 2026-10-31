@@ -102,29 +102,45 @@ ma dobbiamo sapere se è sta effettivamente piovendo o no.\smallskip\\
    dell'alfabeto \textit{true} o \textit{false}, ovvero:
    \[  \mathcal{I} : \mathcal{P} \to \{ \text{True, False}\}  \]
 \end{definition}}}\smallskip\\
-Non si può dire se una formula è vera o falsa senza un \textbf{contesto}, che nella logica proposizionale si dice \textbf{interpretazione logico proposzionale}.
+Non si può dire se una formula è vera o falsa senza un \textbf{contesto}, che nella logica proposizionale si dice \textbf{interpretazione logico proposizionale}.
 Esiste un contesto (interpretazione) in cui non posso dire nè true nè false? Assolutamente no, in logica proposizionale
 è \textbf{sempre} possibile dire se una formula è vera o falsa. Esistono delle formule che possono essere valutate true o false 
 per qualunque interpretazione possibile. Ad esempio:
 \[   A \wedge \neg A  \]
-è sempre falsa per qualunque interpretazione possibile.\smallskip\\
-Ora definiamo induttivamente la valutazione di una formula all'interno di una interpretazione:\smallskip\\
+è sempre falsa per qualunque interpretazione possibile.\\
+Inoltre per convenzione indicheremo con $P$ la lettera proposizionale per cui il valore di verità è true, formalmente:
+\[\mathcal{I} = \{ P \in \mathcal{P} \ | \ \mathcal{I}(P) = \text{True}    \}\]
+Ora definiamo induttivamente la \textbf{valutazione} di una formula all'interno di una \textbf{interpretazione}:\smallskip\\
 \colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
-   $\bm{\models A}$ è definita induttivamente come segue:
+   $\mathcal{I} \bm{\models A}$ è definita induttivamente come segue:
    \begin{itemize}
     \item Se $A$ è una lettera proposizionale $P$, cioè se $P \in \mathcal{P}$, allora $\mathcal{I}\models A$ se e solo se
     \[  \mathcal{I}(P) = \text{True}   \]
-    \item $\models A$ se e solo se $\models A$
-    \item $\models A$ se e solo se non è il caso in cui $\models A$ (possiamo scrivere $\not\models A$)
-    \item $\models A \wedge B$ se e solo se valgono entrambi $\models A$ e $\models B$ 
-    \item $\models A \vee B$ se e solo se vale $\models A$ oppure $\models B$
-    \item $\models A\to B$ se solo se non è il caso in cui $\models A$ e $ \not\models A$
-    \item $\models A\equiv B$ se e solo se valgono sia $\models A\to B$ sia $\models B \to A$
+    \item $\mathcal{I}\models A$ se e solo se $\models A$
+    \item $\mathcal{I}\models A$ se e solo se non è il caso in cui $\mathcal{I}\models A$ (possiamo scrivere $\not\models A$)
+    \item $\mathcal{I}\models A \wedge B$ se e solo se valgono entrambi $\mathcal{I}\models A$ e $\mathcal{I}\models B$ 
+    \item $\mathcal{I}\models A \vee B$ se e solo se vale $\mathcal{I}\models A$ oppure $\mathcal{I}\models B$
+    \item $\mathcal{I}\models A\to B$ se solo se non è il caso in cui $\mathcal{I}\models A$ e $\mathcal{I} \not\models A$
+    \item $\mathcal{I}\models A\equiv B$ se e solo se valgono sia $\mathcal{I}\models A\to B$ sia $\mathcal{I}\models B \to A$
    \end{itemize}
 \end{definition}}}\smallskip\\
-METTERE ESEMPIO, il costo computazionale dell'algoritmo per la valutazione della formula esempio è lineare, poichè analizzo ogni nodo
+Quindi, possiamo leggere $\mathcal{I\models} \models A$ come se fosse:
+\[  \text{L'interpretazione } \mathcal{I} \text{ soddisfa la formula } A   \]
+Vediamo un esempio di come arrivare alla valutazione di una formula:\smallskip\\
+\textit{Esempio.} Consideriamo l'interpretazione $\mathcal{I} = \{ P  \}$, e valutiamo l'interpretazione $\mathcal{I} \models (P \wedge Q) \vee (R \to S) $.\\
+Ricordiamo che quando un interpretazione è rappresentata da un insieme, le lettere presenti nell'insieme sono vere (true), le altre no.
+In questo caso allora $P$ è true, mentre $Q,R$ e $S$ sono false. Per valutare l'interpretazione, facciamo le valutazioni delle singole formule, rispettando l'ordine di priorità:
+\[   \underbrace{(\text{True } \wedge \text{ False})}_{\text{False}}  \vee \underbrace{(\text{False }\to \text{ False})}_{\text{True}}   \]
+\[ \text{False } \vee \text{ True}  \]
+\[   \boxed{\text{True}} \] 
+
+
+
+
+
+ il costo computazionale dell'algoritmo per la valutazione della formula esempio è lineare, poichè analizzo ogni nodo
 dell'albero una sola volta, collegala a sotto dove ho messo l'algortimo.\smallskip\\
-Ecco alcune osservazioni sui connettivi (connettori?) nella logica proposizionale:
+Ecco alcune osservazioni sui connettivi nella logica proposizionale:
 \begin{itemize}
     \item $A \to B$ ha lo stesso significato di $\neg A \vee B$
     \item $\neg (A\vee B)$ ha lo stesso significato di $\neg A \wedge \neg B$ (1 legge di De Morgan)
@@ -139,37 +155,37 @@ Ecco alcune osservazioni sui connettivi (connettori?) nella logica proposizional
 \end{itemize}
 Due formule hanno lo stesso significato se per ogni interpretazione hanno lo stesso valore di verità. Tutte le formule 
 della logica proposizionale si possono scrivere con una serie di NOT ($\neg$) oppure una serie di AND ($\wedge$).\smallskip\\
-Ora vediamo un algoritmo per valutare il valore di verità di una formula: (P STA PER TRUE ?)
+Ora vediamo un algoritmo per valutare il valore di verità di una formula:
     \begin{verbatim}
         (A is p)                        check(I |= p):
-                                        if I(p) = true
-                                            then return YES
-                                        else return NO
+                                            if I(p) = true
+                                                then return YES
+                                            else return NO
 
         (A is B /\ C)                   check(I |= B /\ C):
-                                        if check(I |= B)
-                                            then return check(I |= C)
-                                        else return NO
+                                            if check(I |= B)
+                                                then return check(I |= C)
+                                            else return NO
 
         (A is B \/ C)                   check(I |= B \/ C):
-                                        if check(I |= B)
-                                            then return YES
-                                        else return check(I |= C)
+                                            if check(I |= B)
+                                                then return YES
+                                            else return check(I |= C)
 \end{verbatim}
 Un altro algoritmo è:
 \begin{verbatim}
         (A is B -> C)                   check(I |= B -> C):
-                                        if check(I |= B)
-                                            then return check(I |= C)
-                                        else return YES
+                                            if check(I |= B)
+                                                then return check(I |= C)
+                                            else return YES
 
         (A is B === C)                  check(I |= B === C):
-                                        if check(I |= B)
-                                            then return check(I |= C)
-                                        else return not(check(I |= C))
+                                            if check(I |= B)
+                                                then return check(I |= C)
+                                            else return not(check(I |= C))
 
-        (A is (B))                      check(I |= (B)):
-                                        return(I |= B)
+            (A is (B))                      check(I |= (B)):
+                                            return(I |= B)
 \end{verbatim}
 
 
