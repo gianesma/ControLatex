@@ -3194,7 +3194,7 @@ Deve quindi valere:
 \textbf{Da ricordare:} lo stesso nome di attributo,
 anche se utilizzato in entità diverse,
 identifica la stessa proprietà a livello estensionale.
-\section{DA QUI CONTINUA}
+
 \subsection{Attributi definiti su entità disgiunte}
 
 Consideriamo ora due entità che non possono avere
@@ -3237,16 +3237,6 @@ Supponiamo che:
 Non c'è alcuna contraddizione, perché Mario
 e Dipartimento1 sono oggetti distinti
 appartenenti a entità disgiunte.\\
-La funzione complessiva può essere vista come:
-\[
-\boxed{
-\texttt{Città}
-=
-\texttt{Città}_{Persona}
-\cup
-\texttt{Città}_{Dipartimento}
-}
-\]
 \textbf{Differenza fondamentale:}
 \begin{itemize}
     \item \textbf{Entità sovrapposte:}
@@ -3315,17 +3305,10 @@ potrebbe avere come identificatori:
 Entrambi possono identificare univocamente
 uno studente, se lo schema impone
 i rispettivi vincoli di unicità.\\
-È anche possibile che uno schema ER
-non specifichi alcun identificatore per un'entità.\\
-Questo non significa che le sue istanze
-siano indistinguibili.\\
-Infatti, ogni oggetto possiede implicitamente
+Ogni oggetto possiede implicitamente
 un \textbf{identificatore di oggetto}
 (\emph{object identifier}), che lo distingue
-dagli altri oggetti.\\
-\textbf{Attenzione:} l'identificatore di oggetto
-è implicito e non coincide necessariamente
-con un attributo esplicito dello schema.
+dagli altri oggetti.
 \subsection{Identificatori interni ed esterni}
 Gli identificatori delle entità si dividono
 in due categorie principali.
@@ -3339,7 +3322,7 @@ Può essere costituito da:
     \item più attributi considerati insieme.
 \end{itemize}
 \noindent
-\textcolor{verdeEsempio}{\textbf{Esempio: identificatore semplice}}
+\textcolor{verdeEsempio}{\textbf{Esempio. }} identificatore semplice
 Consideriamo l'entità \texttt{Automobile}.
 \[
 \boxed{\texttt{Targa}}
@@ -3348,7 +3331,7 @@ L'attributo Targa identifica da solo
 ogni automobile.\\
 Quindi abbiamo un identificatore interno
 formato da un unico attributo.\\
-\textcolor{verdeEsempio}{\textbf{Esempio: identificatore composto}}
+\textcolor{verdeEsempio}{\textbf{Esempio. }} identificatore composto
 Consideriamo l'entità \texttt{Persona},
 con gli attributi:
 \begin{itemize}
@@ -3369,11 +3352,7 @@ K=(\texttt{Nome},\texttt{Cognome})
 \]
 Significa che non possono esistere due persone
 distinte con lo stesso nome e lo stesso cognome
-nell'istanza del database.\\
-\textbf{Attenzione:} questa è una scelta di modellazione
-dell'esempio, non una proprietà generalmente vera
-nel mondo reale: normalmente possono esistere
-persone omonime.\\
+nell'istanza del database.
 \subsubsection*{Identificatori esterni}
 Un identificatore è \textbf{esterno} quando
 coinvolge almeno un ruolo di una relazione
@@ -3423,7 +3402,7 @@ tramite il ruolo della relazione \texttt{Appartiene}.\\
 Questo è un identificatore esterno,
 perché utilizza una relazione.
 
-\subsection{Cardinalità delle proprietà identificanti}
+\subsubsection{Cardinalità delle proprietà identificanti}
 Tutti gli attributi e i ruoli di relazione
 che partecipano a un identificatore
 devono avere cardinalità:
@@ -3436,32 +3415,18 @@ deve essere:
     \item \textbf{obbligatoria}, perché il minimo è $1$;
     \item \textbf{monovalore}, perché il massimo è $1$.
 \end{itemize}
-\noindent
-\textcolor{verdeEsempio}{\textbf{Esempio}}\\
-Se \texttt{Matricola} identifica uno studente,
-non può avere cardinalità $(0,1)$,
-perché alcuni studenti potrebbero non avere
-alcuna matricola.\\
-Non può nemmeno avere cardinalità $(1,n)$,
-perché uno studente potrebbe avere
-più matricole.\\
-Per partecipare all'identificatore deve avere:
-\[
-\texttt{Matricola}:(1,1)
-\]
-Analogamente, se un ufficio viene identificato
-dal proprio numero e dal dipartimento
-di appartenenza, ogni ufficio deve appartenere
-a \textbf{esattamente un dipartimento}.\\
-\subsection{Notazione grafica degli identificatori}
-Nel modello ER delle slide, gli identificatori
-vengono rappresentati graficamente
-utilizzando \textbf{pallini anneriti}.
 
 \subsubsection*{Identificatore interno semplice}
 Se l'identificatore è formato da un solo attributo,
 si annerisce il pallino corrispondente
-a quell'attributo.\\
+a quell'attributo.
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.3\linewidth]{../images/att1.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent
 \textcolor{verdeEsempio}{\textbf{Esempio}}\\
 Nell'entità \texttt{Automobile}:
 \begin{itemize}
@@ -3472,20 +3437,24 @@ Nell'entità \texttt{Automobile}:
 \subsubsection*{Identificatore interno composto}
 Se l'identificatore è formato da più attributi,
 si collegano gli attributi con una linea
-che termina con un \textbf{pallino annerito}.\\
+che termina con un \textbf{pallino annerito}.
 Il pallino nero rappresenta l'identificatore
 formato dall'insieme degli attributi collegati.
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.3\linewidth]{../images/att2.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent
 \textcolor{verdeEsempio}{\textbf{Esempio}}\\
 Se l'identificatore di Persona è formato da:
 
 \[
-K=(\texttt{Nome},\texttt{Cognome})
+K=(\texttt{Nome},\texttt{Cognome},\texttt{Data Nascita})
 \]
-Nome e Cognome vengono collegati
-a un unico pallino nero.\\
-Non si anneriscono separatamente i due pallini,
-perché ciò indicherebbe due identificatori
-distinti, ciascuno formato da un solo attributo.
+Nome, Cognome e Data Nascita vengono collegati
+a un unico pallino nero.
 \subsubsection*{Identificatore esterno}
 Per un identificatore esterno si collegano
 gli attributi e i ruoli di relazione
@@ -3504,3 +3473,258 @@ la notazione collega:
 \noindent
 Questi due elementi, insieme,
 identificano univocamente l'ufficio.
+\subsection{Semantica dei vincoli di identificazione delle entità}
+
+Un \textbf{vincolo di identificazione} stabilisce quali
+proprietà permettono di distinguere univocamente
+le istanze di un'entità.\\
+Consideriamo un'entità $E$ identificata mediante:
+\begin{itemize}
+    \item gli attributi $A_1,A_2,\ldots,A_k$;
+    \item i ruoli $U_1,U_2,\ldots,U_h$ nelle relazioni
+    $R_1,R_2,\ldots,R_h$.
+\end{itemize}
+\noindent
+Tutte queste proprietà devono avere cardinalità $(1,1)$.\\
+Il vincolo impone che, prese due istanze distinte
+$e_1,e_2$ di $E$, esse debbano differire
+\textbf{in almeno una proprietà dell'identificatore}.\\
+Quindi devono avere:
+\begin{itemize}
+    \item un valore diverso per almeno uno degli attributi
+    identificanti;
+    \item oppure una partecipazione diversa in almeno
+    una delle relazioni identificanti.
+\end{itemize}
+\noindent
+Non è necessario che differiscano in tutte le proprietà:
+\textbf{è sufficiente una sola differenza}.
+\subsubsection*{Cosa significa differire nella partecipazione a una relazione?}
+Supponiamo che un'entità $G$ partecipi
+alla relazione ternaria:
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.4\linewidth]{../images/rel10.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent
+\noindent
+Supponiamo inoltre che il ruolo $U$
+abbia cardinalità $(1,1)$.\\
+Questo significa che ogni istanza di $G$
+partecipa a \textbf{esattamente una}
+istanza della relazione $R$.\\
+Due istanze $g_1,g_2$ di $G$
+\textbf{differiscono nella partecipazione con ruolo $U$}
+quando le rispettive istanze di $R$
+differiscono in almeno uno degli altri ruoli.\\
+\textbf{Attenzione:} non basta che le due tuple
+siano diverse soltanto nel ruolo $U$,
+perché quel ruolo contiene proprio
+$g_1$ e $g_2$.\\
+Per avere una partecipazione diversa
+deve cambiare almeno uno degli oggetti
+associati negli altri ruoli.\\
+\textcolor{verdeEsempio}{\textbf{Esempio}}
+Consideriamo:
+\[
+\operatorname{istanze}(I,E)=\{a,b,c\}
+\]
+\[
+\operatorname{istanze}(I,F)=\{n,p,s\}
+\]
+\[
+\operatorname{istanze}(I,G)=\{d,g,m\}
+\]
+L'attributo $A$ di $G$ assume i valori:
+\[
+\operatorname{istanze}(I,A)=
+\{(d,1),(g,2),(m,2)\}
+\]
+La relazione $R$ contiene:
+\[
+\begin{aligned}
+\operatorname{istanze}(I,R)=\{&
+(U:d,V:a,W:n),\\
+&(U:g,V:a,W:n),\\
+&(U:m,V:a,W:p)
+\}
+\end{aligned}
+\]
+Confrontiamo le istanze di $G$.\\
+\textbf{Caso 1: confronto tra $d$ e $g$.}
+I valori dell'attributo sono diversi:
+\[
+A(d)=1 \neq 2=A(g)
+\]
+Tuttavia, le rispettive partecipazioni
+alla relazione $R$ hanno gli stessi valori
+negli altri ruoli:
+\[
+(V:a,W:n)
+\]
+Quindi $d$ e $g$:
+\begin{itemize}
+    \item differiscono nel valore di $A$;
+    \item non differiscono nella partecipazione
+    con ruolo $U$ in $R$.
+\end{itemize}
+\noindent
+\textbf{Caso 2: confronto tra $g$ e $m$.}\\
+I valori dell'attributo coincidono:
+\[
+A(g)=A(m)=2
+\]
+Ma le partecipazioni sono:
+\[
+g \longrightarrow (V:a,W:n)
+\]
+\[
+m \longrightarrow (V:a,W:p)
+\]
+Poiché $n\neq p$, le partecipazioni
+sono differenti.\\
+Quindi $g$ e $m$:
+\begin{itemize}
+    \item non differiscono nel valore di $A$;
+    \item differiscono nella partecipazione
+    con ruolo $U$ in $R$.
+\end{itemize}
+\noindent
+\textbf{Caso 3: confronto tra $d$ e $m$.}
+Abbiamo:
+\[
+A(d)=1 \neq 2=A(m)
+\]
+e inoltre:
+\[
+(V:a,W:n)\neq(V:a,W:p)
+\]
+Quindi $d$ e $m$ differiscono
+\textbf{sia nell'attributo sia nella partecipazione}.
+\subsection{Esempio di identificatore esterno}
+Consideriamo le entità:
+\begin{itemize}
+    \item \texttt{Studente}, con attributi
+    \texttt{Cognome} e \texttt{Matricola};
+    \item \texttt{Università}, con attributo
+    \texttt{Nome}.
+\end{itemize}
+\noindent
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.4\linewidth]{../images/rel11.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent
+Quindi:
+\begin{itemize}
+    \item ogni studente è iscritto a esattamente
+    un'università;
+    \item ogni università può avere zero o più studenti.
+\end{itemize}
+\noindent
+Supponiamo che l'identificatore di
+\texttt{Studente} sia composto da:
+\[
+\boxed{
+K=(\texttt{Matricola},\texttt{Università})
+}
+\]
+dove l'università viene individuata attraverso
+il ruolo di Studente nella relazione
+\texttt{Iscrizione}.\\
+Si tratta di un \textbf{identificatore esterno},
+perché utilizza sia un attributo
+sia un ruolo di relazione.\\
+\textbf{Significato del vincolo:}\\
+Due studenti distinti devono avere:
+\begin{itemize}
+    \item matricole differenti;
+    \item oppure università di iscrizione differenti.
+\end{itemize}
+\noindent
+Pertanto, due studenti possono avere
+la stessa matricola \textbf{soltanto se}
+sono iscritti a università diverse.\\
+\textcolor{verdeEsempio}{\textbf{Esempio}}
+Consideriamo:
+\[
+\operatorname{istanze}(I,\texttt{Studente})
+=\{a,b,c\}
+\]
+\[
+\operatorname{istanze}(I,\texttt{Università})
+=\{v,z\}
+\]
+\[
+\operatorname{istanze}(I,\texttt{Matricola})
+=
+\{(a,12),(b,24),(c,12)\}
+\]
+\[
+\operatorname{istanze}(I,\texttt{Cognome})
+=
+\{
+(a,\text{Rossi}),
+(b,\text{Finzi}),
+(c,\text{Rossi})
+\}
+\]
+\[
+\operatorname{istanze}(I,\texttt{Nome})
+=
+\{
+(v,\text{Viterbo}),
+(z,\text{Camerino})
+\}
+\]
+\[
+\begin{aligned}
+\operatorname{istanze}(I,\texttt{Iscrizione})
+=\{&
+(a,v),\\
+&(b,v),\\
+&(c,z)
+\}
+\end{aligned}
+\]
+Verifichiamo l'identificatore.
+\textbf{Studente $a$:}
+\[
+K(a)=(12,v)
+\]
+\textbf{Studente $b$:}
+\[
+K(b)=(24,v)
+\]
+\textbf{Studente $c$:}
+\[
+K(c)=(12,z)
+\]
+Le tre coppie sono differenti:
+\[
+(12,v)\neq(24,v)
+\]
+\[
+(12,v)\neq(12,z)
+\]
+\[
+(24,v)\neq(12,z)
+\]
+Quindi il vincolo di identificazione
+è \textbf{rispettato}.
+\subsection*{Entità deboli}
+Un'entità che possiede un
+\textbf{identificatore esterno}
+viene chiamata \textbf{entità debole}.
+Questo significa che la sua identificazione
+dipende anche dalla partecipazione
+a una relazione con altre entità.\\
+\textcolor{verdeEsempio}{\textbf{Esempio}}
+Nello schema precedente, \texttt{Studente}
+è un'entità debole perché la sola
+\texttt{Matricola} non è sufficiente
+a identificarlo.
