@@ -1086,7 +1086,7 @@ Inoltre la funzione $f$ viene chiamata \textbf{riduzione molti a uno} o anche se
 \end{itemize}
 Ma a cosa ci serve effettuare una riduzione? Ci fornisce uno strumento per dimostrare la decidibilità o l'indecibilità dei linguaggi (problemi) mettendoli a confronto con altri problemi di cui la decidibilità è nota. Infatti
 potremo dimostrare che un linguaggio $\mathcal{L}$ è decidibile \textbf{riducendolo} ad un linguaggio $\mathcal{L}'$ di cui conosciamo la decidiilità. In maniera analoga si può dimostrare anche la non decidibilità. Formalmente vale il lemma:\smallskip\\
-\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{lemma}
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{lemma}\label{lem}
    Siano $A$ e $B$ due linguaggi sugli alfabeti $\Sigma_A$ e $\Sigma_B$, rispettivamente, tale per cui 
    \[A \le_m B\]
    se $B$ è decidibile anche $A$ è decidibile 
@@ -1115,8 +1115,150 @@ Dove:
 \end{itemize}
 Questo problema è strettamente collegato all'Halting Problem (vd. \ref{hpro}) ma con una differenza fondamentale, mentre l'Halting Problem considera una macchina e uno specifico input, Always Halt considera una macchina e \textbf{tutti}
 i suoi possibili input. Di conseguenza il linguaggio corrispondente all'\textsc{always halt} è il seguente:
-\[     AH = \{  d_M \ |\ M(x) \text{ termina oer ogni input } x \text{ per }  M\}   \]
-%Dimostrazione della non decidiblità con riduzioni
+\[     AH = \{  d_M \ |\ M(x) \text{ termina per ogni input } x \text{ per }  M\}   \]
+Dimostriamo tramite le riduzioni, che questo linguaggio \textbf{non è decidibile}:\smallskip\\
+Vogliamo dimostrare che il problema \textbf{AlwaysHalts} è Turing-indecidibile, utilizzando una \textbf{riduzione molti-a-uno} dal problema \textsc{halting}.
+Ricordiamo i linguaggi:
+\[
+H=\{e(M,\sigma)\mid M\text{ termina su }\sigma\}
+\]
+\[
+AH=\{e(M)\mid M\text{ termina su ogni input}\}.
+\]
+Poiché sappiamo già che \textsc{halting} è indecidibile, dimostriamo che
+\[
+\boxed{H\le_m AH}.
+\]
+In questo modo, sfruttiamo il lemma (vd. \ref{lem}) che abbiamo visto in precedenza sulla decidibilità e le riduzioni.\\
+Definiamo una funzione
+\[
+f:\Sigma^*\rightarrow\Sigma^*
+\]
+che trasforma ogni input di \textsc{halting} nella descrizione di una macchina di Turing. Sia
+\[
+\tau=e(M,\sigma)
+\]
+una codifica valida di una macchina $M$ e del suo input $\sigma$. Definiamo
+\[
+\boxed{f(\tau)=e(M')}
+\]
+dove $M'$ è una macchina di Turing che, ricevuto un input qualsiasi $x$, opera come segue:
+\begin{enumerate}
+    \item Controlla se $x=\sigma$.
+
+    \item Se $x\neq\sigma$, rifiuta e termina.
+
+    \item Se $x=\sigma$, simula la macchina
+    $M$ sull'input $\sigma$.
+\end{enumerate}
+Se invece $\tau$ non è una codifica valida
+per \textsc{halting}, $f(\tau)$ è la descrizione
+di una macchina che non termina mai.\\
+L'idea fondamentale è fare in modo che
+\textbf{$M'$ termini su tutti gli input
+se e solo se $M$ termina su $\sigma$}.\smallskip\\
+Per dimostrare che $f$ è una riduzione,
+dobbiamo prima verificare che sia \textbf{calcolabile}.\\
+Esiste una macchina di Turing terminante $M_f$
+che, ricevuta la codifica
+\[
+\tau=e(M,\sigma),
+\]
+costruisce e scrive sul proprio nastro
+la descrizione $e(M')$.\\
+La costruzione è possibile perché lo schema
+di funzionamento di $M'$ è fissato:
+\begin{itemize}
+    \item confronta l'input ricevuto con $\sigma$;
+    \item rifiuta immediatamente se sono diversi;
+    \item altrimenti simula $M$ su $\sigma$.
+\end{itemize}
+Per generare questa descrizione è sufficiente
+utilizzare la codifica di $M$ e di $\sigma$.
+Non è necessario eseguire $M$ o sapere
+se terminerà: dobbiamo soltanto
+\textbf{scrivere il codice della macchina $M'$}.
+Poiché questa operazione richiede
+un numero finito di passaggi, concludiamo che
+\[
+\boxed{f\text{ è Turing-calcolabile}}
+\]
+Ora dobbiamo dimostrare la \textbf{riduzione} sia \textbf{corretta}. Ovvero bisogna dimostrare che
+\[
+\tau\in H\iff f(\tau)\in AH
+\]
+Procediamo dimostrando entrambe le implicazioni. Cominciamo con la \textbf{prima direzione}:
+\[
+\tau\in H\Rightarrow f(\tau)\in AH.
+\]
+Supponiamo che
+\[
+\tau=e(M,\sigma)\in H.
+\]
+Per definizione di \textsc{halting}, questo significa
+che $M$ termina sull'input $\sigma$.\\
+Vogliamo dimostrare che $M'$ termina
+su qualsiasi input $x$. Distinguiamo due casi:
+\begin{itemize}
+    \item \textbf{Caso $x\neq\sigma$:}
+    per costruzione, $M'$ rifiuta immediatamente
+    e quindi termina.
+
+    \item \textbf{Caso $x=\sigma$:}
+    per costruzione, $M'$ simula $M$ su $\sigma$.
+    Poiché $M$ termina su $\sigma$ per ipotesi,
+    anche $M'$ termina.
+\end{itemize}
+In entrambi i casi $M'$ termina. Quindi termina per ogni possibile input e,
+per definizione di AlwaysHalts si ha:
+\[
+f(\tau)=e(M')\in AH
+\]
+Ora dimostriamo la \textbf{seconda direzione}:
+\[
+f(\tau)\in AH\Rightarrow\tau\in H.
+\]
+Supponiamo che
+\[
+f(\tau)=e(M')\in AH.
+\]
+Per definizione di AlwaysHalts, la macchina $M'$ termina su ogni input.
+In particolare, deve terminare anche
+quando riceve l'input $\sigma$.
+Ma, per costruzione, su tale input $M'$
+simula il comportamento di $M$ su $\sigma$.
+Di conseguenza, se $M'$ termina su $\sigma$,
+anche $M$ deve terminare su $\sigma$.
+Pertanto:
+\[
+\tau=e(M,\sigma)\in H
+\]
+Abbiamo quindi dimostrato in entrambe le direzioni che:
+\[
+\boxed{\tau\in H\iff f(\tau)\in AH}.
+\]
+Per gli input non validi la proprietà vale
+ugualmente: essi non appartengono a $H$
+e vengono trasformati nella descrizione
+di una macchina non terminante, che non
+appartiene ad $AH$.\smallskip\\
+Abbiamo dimostrato che:
+\begin{enumerate}
+    \item $f$ è Turing-calcolabile;
+    \item $\tau\in H\iff f(\tau)\in AH$.
+\end{enumerate}
+Pertanto $f$ è una riduzione molti-a-uno
+da \textsc{halting} ad AlwaysHalts:
+\[
+H\le_m AH
+\]
+Poiché \textsc{halting} è Turing-indecidibile,
+anche AlwaysHalts deve essere indecidibile.
+Concludiamo quindi che:
+\[
+\boxed{AH\text{ è Turing-indecidibile}}
+\]
+
 
 
 
@@ -1254,7 +1396,7 @@ A ogni linguaggio possiamo associare una \textbf{sequenza caratteristica}, che �
     0 \qquad \text{se } s_i \notin L 
 \end{cases}      \]
 Quindi, se la stringa appartiene al linguaggio in esame mettiamo 1 nella sequenza, 0 altrimenti.\\
-Vediamo un esempio:\smallskip\\ \newpage
+Vediamo un esempio:\smallskip\\ 
 \noindent \textit{Esempio.} $L$ contiene le stringhe che iniziano con 0, una sequenza caratteristica può essere:
 \begin{figure}[H]
     \centering  
