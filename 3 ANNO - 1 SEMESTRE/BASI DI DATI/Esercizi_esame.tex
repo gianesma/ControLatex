@@ -95,6 +95,100 @@ Le due generalizzazioni di Persona sono indipendenti. Una persona può essere, p
 Gli attributi si ereditano lungo la gerarchia. Un Responsabile è anche Progettista, quindi Impiegato e quindi Persona: possiede CodiceFiscale, Età e Stipendio, anche se non vengono ripetuti nel suo rettangolo.
 Infine, Responsabile può essere un sottotipo anche senza attributi propri: serve a distinguere il sottoinsieme dei progettisti che hanno quella qualifica.
 
+\subsection*{Esercizio 16a}
+\textbf{Richiesta. }Si richiede di progettare lo schema concettuale Entità-
+Relazione di un’applicazione relativa a corsi di formazione. Di
+ogni corso interessa il codice, il livello di difficoltà, le persone
+iscritte come studenti e le lezioni in esso svolte. Di ogni
+persona interessa il codice fiscale, il nome e i titoli di studio. Di
+ogni lezione interessa il corso per il quale è svolta, la data in
+cui è svolta, la durata e l’argomento principale trattato, insieme
+alla persona che lo ha trattato come relatore. Inoltre, di ogni
+“lezione speciale” interessa anche il costo e gli argomenti
+trattati in aggiunta a quello principale (questi argomenti sono
+diversi da quello principale della lezione e vengono chiamati
+“argomenti secondari” della lezione), ciascuno con il numero di
+ore ad esso dedicate ed il corrispondente relatore. Infine, di
+ogni argomento interessa il codice e l’area disciplinare.\medskip\\
+\textbf{Soluzione. }
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.6\linewidth]{../images/es16.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent
+L'esercizio richiede di progettare uno schema ER
+per gestire corsi di formazione, lezioni, persone
+e argomenti trattati.
+
+\subsubsection*{1. Individuazione delle entità}
+
+Dal testo ricaviamo quattro entità principali:
+
+\begin{itemize}
+    \item \textbf{Corso}: Codice, Livello di difficoltà.
+    \item \textbf{Persona}: Codice Fiscale, Nome,
+    Titoli di Studio.
+    \item \textbf{Lezione}: Data, Durata.
+    \item \textbf{Argomento}: Codice, Area Disciplinare.
+    \item \textbf{Lezione Speciale}: oltre a quelli ereditati ha Costo.
+
+\end{itemize}
+
+\subsubsection*{2. Individuazione delle relazioni}
+
+Analizziamo le associazioni presenti nel testo.
+
+\begin{itemize}
+    \item \textbf{Iscritto}: collega Persona e Corso.
+    Una persona può iscriversi a più corsi.
+
+    \item \textbf{Svolgimento}: collega Lezione e Corso.
+    Ogni lezione appartiene a un corso.
+
+    \item \textbf{Relatore}: collega Lezione e Persona.
+    Ogni lezione ha un relatore principale.
+
+    \item \textbf{Programma}: collega Lezione e Argomento.
+    Indica l'argomento principale trattato.
+\end{itemize}
+
+
+\subsubsection*{3. Specializzazione delle lezioni}
+
+Il testo distingue le lezioni normali dalle
+\textbf{lezioni speciali}, che possiedono un costo.
+Si introduce quindi una ISA tra entità:
+\[
+\boxed{\text{LezioneSpeciale ISA Lezione}}
+\]
+LezioneSpeciale eredita gli attributi e le relazioni
+di Lezione e aggiunge l'attributo Costo.
+
+\subsubsection*{4. ISA tra relazioni}
+
+Una lezione speciale può trattare anche argomenti
+secondari, ciascuno con un numero di ore e
+un relatore associato.
+Nello schema della lavagna compare una
+\textbf{ISA tra relazioni}.
+La relazione figlia è una specializzazione
+della relazione padre: ogni sua istanza
+è anche un'istanza della relazione padre.
+
+\subsubsection*{5. Altro}
+\begin{itemize}
+
+    \item \textbf{Ruoli}: Studente e Relatore
+    rappresentano modi diversi in cui
+    Persona partecipa alle relazioni.
+
+    \item \textbf{Attributi delle relazioni}:
+    si usano quando un valore dipende
+    da una specifica associazione tra entità.
+\end{itemize}
+
 
 \section{Teoria}
 \subsection{Vincoli di integrità}
