@@ -244,7 +244,7 @@ Tale insieme prende il nome di \textbf{estensione dell'entità $E$}.\\
 \textbf{Osservazione importante}: un'istanza di entità rappresenta \textbf{l'oggetto stesso}, non il valore di una sua proprietà. Ad esempio, uno specifico studente è un'istanza dell'entità \texttt{Studente}, mentre il suo nome o la sua matricola sono valori di attributi.\\
 Per identificare un oggetto si può utilizzare un \textbf{identificatore univoco} (\textit{object identifier}), che lo distingue dagli altri oggetti.
 
-\subsection{Entità e istanze di entità}
+\subsection*{Entità e istanze di entità}
 
 Nel modello ER è importante distinguere tra \textbf{entità} e \textbf{istanza di entità}:
 \begin{itemize}
@@ -1609,3 +1609,2637 @@ L'interpretazione $I_1$ non è un'istanza
 valida dello schema perché viola
 i vincoli sugli attributi,
 pur rispettando quelli ISA.
+
+
+% ============================================================
+% DIVERSE ENTITÀ FIGLIE
+% ============================================================
+
+\subsection*{Diverse entità figlie di una stessa entità}
+Nel modello Entità-Relazione, una stessa entità può avere
+\textbf{più entità figlie}, ciascuna collegata all'entità
+padre mediante una relazione ISA.\\
+\textcolor{verdeEsempio}{\textbf{Esempio.}}
+Consideriamo le entità:
+\begin{itemize}
+    \item Persona;
+    \item Studente;
+    \item Lavoratore.
+\end{itemize}
+Possiamo definire:
+\[
+\text{Studente ISA Persona}
+\]
+\[
+\text{Lavoratore ISA Persona}
+\]
+Questo significa che ogni Studente e ogni Lavoratore
+è necessariamente una Persona.
+
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.9\linewidth]{../images/is1.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+
+\subsubsection*{Le entità figlie possono avere istanze in comune}
+\textbf{Due entità figlie della stessa entità padre
+possono avere istanze in comune.}
+Ad esempio, una persona può essere contemporaneamente
+Studente e Lavoratore.
+Formalmente, se $I$ è un'istanza dello schema:
+\[
+\operatorname{istanze}(I,Studente)
+\subseteq
+\operatorname{istanze}(I,Persona)
+\]
+\[
+\operatorname{istanze}(I,Lavoratore)
+\subseteq
+\operatorname{istanze}(I,Persona)
+\]
+ma è possibile che:
+\[
+\boxed{
+\operatorname{istanze}(I,Studente)
+\cap
+\operatorname{istanze}(I,Lavoratore)
+\neq \varnothing
+}
+\]
+\textcolor{verdeScuro}{\textbf{Esempio.}}
+Supponiamo:
+\[
+\operatorname{istanze}(I,Persona)=\{a,b,c,d\}
+\]
+\[
+\operatorname{istanze}(I,Studente)=\{a,b\}
+\]
+\[
+\operatorname{istanze}(I,Lavoratore)=\{b,c\}
+\]
+Allora:
+\[
+\operatorname{istanze}(I,Studente)
+\cap
+\operatorname{istanze}(I,Lavoratore)
+=\{b\}
+\]
+Quindi $b$ è contemporaneamente Studente e Lavoratore.\\
+\textbf{Attenzione:} questo non viola la regola secondo
+cui ogni entità può avere al massimo un'entità padre.
+Infatti, Studente e Lavoratore hanno entrambi Persona
+come unico padre. È semplicemente la stessa istanza
+che appartiene a due entità figlie differenti.
+% ============================================================
+% GENERALIZZAZIONE
+% ============================================================
+\subsection{Generalizzazione tra entità}
+La \textbf{generalizzazione} è un costrutto del modello ER
+che permette di rappresentare più sottoentità
+(almeno due), appartenenti a una stessa entità padre,
+distinte secondo un \textbf{unico criterio di classificazione}.\\
+A differenza di semplici relazioni ISA,
+nella generalizzazione considerata nel corso
+le sottoentità sono \textbf{disgiunte a coppie}.
+Questo significa che un'istanza dell'entità padre
+può appartenere ad al massimo una delle sottoentità
+della stessa generalizzazione.\\
+\textcolor{verdeScuro}{\textbf{Esempio.}}
+Supponiamo di classificare le Persone
+in Uomo e Donna secondo il criterio adottato
+dallo schema.\\
+Le due sottoentità costituiscono una generalizzazione
+di Persona.
+Ogni Uomo è una Persona e ogni Donna è una Persona,
+ma nessuna istanza può appartenere contemporaneamente
+a entrambe le sottoentità di questa generalizzazione.
+\subsubsection*{Differenza tra ISA e generalizzazione}
+La distinzione fondamentale è:
+\begin{itemize}
+    \item \textbf{ISA:} due entità figlie della stessa
+    entità padre possono avere istanze in comune.
+
+    \item \textbf{Generalizzazione:} le sottoentità
+    appartenenti alla stessa generalizzazione
+    devono essere disgiunte a coppie.
+\end{itemize}
+\noindent
+Inoltre, una generalizzazione può essere
+\textbf{completa} oppure \textbf{non completa}.
+
+\subsubsection*{Generalizzazione completa}
+Una generalizzazione è \textbf{completa}
+quando ogni istanza dell'entità padre appartiene
+necessariamente a una delle sottoentità.
+In altre parole, l'unione degli insiemi delle istanze
+delle sottoentità coincide con l'insieme delle istanze
+dell'entità padre.
+\[
+\boxed{
+\bigcup_{i=1}^{n}
+\operatorname{istanze}(I,E_i)
+=
+\operatorname{istanze}(I,F)
+}
+\]
+dove $F$ è l'entità padre ed $E_1,\ldots,E_n$
+sono le sottoentità.\\
+\textcolor{verdeEsempio}{\textbf{Esempio.}}
+Consideriamo una generalizzazione completa
+di Persona nelle sottoentità Uomo e Donna.
+Supponiamo:
+\[
+\operatorname{istanze}(I,Persona)=\{a,b,c,d\}
+\]
+\[
+\operatorname{istanze}(I,Uomo)=\{a,c\}
+\]
+\[
+\operatorname{istanze}(I,Donna)=\{b,d\}
+\]
+Abbiamo:
+\[
+\{a,c\}\cup\{b,d\}=\{a,b,c,d\}
+\]
+Quindi la generalizzazione è completa.
+Inoltre:
+\[
+\{a,c\}\cap\{b,d\}=\varnothing
+\]
+Le sottoentità sono anche disgiunte.
+\subsubsection*{Generalizzazione non completa}
+Una generalizzazione è \textbf{non completa}
+quando non è obbligatorio che ogni istanza
+dell'entità padre appartenga a una sottoentità.
+Formalmente, deve valere:
+\[
+\boxed{
+\bigcup_{i=1}^{n}
+\operatorname{istanze}(I,E_i)
+\subseteq
+\operatorname{istanze}(I,F)
+}
+\]
+L'inclusione può essere stretta.\\
+\textcolor{verdeEsempio}{\textbf{Esempio.}}
+Consideriamo una generalizzazione non completa
+di Persona nelle sottoentità Studente e Docente.
+Supponiamo:
+\[
+\operatorname{istanze}(I,Persona)=\{a,b,c,d\}
+\]
+\[
+\operatorname{istanze}(I,Studente)=\{a,b\}
+\]
+\[
+\operatorname{istanze}(I,Docente)=\{c\}
+\]
+Allora:
+\[
+\{a,b\}\cup\{c\}=\{a,b,c\}
+\]
+e:
+\[
+\{a,b,c\}\subsetneq\{a,b,c,d\}
+\]
+L'istanza $d$ è una Persona,
+ma non appartiene né a Studente né a Docente.
+Questa situazione è consentita perché
+la generalizzazione non è completa.\\
+\textbf{Osservazione:} anche in una generalizzazione
+non completa le sottoentità devono essere disgiunte.
+La completezza riguarda la copertura dell'entità padre,
+non la disgiunzione.
+% ============================================================
+% RAPPRESENTAZIONE GRAFICA
+% ============================================================
+\subsubsection*{Rappresentazione grafica della generalizzazione}
+La generalizzazione viene rappresentata:
+\begin{enumerate}
+    \item Collegando le sottoentità mediante
+    un unico arco di collegamento.
+
+    \item Collegando tale arco all'entità padre
+    attraverso una freccia.
+\end{enumerate}
+\noindent
+La freccia cambia in base al tipo di generalizzazione:
+\begin{itemize}
+    \item \textbf{Completa:} freccia annerita.
+
+    \item \textbf{Non completa:} freccia non annerita.
+\end{itemize}
+\noindent
+\textcolor{verdeEsempio}{Esempio:} generalizzazione completa.
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.4\linewidth]{../images/is2.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent
+La freccia piena indica che tutte le Persone
+appartengono a una delle sottoentità.\\
+\textcolor{verdeEsempio}{Esempio:} generalizzazione non completa.
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.4\linewidth]{../images/is3.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent
+La freccia vuota indica che possono esistere
+Persone che non sono né Studenti né Docenti.
+
+% ============================================================
+% SEMANTICA FORMALE
+% ============================================================
+
+\subsubsection*{Semantica della generalizzazione}
+
+Consideriamo uno schema $S$ contenente
+una generalizzazione tra:
+
+\begin{itemize}
+    \item un'entità padre $F$;
+    \item le sottoentità $E_1,E_2,\ldots,E_n$,
+    con $n>1$.
+\end{itemize}
+\noindent
+Per ogni istanza $I$ dello schema $S$
+devono essere rispettati i seguenti vincoli.\\
+\textbf{1. Vincolo di inclusione}\\
+Ogni sottoentità è in relazione ISA
+con l'entità padre.
+Quindi:
+\[
+\boxed{
+\forall i\in\{1,\ldots,n\},
+\quad
+\operatorname{istanze}(I,E_i)
+\subseteq
+\operatorname{istanze}(I,F)
+}
+\]
+\textbf{2. Vincolo di disgiunzione}\\
+Due sottoentità distinte della stessa
+generalizzazione non possono avere
+istanze in comune.
+\[
+\boxed{
+\forall i\neq k,
+\quad
+\operatorname{istanze}(I,E_i)
+\cap
+\operatorname{istanze}(I,E_k)
+=
+\varnothing
+}
+\]
+\textbf{3. Vincolo di completezza}\\
+Se la generalizzazione è completa,
+deve valere anche:
+\[
+\boxed{
+\bigcup_{i=1}^{n}
+\operatorname{istanze}(I,E_i)
+=
+\operatorname{istanze}(I,F)
+}
+\]
+Questo significa che ogni istanza
+dell'entità padre deve appartenere
+a una delle sottoentità.
+\subsubsection*{Generalizzazione completa come partizione}
+In matematica, una \textbf{partizione}
+di un insieme è una famiglia di sottoinsiemi
+non vuoti, disgiunti a coppie,
+la cui unione coincide con l'insieme originale.\\
+Uuna generalizzazione completa determina una partizione dell'entità padre
+nel senso che le sottoentità sono disgiunte
+e coprono completamente l'entità padre.
+In particolare:
+\[
+\operatorname{istanze}(I,F)
+=
+\operatorname{istanze}(I,E_1)
+\cup \cdots \cup
+\operatorname{istanze}(I,E_n)
+\]
+con intersezioni a coppie vuote.
+% ============================================================
+% GENERALIZZAZIONE ED EREDITARIETÀ
+% ============================================================
+\subsubsection*{Generalizzazione ed ereditarietà}
+Il principio di ereditarietà, già introdotto
+per la relazione ISA, vale anche
+per le generalizzazioni.\\
+Ogni sottoentità eredita:
+\begin{itemize}
+    \item tutti gli attributi dell'entità padre;
+    \item la possibilità di partecipare
+    alle relazioni dell'entità padre;
+    \item i vincoli associati alle proprietà ereditate.
+\end{itemize}
+\noindent
+Le proprietà ereditate non vengono ripetute
+esplicitamente nel diagramma.\\
+\textcolor{verdeEsempio}{\textbf{Esempio.}}
+Consideriamo una generalizzazione di Persona
+nelle sottoentità Studente e Docente.
+Persona possiede:
+\begin{itemize}
+    \item Cognome;
+    \item Età;
+    \item la relazione Sede con Città.
+\end{itemize}
+\noindent
+Studente possiede inoltre Matricola,
+mentre Docente partecipa alla relazione
+Insegna con Corso.
+\begin{center}
+\begin{tikzpicture}[
+    entita/.style={
+        draw, rectangle, fill=lightblue,
+        minimum width=2.3cm, minimum height=0.9cm
+    },
+    scala/.style={scale=0.85, transform shape}
+]
+\begin{scope}[scala]
+
+% Entità
+\node[entita] (p) at (0,3.5) {Persona};
+\node[entita] (s) at (-3,0) {Studente};
+\node[entita] (d) at (3,0) {Docente};
+\node[entita] (c) at (7,3.5) {Città};
+\node[entita] (co) at (9,0) {Corso};
+
+% Generalizzazione
+\draw[thick] (s.north) -- (-3,1.4)
+    -- (3,1.4) -- (d.north);
+
+\draw[thick] (0,1.4) -- (0,2.65);
+\draw[thick, fill=white]
+    (-0.25,2.65) -- (0,3.05) --
+    (0.25,2.65) -- cycle;
+
+% Relazione Sede: rombo manuale
+\draw[thick, fill=lightblue]
+    (3.5,4.1) -- (4.6,3.5) --
+    (3.5,2.9) -- (2.4,3.5) -- cycle;
+\node at (3.5,3.5) {Sede};
+
+\draw[thick] (p.east) -- (2.4,3.5);
+\draw[thick] (4.6,3.5) -- (c.west);
+
+% Relazione Insegna: rombo manuale
+\draw[thick, fill=lightblue]
+    (6,0.6) -- (7.2,0) --
+    (6,-0.6) -- (4.8,0) -- cycle;
+\node at (6,0) {Insegna};
+
+\draw[thick] (d.east) -- (4.8,0);
+\draw[thick] (7.2,0) -- (co.west);
+
+% Attributi Persona
+\draw (p.north west) -- (-1.1,4.7);
+\draw (p.north east) -- (1.1,4.7);
+\draw[fill=white] (-1.1,4.7) circle (0.09);
+\draw[fill=white] (1.1,4.7) circle (0.09);
+\node[above] at (-1.1,4.7) {Cognome};
+\node[above] at (1.1,4.7) {Età};
+
+% Attributo Studente
+\draw (s.south) -- (-3,-1);
+\draw[fill=white] (-3,-1) circle (0.09);
+\node[below] at (-3,-1) {Matricola};
+
+% Attributo Città
+\draw (c.north) -- (7,4.7);
+\draw[fill=white] (7,4.7) circle (0.09);
+\node[above] at (7,4.7) {Nome};
+
+% Attributo Corso
+\draw (co.south) -- (9,-1);
+\draw[fill=white] (9,-1) circle (0.09);
+\node[below] at (9,-1) {Codice};
+
+\end{scope}
+\end{tikzpicture}
+\end{center}
+Da questo schema segue che:
+\begin{itemize}
+    \item ogni Studente possiede Cognome, Età
+    e Matricola;
+
+    \item ogni Docente possiede Cognome ed Età;
+
+    \item Studente e Docente possono partecipare
+    alla relazione Sede, perché ereditata da Persona;
+
+    \item Docente partecipa anche alla relazione
+    Insegna, definita specificamente
+    per questa sottoentità.
+\end{itemize}
+
+% ============================================================
+% REGOLE
+% ============================================================
+
+\subsubsection*{Regole sulle generalizzazioni}
+
+Nel modello ER utilizzato nel corso
+continua a valere la seguente regola:
+\[
+\boxed{
+\text{Ogni entità può avere al massimo
+un'entità padre diretta}
+}
+\]
+Questa regola vale considerando insieme
+sia le relazioni ISA sia le generalizzazioni.
+Pertanto, un'entità non può:
+\begin{itemize}
+    \item essere figlia di due entità diverse
+    mediante due relazioni ISA;
+
+    \item appartenere a una generalizzazione
+    e avere contemporaneamente un altro padre
+    mediante ISA;
+
+    \item appartenere a due generalizzazioni
+    con entità padre differenti.
+\end{itemize}
+\noindent
+\textcolor{verdeEsempio}{Esempio} di schema scorretto.\\
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.4\linewidth]{../images/is5.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+
+% ============================================================
+% ESERCIZIO 13
+% ============================================================
+\subsubsection*{Esercizio 13: relazione ISA e generalizzazioni}
+Consideriamo le entità:
+\begin{itemize}
+    \item Studente, con attributi CodFisc e Matricola;
+    \item Lavoratore, con attributi CodFisc e Salario;
+    \item StudenteLavoratore, con attributo Esenzione.
+\end{itemize}
+\noindent
+Si vuole rappresentare il fatto che
+uno StudenteLavoratore sia contemporaneamente
+uno Studente e un Lavoratore.
+Una prima idea potrebbe essere:
+\[
+\text{StudenteLavoratore ISA Studente}
+\]
+\[
+\text{StudenteLavoratore ISA Lavoratore}
+\]
+\subsubsection*{Soluzione 1: suddivisione in tre sottoentità}
+La prima soluzione consiste nell'introdurre
+un'entità padre:
+\[
+\text{StudenteOLavoratore}
+\]
+che rappresenta tutte le persone che sono
+studenti, lavoratori oppure entrambe le cose.
+Si definisce una generalizzazione completa
+nelle tre sottoentità:
+\begin{itemize}
+    \item StudenteNonLav;
+    \item StudenteLavoratore;
+    \item LavoratoreNonSt.
+\end{itemize}
+
+
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.5\linewidth]{../images/is6.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent L'attributo CodFisc viene associato
+all'entità padre StudenteOLavoratore,
+perché appartiene a tutte e tre le categorie.
+\noindent
+\textbf{Perché questa soluzione funziona?}\\
+Le tre sottoentità sono disgiunte.
+Inoltre, la generalizzazione è completa:
+\[
+\begin{aligned}
+&\operatorname{istanze}(I,StudenteNonLav)
+\\
+&\quad\cup
+\operatorname{istanze}(I,StudenteLavoratore)
+\\
+&\quad\cup
+\operatorname{istanze}(I,LavoratoreNonSt)
+\\
+&=
+\operatorname{istanze}(I,StudenteOLavoratore)
+\end{aligned}
+\]
+\textbf{Svantaggio:} se nello schema originale
+esistevano sottoentità di Studente o Lavoratore,
+potrebbe essere necessario suddividerle
+tra le nuove categorie.
+Questo può rendere lo schema più complesso.
+\subsubsection*{Soluzione 2: mantenere Studente come entità}
+La seconda soluzione mantiene Studente
+come entità specifica e introduce
+LavoratoreNonSt come altra sottoentità
+di StudenteOLavoratore.
+Si ottiene una generalizzazione completa:
+\[
+\text{StudenteOLavoratore}
+\]
+con sottoentità:
+\[
+\text{Studente},\quad
+\text{LavoratoreNonSt}
+\]
+e
+\[
+\text{StudenteLavoratore ISA Studente}
+\]
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.5\linewidth]{../images/is4.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent
+StudenteLavoratore eredita automaticamente
+Matricola da Studente e CodFisc
+da StudenteOLavoratore.\\
+\textbf{Vantaggio:} si mantiene l'entità Studente
+e quindi non è necessario suddividere
+le sue eventuali sottoentità.\\
+\textbf{Svantaggio:} eventuali sottoentità
+di Lavoratore potrebbero richiedere
+una ristrutturazione.
+
+\subsubsection*{Soluzione 3: mantenere Lavoratore come entità}
+Si introduce una generalizzazione completa
+di StudenteOLavoratore nelle sottoentità:
+\[
+\text{Lavoratore},\quad
+\text{StudenteNonLav}
+\]
+Inoltre, si definisce:
+\[
+\text{LavoratoreStudente ISA Lavoratore}
+\]
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.5\linewidth]{../images/is7.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent
+LavoratoreStudente eredita automaticamente
+Salario da Lavoratore e CodFisc
+da StudenteOLavoratore.\\
+\textbf{Vantaggio:} viene mantenuta
+l'entità Lavoratore e non è necessario
+suddividere le sue eventuali sottoentità.\\
+\textbf{Svantaggio:} eventuali sottoentità
+di Studente potrebbero richiedere
+una ristrutturazione.\medskip\\
+\textbf{Conclusione.}
+Le tre soluzioni permettono di evitare
+l'ereditarietà multipla e di rappresentare
+sostanzialmente la stessa realtà.
+La scelta dipende dalla struttura
+del resto dello schema e da quali entità
+si desidera mantenere senza suddividerle.
+
+
+% ==========================================================
+% DIVERSE GENERALIZZAZIONI DELLA STESSA ENTITÀ
+% ==========================================================
+
+\subsection*{Diverse generalizzazioni della stessa entità}
+
+Una stessa entità può essere \textbf{padre di più generalizzazioni}, purché queste rappresentino criteri differenti di classificazione delle sue istanze.\\
+Ogni generalizzazione considera quindi una caratteristica diversa degli oggetti appartenenti all'entità padre.\medskip\\
+\textcolor{verdeEsempio}{\textbf{Esempio. }}Consideriamo l'entità Persona.\\
+Possiamo classificare le persone secondo due criteri:
+\begin{itemize}
+    \item \textbf{Sesso}: Uomo e Donna.
+    \item \textbf{Condizione occupazionale}: Impiegato e Studente.
+\end{itemize}
+\noindent
+La prima generalizzazione è \textbf{completa}, mentre la seconda è \textbf{non completa}.\\
+Inoltre, le due generalizzazioni sono indipendenti: una persona può essere contemporaneamente Uomo e Studente oppure Donna e Impiegato.
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.5\linewidth]{../images/gen1.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+
+% ==========================================================
+% DIFFERENZA TRA ISA E GENERALIZZAZIONE
+% ==========================================================
+
+\subsection{Differenza tra relazioni ISA e generalizzazioni}
+
+La relazione ISA e la generalizzazione esprimono entrambe una relazione di specializzazione, ma hanno un significato differente.
+
+\subsubsection*{Relazione ISA}
+
+Una relazione ISA collega \textbf{una singola entità figlia} alla sua entità padre.\\
+Esprime semplicemente il fatto che ogni istanza dell'entità figlia è anche un'istanza dell'entità padre.
+
+\[
+\operatorname{istanze}(I,E)
+\subseteq
+\operatorname{istanze}(I,F)
+\]
+dove $E$ è la figlia e $F$ è il padre. Non impone, da sola, alcun vincolo di disgiunzione rispetto ad altre sottoentità.
+
+\subsubsection*{Generalizzazione}
+
+Una generalizzazione raggruppa \textbf{almeno due sottoentità} che derivano da uno stesso criterio di classificazione dell'entità padre.\\
+Le sottoentità della stessa generalizzazione sono disgiunte a coppie.\medskip\\
+\textcolor{verdeEsempio}{\textbf{Esempio. }}
+Supponiamo che Persona abbia le sottoentità Uomo, Donna, Impiegato e Sportivo.
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.5\linewidth]{../images/gen2.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent
+Un impiegato può anche essere sportivo, mentre una stessa persona non può appartenere contemporaneamente a Uomo e Donna nel modello rappresentato.
+
+\[
+\begin{aligned}
+Uomo &\cap Donna = \varnothing\\
+Impiegato &\cap Sportivo
+\text{ può essere non vuoto}
+\end{aligned}
+\]
+
+% ==========================================================
+% ESERCIZIO 14
+% ==========================================================
+
+\subsection*{Esercizio: progettazione delle generalizzazioni}
+\subsubsection*{Specifiche}
+
+Si vuole rappresentare uno schema concettuale in cui:
+
+\begin{itemize}
+    \item Ogni persona possiede un codice fiscale e un'età.
+    \item Gli uomini possiedono anche una posizione militare.
+    \item Le donne possiedono anche un numero di maternità.
+    \item Gli impiegati possiedono uno stipendio e possono essere segretari, direttori oppure progettisti.
+    \item Alcuni progettisti sono responsabili di progetto.
+    \item Gli studenti possiedono una matricola e non possono essere impiegati.
+    \item Esistono persone che non sono né studenti né impiegati.
+\end{itemize}
+\noindent
+L'obiettivo è individuare le entità, gli attributi, le generalizzazioni e le relazioni ISA.
+
+\subsubsection*{Soluzione}
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.5\linewidth]{../images/gen3.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+% ==========================================================
+% GRAFO DELLE GERARCHIE
+% ==========================================================
+
+\subsection{Grafo delle gerarchie}
+
+A ogni schema concettuale $S$ è possibile associare un \textbf{grafo delle gerarchie}, che rappresenta le relazioni di specializzazione tra entità e tra relazioni.
+
+\subsubsection*{Costruzione del grafo}
+
+\begin{enumerate}
+    \item Si crea un nodo per ogni entità e per ogni relazione dello schema.
+    \item Si traccia un arco diretto dall'entità figlia verso l'entità padre per ogni ISA o generalizzazione.
+    \item Si applica lo stesso procedimento alle relazioni, quando sono presenti ISA o generalizzazioni tra relazioni.
+    \item Se si formano cicli, tutti i nodi appartenenti a ciascun ciclo vengono collassati in un unico nodo.
+\end{enumerate}
+\noindent
+Gli archi sono quindi orientati \textbf{dalla specializzazione verso la generalizzazione}.
+
+\subsubsection*{Concetto di antenato}
+
+Un'entità $G$ è detta \textbf{antenata} di un'entità $E$ se nel grafo delle gerarchie esiste un cammino diretto da $E$ a $G$.\\
+Il cammino può avere anche lunghezza zero: di conseguenza, ogni entità è antenata di se stessa.\medskip\\
+\textcolor{verdeEsempio}{\textbf{Esempio. }} Consideriamo la gerarchia:
+\[
+Responsabile
+\longrightarrow
+Progettista
+\longrightarrow
+Impiegato
+\longrightarrow
+Persona
+\]
+\noindent
+In questo caso:
+\begin{itemize}
+    \item Progettista è antenata di Responsabile.
+    \item Impiegato è antenata di Responsabile.
+    \item Persona è antenata di Responsabile.
+    \item Responsabile è antenata di se stessa.
+\end{itemize}
+
+% ==========================================================
+% ENTITÀ DISGIUNTE
+% ==========================================================
+
+\subsection{Entità disgiunte}
+Due entità $E$ e $F$ sono \textbf{disgiunte} se non condividono alcuna istanza, in ogni possibile istanza dello schema.
+
+\[
+\operatorname{istanze}(I,E)
+\cap
+\operatorname{istanze}(I,F)
+=
+\varnothing
+\]
+
+\noindent
+La disgiunzione può essere stabilita direttamente, oppure derivata dalla struttura delle generalizzazioni.
+
+\subsubsection*{L'entità speciale TOP}
+
+Per formulare una regola generale, si introduce un'entità fittizia chiamata \textbf{TOP}.\\
+Le entità che non hanno un padre nel grafo delle gerarchie vengono considerate sottoentità di una generalizzazione completa con padre TOP.
+Rappresenta quindi l'insieme di tutti gli oggetti presenti nelle entità dello schema.
+
+\subsubsection*{Regola generale di disgiunzione}
+
+Due entità distinte $E$ e $F$ sono disgiunte, secondo i vincoli della gerarchia, se esistono due entità $G$ e $H$ tali che:
+
+\begin{enumerate}
+    \item $G$ e $H$ sono sottoentità diverse della stessa generalizzazione, quindi sono disgiunte.
+    \item $G$ è antenata di $E$.
+    \item $H$ è antenata di $F$.
+\end{enumerate}
+\noindent
+In altre parole, \textbf{due entità sono disgiunte quando discendono da due rami incompatibili di una stessa generalizzazione}.
+
+% ==========================================================
+% ISA TRA RELAZIONI
+% ==========================================================
+
+\subsection{Relazioni ISA tra relazioni}
+
+La relazione ISA può essere definita non soltanto tra entità, ma anche tra \textbf{relazioni}.\\
+In questo caso una relazione più specifica è figlia di una relazione più generale.
+\subsubsection*{Condizioni necessarie}
+Siano $R$ la relazione figlia e $Q$ la relazione padre.\\
+Per poter definire:
+
+\[
+R\ ISA\ Q
+\]
+devono essere rispettate due condizioni:
+\begin{enumerate}
+    \item $R$ e $Q$ devono avere \textbf{lo stesso insieme di ruoli}, e quindi lo stesso grado.
+    \item Per ogni ruolo, l'entità corrispondente in $R$ deve essere in relazione ISA, eventualmente transitiva o riflessiva, con l'entità corrispondente in $Q$.
+\end{enumerate}
+\subsubsection*{Semantica}
+
+La semantica è analoga a quella dell'ISA tra entità:
+
+\[
+\operatorname{istanze}(I,R)
+\subseteq
+\operatorname{istanze}(I,Q)
+\]
+
+\noindent
+Ogni tupla appartenente alla relazione figlia deve quindi appartenere anche alla relazione padre, considerando gli stessi ruoli.\medskip\\
+\textcolor{verdeEsempio}{\textbf{Esempio. }} Lavora e Dirige
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.4\linewidth]{../images/relgen1.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent
+La regola aziendale stabilisce che chi dirige un dipartimento deve anche lavorare nello stesso dipartimento.
+
+\[
+Dirige\ ISA\ Lavora
+\]
+\noindent
+Se Mario dirige il dipartimento Informatica, allora Mario deve anche lavorare nel dipartimento Informatica.\\
+Non vale necessariamente il contrario: chi lavora in un dipartimento non deve per forza dirigerlo.
+
+% ==========================================================
+% ISA TRA RELAZIONI CON ENTITÀ SPECIALIZZATE
+% ==========================================================
+
+\subsubsection*{ISA tra relazioni con entità specializzate}
+
+Le relazioni ISA possono coinvolgere anche entità diverse, purché siano compatibili con la gerarchia ISA.\medskip\\
+\textcolor{verdeEsempio}{\textbf{Esempio. }} Nel caso in cui dei direttori si voglia avere attributi specifici, per esempio Età, che non appartengono necessariamente all'entità Persona nel particolare schema considerato. 
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.5\linewidth]{../images/relgen2.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent
+\textbf{Importante:} il nome del ruolo deve essere lo stesso in entrambe le relazioni.\\
+Il fatto che due relazioni colleghino entità compatibili non è sufficiente se i ruoli sono differenti.
+
+% ==========================================================
+% GENERALIZZAZIONI TRA RELAZIONI
+% ==========================================================
+
+\subsubsection{Generalizzazioni tra relazioni}
+Come per le entità, anche le relazioni possono essere organizzate in generalizzazioni.
+Una relazione padre viene specializzata in più relazioni figlie, che rappresentano modalità alternative dello stesso collegamento.\medskip\\
+\textcolor{verdeEsempio}{\textbf{Esempio. }}Un impiegato può lavorare a un progetto in modalità tradizionale oppure a distanza.
+Definiamo:
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.5\linewidth]{../images/relgen3.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent
+Le due relazioni figlie appartengono alla stessa generalizzazione di Lavora.
+
+% ==========================================================
+% ERRORI FREQUENTI
+% ==========================================================
+
+\subsection*{Errori frequenti nelle ISA tra relazioni}
+
+Non ogni collegamento tra due relazioni può essere rappresentato mediante ISA.\\
+È necessario verificare sia la compatibilità delle entità sia l'identità dei ruoli.
+
+\subsubsection*{Errore 1: ruoli differenti}
+\begin{figure}[H]
+      
+    \includegraphics[width=0.5\linewidth]{../images/relgen4.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent
+Anche se Direttore è una sottoentità di Persona, l'ISA tra relazioni non è ammessa, perché \textbf{i ruoli non coincidono}.
+
+\subsubsection*{Errore 2: entità non collegate da ISA}
+\begin{figure}[H]
+      
+    \includegraphics[width=0.5\linewidth]{../images/relgen5.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent
+L'ISA tra relazioni non è ammessa, perchè non sappiamo se ogni direttore sia anche una persona secondo i vincoli dello schema.\medskip\\
+\textbf{Attenzione. }Al contrario delle entità, due relazioni che non hanno padre nello schema \textbf{non sono disgiunte}.
+
+\subsection{Vincoli di integrità nel modello ER}
+
+Un \textbf{vincolo di integrità} è una regola che si esprime sullo
+\textbf{schema} (livello intensionale), e che specifica una
+condizione che deve valere \textbf{per ogni istanza} dello schema (livello estensionale).\\
+In altre parole, un vincolo stabilisce quali dati e quali associazioni
+sono ammessi nel database.\\
+Nel modello ER distinguiamo quattro categorie principali:
+\begin{itemize}
+    \item \textbf{Vincoli di cardinalità sulle relazioni}: stabiliscono
+    quante volte un'entità può partecipare a una relazione.
+    \item \textbf{Vincoli di cardinalità sugli attributi}: stabiliscono
+    quanti valori può assumere un attributo.
+    \item \textbf{Vincoli di identificazione}: permettono di identificare
+    univocamente le istanze di entità e relazioni.
+    \item \textbf{Altri vincoli (esterni)}: esprimono condizioni aggiuntive
+    non rappresentate direttamente dai vincoli precedenti.
+\end{itemize}
+\noindent
+\textcolor{verdeEsempio}{\textbf{Esempio}}\\
+Se nello schema è stabilito che ogni impiegato deve avere almeno
+un incarico, non può esistere un'istanza valida del database
+contenente un impiegato senza incarichi.
+
+\subsection{Vincoli di cardinalità sulle relazioni}
+
+Un \textbf{vincolo di cardinalità} è associato a un ruolo $U$
+di un'entità $E$ in una relazione $R$.\\
+Esso specifica il \textbf{numero minimo e massimo di istanze
+della relazione} a cui può partecipare ogni istanza dell'entità
+nel ruolo considerato.\\
+Questi vincoli servono quindi a precisare il significato
+delle relazioni e a limitare le associazioni ammesse.
+
+\subsubsection*{Sintassi dei vincoli di cardinalità}
+
+Un vincolo di cardinalità si rappresenta mediante una coppia:
+
+\[
+\boxed{(x,y)}
+\]
+dove:
+\begin{itemize}
+    \item $x$ è la \textbf{cardinalità minima}, cioè un intero
+    maggiore o uguale a zero;
+    \item $y$ è la \textbf{cardinalità massima}, cioè un intero
+    positivo maggiore o uguale a $x$, oppure il simbolo $n$.
+\end{itemize}
+\noindent
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.5\linewidth]{../images/car1.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent
+Il simbolo $n$ indica che \textbf{non viene imposto un limite
+massimo prefissato} al numero di partecipazioni.
+
+\subsubsection*{Semantica dei vincoli di cardinalità}
+
+Consideriamo un'entità $E$ che partecipa a una relazione $R$
+attraverso il ruolo $U$, con cardinalità $(x,y)$.\\
+In ogni istanza valida $I$ dello schema, \textbf{ogni elemento
+$e$ di $E$ deve partecipare alla relazione $R$ almeno $x$
+volte e al massimo $y$ volte}, se $y$ è finito.\\
+Indicando con $N_U(e)$ il numero di istanze di $R$
+in cui compare $e$ nel ruolo $U$, si ha:
+
+\[
+\boxed{x \leq N_U(e) \leq y}
+\]
+Se invece $y=n$, è richiesto soltanto che:
+
+\[
+\boxed{N_U(e)\geq x}
+\]
+\textbf{Attenzione:} il vincolo è scritto su un ruolo della relazione,
+ma deve essere verificato per \textbf{tutte le istanze dell'entità}
+associata a quel ruolo, comprese quelle che non partecipano
+ad alcuna istanza della relazione.
+
+\subsubsection*{Esempio di vincoli di cardinalità}
+Consideriamo la relazione \textbf{Assegnazione} tra
+\textbf{Impiegato} e \textbf{Incarico}.\\
+Le specifiche sono:
+\begin{itemize}
+    \item Ogni impiegato deve avere \textbf{da 1 a 5 incarichi}.
+    \item Ogni incarico può essere assegnato ad
+    \textbf{al massimo 50 impiegati}.
+\end{itemize}
+\noindent
+Lo schema ER è:
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.9\linewidth]{../images/vin1.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent
+Il significato è:
+\begin{itemize}
+    \item \textbf{$(1,5)$ su Impiegato}: ogni impiegato compare
+    in almeno una e al massimo cinque assegnazioni.
+    \item \textbf{$(0,50)$ su Incarico}: un incarico può non
+    essere assegnato a nessuno, oppure essere assegnato
+    fino a cinquanta impiegati.
+\end{itemize}
+\noindent
+Consideriamo la seguente istanza:
+
+\[
+\operatorname{istanze}(I,\text{Impiegato})=\{a,b,c\}
+\]
+
+\[
+\operatorname{istanze}(I,\text{Incarico})=\{x,y,v,w,z\}
+\]
+
+\[
+\begin{aligned}
+\operatorname{istanze}(I,\text{Assegnazione})
+=\{ &(a,w),\\
+     &(b,v),(b,w),\\
+     &(c,y),(c,w),(c,z)\}
+\end{aligned}
+\]
+
+Verifichiamo il numero di incarichi per ciascun impiegato:
+\begin{itemize}
+    \item $a$ partecipa a $1$ assegnazione;
+    \item $b$ partecipa a $2$ assegnazioni;
+    \item $c$ partecipa a $3$ assegnazioni.
+\end{itemize}
+\noindent
+Tutti rispettano il vincolo $(1,5)$.\\
+Anche gli incarichi rispettano $(0,50)$:
+\begin{itemize}
+    \item $x$ compare in $0$ assegnazioni;
+    \item $y$, $v$ e $z$ compaiono ciascuno in $1$ assegnazione;
+    \item $w$ compare in $3$ assegnazioni.
+\end{itemize}
+\noindent
+Quindi l'istanza è \textbf{coerente con lo schema}.\medskip\\
+\textcolor{verdeEsempio}{\textbf{Esempio}} di istanza non valida. \\
+Se aggiungessimo un impiegato $d$ senza assegnargli alcun incarico,
+il vincolo $(1,5)$ sarebbe violato, perché $d$ parteciperebbe
+a zero istanze di Assegnazione.\\
+Se invece un impiegato avesse sei incarichi distinti,
+violerebbe la cardinalità massima $5$.
+
+\subsection{Cardinalità maggiormente utilizzate}
+
+Nella pratica si usano soprattutto tre valori:
+
+\[
+\boxed{0 \qquad 1 \qquad n}
+\]
+
+\subsubsection*{Cardinalità minima}
+
+La cardinalità minima stabilisce se la partecipazione
+alla relazione è obbligatoria oppure facoltativa.
+\begin{itemize}
+    \item \textbf{Minimo $0$}: partecipazione \textbf{opzionale}.
+    L'entità può non partecipare alla relazione.
+    \item \textbf{Minimo $1$}: partecipazione \textbf{obbligatoria}.
+    L'entità deve partecipare almeno una volta.
+\end{itemize}
+
+\subsubsection*{Cardinalità massima}
+
+La cardinalità massima stabilisce quante volte, al massimo,
+un'istanza può partecipare alla relazione.
+\begin{itemize}
+    \item \textbf{Massimo $1$}: l'entità può partecipare
+    al massimo una volta.
+    \item \textbf{Massimo $n$}: non esiste un limite massimo
+    prefissato di partecipazioni.
+\end{itemize}
+\noindent
+Le combinazioni più frequenti sono:
+
+\begin{center}
+\begin{tabular}{|c|l|}
+\hline
+\textbf{Cardinalità} & \textbf{Significato} \\
+\hline
+$(0,1)$ & Zero oppure una partecipazione \\
+\hline
+$(1,1)$ & Esattamente una partecipazione \\
+\hline
+$(0,n)$ & Zero o più partecipazioni \\
+\hline
+$(1,n)$ & Una o più partecipazioni \\
+\hline
+\end{tabular}
+\end{center}
+
+\noindent
+\textbf{Importante:} quando un vincolo di cardinalità
+non è specificato, si assume implicitamente:
+
+\[
+\boxed{(0,n)}
+\]
+
+\subsection*{Classificazione delle relazioni binarie}
+
+Le relazioni binarie coinvolgono due ruoli e possono
+essere classificate in base alle loro
+\textbf{cardinalità massime}.\\
+Esistono tre tipologie principali.
+
+\subsubsection*{Relazioni uno a uno (1:1)}
+
+Entrambi i ruoli hanno cardinalità massima pari a $1$.\\
+Ogni istanza della prima entità può essere associata
+ad al massimo un'istanza della seconda e viceversa.
+
+\[
+\boxed{E_1\ (0,1)\;-\;R\;-\;(0,1)\ E_2}
+\]
+\textcolor{verdeEsempio}{\textbf{Esempio}}\\
+Relazione Vendita tra Fattura e Ordine,
+supponendo che ogni fattura si riferisca al massimo
+a un ordine e ogni ordine abbia al massimo una fattura.
+
+\subsubsection*{Relazioni uno a molti (1:N)}
+
+Un ruolo ha cardinalità massima $1$, mentre l'altro
+ha cardinalità massima $n$.\\
+Un'istanza di un'entità può quindi essere associata
+a molte istanze dell'altra, ma non viceversa.
+
+\[
+\boxed{\text{Regione}\ (0,n)\;-\;\text{Contiene}
+\;-\;(1,1)\ \text{Comune}}
+\]
+\textcolor{verdeEsempio}{\textbf{Esempio}}\\
+Una regione può contenere molti comuni, mentre
+ogni comune appartiene a una sola regione.\\
+Quindi:
+\begin{itemize}
+    \item Regione ha cardinalità massima $n$;
+    \item Comune ha cardinalità massima $1$.
+\end{itemize}
+
+\subsubsection*{Relazioni molti a molti (N:M)}
+
+Entrambi i ruoli hanno cardinalità massima $n$.\\
+Ogni istanza della prima entità può essere associata
+a più istanze della seconda e viceversa.
+
+\[
+\boxed{\text{Studente}\ (0,n)\;-\;\text{Esame}
+\;-\;(0,n)\ \text{Corso}}
+\]
+\textcolor{verdeEsempio}{\textbf{Esempio}}\\
+Uno studente può sostenere esami relativi a molti corsi
+e uno stesso corso può avere esami sostenuti
+da molti studenti.
+
+\subsection{Vincoli di cardinalità ed ereditarietà sulle relazioni}
+Quando una relazione $Q$ è figlia di una relazione $R$
+($Q$ ISA $R$), i vincoli di cardinalità definiti sulla
+relazione padre possono influenzare quelli della relazione figlia.\medskip\\
+Può capitare che sullo stesso ruolo $U$ di una relazione $R$
+siano definiti più vincoli di cardinalità, esplicitamente
+oppure per effetto dell'ereditarietà.\\
+Supponiamo di avere le coppie:
+\[
+(x_1,y_1),\ (x_2,y_2),\ \ldots,\ (x_k,y_k)
+\]
+Poiché devono essere rispettate tutte contemporaneamente,
+possiamo sostituirle con un unico vincolo
+\textbf{più stringente}:
+\[
+\boxed{(x,y)}
+\]
+dove:
+
+\[
+\boxed{
+x=\max(x_1,x_2,\ldots,x_k)
+}
+\]
+\[
+\boxed{
+y=\min(y_1,y_2,\ldots,y_k)
+}
+\]
+\noindent
+Il simbolo $n$ rappresenta l'assenza di un limite
+massimo prefissato: quindi, nel confronto con
+un massimo numerico, è quest'ultimo a essere
+più stringente.\\
+\textbf{Attenzione:} se il minimo risultante è
+maggiore del massimo, i vincoli sono incompatibili
+per qualsiasi istanza dell'entità che debba
+rispettarli.
+\medskip\\
+\noindent
+\textcolor{verdeEsempio}{\textbf{Esempio}}\\
+Consideriamo la relazione \textbf{Lavora} tra
+\textbf{Persona} e \textbf{Dipartimento}.\\
+Sul ruolo Persona sono presenti due vincoli:
+\[
+(0,10)
+\qquad\text{e}\qquad
+(1,n)
+\]
+Calcoliamo il vincolo più stringente:
+\[
+x=\max(0,1)=1
+\]
+\[
+y=\min(10,n)=10
+\]
+Pertanto:
+\[
+\boxed{(1,10)}
+\]
+Questo significa che ogni persona deve lavorare
+in \textbf{almeno un dipartimento e al massimo dieci}.\\
+I due vincoli iniziali possono quindi essere
+sostituiti con $(1,10)$ senza modificare
+il significato dello schema.
+
+\subsubsection*{Propagazione della cardinalità massima}
+
+Supponiamo che:
+
+\[
+\boxed{Q\ \text{ISA}\ R}
+\]
+Questo significa che \textbf{ogni istanza della
+relazione figlia $Q$ è anche un'istanza
+della relazione padre $R$}:
+\[
+\operatorname{istanze}(I,Q)
+\subseteq
+\operatorname{istanze}(I,R)
+\]
+Di conseguenza, \textbf{un vincolo di cardinalità
+massima definito su un ruolo di $R$ si propaga
+allo stesso ruolo di $Q$}.\\
+Se nella relazione padre il massimo è $m$,
+anche nella relazione figlia non si potrà
+superare $m$.\\
+La relazione figlia può però avere un massimo
+ancora più stringente, cioè più piccolo.
+\[
+\boxed{
+\text{Massimo della figlia}
+\leq
+\text{massimo del padre}
+}
+\]
+Qui si intende il massimo effettivo, dopo aver
+considerato anche gli eventuali vincoli ereditati.\medskip\\
+\noindent
+\textcolor{verdeEsempio}{\textbf{Esempio}}\\
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.5\linewidth]{../images/carer1.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+
+\subsubsection*{Propagazione con sottoentità}
+
+La propagazione della cardinalità massima
+vale anche quando un ruolo della relazione
+figlia è associato a una \textbf{sottoentità}
+di quella associata al corrispondente
+ruolo della relazione padre.\medskip\\
+\noindent
+\textcolor{verdeEsempio}{\textbf{Esempio}}\\
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.5\linewidth]{../images/carer2.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\subsubsection*{Propagazione della cardinalità minima}
+Abbiamo visto che, se $Q$ ISA $R$, le cardinalità
+\textbf{massime} si propagano dalla relazione padre $R$
+alla relazione figlia $Q$.\\
+Per le cardinalità \textbf{minime}, invece, bisogna distinguere
+due casi.
+
+\subsubsection*{Caso 1: le relazioni coinvolgono le stesse entità}
+Supponiamo che $Q$ ISA $R$ e che entrambe le relazioni
+coinvolgano le stesse entità $A$ e $B$, con gli stessi ruoli.
+Poiché ogni istanza di $Q$ è anche un'istanza di $R$:
+\[
+\operatorname{istanze}(I,Q)
+\subseteq
+\operatorname{istanze}(I,R)
+\]
+Se un'istanza di $A$ partecipa ad almeno $z$ istanze
+di $Q$, allora partecipa necessariamente ad almeno
+$z$ istanze di $R$.\\
+Di conseguenza, \textbf{la cardinalità minima si propaga
+dalla relazione figlia alla relazione padre},
+cioè nella direzione opposta rispetto alla cardinalità massima.
+\[
+\boxed{
+\text{Minimo di }Q
+\longrightarrow
+\text{Minimo di }R
+}
+\]
+\noindent
+Se sul ruolo di $A$ abbiamo:
+\[
+R:(x,y)
+\qquad
+Q:(z,w)
+\]
+allora il minimo effettivo della relazione padre è:
+\[
+\boxed{x'=\max(x,z)}
+\]
+La cardinalità di $R$ diventa quindi:
+\[
+\boxed{R:(\max(x,z),y)}
+\]
+
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.6\linewidth]{../images/carer3.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent
+\textcolor{verdeEsempio}{\textbf{Esempio}}\\
+Consideriamo le relazioni $R$ e $Q$ tra le stesse
+entità $A$ e $B$, con $Q$ ISA $R$.
+Sul ruolo $A$ sono definiti:
+\[
+R:(0,5)
+\qquad
+Q:(2,3)
+\]
+Poiché ogni istanza di $Q$ è anche un'istanza di $R$,
+se ogni elemento di $A$ deve partecipare almeno
+due volte a $Q$, deve partecipare almeno due volte
+anche a $R$.
+Il vincolo effettivo su $R$ diventa:
+\[
+\boxed{R:(2,5)}
+\]
+Il vincolo su $Q$ rimane $(2,3)$.
+
+\subsubsection*{Caso 2: la relazione figlia coinvolge una sottoentità}
+Supponiamo ora che:
+\[
+A_1\ \text{ISA}\ A
+\qquad
+Q\ \text{ISA}\ R
+\]
+dove:
+\begin{itemize}
+    \item $R$ coinvolge l'entità $A$;
+    \item $Q$ coinvolge la sottoentità $A_1$.
+\end{itemize}
+\noindent
+In questo caso, \textbf{la cardinalità minima di $Q$
+non si propaga automaticamente a $R$}.\\
+Il motivo è che il vincolo minimo su $Q$ riguarda
+soltanto le istanze di $A_1$, mentre quello su $R$
+deve valere per \textbf{tutte} le istanze di $A$.\\
+Possono infatti esistere elementi di $A$ che
+non appartengono ad $A_1$\medskip\\
+\textcolor{verdeEsempio}{\textbf{Esempio. }}
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.6\linewidth]{../images/carer5.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+
+\subsection{Compatibilità dei vincoli di cardinalità}
+Quando più vincoli vengono combinati, anche per
+effetto dell'ereditarietà, bisogna sempre verificare
+che la cardinalità minima non superi quella massima.\\
+La condizione fondamentale è:
+\[
+\boxed{x\leq y}
+\]
+dove $x$ è il minimo e $y$ è il massimo.\medskip\\
+\textcolor{verdeEsempio}{\textbf{Esempio di vincoli incompatibili}}\\
+Consideriamo due relazioni $R$ e $Q$ tra
+le stesse entità $A$ e $B$, con $Q$ ISA $R$.
+Sul ruolo $A$ abbiamo:
+\[
+R:(2,2)
+\qquad
+Q:(3,n)
+\]
+Poiché la cardinalità minima di $Q$ si propaga
+a $R$, otteniamo:
+\[
+x=\max(2,3)=3
+\]
+La cardinalità massima di $R$ rimane $2$.
+Quindi il vincolo effettivo di $R$ è:
+\[
+\boxed{(3,2)}
+\]
+Questo vincolo è \textbf{incompatibile}, perché:
+\[
+3>2
+\]
+Un'istanza di $A$ dovrebbe partecipare
+contemporaneamente ad almeno tre e ad al massimo
+due istanze della relazione $R$.
+Questo è impossibile.
+Di conseguenza:
+\begin{itemize}
+    \item Non possono esistere istanze di $A$.
+    \item Non possono esistere istanze di $R$.
+    \item Non possono esistere istanze di $Q$,
+    perché $Q$ ISA $R$.
+\end{itemize}
+\noindent
+\textbf{Attenzione:} questo non significa
+necessariamente che tutto il database debba essere vuoto,
+ma che le entità e le relazioni coinvolte
+non possono avere istanze.
+
+\subsection{Vincoli di cardinalità sugli attributi}
+
+I vincoli di cardinalità possono essere applicati
+anche agli \textbf{attributi} delle entità.\\
+Servono principalmente per rappresentare:
+\begin{itemize}
+    \item \textbf{Attributi opzionali}, che possono
+    non avere alcun valore.
+    \item \textbf{Attributi multivalore}, che possono
+    assumere più valori per la stessa istanza.
+\end{itemize}
+\noindent
+Anche per gli attributi si utilizza una coppia:
+\[
+\boxed{(x,y)}
+\]
+dove:
+\begin{itemize}
+    \item $x$ indica il numero minimo di valori
+    associati a ogni istanza dell'entità;
+    \item $y$ indica il numero massimo di valori
+    associati a ogni istanza dell'entità.
+\end{itemize}
+\noindent
+Se il vincolo non viene specificato, si assume:
+\[
+\boxed{(1,1)}
+\]
+\subsubsection*{Attributo obbligatorio e monovalore}
+Un attributo con cardinalità $(1,1)$
+deve avere \textbf{esattamente un valore}
+per ogni istanza dell'entità.\\
+\textcolor{verdeEsempio}{\textbf{Esempio}}\\
+L'entità Persona possiede l'attributo CodiceFiscale:
+\[
+\text{CodiceFiscale}:(1,1)
+\]
+Ogni persona deve avere esattamente un codice fiscale.
+In questo caso l'attributo rappresenta una
+\textbf{funzione totale} dall'insieme delle persone
+all'insieme dei valori dell'attributo.
+\subsubsection*{Attributo opzionale}
+Un attributo con cardinalità $(0,1)$
+può avere \textbf{zero oppure un valore}.\\
+\textcolor{verdeEsempio}{\textbf{Esempio}}\\
+Consideriamo l'attributo SecondoNome di Persona:
+\[
+\text{SecondoNome}:(0,1)
+\]
+Una persona può:
+\begin{itemize}
+    \item Non avere un secondo nome.
+    \item Avere un solo secondo nome.
+\end{itemize}
+\noindent
+L'attributo rappresenta una \textbf{funzione parziale},
+perché non è necessariamente definito
+per tutte le istanze dell'entità.
+\subsubsection*{Attributo multivalore}
+Un attributo con cardinalità massima maggiore di $1$
+può associare \textbf{più valori alla stessa istanza}.\\
+In questo caso non rappresenta più una funzione,
+ma una \textbf{relazione} tra le istanze dell'entità
+e i possibili valori dell'attributo.\\
+\textcolor{verdeEsempio}{\textbf{Esempio}}\\
+Consideriamo l'attributo NumeroTelefono di Persona:
+\[
+\text{NumeroTelefono}:(0,n)
+\]
+Ogni persona può avere:
+\begin{itemize}
+    \item Nessun numero di telefono.
+    \item Un numero di telefono.
+    \item Più numeri di telefono.
+\end{itemize}
+
+
+\subsection*{Semantica degli attributi definiti su più entità}
+
+Nel modello ER, uno stesso attributo può essere definito
+su più entità.\\
+\textbf{Attenzione:} se due attributi hanno lo stesso nome,
+non vengono considerati indipendenti, ma rappresentano
+un'unica relazione (oppure un'unica funzione).\\
+Supponiamo che l'attributo $A$ sia definito sulle entità
+$E_1,E_2,\ldots,E_n$, con domini rispettivamente
+$D_1,D_2,\ldots,D_n$.\\
+In una generica istanza $I$ dello schema, l'attributo
+$A$ è rappresentato da una relazione:
+\[
+\operatorname{istanze}(I,A)
+\subseteq
+\left(
+\bigcup_{i=1}^{n}\operatorname{istanze}(I,E_i)
+\right)
+\times
+\left(
+\bigcup_{i=1}^{n}D_i
+\right)
+\]
+In altre parole, l'attributo associa valori alle istanze
+delle entità sulle quali è definito.\\
+Se tutte le cardinalità massime dell'attributo sono $1$,
+questa relazione è una \textbf{funzione parziale o totale},
+a seconda delle cardinalità minime.\\
+Inoltre, se l'attributo $A$ è definito su $E_i$ con
+cardinalità $(x_i,y_i)$, ogni istanza di $E_i$ deve avere
+un numero di valori compreso tra $x_i$ e $y_i$,
+e tali valori devono appartenere al dominio $D_i$.
+
+\subsubsection*{Conseguenze dell'utilizzo dello stesso nome}
+Se un oggetto appartiene contemporaneamente a due entità
+che possiedono un attributo con lo stesso nome,
+i valori dell'attributo devono essere coerenti.\\
+Questo perché, a livello estensionale, l'attributo
+è \textbf{uno solo}.\\
+\textcolor{verdeEsempio}{\textbf{Esempio. }}
+Consideriamo le seguenti gerarchie ISA:
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.4\linewidth]{../images/caratt1.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent
+Supponiamo che l'attributo \texttt{NumFigli}
+sia definito sia su \texttt{Lavoratore}
+sia su \texttt{StudenteStraniero},
+con cardinalità $(1,1)$.\\
+Se una persona $p$ appartiene a entrambe le entità,
+non può avere due valori diversi di \texttt{NumFigli}.\\
+Ad esempio, non possiamo avere contemporaneamente:
+\[
+\texttt{NumFigli}(p)=2
+\quad \text{come Lavoratore}
+\]
+\[
+\texttt{NumFigli}(p)=3
+\quad \text{come StudenteStraniero}
+\]
+Questo sarebbe scorretto, perché l'attributo
+rappresenta un'unica funzione.\\
+Deve quindi valere:
+\[
+\boxed{
+\texttt{NumFigli}(p)=\text{un unico valore}
+}
+\]
+\textbf{Da ricordare:} lo stesso nome di attributo,
+anche se utilizzato in entità diverse,
+identifica la stessa proprietà a livello estensionale.
+
+\subsection{Attributi definiti su entità disgiunte}
+
+Consideriamo ora due entità che non possono avere
+istanze in comune.\\
+Due entità $E_1$ ed $E_2$ sono \textbf{disgiunte} quando:
+\[
+\operatorname{istanze}(I,E_1)
+\cap
+\operatorname{istanze}(I,E_2)
+=
+\varnothing
+\]
+Se entrambe possiedono un attributo con lo stesso nome,
+questo continua a rappresentare un'unica relazione
+(o funzione).\\
+Tuttavia, poiché le entità non hanno istanze in comune,
+non si verificano conflitti tra i valori associati
+allo stesso oggetto.\\
+Possiamo quindi interpretare l'attributo come
+l'\textbf{unione disgiunta di due funzioni distinte}.\\
+\textcolor{verdeEsempio}{\textbf{Esempio: attributo Città}}\\
+Consideriamo le entità:
+\begin{itemize}
+    \item \texttt{Persona}, con attributo \texttt{Città};
+    \item \texttt{Dipartimento}, con attributo \texttt{Città}.
+\end{itemize}
+\noindent
+L'attributo \texttt{Città} può rappresentare:
+\begin{itemize}
+    \item la città di residenza di una persona;
+    \item la città in cui si trova un dipartimento.
+\end{itemize}
+Supponiamo che:
+\[
+\texttt{Città}(\text{Mario})=\text{Roma}
+\]
+\[
+\texttt{Città}(\text{Dipartimento1})=\text{Milano}
+\]
+Non c'è alcuna contraddizione, perché Mario
+e Dipartimento1 sono oggetti distinti
+appartenenti a entità disgiunte.\\
+\textbf{Differenza fondamentale:}
+\begin{itemize}
+    \item \textbf{Entità sovrapposte:}
+    uno stesso oggetto può appartenere a entrambe;
+    quindi il valore dell'attributo deve essere coerente.
+
+    \item \textbf{Entità disgiunte:}
+    non esistono oggetti in comune;
+    quindi le due parti della funzione possono
+    essere considerate separatamente.
+\end{itemize}
+\noindent
+La stessa osservazione vale anche quando
+un attributo con lo stesso nome è definito
+su relazioni diverse.
+\subsection{Vincoli di identificazione delle entità}
+Un \textbf{identificatore} di un'entità è un insieme
+di proprietà che permette di distinguere
+\textbf{univocamente} ogni istanza dell'entità.\\
+Le proprietà utilizzate possono essere:
+\begin{itemize}
+    \item attributi dell'entità;
+    \item ruoli di relazioni alle quali l'entità partecipa.
+\end{itemize}
+\noindent
+Un identificatore deve garantire che
+\textbf{due istanze distinte non possano avere
+gli stessi valori per tutte le proprietà
+che lo compongono}.\\
+Formalmente, se $K$ è un identificatore di $E$,
+per ogni coppia di istanze distinte $e_1,e_2$:
+\[
+e_1\neq e_2
+\quad\Longrightarrow\quad
+K(e_1)\neq K(e_2)
+\]
+In altre parole, conoscere il valore
+dell'identificatore permette di individuare
+una sola istanza dell'entità.\\
+\textcolor{verdeEsempio}{\textbf{Esempio}}\\
+Consideriamo l'entità \texttt{Automobile}
+con gli attributi:
+\begin{itemize}
+    \item Targa;
+    \item Modello;
+    \item Colore.
+\end{itemize}
+\noindent
+L'attributo \texttt{Targa} può essere utilizzato
+come identificatore, perché due automobili distinte
+non possono avere la stessa targa
+nell'ambito considerato.\\
+Al contrario, \texttt{Modello} non è un identificatore,
+perché più automobili possono avere lo stesso modello.
+
+\subsubsection*{Numero di identificatori}
+Per una stessa entità è possibile definire
+\textbf{più identificatori}.\\
+Ad esempio, un'entità \texttt{Studente}
+potrebbe avere come identificatori:
+\begin{itemize}
+    \item Matricola;
+    \item CodiceFiscale.
+\end{itemize}
+\noindent
+Entrambi possono identificare univocamente
+uno studente, se lo schema impone
+i rispettivi vincoli di unicità.\\
+Ogni oggetto possiede implicitamente
+un \textbf{identificatore di oggetto}
+(\emph{object identifier}), che lo distingue
+dagli altri oggetti.
+\subsection*{Identificatori interni ed esterni}
+Gli identificatori delle entità si dividono
+in due categorie principali.
+\subsubsection*{Identificatori interni}
+Un identificatore è \textbf{interno} quando
+è formato esclusivamente da attributi
+dell'entità stessa.\\
+Può essere costituito da:
+\begin{itemize}
+    \item un solo attributo;
+    \item più attributi considerati insieme.
+\end{itemize}
+\noindent
+\textcolor{verdeEsempio}{\textbf{Esempio. }} identificatore semplice
+Consideriamo l'entità \texttt{Automobile}.
+\[
+\boxed{\texttt{Targa}}
+\]
+L'attributo Targa identifica da solo
+ogni automobile.\\
+Quindi abbiamo un identificatore interno
+formato da un unico attributo.\\
+\textcolor{verdeEsempio}{\textbf{Esempio. }} identificatore composto
+Consideriamo l'entità \texttt{Persona},
+con gli attributi:
+\begin{itemize}
+    \item Nome;
+    \item Cognome;
+    \item DataNascita;
+    \item Reddito.
+\end{itemize}
+\noindent
+Supponiamo che lo schema stabilisca che
+la coppia $(\texttt{Nome},\texttt{Cognome})$
+sia un identificatore.\\
+In questo caso:\\
+\[
+\boxed{
+K=(\texttt{Nome},\texttt{Cognome})
+}
+\]
+Significa che non possono esistere due persone
+distinte con lo stesso nome e lo stesso cognome
+nell'istanza del database.
+\subsubsection*{Identificatori esterni}
+Un identificatore è \textbf{esterno} quando
+coinvolge almeno un ruolo di una relazione
+alla quale partecipa l'entità.\\
+Può essere formato da:
+\begin{itemize}
+    \item attributi dell'entità e ruoli di relazioni;
+    \item soltanto ruoli di relazioni.
+\end{itemize}
+\noindent
+Questo significa che, per identificare
+un'istanza dell'entità, non bastano necessariamente
+i suoi attributi: occorre conoscere anche
+l'oggetto al quale è collegata.
+\textcolor{verdeEsempio}{\textbf{Esempio}}
+Consideriamo le entità:
+\[
+\texttt{Dipartimento}
+\qquad
+\texttt{Ufficio}
+\]
+e la relazione:
+\[
+\texttt{Appartiene}(\texttt{Ufficio},\texttt{Dipartimento})
+\]
+Supponiamo che ogni ufficio abbia un numero,
+ma che numeri uguali possano comparire
+in dipartimenti diversi.\\
+Ad esempio:
+\[
+(\text{Ufficio } 12,\text{Dipartimento A})
+\]
+
+\[
+(\text{Ufficio } 12,\text{Dipartimento B})
+\]
+Il solo attributo \texttt{Numero} non basta
+a identificare un ufficio.\\
+Possiamo invece utilizzare:
+\[
+\boxed{
+K=(\texttt{Numero},\texttt{Dipartimento})
+}
+\]
+dove \texttt{Dipartimento} è individuato
+tramite il ruolo della relazione \texttt{Appartiene}.\\
+Questo è un identificatore esterno,
+perché utilizza una relazione.
+
+\subsubsection{Cardinalità delle proprietà identificanti}
+Tutti gli attributi e i ruoli di relazione
+che partecipano a un identificatore
+devono avere cardinalità:
+\[
+\boxed{(1,1)}
+\]
+Questo significa che ogni proprietà identificante
+deve essere:
+\begin{itemize}
+    \item \textbf{obbligatoria}, perché il minimo è $1$;
+    \item \textbf{monovalore}, perché il massimo è $1$.
+\end{itemize}
+
+\subsubsection*{Identificatore interno semplice}
+Se l'identificatore è formato da un solo attributo,
+si annerisce il pallino corrispondente
+a quell'attributo.
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.3\linewidth]{../images/att1.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent
+\textcolor{verdeEsempio}{\textbf{Esempio}}\\
+Nell'entità \texttt{Automobile}:
+\begin{itemize}
+    \item Targa: pallino nero, perché è identificatore;
+    \item Modello: pallino bianco;
+    \item Colore: pallino bianco.
+\end{itemize}
+\subsubsection*{Identificatore interno composto}
+Se l'identificatore è formato da più attributi,
+si collegano gli attributi con una linea
+che termina con un \textbf{pallino annerito}.
+Il pallino nero rappresenta l'identificatore
+formato dall'insieme degli attributi collegati.
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.3\linewidth]{../images/att2.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent
+\textcolor{verdeEsempio}{\textbf{Esempio}}\\
+Se l'identificatore di Persona è formato da:
+
+\[
+K=(\texttt{Nome},\texttt{Cognome},\texttt{Data Nascita})
+\]
+Nome, Cognome e Data Nascita vengono collegati
+a un unico pallino nero.
+\subsubsection*{Identificatore esterno}
+Per un identificatore esterno si collegano
+gli attributi e i ruoli di relazione
+che lo compongono mediante una linea
+che termina con un pallino annerito.\\
+\textcolor{verdeEsempio}{\textbf{Esempio}}
+Per l'entità \texttt{Ufficio}, identificata da:
+\[
+K=(\texttt{Numero},\texttt{Dipartimento})
+\]
+la notazione collega:
+\begin{itemize}
+    \item l'attributo Numero di Ufficio;
+    \item il ruolo di Ufficio nella relazione Appartiene.
+\end{itemize}
+\noindent
+Questi due elementi, insieme,
+identificano univocamente l'ufficio.
+\subsection*{Semantica dei vincoli di identificazione delle entità}
+
+Un \textbf{vincolo di identificazione} stabilisce quali
+proprietà permettono di distinguere univocamente
+le istanze di un'entità.\\
+Consideriamo un'entità $E$ identificata mediante:
+\begin{itemize}
+    \item gli attributi $A_1,A_2,\ldots,A_k$;
+    \item i ruoli $U_1,U_2,\ldots,U_h$ nelle relazioni
+    $R_1,R_2,\ldots,R_h$.
+\end{itemize}
+\noindent
+Tutte queste proprietà devono avere cardinalità $(1,1)$.\\
+Il vincolo impone che, prese due istanze distinte
+$e_1,e_2$ di $E$, esse debbano differire
+\textbf{in almeno una proprietà dell'identificatore}.\\
+Quindi devono avere:
+\begin{itemize}
+    \item un valore diverso per almeno uno degli attributi
+    identificanti;
+    \item oppure una partecipazione diversa in almeno
+    una delle relazioni identificanti.
+\end{itemize}
+\noindent
+Non è necessario che differiscano in tutte le proprietà:
+\textbf{è sufficiente una sola differenza}.
+\subsubsection*{Cosa significa differire nella partecipazione a una relazione?}
+Supponiamo che un'entità $G$ partecipi
+alla relazione ternaria:
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.4\linewidth]{../images/rel10.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent
+\noindent
+Supponiamo inoltre che il ruolo $U$
+abbia cardinalità $(1,1)$.\\
+Questo significa che ogni istanza di $G$
+partecipa a \textbf{esattamente una}
+istanza della relazione $R$.\\
+Due istanze $g_1,g_2$ di $G$
+\textbf{differiscono nella partecipazione con ruolo $U$}
+quando le rispettive istanze di $R$
+differiscono in almeno uno degli altri ruoli.\\
+\textbf{Attenzione:} non basta che le due tuple
+siano diverse soltanto nel ruolo $U$,
+perché quel ruolo contiene proprio
+$g_1$ e $g_2$.\\
+Per avere una partecipazione diversa
+deve cambiare almeno uno degli oggetti
+associati negli altri ruoli.\\
+\textcolor{verdeEsempio}{\textbf{Esempio}}
+Consideriamo:
+\[
+\operatorname{istanze}(I,E)=\{a,b,c\}
+\]
+\[
+\operatorname{istanze}(I,F)=\{n,p,s\}
+\]
+\[
+\operatorname{istanze}(I,G)=\{d,g,m\}
+\]
+L'attributo $A$ di $G$ assume i valori:
+\[
+\operatorname{istanze}(I,A)=
+\{(d,1),(g,2),(m,2)\}
+\]
+La relazione $R$ contiene:
+\[
+\begin{aligned}
+\operatorname{istanze}(I,R)=\{&
+(U:d,V:a,W:n),\\
+&(U:g,V:a,W:n),\\
+&(U:m,V:a,W:p)
+\}
+\end{aligned}
+\]
+Confrontiamo le istanze di $G$.\\
+\textbf{Caso 1: confronto tra $d$ e $g$.}
+I valori dell'attributo sono diversi:
+\[
+A(d)=1 \neq 2=A(g)
+\]
+Tuttavia, le rispettive partecipazioni
+alla relazione $R$ hanno gli stessi valori
+negli altri ruoli:
+\[
+(V:a,W:n)
+\]
+Quindi $d$ e $g$:
+\begin{itemize}
+    \item differiscono nel valore di $A$;
+    \item non differiscono nella partecipazione
+    con ruolo $U$ in $R$.
+\end{itemize}
+\noindent
+\textbf{Caso 2: confronto tra $g$ e $m$.}\\
+I valori dell'attributo coincidono:
+\[
+A(g)=A(m)=2
+\]
+Ma le partecipazioni sono:
+\[
+g \longrightarrow (V:a,W:n)
+\]
+\[
+m \longrightarrow (V:a,W:p)
+\]
+Poiché $n\neq p$, le partecipazioni
+sono differenti.\\
+Quindi $g$ e $m$:
+\begin{itemize}
+    \item non differiscono nel valore di $A$;
+    \item differiscono nella partecipazione
+    con ruolo $U$ in $R$.
+\end{itemize}
+\noindent
+\textbf{Caso 3: confronto tra $d$ e $m$.}
+Abbiamo:
+\[
+A(d)=1 \neq 2=A(m)
+\]
+e inoltre:
+\[
+(V:a,W:n)\neq(V:a,W:p)
+\]
+Quindi $d$ e $m$ differiscono
+\textbf{sia nell'attributo sia nella partecipazione}.
+\subsection*{Esempio di identificatore esterno}
+Consideriamo le entità:
+\begin{itemize}
+    \item \texttt{Studente}, con attributi
+    \texttt{Cognome} e \texttt{Matricola};
+    \item \texttt{Università}, con attributo
+    \texttt{Nome}.
+\end{itemize}
+\noindent
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.4\linewidth]{../images/rel11.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent
+Quindi:
+\begin{itemize}
+    \item ogni studente è iscritto a esattamente
+    un'università;
+    \item ogni università può avere zero o più studenti.
+\end{itemize}
+\noindent
+Supponiamo che l'identificatore di
+\texttt{Studente} sia composto da:
+\[
+\boxed{
+K=(\texttt{Matricola},\texttt{Università})
+}
+\]
+dove l'università viene individuata attraverso
+il ruolo di Studente nella relazione
+\texttt{Iscrizione}.\\
+Si tratta di un \textbf{identificatore esterno},
+perché utilizza sia un attributo
+sia un ruolo di relazione.\\
+\textbf{Significato del vincolo:}\\
+Due studenti distinti devono avere:
+\begin{itemize}
+    \item matricole differenti;
+    \item oppure università di iscrizione differenti.
+\end{itemize}
+\noindent
+Pertanto, due studenti possono avere
+la stessa matricola \textbf{soltanto se}
+sono iscritti a università diverse.\\
+\textcolor{verdeEsempio}{\textbf{Esempio}}
+Consideriamo:
+\[
+\operatorname{istanze}(I,\texttt{Studente})
+=\{a,b,c\}
+\]
+\[
+\operatorname{istanze}(I,\texttt{Università})
+=\{v,z\}
+\]
+\[
+\operatorname{istanze}(I,\texttt{Matricola})
+=
+\{(a,12),(b,24),(c,12)\}
+\]
+\[
+\operatorname{istanze}(I,\texttt{Cognome})
+=
+\{
+(a,\text{Rossi}),
+(b,\text{Finzi}),
+(c,\text{Rossi})
+\}
+\]
+\[
+\operatorname{istanze}(I,\texttt{Nome})
+=
+\{
+(v,\text{Viterbo}),
+(z,\text{Camerino})
+\}
+\]
+\[
+\begin{aligned}
+\operatorname{istanze}(I,\texttt{Iscrizione})
+=\{&
+(a,v),\\
+&(b,v),\\
+&(c,z)
+\}
+\end{aligned}
+\]
+Verifichiamo l'identificatore.
+\textbf{Studente $a$:}
+\[
+K(a)=(12,v)
+\]
+\textbf{Studente $b$:}
+\[
+K(b)=(24,v)
+\]
+\textbf{Studente $c$:}
+\[
+K(c)=(12,z)
+\]
+Le tre coppie sono differenti:
+\[
+(12,v)\neq(24,v)
+\]
+\[
+(12,v)\neq(12,z)
+\]
+\[
+(24,v)\neq(12,z)
+\]
+Quindi il vincolo di identificazione
+è \textbf{rispettato}.
+\subsection*{Entità deboli}
+Un'entità che possiede un
+\textbf{identificatore esterno}
+viene chiamata \textbf{entità debole}.
+Questo significa che la sua identificazione
+dipende anche dalla partecipazione
+a una relazione con altre entità.\\
+\textcolor{verdeEsempio}{\textbf{Esempio}}
+Nello schema precedente, \texttt{Studente}
+è un'entità debole perché la sola
+\texttt{Matricola} non è sufficiente
+a identificarlo.
+
+\subsection{Vincoli di identificazione di entità}
+\subsubsection*{1. Esercizio 17: identificazione dei voli}
+Consideriamo uno schema E-R:
+
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.4\linewidth]{../images/ea17.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent
+Dobbiamo rappresentare due vincoli:
+\begin{enumerate}
+    \item Ogni volo ha un codice unico
+    \textbf{all'interno della propria compagnia}.
+    \item Due voli diversi della stessa compagnia
+    devono differire nell'aeroporto di partenza
+    oppure in quello di arrivo.
+\end{enumerate}
+
+\subsubsection*{2. Primo identificatore esterno}
+
+Il primo vincolo significa che il solo Codice
+non identifica necessariamente un volo.\\
+Ad esempio, due compagnie diverse possono avere
+entrambe un volo con codice 100.\\
+Per identificare un volo dobbiamo conoscere:
+\[
+\boxed{\text{Codice}+\text{Compagnia}}
+\]
+Nello schema E-R questo identificatore esterno
+è formato da:
+\begin{itemize}
+    \item l'attributo Codice di Volo;
+    \item il ruolo di Volo nella relazione Della.
+\end{itemize}
+\noindent
+La cardinalità $(1,1)$ di Volo in Della garantisce
+che ogni volo appartenga a una sola compagnia.
+
+\subsubsection*{3. Secondo identificatore esterno}
+Il secondo vincolo stabilisce che, all'interno
+della stessa compagnia, due voli diversi non
+possono avere contemporaneamente lo stesso
+aeroporto di partenza e quello di arrivo.\\
+Quindi un volo è identificabile anche mediante:
+\[
+\boxed{
+\text{Compagnia}+
+\text{AeroportoPartenza}+
+\text{AeroportoArrivo}
+}
+\]
+Questo secondo identificatore esterno è formato da:
+\begin{itemize}
+    \item il ruolo di Volo nella relazione Della;
+    \item il ruolo di Volo nella relazione ArrPart.
+\end{itemize}
+\noindent
+La relazione ArrPart comprende già entrambi
+gli aeroporti, distinti dai ruoli Partenza e Arrivo.
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.4\linewidth]{../images/es17s.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+
+\paragraph{Esempio}
+Consideriamo i seguenti voli:
+\begin{center}
+\begin{tabular}{c|c|c|c}
+Compagnia & Codice & Partenza & Arrivo \\
+\hline
+A & 100 & Roma & Milano \\
+A & 200 & Roma & Napoli \\
+B & 100 & Roma & Milano
+\end{tabular}
+\end{center}
+I tre voli rispettano entrambi i vincoli.\\
+In particolare, il primo e il terzo possono
+avere lo stesso codice e gli stessi aeroporti
+perché appartengono a compagnie diverse.
+\noindent
+
+\subsubsection*{Identificatore esterno formato solo da una relazione}
+
+Consideriamo:
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.4\linewidth]{../images/ides.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent
+Due fornitori diversi devono partecipare
+a forniture che differiscono almeno
+nel ministero o nel prodotto.\\
+Di conseguenza, la partecipazione alla
+relazione Fornitura identifica univocamente
+il fornitore.
+
+\[
+\boxed{
+\text{Identificatore esterno}
+=
+\text{ruolo Fornitore in Fornitura}
+}
+\]
+\textbf{Osservazione importante:}
+un identificatore esterno può essere formato
+anche esclusivamente da un ruolo di relazione,
+senza utilizzare alcun attributo.\\
+Nello schema della slide, Fornitore possiede
+anche un identificatore interno: Codice.
+
+\subsubsection*{Identificazione esterna implicita}
+Consideriamo due entità E e F collegate
+da una relazione R con cardinalità:
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.5\linewidth]{../images/idesen.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent
+Questo significa che:
+\begin{itemize}
+    \item ogni istanza di E partecipa
+    esattamente una volta a R;
+    \item ogni istanza di F partecipa
+    al massimo una volta a R.
+\end{itemize}
+\noindent
+Supponiamo che due istanze diverse di E
+siano collegate alla stessa istanza di F.\\
+Questo violerebbe la cardinalità massima 1
+di F nella relazione R.\\
+Pertanto, la partecipazione a R
+identifica univocamente ogni istanza di E.
+\[
+\boxed{
+\text{R identifica esternamente E}
+}
+\]
+Il vincolo di identificazione può essere
+disegnato esplicitamente, ma è già implicito
+nelle cardinalità.\\
+\textbf{Regola generale:}
+se E partecipa a R con cardinalità $(1,1)$
+e almeno un altro ruolo di R ha cardinalità
+massima 1, allora il ruolo di E in R
+è un identificatore esterno per E.
+
+\subsubsection*{Identificatori essenziali}
+
+Un identificatore si dice \textbf{essenziale}
+quando nessuna delle proprietà che lo
+compongono può essere eliminata senza perdere
+la capacità di identificare univocamente
+le istanze dell'entità.
+Le proprietà possono essere attributi
+oppure ruoli di relazioni.\medskip\\
+\textcolor{verdeEsempio}{\textbf{Esempio. }}
+Supponiamo che l'entità E abbia due attributi
+E e F e partecipi alla relazione R
+con cardinalità $(1,1)$.
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.3\linewidth]{../images/ides1.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent
+Consideriamo l'identificatore:
+\[
+W=\{A,R\}
+\]
+Supponiamo che:
+\begin{itemize}
+    \item A da solo non identifichi E;
+    \item la partecipazione a R da sola
+    non identifichi E;
+    \item A e R insieme identifichino E.
+\end{itemize}
+\noindent
+Allora:
+\[
+\boxed{W=\{A,R\}
+\text{ è essenziale}}
+\]
+Se aggiungiamo anche l'attributo E:
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.5\linewidth]{../images/ides2.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent
+otteniamo ancora un identificatore,
+ma \textbf{non essenziale}, perché B
+è superfluo: possiamo eliminarlo
+e continuare a identificare E mediante
+A e R.
+
+
+\subsection{Vincoli di identificazione di relazione}
+
+\noindent
+Anche per le \textbf{relazioni} è possibile definire
+dei vincoli di identificazione.
+
+\noindent
+Un \textbf{identificatore di relazione} è un insieme
+di proprietà (attributi con cardinalità $(1,1)$
+e/o ruoli) che permette di identificare
+univocamente ogni istanza della relazione.
+
+\noindent
+Ogni relazione possiede sempre un
+\textbf{identificatore implicito}, formato
+da tutti i ruoli che partecipano alla relazione.
+Questo significa che non possono esistere
+due istanze della stessa relazione aventi
+le stesse entità in tutti i ruoli.
+L'identificatore implicito, per convenzione,
+non viene rappresentato nello schema E-R.
+
+\subsubsection*{Notazione grafica}
+
+\noindent
+La notazione è simile a quella degli
+identificatori di entità, ma con una differenza:
+
+\noindent
+\textbf{La linea che rappresenta un identificatore
+di relazione parte dal rombo della relazione.}
+
+\begin{itemize}
+    \item \textbf{Un attributo:}
+    si annerisce il pallino dell'attributo.
+
+    \item \textbf{Più attributi:}
+    si collegano con una linea che parte
+    dal rombo e termina con un pallino nero.
+
+    \item \textbf{Attributi e ruoli, oppure solo ruoli:}
+    si collegano le proprietà identificanti
+    con una linea che parte dal rombo
+    e termina con un pallino nero.
+\end{itemize}
+
+\subsubsection*{Esempio di identificatore di relazione}
+Consideriamo due entità E ed F
+collegate dalla relazione R, che possiede
+l'attributo A.
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.5\linewidth]{../images/vinidre.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent
+Nello schema sono presenti due identificatori
+della relazione R:
+\[
+\textcolor{verdeEsempio}{
+\underbrace{\{U1,U2\}}_{\text{implicito}}
+\qquad
+\underbrace{\{A,U1\}}_{\text{esplicito}}
+}
+\]
+\noindent
+L'identificatore esplicito $\{A,U1\}$
+stabilisce che due istanze diverse di R
+non possono avere contemporaneamente
+lo stesso valore di A e la stessa entità
+nel ruolo U1.
+
+\subsubsection*{Semantica del vincolo}
+\noindent
+Se un identificatore di una relazione R
+è formato dagli attributi
+$A_1,\ldots,A_k$ e dai ruoli
+$U_1,\ldots,U_h$, allora due istanze
+diverse di R devono differire:
+
+\begin{itemize}
+    \item nel valore di almeno uno degli attributi;
+    \item oppure nell'entità presente
+    in almeno uno dei ruoli.
+\end{itemize}
+
+\noindent
+Nel caso dell'identificatore $\{A,U1\}$,
+per due istanze diverse $r_1$ e $r_2$ deve valere:
+
+\[
+r_1\neq r_2
+\Rightarrow
+A(r_1)\neq A(r_2)
+\;\lor\;
+U1(r_1)\neq U1(r_2)
+\]
+
+\noindent
+Anche per le relazioni vale il concetto di
+\textbf{identificatore essenziale}:
+un identificatore dal quale non è possibile
+eliminare alcuna proprietà senza perdere
+l'univocità.\\
+\textcolor{verdeEsempio}{\textbf{Esempio. }} istanza non legale\\
+\noindent
+Consideriamo nuovamente lo schema E-R
+con identificatore $\{A,U1\}$.
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.5\linewidth]{../images/vinidre.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent
+Supponiamo di avere la seguente istanza I:
+\[
+\begin{array}{c|c|c}
+U1 & U2 & A \\ \hline
+e_1 & f_1 & v_1\\
+e_1 & f_2 & v_1\\
+e_2 & f_2 & v_2
+\end{array}
+\]
+L'istanza \textbf{non è legale}, perché
+le prime due istanze di R hanno:
+\begin{itemize}
+    \item lo stesso valore di A, cioè $v_1$;
+    
+    \item la stessa entità nel ruolo U1,
+    cioè $e_1$.
+\end{itemize}
+\noindent
+Anche se il ruolo U2 contiene entità diverse
+($f_1$ e $f_2$), il vincolo viene violato,
+perché U2 non fa parte dell'identificatore
+esplicito.\\
+\textcolor{verdeEsempio}{\textbf{Esempio. }} istanza legale\\
+\noindent
+Consideriamo lo stesso schema E-R,
+ma modifichiamo il valore di A
+nella seconda istanza.
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.5\linewidth]{../images/vinidre.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent
+\[
+\begin{array}{c|c|c}
+U1 & U2 & A \\ \hline
+e_1 & f_1 & v_1\\
+e_1 & f_2 & v_2\\
+e_2 & f_2 & v_2
+\end{array}
+\]
+\noindent
+Questa istanza è \textbf{legale}, perché:
+
+
+\begin{itemize}
+    \item la prima e la seconda istanza
+    differiscono per A;
+    
+
+    \item 
+    la seconda e la terza istanza
+    differiscono per U1;
+    
+
+    \item la prima e la terza istanza
+    differiscono sia per A sia per U1.
+    
+\end{itemize}
+
+\noindent
+Ogni coppia di istanze diverse è quindi
+distinguibile attraverso almeno una proprietà
+dell'identificatore $\{A,U1\}$.
+
+\subsection*{Vincoli derivati di identificazione di relazione}
+
+I \textbf{vincoli derivati di identificazione} sono identificatori di una
+relazione che si possono dedurre da vincoli già presenti nello schema,
+senza doverli indicare esplicitamente.
+Esistono due casi principali.
+
+\subsubsection*{Caso 1: identificatore derivato dalla cardinalità massima}
+
+Se un'entità $E$ partecipa a una relazione $R$ nel ruolo $U$ con
+\textbf{cardinalità massima pari a 1}, allora il ruolo $U$
+è un identificatore della relazione $R$.\\
+Infatti, ogni istanza di $E$ può partecipare al massimo a una
+istanza di $R$: non possono quindi esistere due istanze distinte
+di $R$ con lo stesso valore nel ruolo $U$.\\
+\textbf{Conseguenza:} è possibile omettere l'identificatore
+esplicito di $R$, perché è già implicito nella cardinalità.\medskip\\
+\noindent
+\textcolor{verdeEsempio}{\textbf{Esempio. }} Volo e Aeroporto\\
+Consideriamo la relazione ternaria
+\textbf{ArrPart}, che collega:
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.5\linewidth]{../images/esempio1.png}
+    \caption{il simbolo dell'identificatore si può omettere}
+    %\label{label}
+\end{figure}
+\noindent
+Poiché Volo partecipa con cardinalità $(1,1)$,
+ogni volo compare in una sola istanza di ArrPart.\\
+Quindi \textbf{Volo identifica univocamente ArrPart}:
+conoscendo il volo, si individua la corrispondente
+coppia di aeroporti di arrivo e partenza.\\
+Non è necessario rappresentare esplicitamente
+l'identificatore di ArrPart.
+
+\subsubsection*{Caso 2: identificatore derivato da un identificatore di entità}
+Supponiamo che una relazione $R$ abbia i ruoli
+$U_1,U_2,\ldots,U_h$.\\
+Se il ruolo $U_1$:
+\begin{itemize}
+    \item collega l'entità $E$ alla relazione $R$;
+    \item ha cardinalità $(1,1)$;
+    \item costituisce, da solo, un \textbf{identificatore di $E$};
+\end{itemize}
+\noindent
+allora gli altri ruoli $U_2,\ldots,U_h$ formano
+un \textbf{identificatore derivato della relazione $R$}.\\
+Il motivo è che due istanze di $R$ non possono avere
+gli stessi valori in tutti gli altri ruoli e differire
+soltanto in $U_1$: in tal caso, due entità distinte
+di $E$ avrebbero lo stesso identificatore.
+\[
+U_1 \text{ identifica } E
+\quad\Longrightarrow\quad
+(U_2,\ldots,U_h) \text{ identifica } R
+\]
+Anche in questo caso vale il contrario, purché
+$U_1$ abbia cardinalità $(1,1)$.\medskip\\
+\noindent
+\textcolor{verdeEsempio}{\textbf{Esempio:. }} Fornitura\\
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.5\linewidth]{../images/esempio2.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent
+Supponiamo che:
+\begin{itemize}
+    \item Fornitore partecipi a Fornitura con cardinalità $(1,1)$;
+    \item la partecipazione a Fornitura identifichi
+    univocamente ogni Fornitore.
+\end{itemize}
+\noindent
+Questo significa che \textbf{ogni coppia
+(Ministero, Prodotto) identifica un solo Fornitore}.\\
+Di conseguenza, non possono esistere due istanze
+distinte di Fornitura con la stessa coppia
+(Ministero, Prodotto).
+Pertanto:
+\[
+(\text{Ministero},\text{Prodotto})
+\]
+è un \textbf{identificatore derivato di Fornitura}.
+Possiamo rappresentare:
+\begin{itemize}
+    \item soltanto l'identificatore di Fornitore;
+            \begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.5\linewidth]{../images/esempio2.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+    \item soltanto l'identificatore di Fornitura;
+    \begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.5\linewidth]{../images/esempio2.1.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+    \item entrambi, anche se uno è ridondante.
+    \begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.5\linewidth]{../images/esempio2.2.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\end{itemize}
+
+\subsubsection*{Combinazione dei due casi}
+Supponiamo ora che, nello stesso esempio,
+\textbf{Ministero} partecipi a Fornitura con
+cardinalità $(0,1)$.\\
+Per il \textbf{caso 1}, Ministero diventa
+un identificatore della relazione Fornitura.\\
+Per il \textbf{caso 2}, anche la coppia
+(Ministero, Prodotto) identifica Fornitura.\\
+Tuttavia, quest'ultima non è più un identificatore
+essenziale, perché contiene già Ministero,
+che è sufficiente da solo.
+\[
+\underbrace{\text{Ministero}}_{\text{identificatore essenziale}}
+\subset
+\underbrace{(\text{Ministero},\text{Prodotto})}_{\text{non essenziale}}
+\]
