@@ -1,0 +1,862 @@
+% Richiede \usepackage{amsmath} nel preambolo.
+
+\begingroup
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt}
+
+\section{Formulario di Finanza Aziendale}
+
+\noindent
+I tassi si inseriscono nelle formule in forma decimale.
+Il tasso e i flussi devono riferirsi allo stesso periodo:
+con flussi annuali si usa un tasso annuale.
+
+\noindent
+Nei calcoli intermedi si mantiene la precisione disponibile.
+Gli importi finali si arrotondano a due decimali.
+Se viene richiesto un CAF arrotondato, si usa quel valore
+in tutti i calcoli collegati.
+
+\subsection{Valutazione degli investimenti}
+
+\subsubsection*{Significato dei simboli}
+
+\begin{itemize}
+    \item $I_0$: capitale investito inizialmente, indicato
+        come importo positivo.
+    \item $R$: incasso netto costante di ogni periodo.
+    \item $i$: tasso di attualizzazione per periodo.
+    \item $n$: numero di incassi.
+    \item $F_0=-I_0$: flusso iniziale, negativo perché
+        il denaro viene speso.
+    \item $F_t$: flusso netto alla fine del periodo $t$.
+    \item $N$: numero complessivo di periodi.
+    \item $VA$: valore degli incassi riportato a oggi.
+    \item $VAN$: valore attuale netto, dopo aver sottratto
+        l'investimento iniziale.
+    \item $TIR$: tasso che rende il VAN uguale a zero.
+\end{itemize}
+
+\noindent
+Le formule con incassi costanti valgono quando si riceve
+la stessa somma alla fine di ogni periodo.
+Il tasso è costante e positivo.
+
+\subsubsection*{CAF: riportare gli incassi a oggi}
+
+\noindent
+Il CAF è il \textbf{coefficiente di attualizzazione
+di una rendita costante}.
+
+\noindent
+Moltiplicando l'incasso periodico per il CAF,
+si ottiene il valore attuale di tutti gli incassi:
+\[
+    CAF(i,n)
+    =
+    \frac{1}{i}
+    -
+    \frac{1}{i(1+i)^n}
+\]
+
+\subsubsection*{FA: verificare se il progetto è accettabile}
+
+\noindent
+Si calcola il rapporto tra investimento iniziale
+e incasso periodico:
+\[
+    FA=\frac{I_0}{R}
+\]
+
+\noindent
+Poi si confronta $FA$ con $CAF(i,n)$:
+\[
+    FA<CAF(i,n)
+    \quad\Rightarrow\quad
+    TIR>i
+    \quad\Rightarrow\quad
+    \text{accettabile}
+\]
+\[
+    FA=CAF(i,n)
+    \quad\Rightarrow\quad
+    TIR=i
+    \quad\Rightarrow\quad
+    VAN=0
+\]
+\[
+    FA>CAF(i,n)
+    \quad\Rightarrow\quad
+    TIR<i
+    \quad\Rightarrow\quad
+    \text{non accettabile}
+\]
+
+\noindent
+Questo metodo vale per un investimento iniziale positivo,
+seguito soltanto da incassi costanti positivi.
+
+\noindent
+Se $VAN=0$, il progetto offre esattamente
+il rendimento richiesto, senza creare valore aggiuntivo.
+
+\subsubsection*{Valore attuale degli incassi}
+
+\noindent
+Nella notazione degli appunti:
+\[
+    VA
+    =
+    C\left[
+        \frac{1}{r}
+        -
+        \frac{1}{r(1+r)^t}
+    \right]
+\]
+
+\noindent
+Qui:
+\begin{itemize}
+    \item $C$ è l'incasso costante;
+    \item $r$ è il tasso per periodo;
+    \item $t$ è il numero totale di periodi.
+\end{itemize}
+
+\noindent
+Nell'esercizio cambiano soltanto le lettere:
+$C$ diventa $R$, $r$ diventa $i$ e $t$ diventa $n$. Dove $R$ indica il costo,
+$i$ è il tasso per il periodo e $n$ è il numero dei periodi. 
+
+\noindent
+La formula si scrive quindi:
+\[
+    VA=R\cdot CAF(i,n)
+\]
+
+\subsubsection*{VAN con incassi costanti}
+
+\noindent
+Dal valore attuale degli incassi si sottrae
+il capitale investito inizialmente:
+\[
+    VAN=-I_0+R\cdot CAF(i,n)
+\]
+
+\subsubsection*{VAN con flussi diversi}
+
+\noindent
+Se i flussi cambiano da un periodo all'altro,
+si attualizza ogni flusso separatamente:
+\[
+    VAN
+    =
+    F_0+\sum_{t=1}^{N}\frac{F_t}{(1+i)^t},
+    \qquad F_0=-I_0
+\]
+
+\noindent
+In questa formula, $t$ indica il singolo periodo
+e $N$ il numero totale di periodi.
+
+\subsubsection*{Definizione del TIR}
+
+\noindent
+Il TIR è il tasso che rende uguali il valore attuale
+degli incassi e l'investimento iniziale:
+\[
+    0
+    =
+    F_0+\sum_{t=1}^{N}\frac{F_t}{(1+TIR)^t}
+\]
+
+\noindent
+Il confronto tra TIR e tasso richiesto si utilizza
+per un'uscita iniziale seguita da incassi positivi.
+
+\subsubsection*{Aggiornare il VAN dopo una spesa}
+
+\noindent
+Queste formule ricavate servono quando si vuole sapere
+come cambia il \textbf{VAN complessivo}.
+
+\noindent
+Se la spesa $S$ avviene alla fine del periodo $t$,
+prima si calcola il suo valore attuale:
+\[
+    VA_{\text{spesa}}=\frac{S}{(1+i)^t}
+\]
+
+\noindent
+Poi lo si sottrae dal VAN precedente:
+\[
+    VAN_{\text{aggiornato}}
+    =
+    VAN-\frac{S}{(1+i)^t}
+\]
+
+\noindent
+Il VAN precedente non deve già comprendere questa spesa.
+
+\noindent
+Per il punto c) dell'esercitazione si usa invece
+la formula del flusso netto del secondo anno.
+
+\subsection{Paniere di investimenti}
+
+\noindent
+Un paniere è un insieme di progetti scelti.
+L'obiettivo è scegliere i progetti rispettando
+il denaro disponibile.
+
+\subsubsection*{Significato dei simboli}
+
+\begin{itemize}
+    \item $j$: singolo progetto scelto.
+    \item $I_{0,j}>0$: investimento iniziale del progetto $j$.
+    \item $VAN_j$: VAN del progetto $j$.
+    \item $B>0$: budget disponibile.
+    \item $PI_j$: indice di redditività del progetto.
+    \item $w_j$: peso del progetto rispetto al budget.
+\end{itemize}
+
+\noindent
+Le somme comprendono soltanto i progetti scelti.
+Si considerano progetti indipendenti, i cui investimenti
+e VAN possono essere sommati.
+
+\subsubsection*{Indice di redditività del progetto}
+
+\noindent
+Secondo la definizione utilizzata nel corso:
+\[
+    PI_j=\frac{VAN_j}{I_{0,j}}
+\]
+
+\noindent
+L'indice indica quanto VAN si ottiene per ogni unità
+di capitale investito.
+Per esprimerlo in percentuale, si moltiplica per cento.
+
+\subsubsection*{Peso del progetto sul budget}
+
+\[
+    w_j=\frac{I_{0,j}}{B}
+\]
+
+\noindent
+Il peso indica quale parte del budget viene utilizzata
+dal progetto.
+
+\subsubsection*{Indice del paniere riferito al budget}
+
+Il contributo di ciascun progetto è:
+\[
+PI_j \cdot w_j,
+\]
+
+Per ogni paniere ammissibile si sommano i contributi
+dei progetti scelti:
+\[
+PI_{\text{paniere}}=\sum_{j\in\text{paniere}} PI_jw_j.
+\]
+
+Si sceglie il paniere con la somma maggiore,
+rispettando il budget:
+\[
+\max_{\text{paniere}}\sum_{j\in\text{paniere}} PI_jw_j,
+\qquad
+\sum_{j\in\text{paniere}} I_{0,j}\leq B.
+\]
+
+\subsubsection*{Controllo del budget e VAN totale}
+
+\noindent
+La somma degli investimenti non deve superare il budget:
+\[
+    I_{\text{paniere}}
+    =
+    \sum_j I_{0,j}
+    \leq B
+\]
+
+\noindent
+Il VAN totale è la somma dei VAN dei progetti scelti:
+\[
+    VAN_{\text{paniere}}=\sum_j VAN_j
+\]
+
+\noindent
+Con lo stesso budget, il paniere con l'indice più alto
+è anche quello con il VAN totale più alto.
+
+\noindent
+Se i progetti sono indivisibili, ciascun progetto
+si può scegliere interamente oppure escludere.
+Occorre quindi confrontare le combinazioni ammissibili.
+
+\subsection{Tempo di recupero}
+
+\noindent
+Il tempo di recupero indica quanto bisogna aspettare
+per recuperare il capitale investito inizialmente.
+
+\subsubsection*{Significato dei simboli}
+
+\begin{itemize}
+    \item $PBP$: tempo di recupero.
+    \item $I_0$: investimento iniziale.
+    \item $k$: anni completi trascorsi prima dell'anno
+        in cui si recupera l'investimento.
+    \item $C_{\text{mancante}}$: capitale ancora da recuperare
+        alla fine dell'anno $k$.
+    \item $F_{k+1}>0$: flusso dell'anno successivo.
+    \item $R>0$: incasso annuo costante.
+    \item $i$: tasso annuo di attualizzazione.
+\end{itemize}
+
+\subsubsection*{Payback semplice}
+
+\noindent
+Si considerano gli incassi senza attualizzarli:
+\[
+    PBP
+    =
+    k+\frac{C_{\text{mancante}}}{F_{k+1}}
+\]
+
+\noindent
+La frazione indica quale parte dell'anno successivo
+serve per recuperare il capitale mancante.
+
+\noindent
+Questo calcolo presuppone che il flusso maturi
+uniformemente durante l'anno.
+Se il denaro arriva soltanto a fine anno,
+il recupero avviene alla data dell'incasso.
+
+\subsubsection*{Payback semplice con incassi costanti}
+
+\[
+    PBP=\frac{I_0}{R}
+\]
+
+\noindent
+Anche qui, un risultato frazionario presuppone
+il recupero graduale durante l'anno.
+Il risultato deve essere compatibile con la durata
+del progetto.
+
+\subsubsection*{Recupero attualizzato}
+
+\noindent
+In questo caso si riportano gli incassi al tempo zero.
+
+\noindent
+Per verificare il recupero entro la fine dell'anno $k$:
+\[
+    -I_0+\sum_{t=1}^{k}\frac{F_t}{(1+i)^t}\geq0
+\]
+
+\noindent
+Con incassi costanti e posticipati:
+\[
+    -I_0+R\cdot CAF(i,k)\geq0
+\]
+
+\noindent
+Se il risultato è almeno zero, gli incassi attualizzati
+coprono l'investimento iniziale.
+
+\noindent
+Qui $k$ indica l'anno entro il quale si vuole verificare
+il recupero. Si considerano incassi positivi successivi
+all'investimento iniziale.
+
+\subsection{Piani di ammortamento}
+
+\noindent
+Il piano di ammortamento descrive come si restituisce
+un prestito attraverso le rate.
+
+\subsubsection*{Significato dei simboli}
+
+\begin{itemize}
+    \item $C_T$: capitale inizialmente preso in prestito.
+    \item $C_k$: debito rimasto dopo la rata $k$.
+    \item $R_k$: rata del periodo $k$.
+    \item $Q_k$: parte della rata che restituisce il capitale.
+    \item $I_k$: parte della rata che paga gli interessi.
+    \item $i$: tasso di interesse per periodo.
+    \item $n$: numero di rate.
+\end{itemize}
+
+\noindent
+Le rate sono pagate alla fine di periodi di uguale durata.
+Gli interessi si calcolano sul debito rimasto
+prima di pagare la rata.
+
+\subsubsection*{Formule comuni}
+
+\noindent
+All'inizio, il debito coincide con il prestito:
+\[
+    C_0=C_T
+\]
+
+\noindent
+La rata comprende capitale e interessi:
+\[
+    R_k=Q_k+I_k
+\]
+
+\noindent
+Gli interessi sono:
+\[
+    I_k=C_{k-1}\cdot i
+\]
+
+\noindent
+Dopo la rata, il debito diminuisce della quota capitale:
+\[
+    C_k=C_{k-1}-Q_k
+\]
+
+\subsubsection*{Francese: rata costante}
+
+\noindent
+Si paga la stessa rata a ogni scadenza:
+\[
+    R=C_T\frac{i(1+i)^n}{(1+i)^n-1}
+\]
+
+\noindent
+Per ogni periodo:
+\[
+    I_k=C_{k-1}\cdot i
+\]
+\[
+    Q_k=R-I_k
+\]
+\[
+    C_k=C_{k-1}-Q_k
+\]
+
+\noindent
+Con tasso costante $i>0$, gli interessi diminuiscono
+perché il debito si riduce.
+Dato che la rata rimane uguale, la quota capitale aumenta.
+
+\subsubsection*{Italiano: quota capitale costante}
+
+\noindent
+A ogni scadenza si restituisce la stessa parte
+del capitale iniziale:
+\[
+    Q_k=\frac{C_T}{n}
+\]
+\[
+    I_k=C_{k-1}\cdot i
+\]
+\[
+    R_k=\frac{C_T}{n}+C_{k-1}\cdot i
+\]
+\[
+    C_k=C_{k-1}-\frac{C_T}{n}
+\]
+
+\noindent
+Con tasso positivo e costante, gli interessi diminuiscono.
+Di conseguenza, diminuisce anche la rata.
+
+\subsubsection*{Americano: capitale restituito alla fine}
+
+\noindent
+Si considera il piano senza fondo di accumulazione.
+
+\noindent
+Prima dell'ultima scadenza si pagano soltanto gli interessi:
+\[
+    R_k=C_T\cdot i,
+    \qquad k=1,\ldots,n-1
+\]
+
+\noindent
+Il debito rimane uguale al capitale iniziale:
+\[
+    C_k=C_T,
+    \qquad k=0,\ldots,n-1
+\]
+
+\noindent
+L'ultima rata comprende tutto il capitale
+e gli interessi dell'ultimo periodo:
+\[
+    R_n=C_T(1+i)
+\]
+
+\noindent
+Dopo l'ultima rata:
+\[
+    C_n=0
+\]
+
+\subsubsection*{Interessi totali}
+
+\noindent
+Si sommano tutte le quote interessi:
+\[
+    I_{\text{totali}}=\sum_{k=1}^{n}I_k
+\]
+
+\noindent
+Le spese accessorie non rientrano in questa somma:
+si considerano nel calcolo del TAEG.
+
+\subsection{TAN e TAEG con rate annuali}
+
+\noindent
+Il \textbf{TAN} è il tasso usato per calcolare
+gli interessi contrattuali.
+
+\noindent
+Il \textbf{TAEG} tiene conto anche delle spese considerate
+e del momento in cui si riceve o si paga il denaro.
+
+\subsubsection*{Significato dei simboli}
+
+\begin{itemize}
+    \item $P_B$: denaro netto ricevuto inizialmente dal debitore.
+    \item $C_S$: spese trattenute all'inizio.
+    \item $R_k$: rata contrattuale dell'anno $k$.
+    \item $S_k$: spesa aggiuntiva pagata insieme alla rata $k$.
+    \item $N$: numero di rate annuali.
+\end{itemize}
+
+\noindent
+Queste formule valgono per rate annuali posticipate.
+L'esponente $k$ indica quindi un numero di anni.
+
+\subsubsection*{Formule degli appunti}
+
+\noindent
+Il capitale contrattuale è $P_B+C_S$:
+\[
+    P_B+C_S
+    =
+    \sum_{k=1}^{N}\frac{R_k}{(1+TAN)^k}
+\]
+
+\noindent
+Per il TAEG si considera il denaro realmente ricevuto
+e si aggiungono le spese ai pagamenti:
+\[
+    P_B
+    =
+    \sum_{k=1}^{N}\frac{R_k+S_k}{(1+TAEG)^k}
+\]
+
+\subsubsection*{Spese iniziali e commissioni}
+
+\noindent
+Nella notazione dell'esercizio:
+\begin{itemize}
+    \item $C_T$: capitale contrattuale del prestito;
+    \item $S_0$: spese trattenute all'inizio;
+    \item $C_{\text{netto}}$: denaro effettivamente ricevuto;
+    \item $c$: commissione su ogni rata, in forma decimale.
+\end{itemize}
+
+\noindent
+Il denaro ricevuto è:
+\[
+    C_{\text{netto}}=C_T-S_0
+\]
+
+\noindent
+Quindi $C_{\text{netto}}$ corrisponde a $P_B$
+e $S_0$ corrisponde a $C_S$.
+
+\noindent
+La commissione su ciascuna rata è:
+\[
+    S_k=c\cdot R_k
+\]
+
+\noindent
+Il pagamento effettivo comprende rata e commissione:
+\[
+    R_k+S_k=R_k(1+c)
+\]
+
+\noindent
+L'equazione da risolvere diventa:
+\[
+    C_{\text{netto}}
+    =
+    \sum_{k=1}^{N}\frac{R_k(1+c)}{(1+TAEG)^k}
+\]
+
+\noindent
+Per il debitore, il capitale ricevuto è un'entrata;
+le rate e le commissioni sono uscite.
+
+\subsubsection*{TAEG con due rate annuali}
+
+\noindent
+Si parte da:
+\[
+    C_{\text{netto}}
+    =
+    \frac{R_1+S_1}{1+TAEG}
+    +
+    \frac{R_2+S_2}{(1+TAEG)^2}
+\]
+
+\noindent
+Per semplificare la scrittura si pone:
+\[
+    x=1+TAEG
+\]
+
+\noindent
+Moltiplicando per $x^2$ e portando tutto a sinistra:
+\[
+    C_{\text{netto}}x^2
+    -(R_1+S_1)x
+    -(R_2+S_2)
+    =0
+\]
+
+\noindent
+Si risolve l'equazione e si prende la soluzione positiva.
+Infine:
+\[
+    TAEG=x-1
+\]
+
+\noindent
+Con capitale netto e pagamenti positivi,
+la soluzione positiva per $x$ è unica.
+
+\subsection{Beta e CAPM}
+
+\noindent
+Il beta misura quanto il titolo o portafoglio
+è sensibile alle variazioni del mercato.
+Il CAPM usa il beta per determinare il rendimento richiesto.
+
+\subsubsection*{Significato dei simboli}
+
+\begin{itemize}
+    \item $r_{M,t}$: rendimento osservato del mercato
+        nel periodo $t$.
+    \item $r_{i,t}$: rendimento osservato del titolo
+        o portafoglio $i$ nel periodo $t$.
+    \item $\overline r_M$: media dei rendimenti del mercato.
+    \item $\overline r_i$: media dei rendimenti del titolo
+        o portafoglio.
+    \item $N$: numero di osservazioni.
+    \item $\sigma_M^2$: varianza dei rendimenti del mercato.
+    \item $\sigma_{iM}$: covarianza tra titolo e mercato.
+    \item $\beta_i$: beta del titolo o portafoglio.
+    \item $r_f$: rendimento privo di rischio.
+    \item $\widehat r_M$: rendimento atteso del mercato.
+    \item $\widehat r_i$: rendimento richiesto dal CAPM.
+\end{itemize}
+
+\noindent
+Qui $i$ identifica il titolo o portafoglio.
+Le osservazioni del titolo e del mercato devono riguardare
+gli stessi periodi.
+
+\noindent
+La barra indica una media dei dati osservati;
+il cappello indica un rendimento atteso o richiesto.
+
+\subsubsection*{Medie dei rendimenti}
+
+\noindent
+Si sommano i rendimenti e si divide per il numero
+di osservazioni:
+\[
+    \overline r_M
+    =
+    \frac{\sum_{t=1}^{N}r_{M,t}}{N}
+\]
+\[
+    \overline r_i
+    =
+    \frac{\sum_{t=1}^{N}r_{i,t}}{N}
+\]
+
+\subsubsection*{Varianza del mercato}
+
+\noindent
+La varianza misura quanto i rendimenti del mercato
+si allontanano dalla loro media:
+\[
+    \sigma_M^2
+    =
+    \frac{
+        \sum_{t=1}^{N}(r_{M,t}-\overline r_M)^2
+    }{N}
+\]
+
+\noindent
+Si calcola ogni scarto dalla media, lo si eleva al quadrato,
+si sommano i risultati e si divide per $N$.
+
+\subsubsection*{Covarianza tra titolo e mercato}
+
+\noindent
+La covarianza descrive come i rendimenti del titolo
+e del mercato si muovono insieme:
+\[
+    \sigma_{iM}
+    =
+    \frac{
+        \sum_{t=1}^{N}
+        (r_{i,t}-\overline r_i)
+        (r_{M,t}-\overline r_M)
+    }{N}
+\]
+
+\noindent
+Per ogni periodo si moltiplicano i due scarti dalle medie.
+Poi si sommano i prodotti e si divide per $N$.
+
+\subsubsection*{Calcolo del beta}
+
+\[
+    \beta_i=\frac{\sigma_{iM}}{\sigma_M^2}
+\]
+
+\noindent
+Il calcolo richiede $\sigma_M^2>0$.
+
+\noindent
+Poiché varianza e covarianza sono entrambe divise per $N$,
+il divisore comune si semplifica:
+\[
+    \beta_i
+    =
+    \frac{
+        \sum_{t=1}^{N}
+        (r_{i,t}-\overline r_i)
+        (r_{M,t}-\overline r_M)
+    }{
+        \sum_{t=1}^{N}(r_{M,t}-\overline r_M)^2
+    }
+\]
+
+\subsubsection*{Premio per il rischio di mercato}
+
+\[
+    Premio_M=\widehat r_M-r_f
+\]
+
+\noindent
+È il rendimento atteso aggiuntivo del mercato
+rispetto all'investimento privo di rischio.
+
+\subsubsection*{CAPM e Security Market Line}
+
+\[
+    \widehat r_i
+    =
+    r_f+\beta_i(\widehat r_M-r_f)
+\]
+
+\noindent
+Si parte dal rendimento privo di rischio e si aggiunge
+il premio di mercato moltiplicato per il beta.
+
+\noindent
+Questa relazione è la Security Market Line.
+
+\noindent
+Il rendimento privo di rischio e quello atteso del mercato
+devono riferirsi allo stesso orizzonte temporale.
+Anche il risultato si riferisce a quell'orizzonte.
+
+\subsection{Quote del fondo: formule ricavate}
+
+\noindent
+Queste formule permettono di trovare quante quote acquistare
+per raggiungere un determinato guadagno atteso.
+
+\subsubsection*{Significato dei simboli}
+
+\begin{itemize}
+    \item $G$: guadagno atteso desiderato.
+    \item $p$: prezzo iniziale di una quota.
+    \item $\widehat r_i$: rendimento atteso in forma decimale.
+    \item $N_{\text{quote}}$: numero intero di quote da acquistare.
+    \item $Capitale$: capitale teoricamente necessario.
+    \item $Capitale_{\text{effettivo}}$: importo effettivo
+        da investire dopo aver arrotondato le quote.
+\end{itemize}
+
+\noindent
+Si considerano $G>0$, $p>0$ e $\widehat r_i>0$,
+senza ulteriori costi.
+
+\noindent
+Guadagno e rendimento devono riferirsi allo stesso periodo.
+Il guadagno calcolato è atteso, non garantito.
+
+\subsubsection*{Capitale necessario}
+
+\noindent
+Il guadagno atteso è il capitale moltiplicato
+per il rendimento:
+\[
+    G=Capitale\cdot\widehat r_i
+\]
+
+\noindent
+Quindi il capitale necessario è:
+\[
+    Capitale=\frac{G}{\widehat r_i}
+\]
+
+\subsubsection*{Numero di quote}
+
+\noindent
+Se si possono acquistare soltanto quote intere:
+\[
+    N_{\text{quote}}
+    =
+    \left\lceil
+        \frac{G}{p\cdot\widehat r_i}
+    \right\rceil
+\]
+
+\noindent
+Il simbolo $\lceil\ \rceil$ significa
+\textbf{arrotondare all'intero superiore}.
+
+\noindent
+In questo modo si acquista il numero minimo di quote
+che permette di raggiungere almeno il guadagno atteso richiesto.
+
+\subsubsection*{Importo effettivo e verifica del guadagno}
+
+\noindent
+Il capitale realmente necessario è:
+\[
+    Capitale_{\text{effettivo}}
+    =
+    N_{\text{quote}}\cdot p
+\]
+
+\noindent
+Il guadagno atteso corrispondente è:
+\[
+    G_{\text{atteso}}
+    =
+    N_{\text{quote}}\cdot p\cdot\widehat r_i
+\]
+
+\par
+\endgroup
