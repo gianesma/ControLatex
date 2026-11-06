@@ -3141,4 +3141,3242 @@ ed era già escluso dal punto b.
         \hline
     \end{tabular}
 \end{center}
+\newpage 
+\section{TAN e TAEG di un prestito con due rate}
+
+\subsection*{Breve richiamo a teoria e formule}
+\noindent Per distinguere \textbf{TAN} e \textbf{TAEG}
+dobbiamo però usare due gruppi di flussi diversi:
+
+\begin{itemize}
+    \item Per il \textbf{TAN} consideriamo
+    il capitale nominale e le rate contrattuali,
+    senza le spese accessorie.
+
+    \item Per il \textbf{TAEG} consideriamo
+    quanto il cliente riceve effettivamente
+    e quanto paga effettivamente,
+    comprese le spese previste dall'esercizio.
+\end{itemize}
+
+\noindent Indichiamo con $i_s$ il tasso semestrale
+contrattuale e con $i_{es}$ il tasso semestrale
+effettivo comprensivo delle spese.
+
+\noindent Poiché in un anno ci sono due semestri:
+
+\[
+\boxed{TAN=2i_s}
+\qquad
+\boxed{TAEG=(1+i_{es})^2-1}
+\]
+
+\noindent Il TAN usa una conversione
+\textbf{proporzionale}: moltiplichiamo il tasso per due.
+
+\noindent Il TAEG usa una conversione
+\textbf{composta}: moltiplichiamo tra loro
+i due fattori semestrali $1+i_{es}$,
+poi sottraiamo 1.
+
+
+\subsubsection*{Come trovare il tasso con due rate}
+
+\noindent Indichiamo con $N$ la somma ricevuta oggi,
+con $U_1$ l'uscita del primo semestre
+e con $U_2$ quella del secondo semestre.
+
+\noindent Il tasso semestrale $i$ soddisfa:
+
+\[
+N=\frac{U_1}{1+i}+\frac{U_2}{(1+i)^2}.
+\]
+
+\noindent Poniamo $x=1+i$ e moltiplichiamo tutto per $x^2$:
+
+\[
+Nx^2=U_1x+U_2.
+\]
+
+\[
+Nx^2-U_1x-U_2=0.
+\]
+
+\noindent Risolvendo l'equazione di secondo grado,
+otteniamo:
+
+\[
+x=\frac{U_1\pm\sqrt{U_1^2+4NU_2}}{2N}.
+\]
+
+\noindent Scegliamo la radice positiva,
+perché $x=1+i$ è un fattore
+di capitalizzazione:
+
+\[
+\boxed{
+x=\frac{U_1+\sqrt{U_1^2+4NU_2}}{2N}
+}
+\qquad
+\boxed{i=x-1}
+\]
+
+\noindent Nei passaggi mostriamo i risultati
+con due decimali.
+Per il risultato annuo usiamo il tasso semestrale
+prima dell'arrotondamento.
+
+
+\subsection*{Testo e dati}
+
+\noindent Una finanziaria concede un prestito
+di 1.000,00, da rimborsare con due rate semestrali
+posticipate di 560,00 ciascuna.
+
+\noindent Le spese di istruttoria ammontano a 50,00.
+
+\noindent Dobbiamo determinare TAN e TAEG
+quando le spese vengono divise in parti uguali
+e aggiunte alle due rate.
+Poi dobbiamo spiegare, senza svolgere altri calcoli,
+che cosa cambia se tutte le spese vengono pagate
+al momento dell'erogazione.
+
+\medskip
+
+\noindent \textbf{Interpretazione del testo:}
+seguiamo i flussi usati nello svolgimento delle slide.
+Quando le spese sono aggiunte alle rate,
+il cliente riceve 1.000,00 oggi.
+Non sottraiamo anche 50,00 all'erogazione,
+perché in quel caso conteremmo la stessa spesa due volte.
+
+
+\subsection*{1. Calcolo del TAN}
+
+\noindent Per trovare il TAN
+usiamo soltanto i flussi contrattuali:
+
+\begin{center}
+    \begin{tabular}{|l|r|}
+        \hline
+        \textbf{Momento} & \textbf{Flusso del cliente} \\
+        \hline
+        Oggi & $+1.000{,}00$ \\
+        Fine del primo semestre & $-560{,}00$ \\
+        Fine del secondo semestre & $-560{,}00$ \\
+        \hline
+    \end{tabular}
+\end{center}
+
+\noindent Il tasso semestrale contrattuale $i_s$ è tale che:
+
+\[
+1.000{,}00
+=
+\frac{560{,}00}{1+i_s}
++
+\frac{560{,}00}{(1+i_s)^2}.
+\]
+
+\noindent Poniamo $x=1+i_s$:
+
+\[
+1.000{,}00x^2-560{,}00x-560{,}00=0.
+\]
+
+\noindent Sostituiamo nella formula della radice positiva:
+
+\[
+x=
+\frac{
+560{,}00+
+\sqrt{(560{,}00)^2+4\cdot1.000{,}00\cdot560{,}00}
+}{
+2\cdot1.000{,}00
+}.
+\]
+
+\[
+i_s=x-1\simeq\boxed{7{,}90\%}.
+\]
+
+\noindent Annualizziamo in modo proporzionale:
+
+\[
+TAN=2i_s
+\simeq
+2\cdot7{,}90\%
+=
+\boxed{15{,}80\%}.
+\]
+
+
+\subsection*{2. Calcolo del TAEG con le spese nelle rate}
+
+\noindent Dividiamo le spese di istruttoria
+in due parti uguali:
+
+\[
+\frac{50{,}00}{2}=\boxed{25{,}00}.
+\]
+
+\noindent Ogni rata effettiva diventa:
+
+\[
+560{,}00+25{,}00=\boxed{585{,}00}.
+\]
+
+\noindent Il cliente riceve oggi 1.000,00
+e paga 585,00 alla fine di ogni semestre.
+
+\[
+1.000{,}00
+=
+\frac{585{,}00}{1+i_{es}}
++
+\frac{585{,}00}{(1+i_{es})^2}.
+\]
+
+\noindent Poniamo $x=1+i_{es}$:
+
+\[
+1.000{,}00x^2-585{,}00x-585{,}00=0.
+\]
+
+\noindent Scegliamo la radice positiva:
+
+\[
+x=
+\frac{
+585{,}00+
+\sqrt{(585{,}00)^2+4\cdot1.000{,}00\cdot585{,}00}
+}{
+2\cdot1.000{,}00
+}.
+\]
+
+\[
+i_{es}=x-1\simeq\boxed{11{,}14\%}.
+\]
+
+\noindent Per passare dal tasso semestrale
+a quello annuo usiamo la capitalizzazione composta:
+
+\[
+TAEG=(1+i_{es})^2-1=x^2-1.
+\]
+
+\noindent Elevando al quadrato la radice
+prima dell'arrotondamento, otteniamo:
+
+\[
+\boxed{TAEG\simeq23{,}52\%}.
+\]
+
+
+\subsection*{3. Spese pagate tutte all'erogazione}
+
+\noindent In questo caso il cliente
+riceve 1.000,00 e paga subito 50,00.
+Le rate tornano a essere quelle
+contrattuali di 560,00.
+
+\begin{itemize}
+    \item Il \textbf{TAN resta invariato},
+    perché il capitale nominale
+    e le rate contrattuali non cambiano.
+
+    \item Il \textbf{TAEG aumenta},
+    perché gli stessi 50,00 di spese
+    vengono pagati prima.
+\end{itemize}
+
+\noindent In parole semplici:
+nel primo caso il cliente conserva
+una parte del denaro fino alle scadenze;
+nel secondo caso perde subito
+la disponibilità dell'intera somma.
+
+\noindent Il quesito richiede soltanto
+di spiegare il verso della variazione.
+Come controllo, la slide riporta
+un TAEG di circa 24,80\%.
+
+
+\section{Confronto tra ammortamento francese,
+italiano e americano}
+
+\subsection*{Breve richiamo a teoria e formule}
+
+\noindent Come già visto per i mutui,
+la rata comprende capitale e interessi:
+
+\[
+\boxed{R_t=C_t+I_t}
+\]
+
+\[
+\boxed{I_t=i_sD_{t-1}}
+\qquad
+\boxed{D_t=D_{t-1}-C_t}
+\]
+
+\begin{itemize}
+    \item $R_t$: rata contrattuale del semestre $t$;
+    \item $C_t$: quota capitale;
+    \item $I_t$: quota interessi;
+    \item $D_{t-1}$: debito prima della rata;
+    \item $D_t$: debito dopo la rata.
+\end{itemize}
+
+\noindent Nei tre piani cambia
+\textbf{quando restituiamo il capitale}:
+
+\begin{itemize}
+    \item \textbf{Francese}: la rata è costante.
+
+    \item \textbf{Italiano}: la quota capitale è costante.
+
+    \item \textbf{Americano}, nello schema della lezione:
+    prima della scadenza si pagano soltanto gli interessi;
+    alla scadenza si paga anche tutto il capitale.
+\end{itemize}
+
+\noindent Nel piano francese:
+
+\[
+\boxed{
+R
+=
+D_0\frac{i_s(1+i_s)^n}{(1+i_s)^n-1}
+=
+\frac{D_0}{CAF(i_s,n)}
+}
+\]
+
+\noindent Nel piano italiano:
+
+\[
+\boxed{C_t=\frac{D_0}{n}}
+\]
+
+\noindent Se la spesa iniziale è $S_0$
+e la commissione su ogni rata è $c$,
+i flussi effettivi del cliente sono:
+
+\[
+\boxed{N=D_0-S_0}
+\qquad
+\boxed{U_t=R_t(1+c)}
+\]
+
+\noindent Per il TAEG troviamo $i_{es}$
+usando questi flussi,
+poi calcoliamo $(1+i_{es})^2-1$.
+
+
+\subsection*{Testo e dati}
+
+\noindent Una banca concede un finanziamento
+di 1.000,00 da rimborsare in due semestri,
+con pagamenti posticipati.
+
+\begin{itemize}
+    \item TAN contrattuale: 8,00\%;
+    \item spesa di istruttoria: 50,00,
+    pagata all'erogazione;
+    \item commissione di incasso:
+    1,00\% di ogni rata contrattuale;
+    \item interessi calcolati
+    sul debito residuo.
+\end{itemize}
+
+\noindent Seguiamo la numerazione
+delle slide di svolgimento,
+che includono anche il punto sul VAN.
+
+
+\subsection*{Punto a: TAN e TAEG del piano francese}
+
+\subsubsection*{1. Tasso semestrale contrattuale}
+
+\noindent Il TAN è già dato dal testo:
+
+\[
+\boxed{TAN=8{,}00\%}.
+\]
+
+\noindent Dividiamo per il numero
+di semestri in un anno:
+
+\[
+i_s=\frac{8{,}00\%}{2}
+=\boxed{4{,}00\%}
+=0{,}04.
+\]
+
+
+\subsubsection*{2. Rata contrattuale}
+
+\[
+R=
+1.000{,}00
+\frac{
+0{,}04(1{,}04)^2
+}{
+(1{,}04)^2-1
+}
+\simeq
+\boxed{530{,}20}.
+\]
+
+\noindent Questa è la rata prima
+della commissione di incasso.
+
+
+\subsubsection*{3. Importo ricevuto e rate effettive}
+
+\noindent La spesa di istruttoria
+riduce la disponibilità iniziale:
+
+\[
+N=1.000{,}00-50{,}00=\boxed{950{,}00}.
+\]
+
+\noindent A ogni rata aggiungiamo
+la commissione dell'1,00\%:
+
+\[
+\text{Commissione per rata}
+=
+R\cdot0{,}01
+\simeq5{,}30.
+\]
+
+\[
+U_1=U_2=R(1+0{,}01)\simeq\boxed{535{,}50}.
+\]
+
+
+\subsubsection*{4. Tasso semestrale effettivo e TAEG}
+
+\noindent Nell'equazione usiamo
+il tasso effettivo incognito $i_{es}$.
+
+\noindent Il 4,00\% è già servito
+per calcolare la rata contrattuale;
+non è il tasso che comprende le spese.
+
+\[
+950{,}00
+\simeq
+\frac{535{,}50}{1+i_{es}}
++
+\frac{535{,}50}{(1+i_{es})^2}.
+\]
+
+\noindent Ponendo $x=1+i_{es}$,
+con gli importi mostrati a due decimali:
+
+\[
+950{,}00x^2-535{,}50x-535{,}50\simeq0.
+\]
+
+\[
+x\simeq
+\frac{
+535{,}50+
+\sqrt{(535{,}50)^2+4\cdot950{,}00\cdot535{,}50}
+}{
+2\cdot950{,}00
+}.
+\]
+
+\[
+i_{es}=x-1\simeq\boxed{8{,}38\%}.
+\]
+
+\[
+\boxed{
+TAEG_{\text{francese}}=x^2-1\simeq17{,}46\%
+}
+\]
+
+
+\subsection*{Punto b: confronto con i piani italiano e americano}
+
+\subsubsection*{1. Piano italiano: quota capitale costante}
+
+\noindent Dividiamo il debito iniziale
+in due quote capitale uguali:
+
+\[
+C_1=C_2=
+\frac{1.000{,}00}{2}
+=
+\boxed{500{,}00}.
+\]
+
+\noindent Nel primo semestre:
+
+\[
+I_1=1.000{,}00\cdot0{,}04=40{,}00.
+\]
+
+\[
+R_1=500{,}00+40{,}00=540{,}00.
+\]
+
+\[
+D_1=1.000{,}00-500{,}00=500{,}00.
+\]
+
+\noindent Nel secondo semestre
+gli interessi si calcolano sui 500,00 rimasti:
+
+\[
+I_2=500{,}00\cdot0{,}04=20{,}00.
+\]
+
+\[
+R_2=500{,}00+20{,}00=520{,}00.
+\]
+
+\[
+D_2=500{,}00-500{,}00=0{,}00.
+\]
+
+\noindent Applichiamo la commissione alle rate:
+
+\[
+U_1=540{,}00\cdot1{,}01=\boxed{545{,}40}.
+\]
+
+\[
+U_2=520{,}00\cdot1{,}01=\boxed{525{,}20}.
+\]
+
+\noindent L'importo ricevuto resta 950,00.
+Il tasso effettivo soddisfa:
+
+\[
+950{,}00
+=
+\frac{545{,}40}{1+i_{es}}
++
+\frac{525{,}20}{(1+i_{es})^2}.
+\]
+
+\noindent Ponendo $x=1+i_{es}$:
+
+\[
+950{,}00x^2-545{,}40x-525{,}20=0.
+\]
+
+\[
+x=
+\frac{
+545{,}40+
+\sqrt{(545{,}40)^2+4\cdot950{,}00\cdot525{,}20}
+}{
+2\cdot950{,}00
+}.
+\]
+
+\[
+i_{es}=x-1\simeq\boxed{8{,}41\%}.
+\]
+
+\[
+\boxed{
+TAEG_{\text{italiano}}=x^2-1\simeq17{,}52\%
+}
+\]
+
+
+\subsubsection*{2. Piano americano: capitale tutto alla scadenza}
+
+\noindent Nel primo semestre
+non restituiamo capitale:
+
+\[
+C_1=0{,}00.
+\]
+
+\noindent Paghiamo soltanto gli interessi:
+
+\[
+I_1=1.000{,}00\cdot0{,}04=40{,}00.
+\]
+
+\[
+R_1=40{,}00,
+\qquad
+D_1=1.000{,}00.
+\]
+
+\noindent Il debito resta intero,
+quindi anche nel secondo semestre
+gli interessi sono pari a 40,00.
+
+\noindent Alla fine restituiamo
+anche tutto il capitale:
+
+\[
+R_2=1.000{,}00+40{,}00=1.040{,}00.
+\]
+
+\[
+D_2=1.000{,}00-1.000{,}00=0{,}00.
+\]
+
+\noindent Applichiamo la commissione:
+
+\[
+U_1=40{,}00\cdot1{,}01=\boxed{40{,}40}.
+\]
+
+\[
+U_2=1.040{,}00\cdot1{,}01=\boxed{1.050{,}40}.
+\]
+
+\noindent Il tasso effettivo soddisfa:
+
+\[
+950{,}00
+=
+\frac{40{,}40}{1+i_{es}}
++
+\frac{1.050{,}40}{(1+i_{es})^2}.
+\]
+
+\noindent Ponendo $x=1+i_{es}$:
+
+\[
+950{,}00x^2-40{,}40x-1.050{,}40=0.
+\]
+
+\[
+x=
+\frac{
+40{,}40+
+\sqrt{(40{,}40)^2+4\cdot950{,}00\cdot1.050{,}40}
+}{
+2\cdot950{,}00
+}.
+\]
+
+\[
+i_{es}=x-1\simeq\boxed{7{,}30\%}.
+\]
+
+\[
+\boxed{
+TAEG_{\text{americano}}=x^2-1\simeq15{,}13\%
+}
+\]
+
+
+\subsubsection*{3. Quale piano è migliore per il cliente?}
+
+\noindent Per confrontare gli esborsi nominali
+sommiamo la spesa iniziale e i due pagamenti effettivi:
+
+\[
+\text{Esborso complessivo}=50{,}00+U_1+U_2.
+\]
+
+\begin{center}
+    \small
+    \begin{tabular}{|l|r|r|r|r|}
+        \hline
+        \textbf{Piano}
+        & \textbf{Uscita 1}
+        & \textbf{Uscita 2}
+        & \textbf{Esborso totale}
+        & \textbf{TAEG} \\
+        \hline
+        Francese & 535,50 & 535,50 & 1.121,00 & 17,46\% \\
+        Italiano & 545,40 & 525,20 & 1.120,60 & 17,52\% \\
+        Americano & 40,40 & 1.050,40 & 1.140,80 & 15,13\% \\
+        \hline
+    \end{tabular}
+\end{center}
+
+\begin{itemize}
+    \item Se vogliamo \textbf{pagare la somma nominale
+    più bassa}, scegliamo il piano \textbf{italiano}.
+
+    \item Se vogliamo \textbf{minimizzare il TAEG},
+    scegliamo il piano \textbf{americano}.
+\end{itemize}
+
+\noindent Perché i risultati sono diversi?
+
+\noindent L'esborso totale somma gli importi
+senza considerare la data dei pagamenti.
+
+\noindent Il TAEG tiene conto anche
+di \textbf{quando} paghiamo.
+
+\noindent Nel piano americano il cliente
+restituisce il capitale più tardi,
+ma deve avere la liquidità necessaria
+per affrontare l'ultima rata di 1.050,40.
+
+
+\subsection*{Punto c: VAN con un costo del denaro del 5,00\%}
+
+\noindent Calcoliamo il VAN
+dal punto di vista del cliente.
+
+\noindent Oggi il cliente riceve 950,00;
+le due rate effettive sono uscite.
+
+\noindent Interpretiamo il 5,00\%
+come tasso \textbf{annuo effettivo}.
+Il tasso semestrale equivalente è:
+
+\[
+k_s=(1+0{,}05)^{1/2}-1
+\simeq2{,}47\%.
+\]
+
+\noindent Per evitare di arrotondare il tasso
+prima del calcolo, usiamo direttamente
+i fattori di attualizzazione:
+
+\[
+\boxed{
+VAN
+=
+950{,}00
+-\frac{U_1}{\sqrt{1{,}05}}
+-\frac{U_2}{1{,}05}
+}
+\]
+
+\subsubsection*{Piano francese}
+
+\noindent Usiamo la rata contrattuale $R$
+prima dell'arrotondamento:
+
+\[
+\begin{aligned}
+VAN_{\text{francese}}
+&=
+950{,}00
+-\frac{1{,}01R}{\sqrt{1{,}05}}
+-\frac{1{,}01R}{1{,}05}\\
+&\simeq\boxed{-82{,}59}.
+\end{aligned}
+\]
+
+\subsubsection*{Piano italiano}
+
+\[
+\begin{aligned}
+VAN_{\text{italiano}}
+&=
+950{,}00
+-\frac{545{,}40}{\sqrt{1{,}05}}
+-\frac{525{,}20}{1{,}05}\\
+&\simeq\boxed{-82{,}45}.
+\end{aligned}
+\]
+
+\subsubsection*{Piano americano}
+
+\[
+\begin{aligned}
+VAN_{\text{americano}}
+&=
+950{,}00
+-\frac{40{,}40}{\sqrt{1{,}05}}
+-\frac{1.050{,}40}{1{,}05}\\
+&\simeq\boxed{-89{,}81}.
+\end{aligned}
+\]
+
+\noindent \textbf{Risposta:}
+nessuno dei tre VAN è positivo.
+
+\noindent Possiamo capirlo anche
+senza rifare tutti i calcoli:
+il TAEG è il tasso annuo che rende
+il VAN del finanziamento uguale a zero.
+
+\noindent Il 5,00\% è inferiore
+al TAEG di tutti e tre i piani.
+A un tasso più basso,
+le uscite future pesano di più
+nel calcolo del valore attuale.
+
+\noindent Di conseguenza,
+il valore attuale dei pagamenti
+supera quanto il cliente riceve oggi.
+
+
+\subsection*{Punto d: senza spese di istruttoria}
+
+\noindent Togliamo soltanto i 50,00 iniziali.
+La commissione dell'1,00\%
+rimane su entrambe le rate.
+
+\noindent Quindi il cliente riceve:
+
+\[
+N=1.000{,}00.
+\]
+
+\noindent I pagamenti effettivi restano
+quelli calcolati nel punto b,
+oppure nel punto a per il piano francese.
+
+\noindent Il \textbf{TAN resta all'8,00\%},
+perché non cambiano
+gli interessi contrattuali.
+
+\medskip
+
+\noindent Per il TAEG sostituiamo
+$N=1.000{,}00$ nell'equazione:
+
+\[
+Nx^2-U_1x-U_2=0,
+\qquad
+TAEG=x^2-1.
+\]
+
+\noindent Per esempio, nel piano italiano:
+
+\[
+1.000{,}00x^2-545{,}40x-525{,}20=0.
+\]
+
+\[
+x=
+\frac{
+545{,}40+
+\sqrt{(545{,}40)^2+4\cdot1.000{,}00\cdot525{,}20}
+}{
+2\cdot1.000{,}00
+}.
+\]
+
+\[
+TAEG_{\text{italiano}}
+=x^2-1
+\simeq\boxed{9{,}62\%}.
+\]
+
+\noindent Ripetiamo il procedimento
+con i pagamenti degli altri due piani:
+
+\begin{center}
+    \begin{tabular}{|l|r|r|r|}
+        \hline
+        \textbf{Piano}
+        & \textbf{Uscita 1}
+        & \textbf{Uscita 2}
+        & \textbf{TAEG} \\
+        \hline
+        Francese & 535,50 & 535,50 & 9,61\% \\
+        Italiano & 545,40 & 525,20 & 9,62\% \\
+        Americano & 40,40 & 1.050,40 & 9,26\% \\
+        \hline
+    \end{tabular}
+\end{center}
+
+\noindent Il TAEG diminuisce in tutti e tre i casi:
+il cliente riceve 50,00 in più oggi
+e continua a pagare le stesse rate effettive.
+
+
+\subsection*{Punto e: senza istruttoria e senza commissioni}
+
+\noindent Ora il cliente riceve
+tutti i 1.000,00
+e paga soltanto le rate contrattuali.
+
+\noindent Il \textbf{TAN resta all'8,00\%}.
+
+\noindent Senza spese accessorie,
+il tasso semestrale effettivo
+coincide con quello contrattuale:
+
+\[
+i_{es}=i_s=4{,}00\%.
+\]
+
+\noindent Il TAEG si calcola comunque
+con la capitalizzazione composta:
+
+\[
+\begin{aligned}
+TAEG
+&=(1+0{,}04)^2-1\\
+&=\boxed{8{,}16\%}.
+\end{aligned}
+\]
+
+\noindent Il risultato vale per tutti e tre i piani.
+Cambia la distribuzione delle rate,
+ma non il tasso semestrale contrattuale.
+
+\noindent Anche senza spese,
+TAN e TAEG differiscono in questo esempio:
+il primo somma i due tassi semestrali,
+il secondo li compone.
+
+
+\subsection*{Confronto degli scenari di spesa}
+
+\noindent Il TAN contrattuale è sempre 8,00\%.
+
+\noindent La tabella riporta i TAEG.
+Include anche il caso intermedio
+della slide con sola istruttoria,
+in cui $N=950{,}00$ e $U_t=R_t$.
+
+\begin{center}
+    \small
+    \begin{tabular}{|l|r|r|r|}
+        \hline
+        \textbf{Spese incluse}
+        & \textbf{Francese}
+        & \textbf{Italiano}
+        & \textbf{Americano} \\
+        \hline
+        Nessuna spesa & 8,16\% & 8,16\% & 8,16\% \\
+        Solo commissioni & 9,61\% & 9,62\% & 9,26\% \\
+        Solo istruttoria & 15,89\% & 15,94\% & 13,97\% \\
+        Istruttoria e commissioni & 17,46\% & 17,52\% & 15,13\% \\
+        \hline
+    \end{tabular}
+\end{center}
+\newpage
+\section{CAPM e Security Market Line}
+
+\subsection*{Breve richiamo a teoria e formule}
+
+
+\[
+\boxed{
+E(r_i)=r_f+\beta_i\bigl[E(r_M)-r_f\bigr]
+}
+\]
+
+\begin{itemize}
+    \item $r_f$: tasso privo di rischio;
+    \item $E(r_M)$: rendimento atteso del mercato;
+    \item $E(r_M)-r_f$: premio per il rischio di mercato;
+    \item $\beta_i$: sensibilità dell'investimento
+    ai movimenti del mercato;
+    \item $E(r_i)$: rendimento richiesto dal CAPM.
+\end{itemize}
+
+\noindent Il \textbf{rischio sistematico}
+è la parte del rischio legata al mercato
+che non si elimina diversificando.
+
+\noindent Come già visto,
+la \textbf{Security Market Line} (SML)
+ha il beta sull'asse orizzontale.
+
+\noindent La \textbf{Capital Market Line} (CML)
+usa invece il rischio totale,
+misurato dalla deviazione standard,
+e riguarda i portafogli efficienti.
+
+\noindent In questo esercizio
+ci serve la \textbf{SML}.
+
+
+\subsection*{Testo e dati}
+
+\noindent Il tasso dei buoni del Tesoro è del 4,00\%
+e il rendimento atteso del portafoglio
+di mercato è del 12,00\%.
+
+\[
+r_f=4{,}00\%,
+\qquad
+E(r_M)=12{,}00\%.
+\]
+
+\noindent Si richiede di:
+
+\begin{enumerate}
+    \item costruire il grafico
+    del rendimento atteso in funzione del beta;
+
+    \item calcolare il premio
+    per il rischio di mercato;
+
+    \item calcolare il rendimento richiesto
+    per un investimento con $\beta=1{,}50$;
+
+    \item stabilire se un investimento
+    con $\beta=0{,}80$ e rendimento atteso
+    del 9,80\% ha un VAN positivo;
+
+    \item determinare il beta di un'azione
+    con rendimento atteso dell'11,20\%,
+    supponendo che si trovi sulla SML.
+\end{enumerate}
+
+
+\subsection*{1. Costruzione della SML}
+
+\noindent Sostituiamo i dati nella formula del CAPM:
+
+\[
+\begin{aligned}
+E(r_i)
+&=4{,}00\%+\beta_i(12{,}00\%-4{,}00\%)\\
+&=\boxed{4{,}00\%+\beta_i\cdot8{,}00\%}.
+\end{aligned}
+\]
+
+\noindent Il grafico è una retta.
+
+\begin{itemize}
+    \item Con $\beta=0$, il rendimento
+    è pari al tasso privo di rischio:
+    4,00\%.
+
+    \item Con $\beta=1$, il rendimento
+    è pari a quello del mercato:
+    12,00\%.
+
+    \item Se il beta aumenta di 1,
+    il rendimento richiesto aumenta
+    di 8,00 punti percentuali.
+\end{itemize}
+
+\noindent Per tracciare la retta
+bastano i primi due punti.
+Aggiungiamo anche il punto
+con $\beta=1{,}50$:
+
+\begin{center}
+    \begin{tabular}{|c|r|}
+        \hline
+        \textbf{Beta} & \textbf{Rendimento richiesto} \\
+        \hline
+        0,00 & 4,00\% \\
+        1,00 & 12,00\% \\
+        1,50 & 16,00\% \\
+        \hline
+    \end{tabular}
+\end{center}
+
+\begin{figure}[H]
+    \centering
+    \setlength{\unitlength}{0.60mm}
+    \begin{picture}(190,110)
+        \put(20,10){\vector(1,0){161}}
+        \put(20,10){\vector(0,1){89}}
+        \put(20,30){\line(5,2){150}}
+        \put(20,30){\circle*{2}}
+        \put(120,70){\circle*{2}}
+        \put(170,90){\circle*{2}}
+        \put(18,30){\line(1,0){2}}
+        \put(18,70){\line(1,0){2}}
+        \put(18,90){\line(1,0){2}}
+        \put(120,8){\line(0,1){4}}
+        \put(170,8){\line(0,1){4}}
+        \put(17,29){\makebox(0,0)[r]{\small $4\%$}}
+        \put(17,69){\makebox(0,0)[r]{\small $12\%$}}
+        \put(17,89){\makebox(0,0)[r]{\small $16\%$}}
+        \put(20,3){\makebox(0,0){\small $0$}}
+        \put(120,3){\makebox(0,0){\small $1$}}
+        \put(170,3){\makebox(0,0){\small $1{,}50$}}
+        \put(20,104){\makebox(0,0){\small $E(r_i)$}}
+        \put(187,10){\makebox(0,0){\small $\beta$}}
+    \end{picture}
+    \caption{Security Market Line:
+    il rendimento richiesto cresce con il beta.}
+    %\label{fig:sml_esercizio_mercati}
+\end{figure}
+
+
+\subsection*{2. Premio per il rischio di mercato}
+
+\noindent Sottraiamo il tasso privo di rischio
+dal rendimento atteso del mercato:
+
+\[
+E(r_M)-r_f
+=
+12{,}00\%-4{,}00\%
+=
+\boxed{8{,}00\%}.
+\]
+
+\noindent Il mercato offre
+un rendimento atteso superiore
+di 8,00 punti percentuali
+rispetto all'investimento privo di rischio.
+
+
+\subsection*{3. Rendimento richiesto con beta pari a 1,50}
+
+\noindent Moltiplichiamo il premio
+per il beta dell'investimento:
+
+\[
+1{,}50\cdot8{,}00\%
+=
+12{,}00\%.
+\]
+
+\noindent Aggiungiamo il tasso privo di rischio:
+
+\[
+\begin{aligned}
+E(r_i)
+&=4{,}00\%+12{,}00\%\\
+&=\boxed{16{,}00\%}.
+\end{aligned}
+\]
+
+
+\subsection*{4. Rendimento offerto e segno del VAN}
+
+\noindent Per prima cosa calcoliamo
+il rendimento richiesto
+per un beta di 0,80:
+
+\[
+\begin{aligned}
+r_{\text{richiesto}}
+&=4{,}00\%+0{,}80\cdot8{,}00\%\\
+&=4{,}00\%+6{,}40\%\\
+&=\boxed{10{,}40\%}.
+\end{aligned}
+\]
+
+\noindent L'investimento offre il 9,80\%:
+
+\[
+9{,}80\%<10{,}40\%.
+\]
+
+\noindent Il rendimento offerto è inferiore
+di 0,60 punti percentuali
+al rendimento richiesto per quel rischio.
+
+\noindent Il punto si trova quindi
+\textbf{sotto la SML}.
+
+\medskip
+
+\noindent Per vedere il collegamento con il VAN,
+consideriamo l'interpretazione a un periodo
+implicita nell'esercizio.
+
+\noindent Indichiamo con $I_0$ l'investimento iniziale.
+Con un rendimento atteso del 9,80\%,
+l'incasso finale atteso è:
+
+\[
+F_1=I_0(1+0{,}098).
+\]
+
+\noindent Usando il rendimento richiesto
+come tasso di attualizzazione:
+
+\[
+VAN
+=
+-I_0+
+\frac{I_0(1+9{,}80\%)}{1+10{,}40\%}.
+\]
+
+\noindent Poiché il numeratore del rapporto
+tra i due fattori è più piccolo
+del denominatore,
+il valore attuale dell'incasso
+è inferiore a $I_0$.
+
+\[
+\boxed{VAN<0}
+\]
+
+\noindent Quindi l'investimento
+non ha un VAN positivo.
+
+
+\subsection*{5. Beta corrispondente a un rendimento dell'11,20\%}
+
+\noindent Partiamo dal CAPM:
+
+\[
+11{,}20\%
+=
+4{,}00\%+\beta_X\cdot8{,}00\%.
+\]
+
+\noindent Sottraiamo il tasso privo di rischio:
+
+\[
+11{,}20\%-4{,}00\%
+=
+\beta_X\cdot8{,}00\%.
+\]
+
+\noindent Dividiamo per il premio di mercato:
+
+\[
+\beta_X
+=
+\frac{11{,}20\%-4{,}00\%}{8{,}00\%}
+=
+\frac{7{,}20\%}{8{,}00\%}
+=
+\boxed{0{,}90}.
+\]
+
+\noindent Il beta è un numero puro:
+si scrive 0,90, senza il simbolo di percentuale.
+
+\noindent \textbf{Refuso nella slide 4:}
+nel punto 5 compare 10,40\%,
+ma il testo del punto 5 indica 11,20\%.
+
+\noindent Il 10,40\% appartiene al punto 4
+e corrisponde a un beta di 0,80.
+
+
+\section{Rischio e diversificazione di portafoglio}
+
+\subsection*{Breve richiamo a teoria e formule}
+
+\noindent Come già visto,
+il rischio di un portafoglio
+dipende sia da quanto oscillano i titoli,
+sia da come si muovono insieme.
+
+\begin{itemize}
+    \item La \textbf{varianza} misura
+    la dispersione dei valori intorno alla media.
+
+    \item La \textbf{deviazione standard}
+    è la radice quadrata della varianza
+    e misura la volatilità.
+
+    \item La \textbf{covarianza}
+    indica se due serie tendono
+    a muoversi nella stessa direzione
+    oppure in direzioni opposte.
+
+    \item La \textbf{correlazione}
+    esprime questa relazione
+    su una scala compresa tra $-1$ e $1$.
+\end{itemize}
+
+\noindent Per una serie $X$ con $n$ osservazioni:
+
+\[
+\bar X=\frac{1}{n}\sum_{t=1}^{n}X_t,
+\qquad
+s_{X,t}=X_t-\bar X.
+\]
+
+\noindent $s_{X,t}$ è lo scarto:
+indica di quanto il valore del mese $t$
+è sopra o sotto la media.
+
+\[
+\boxed{
+\operatorname{Var}(X)
+=
+\frac{1}{n}\sum_{t=1}^{n}s_{X,t}^2
+}
+\qquad
+\boxed{
+\sigma_X=\sqrt{\operatorname{Var}(X)}
+}
+\]
+
+\[
+\boxed{
+\operatorname{Cov}(X,P)
+=
+\frac{1}{n}\sum_{t=1}^{n}s_{X,t}s_{P,t}
+}
+\]
+
+\[
+\boxed{
+\rho_{X,P}
+=
+\frac{\operatorname{Cov}(X,P)}
+{\sigma_X\sigma_P}
+}
+\qquad
+\boxed{
+\beta_{X,P}
+=
+\frac{\operatorname{Cov}(X,P)}
+{\operatorname{Var}(P)}
+}
+\]
+
+\noindent Qui $P$ è il portafoglio
+che possediamo già.
+
+\noindent Il beta è quindi calcolato
+rispetto a $P$,
+non rispetto al mercato del CAPM.
+
+\noindent Seguiamo la convenzione delle slide:
+le sei osservazioni hanno lo stesso peso
+e dividiamo per $n=6$.
+
+
+\subsection*{Testo e dati}
+
+\noindent Quali titoli possiamo aggiungere
+al portafoglio senza aumentarne la volatilità?
+
+\begin{center}
+    \begin{tabular}{|c|r|r|r|r|}
+        \hline
+        \textbf{Mese}
+        & \textbf{Portafoglio}
+        & \textbf{Titolo A}
+        & \textbf{Titolo B}
+        & \textbf{Titolo C} \\
+        \hline
+        1 & 1,01 & 0,94 & 1,01 & 0,97 \\
+        2 & 0,98 & 0,94 & 0,98 & 1,00 \\
+        3 & 1,12 & 0,94 & 0,87 & 0,89 \\
+        4 & 1,10 & 0,93 & 0,90 & 0,90 \\
+        5 & 1,11 & 0,94 & 0,93 & 0,93 \\
+        6 & 1,08 & 0,94 & 0,95 & 0,96 \\
+        \hline
+    \end{tabular}
+\end{center}
+
+\noindent Per rendere leggibili i calcoli
+con due decimali, moltiplichiamo
+tutti i valori iniziali per 100.
+
+\noindent Per esempio,
+1,01 diventa 101
+e 0,94 diventa 94.
+
+\noindent Da qui in avanti
+lavoriamo con questa scala:
+
+\begin{itemize}
+    \item gli scarti diventano 100 volte più grandi;
+    \item varianze e covarianze diventano
+    $100^2=10.000$ volte più grandi;
+    \item correlazioni e beta rimangono uguali,
+    perché i fattori di scala si semplificano.
+\end{itemize}
+
+\noindent Manteniamo la precisione interna
+e arrotondiamo soltanto i numeri mostrati.
+
+
+\subsection*{1. Calcolo delle medie}
+
+\noindent Sommiamo i sei valori
+di ogni colonna e dividiamo per sei:
+
+\[
+\bar P
+=
+\frac{101+98+112+110+111+108}{6}
+=
+\frac{640}{6}
+\simeq
+\boxed{106{,}67}.
+\]
+
+\[
+\bar A
+=
+\frac{94+94+94+93+94+94}{6}
+=
+\frac{563}{6}
+\simeq
+\boxed{93{,}83}.
+\]
+
+\[
+\bar B
+=
+\frac{101+98+87+90+93+95}{6}
+=
+\frac{564}{6}
+=
+\boxed{94{,}00}.
+\]
+
+\[
+\bar C
+=
+\frac{97+100+89+90+93+96}{6}
+=
+\frac{565}{6}
+\simeq
+\boxed{94{,}17}.
+\]
+
+\noindent Nei calcoli successivi
+usiamo le frazioni, senza arrotondare
+prima le medie.
+
+
+\subsection*{2. Calcolo degli scarti}
+
+\noindent Per ogni mese sottraiamo
+la media della serie al valore osservato.
+
+\noindent Per esempio, nel primo mese:
+
+\[
+s_{P,1}
+=
+101-\frac{640}{6}
+\simeq-5{,}67.
+\]
+
+\[
+s_{B,1}
+=
+101-\frac{564}{6}
+=
+7{,}00.
+\]
+
+\noindent Il portafoglio è sotto la sua media,
+mentre B è sopra la propria media.
+
+\begin{center}
+    \begin{tabular}{|c|r|r|r|r|}
+        \hline
+        \textbf{Mese}
+        & \textbf{Scarto P}
+        & \textbf{Scarto A}
+        & \textbf{Scarto B}
+        & \textbf{Scarto C} \\
+        \hline
+        1 & -5,67 & 0,17 & 7,00 & 2,83 \\
+        2 & -8,67 & 0,17 & 4,00 & 5,83 \\
+        3 & 5,33 & 0,17 & -7,00 & -5,17 \\
+        4 & 3,33 & -0,83 & -4,00 & -4,17 \\
+        5 & 4,33 & 0,17 & -1,00 & -1,17 \\
+        6 & 1,33 & 0,17 & 1,00 & 1,83 \\
+        \hline
+    \end{tabular}
+\end{center}
+
+
+\subsection*{3. Varianza e volatilità}
+
+\noindent Per calcolare la varianza di $P$:
+
+\begin{enumerate}
+    \item eleviamo al quadrato ogni scarto;
+    \item sommiamo i quadrati;
+    \item dividiamo per sei.
+\end{enumerate}
+
+\noindent Nel primo mese:
+
+\[
+s_{P,1}^2
+=
+\left(101-\frac{640}{6}\right)^2
+\simeq32{,}11.
+\]
+
+\noindent Facciamo lo stesso
+per tutti i mesi e tutte le serie:
+
+\begin{center}
+    \begin{tabular}{|c|r|r|r|r|}
+        \hline
+        \textbf{Mese}
+        & $s_P^2$ & $s_A^2$ & $s_B^2$ & $s_C^2$ \\
+        \hline
+        1 & 32,11 & 0,03 & 49,00 & 8,03 \\
+        2 & 75,11 & 0,03 & 16,00 & 34,03 \\
+        3 & 28,44 & 0,03 & 49,00 & 26,69 \\
+        4 & 11,11 & 0,69 & 16,00 & 17,36 \\
+        5 & 18,78 & 0,03 & 1,00 & 1,36 \\
+        6 & 1,78 & 0,03 & 1,00 & 3,36 \\
+        \hline
+        \textbf{Somma} & 167,33 & 0,83 & 132,00 & 90,83 \\
+        \hline
+        \textbf{Varianza} & 27,89 & 0,14 & 22,00 & 15,14 \\
+        \hline
+    \end{tabular}
+\end{center}
+
+\noindent I totali sono calcolati
+prima di arrotondare le righe.
+
+\noindent Per il portafoglio otteniamo:
+
+\[
+\operatorname{Var}(P)
+\simeq\frac{167{,}33}{6}
+\simeq
+\boxed{27{,}89}.
+\]
+
+\noindent Prendendo la radice quadrata:
+
+\[
+\sigma_P\simeq\sqrt{27{,}89}
+\simeq
+\boxed{5{,}28}.
+\]
+
+\noindent Nella scala utilizzata,
+la volatilità è di 5,28 punti percentuali,
+cioè il 5,28\% indicato nelle slide.
+
+\noindent Per tornare alla scala originale,
+la \emph{varianza} va invece divisa per 10.000.
+
+
+\subsection*{4. Covarianza con il portafoglio}
+
+\noindent Per calcolare la covarianza
+moltiplichiamo gli scarti
+dello stesso mese.
+
+\noindent Per esempio,
+per il titolo B nel primo mese:
+
+\[
+s_{P,1}s_{B,1}
+=
+\left(101-\frac{640}{6}\right)
+(101-94)
+\simeq-39{,}67.
+\]
+
+\noindent Il prodotto è negativo
+perché uno scarto è negativo
+e l'altro è positivo.
+
+\begin{center}
+    \begin{tabular}{|c|r|r|r|}
+        \hline
+        \textbf{Mese}
+        & $s_Ps_A$
+        & $s_Ps_B$
+        & $s_Ps_C$ \\
+        \hline
+        1 & -0,94 & -39,67 & -16,06 \\
+        2 & -1,44 & -34,67 & -50,56 \\
+        3 & 0,89 & -37,33 & -27,56 \\
+        4 & -2,78 & -13,33 & -13,89 \\
+        5 & 0,72 & -4,33 & -5,06 \\
+        6 & 0,22 & 1,33 & 2,44 \\
+        \hline
+        \textbf{Somma} & -3,33 & -128,00 & -110,67 \\
+        \hline
+    \end{tabular}
+\end{center}
+
+\noindent Dividiamo ciascun totale per sei:
+
+\[
+\begin{aligned}
+\operatorname{Cov}(A,P)
+&\simeq\frac{-3{,}33}{6}
+\simeq\boxed{-0{,}56};\\
+\operatorname{Cov}(B,P)
+&=\frac{-128{,}00}{6}
+\simeq\boxed{-21{,}33};\\
+\operatorname{Cov}(C,P)
+&\simeq\frac{-110{,}67}{6}
+\simeq\boxed{-18{,}44}.
+\end{aligned}
+\]
+
+\noindent Tutte e tre le covarianze
+sono negative.
+
+\noindent In questi dati,
+i titoli tendono a compensare
+le oscillazioni del portafoglio,
+anziché accentuarle.
+
+
+\subsection*{5. Correlazione e beta}
+
+\noindent Calcoliamo, per esempio,
+la correlazione del titolo B:
+
+\[
+\rho_{B,P}
+=
+\frac{\operatorname{Cov}(B,P)}
+{\sigma_B\sigma_P}
+\simeq
+\frac{-21{,}33}
+{\sqrt{22{,}00}\sqrt{27{,}89}}
+\simeq
+\boxed{-0{,}86}.
+\]
+
+\noindent Il beta dello stesso titolo è:
+
+\[
+\beta_{B,P}
+=
+\frac{\operatorname{Cov}(B,P)}
+{\operatorname{Var}(P)}
+\simeq
+\frac{-21{,}33}{27{,}89}
+\simeq
+\boxed{-0{,}76}.
+\]
+
+\noindent Applicando lo stesso procedimento
+agli altri titoli otteniamo:
+
+\begin{center}
+    \begin{tabular}{|c|r|r|r|}
+        \hline
+        \textbf{Titolo}
+        & \textbf{Covarianza con P}
+        & \textbf{Correlazione con P}
+        & \textbf{Beta rispetto a P} \\
+        \hline
+        A & -0,56 & -0,28 & -0,02 \\
+        B & -21,33 & -0,86 & -0,76 \\
+        C & -18,44 & -0,90 & -0,66 \\
+        \hline
+    \end{tabular}
+\end{center}
+
+\noindent La \textbf{correlazione}
+misura la forza della relazione inversa:
+quella di C è la più vicina a $-1$.
+
+\noindent Il \textbf{beta rispetto a $P$}
+considera anche la dimensione
+delle oscillazioni del titolo.
+
+\noindent Infatti:
+
+\[
+\boxed{
+\beta_{X,P}
+=
+\rho_{X,P}\frac{\sigma_X}{\sigma_P}
+}
+\]
+
+\noindent Per questo C può avere
+la correlazione più negativa,
+mentre B ha il beta più negativo.
+
+
+\subsection*{6. Il criterio per una piccola aggiunta}
+
+\noindent Indichiamo con $w$
+la quota investita nel nuovo titolo $X$.
+
+\noindent La parte che resta
+nel vecchio portafoglio è $1-w$:
+
+\[
+P_{\text{nuovo}}=(1-w)P+wX.
+\]
+
+\noindent La sua varianza è:
+
+\[
+\boxed{
+\begin{aligned}
+\operatorname{Var}(P_{\text{nuovo}})
+={}&(1-w)^2\operatorname{Var}(P)\\
+&+w^2\operatorname{Var}(X)\\
+&+2w(1-w)\operatorname{Cov}(X,P).
+\end{aligned}
+}
+\]
+
+\noindent Se $w$ è molto piccolo,
+il termine in $w^2$
+pesa molto meno del termine in $w$.
+
+\noindent La variazione iniziale
+dipende quindi dal segno di:
+
+\[
+\begin{aligned}
+2\bigl[
+\operatorname{Cov}(X,P)-\operatorname{Var}(P)
+\bigr]
+&=
+2\operatorname{Var}(P)(\beta_{X,P}-1).
+\end{aligned}
+\]
+
+\noindent Quindi:
+
+\begin{itemize}
+    \item se $\beta_{X,P}<1$,
+    una piccola aggiunta riduce la varianza;
+
+    \item se $\beta_{X,P}>1$,
+    una piccola aggiunta aumenta la varianza;
+
+    \item se $\beta_{X,P}=1$,
+    l'effetto al primo ordine è nullo.
+    Per un peso effettivo maggiore di zero
+    bisogna verificare la formula completa.
+\end{itemize}
+
+\noindent Nei nostri dati:
+
+\[
+-0{,}02<1,
+\qquad
+-0{,}76<1,
+\qquad
+-0{,}66<1.
+\]
+
+\[
+\boxed{
+\text{A, B e C riducono il rischio
+per una piccola aggiunta.}
+}
+\]
+
+
+\subsection*{7. Verifica con pesi diversi}
+
+\noindent Il criterio precedente
+descrive l'effetto iniziale.
+
+\noindent Per un peso del 25\%, del 50\%
+o del 75\% usiamo invece
+la formula completa.
+
+\medskip
+
+\noindent \textbf{Esempio:}
+investiamo il 25\% nel titolo B
+e il 75\% nel portafoglio iniziale.
+
+\[
+w=0{,}25,
+\qquad
+1-w=0{,}75.
+\]
+
+\[
+\begin{aligned}
+\operatorname{Var}(P_{\text{nuovo}})
+\simeq{}&
+(0{,}75)^2\cdot27{,}89\\
+&+(0{,}25)^2\cdot22{,}00\\
+&+2\cdot0{,}25\cdot0{,}75\cdot(-21{,}33)\\
+\simeq{}&\boxed{9{,}06}.
+\end{aligned}
+\]
+
+\noindent Il valore 9,06
+è inferiore alla varianza iniziale di 27,89.
+
+\medskip
+
+\noindent Ripetendo il calcolo
+otteniamo questa tabella.
+Tutte le varianze sono nella stessa scala:
+
+\begin{center}
+    \small
+    \begin{tabular}{|c|r|r|r|r|}
+        \hline
+        \textbf{Peso di X}
+        & \textbf{Con A}
+        & \textbf{Con B}
+        & \textbf{Con C}
+        & \textbf{P iniziale} \\
+        \hline
+        0\%   & 27,89 & 27,89 & 27,89 & 27,89 \\
+        25\%  & 15,49 & 9,06  & 9,72  & 27,89 \\
+        50\%  & 6,73  & 1,81  & 1,53  & 27,89 \\
+        75\%  & 1,61  & 6,12  & 3,34  & 27,89 \\
+        100\% & 0,14  & 22,00 & 15,14 & 27,89 \\
+        \hline
+    \end{tabular}
+\end{center}
+
+\noindent Il 100\% significa che
+sostituiamo interamente il portafoglio
+con il singolo titolo.
+
+\noindent Nei tre casi la varianza propria
+del titolo è minore di quella di $P$.
+Inoltre il termine di covarianza
+è negativo quando mescoliamo
+titolo e portafoglio.
+
+\noindent Per questo, in questo esercizio,
+ogni peso positivo fino al 100\%
+produce una varianza inferiore
+a quella del portafoglio iniziale.
+
+\noindent La deviazione standard
+si comporta allo stesso modo:
+se la varianza diminuisce,
+diminuisce anche la sua radice quadrata.
+
+\medskip
+
+\noindent La tabella mostra anche
+che con B e C il rischio
+non diminuisce sempre
+man mano che aumentiamo il loro peso.
+
+\noindent Per esempio, con C:
+
+\[
+\operatorname{Var}\bigl(P_{\text{nuovo}}\bigr)
+\simeq1{,}53
+\quad\text{al }50\%,
+\]
+
+\[
+\operatorname{Var}\bigl(P_{\text{nuovo}}\bigr)
+\simeq3{,}34
+\quad\text{al }75\%.
+\]
+
+\noindent Entrambi i risultati
+sono migliori di 27,89,
+ma tra questi due pesi
+il 50\% genera meno rischio.
+
+
+\subsection*{Risposta}
+
+\[
+\boxed{
+\text{Tutti e tre i titoli: A, B e C.}
+}
+\]
+
+\noindent Tutti hanno beta rispetto al portafoglio
+inferiore a 1.
+
+\noindent B e C presentano
+la relazione inversa più forte con $P$,
+mentre A ha una varianza propria
+molto più bassa.
+
+\noindent Il risultato dipende quindi
+sia da quanto oscilla il titolo,
+sia da come si combina
+con il portafoglio già posseduto.
+\newpage
+
+\section{Esercitazione: Pre-Esonero}
+
+\subsection*{Breve richiamo di teoria e formule}
+
+Un investimento richiede un'uscita iniziale $I_0$ e genera
+incassi successivi. Per confrontare somme disponibili
+in momenti diversi, riportiamo gli incassi al tempo zero.
+
+\noindent Con incassi annui costanti e posticipati $R$, utilizziamo:
+
+\[
+    CAF(i,n)
+    =
+    \frac{1}{i}-\frac{1}{i(1+i)^n}
+\]
+
+\[
+    VA=R\cdot CAF(i,n)
+\]
+
+\[
+    VAN=-I_0+R\cdot CAF(i,n)
+\]
+
+\noindent Dove $i$ è il tasso annuo e $n$ il numero di incassi.
+
+\noindent Il TIR è il tasso che rende nullo il VAN:
+
+\[
+    0=-I_0+\sum_{t=1}^{n}\frac{R}{(1+TIR)^t}
+\]
+
+\noindent Per verificare l'accettabilità senza calcolare precisamente
+il TIR, utilizziamo il metodo del professore:
+
+\[
+    FA=\frac{I_0}{R}
+\]
+
+\[
+    FA<CAF(i,n)
+    \quad\Rightarrow\quad
+    TIR>i
+    \quad\Rightarrow\quad
+    \text{progetto accettabile}
+\]
+
+\noindent Per una spesa straordinaria $S$ nel secondo anno:
+
+\[
+    F_{2,\text{netto}}=R-S
+\]
+
+\noindent Per selezionare un paniere entro il budget $B$:
+
+\[
+    \sum_j I_{0,j}\leq B,
+    \qquad
+    VAN_{\text{paniere}}=\sum_j VAN_j
+\]
+
+\noindent Secondo la ponderazione riferita al budget:
+
+\[
+    PI_j=\frac{VAN_j}{I_{0,j}},
+    \qquad
+    w_j=\frac{I_{0,j}}{B}
+\]
+
+\[
+    PI_{\text{paniere, su budget}}
+    =
+    \sum_j PI_jw_j
+    =
+    \frac{\sum_j VAN_j}{B}
+\]
+
+\noindent Infine, il recupero attualizzato entro $k$ anni richiede:
+
+\[
+    -I_0+R\cdot CAF(i,k)\geq 0
+\]
+
+\subsection*{Dati dell'esercizio}
+
+\noindent Tutti i progetti hanno durata di cinque anni, valore
+di recupero finale nullo e incassi annui costanti posticipati.
+
+\[
+    i=8\%,
+    \qquad n=5
+\]
+
+\begin{center}
+    \begin{tabular}{lrr}
+        \hline
+        Progetto & Investimento iniziale & Incasso annuo \\
+        \hline
+        A & 70.000,00 & 16.000,00 \\
+        B & 65.000,00 & 19.000,00 \\
+        C & 55.000,00 & 22.000,00 \\
+        D & 50.000,00 & 19.000,00 \\
+        E & 45.000,00 & 17.500,00 \\
+        F & 60.000,00 & 17.000,00 \\
+        \hline
+    \end{tabular}
+\end{center}
+
+\noindent Il coefficiente comune è:
+
+\[
+    CAF(8\%,5)
+    =
+    \frac{1}{0{,}08}
+    -
+    \frac{1}{0{,}08(1{,}08)^5}
+    \approx 3{,}99
+\]
+
+\noindent Il valore è mostrato a due decimali, ma nei calcoli
+si utilizza l'espressione completa, senza arrotondare
+preventivamente il CAF.
+
+\subsection{Punto a): progetti accettabili tramite il TIR}
+
+\subsubsection*{Come si imposta il primo progetto}
+
+\noindent Per il progetto A, la definizione completa del TIR è:
+
+\[
+    \begin{aligned}
+        0={}&-70.000{,}00
+        +\frac{16.000{,}00}{1+TIR}
+        +\frac{16.000{,}00}{(1+TIR)^2}\\
+        &+\frac{16.000{,}00}{(1+TIR)^3}
+        +\frac{16.000{,}00}{(1+TIR)^4}
+        +\frac{16.000{,}00}{(1+TIR)^5}
+    \end{aligned}
+\]
+
+\noindent Gli incassi sono tutti uguali, quindi la stessa equazione
+si può scrivere:
+
+\[
+    0=-70.000{,}00
+    +16.000{,}00\cdot CAF(TIR,5)
+\]
+
+\noindent Portando l'investimento iniziale dall'altra parte
+e dividendo per l'incasso annuo:
+
+\[
+    \frac{70.000{,}00}{16.000{,}00}
+    =
+    CAF(TIR,5)
+\]
+
+\noindent Non serve risolvere l'equazione: confrontiamo il rapporto
+$FA$ con il CAF calcolato al tasso richiesto dell'8\%.
+
+\subsubsection*{Confronto per tutti i progetti}
+
+\[
+    FA_A
+    =
+    \frac{70.000{,}00}{16.000{,}00}
+    \approx 4{,}38>3{,}99
+    \quad\Rightarrow\quad
+    TIR_A<8\%
+\]
+
+\[
+    FA_B
+    =
+    \frac{65.000{,}00}{19.000{,}00}
+    \approx 3{,}42<3{,}99
+    \quad\Rightarrow\quad
+    TIR_B>8\%
+\]
+
+\[
+    FA_C
+    =
+    \frac{55.000{,}00}{22.000{,}00}
+    =2{,}50<3{,}99
+    \quad\Rightarrow\quad
+    TIR_C>8\%
+\]
+
+\[
+    FA_D
+    =
+    \frac{50.000{,}00}{19.000{,}00}
+    \approx 2{,}63<3{,}99
+    \quad\Rightarrow\quad
+    TIR_D>8\%
+\]
+
+\[
+    FA_E
+    =
+    \frac{45.000{,}00}{17.500{,}00}
+    \approx 2{,}57<3{,}99
+    \quad\Rightarrow\quad
+    TIR_E>8\%
+\]
+
+\[
+    FA_F
+    =
+    \frac{60.000{,}00}{17.000{,}00}
+    \approx 3{,}53<3{,}99
+    \quad\Rightarrow\quad
+    TIR_F>8\%
+\]
+
+\[
+    \boxed{\text{Progetti accettabili: B, C, D, E, F}}
+\]
+
+\subsection{Punto b): VAN di almeno 20.000,00}
+
+\noindent Consideriamo soltanto i progetti accettabili al punto a).
+
+\noindent La condizione da verificare è:
+
+\[
+    VAN\geq 20.000{,}00
+\]
+
+\subsubsection*{Progetto B}
+
+\[
+    VAN_B
+    =
+    -65.000{,}00+
+    19.000{,}00
+    \left[
+        \frac{1}{0{,}08}
+        -
+        \frac{1}{0{,}08(1{,}08)^5}
+    \right]
+    \approx 10.861{,}49
+\]
+
+\[
+    10.861{,}49<20.000{,}00
+    \quad\Rightarrow\quad
+    \text{B non soddisfa la soglia}
+\]
+
+\subsubsection*{Progetto C}
+
+\[
+    VAN_C
+    =
+    -55.000{,}00+
+    22.000{,}00\cdot CAF(8\%,5)
+    \approx 32.839{,}62
+\]
+
+\[
+    32.839{,}62\geq20.000{,}00
+    \quad\Rightarrow\quad
+    \text{C soddisfa la soglia}
+\]
+
+\subsubsection*{Progetto D}
+
+\[
+    VAN_D
+    =
+    -50.000{,}00+
+    19.000{,}00\cdot CAF(8\%,5)
+    \approx 25.861{,}49
+\]
+
+\[
+    25.861{,}49\geq20.000{,}00
+    \quad\Rightarrow\quad
+    \text{D soddisfa la soglia}
+\]
+
+\subsubsection*{Progetto E}
+
+\[
+    VAN_E
+    =
+    -45.000{,}00+
+    17.500{,}00\cdot CAF(8\%,5)
+    \approx 24.872{,}43
+\]
+
+\[
+    24.872{,}43\geq20.000{,}00
+    \quad\Rightarrow\quad
+    \text{E soddisfa la soglia}
+\]
+
+\subsubsection*{Progetto F}
+
+\[
+    VAN_F
+    =
+    -60.000{,}00+
+    17.000{,}00\cdot CAF(8\%,5)
+    \approx 7.876{,}07
+\]
+
+\[
+    7.876{,}07<20.000{,}00
+    \quad\Rightarrow\quad
+    \text{F non soddisfa la soglia}
+\]
+
+\[
+    \boxed{\text{Progetti idonei: C, D, E}}
+\]
+
+\subsection{Punto c): flusso positivo nel secondo anno}
+
+\noindent La spesa straordinaria del secondo anno è:
+
+\[
+    S=18.000{,}00
+\]
+
+\noindent Come chiarito nella correzione della consegna, dobbiamo
+verificare che rimanga positivo il flusso
+\textbf{del secondo anno}.
+
+\noindent Consideriamo i progetti C, D ed E, individuati al punto b).
+
+\noindent Incasso e spesa appartengono allo stesso anno:
+li sottraiamo direttamente, senza attualizzazione.
+
+\subsubsection*{Progetto C}
+
+\[
+    F_{2,C,\text{netto}}
+    =
+    22.000{,}00-18.000{,}00
+    =
+    4.000{,}00>0
+\]
+
+\subsubsection*{Progetto D}
+
+\[
+    F_{2,D,\text{netto}}
+    =
+    19.000{,}00-18.000{,}00
+    =
+    1.000{,}00>0
+\]
+
+\subsubsection*{Progetto E}
+
+\[
+    F_{2,E,\text{netto}}
+    =
+    17.500{,}00-18.000{,}00
+    =
+    -500{,}00<0
+\]
+
+\[
+    \boxed{\text{Mantengono positivo il flusso: C e D}}
+\]
+
+\subsection{Punto d): paniere con VAN massimo}
+
+Il budget è:
+
+\[
+    B=150.000{,}00
+\]
+
+\noindent La consegna richiede di scegliere tra i progetti
+accettabili al punto a), quindi tra B, C, D, E e F.
+
+\noindent Utilizziamo i VAN originari: la spesa straordinaria
+era oggetto della verifica specifica del punto c).
+
+\subsubsection*{Indici dei singoli progetti}
+
+\[
+    PI_B
+    =
+    \frac{VAN_B}{65.000{,}00}
+    \approx16{,}71\%
+\]
+
+\[
+    PI_C
+    =
+    \frac{VAN_C}{55.000{,}00}
+    \approx59{,}71\%
+\]
+
+\[
+    PI_D
+    =
+    \frac{VAN_D}{50.000{,}00}
+    \approx51{,}72\%
+\]
+
+\[
+    PI_E
+    =
+    \frac{VAN_E}{45.000{,}00}
+    \approx55{,}27\%
+\]
+
+\[
+    PI_F
+    =
+    \frac{VAN_F}{60.000{,}00}
+    \approx13{,}13\%
+\]
+
+\noindent Essendo i progetti indivisibili, verifichiamo
+le combinazioni possibili.
+
+\subsubsection*{Combinazioni ammissibili}
+
+\begin{center}
+    \begin{tabular}{lrr}
+        \hline
+        Paniere & Investimento & VAN complessivo \\
+        \hline
+        B & 65.000,00 & 10.861,49 \\
+        C & 55.000,00 & 32.839,62 \\
+        D & 50.000,00 & 25.861,49 \\
+        E & 45.000,00 & 24.872,43 \\
+        F & 60.000,00 & 7.876,07 \\
+        \hline
+        B+C & 120.000,00 & 43.701,11 \\
+        B+D & 115.000,00 & 36.722,98 \\
+        B+E & 110.000,00 & 35.733,92 \\
+        B+F & 125.000,00 & 18.737,56 \\
+        C+D & 105.000,00 & 58.701,11 \\
+        C+E & 100.000,00 & 57.712,05 \\
+        C+F & 115.000,00 & 40.715,69 \\
+        D+E & 95.000,00 & 50.733,92 \\
+        D+F & 110.000,00 & 33.737,56 \\
+        E+F & 105.000,00 & 32.748,50 \\
+        \hline
+        C+D+E & 150.000,00 & 83.573,54 \\
+        \hline
+    \end{tabular}
+\end{center}
+
+\noindent C+D+E è l'unica combinazione di tre progetti entro il budget.
+La successiva terna meno costosa, D+E+F,
+richiede già 155.000,00.
+
+\noindent Qualsiasi combinazione di quattro o più progetti
+supera quindi il budget.
+
+\subsubsection*{Verifica del paniere scelto}
+
+\[
+    I_{C+D+E}
+    =
+    55.000{,}00+50.000{,}00+45.000{,}00
+    =
+    150.000{,}00
+\]
+
+\[
+    VAN_{C+D+E}
+    =
+    VAN_C+VAN_D+VAN_E
+    \approx83.573{,}54
+\]
+
+\noindent I pesi riferiti al budget sono:
+
+\[
+    w_C=\frac{55.000{,}00}{150.000{,}00},
+    \qquad
+    w_D=\frac{50.000{,}00}{150.000{,}00},
+    \qquad
+    w_E=\frac{45.000{,}00}{150.000{,}00}
+\]
+
+\noindent Il loro totale è uno perché il budget viene utilizzato
+interamente.
+
+\[
+    \begin{aligned}
+        PI_{C+D+E,\text{su budget}}
+        &=
+        PI_Cw_C+PI_Dw_D+PI_Ew_E\\
+        &=
+        \frac{VAN_C+VAN_D+VAN_E}{150.000{,}00}\\
+        &\approx55{,}72\%
+    \end{aligned}
+\]
+
+\[
+    \boxed{\text{Paniere scelto: C+D+E}}
+\]
+
+\[
+    \boxed{
+        I_{\text{totale}}=150.000{,}00,
+        \qquad VAN_{\text{totale}}\approx83.573{,}54
+    }
+\]
+
+\subsection{Punto e): recupero attualizzato entro quattro anni}
+
+\noindent La consegna richiama i progetti del punto b):
+consideriamo quindi C, D ed E e i loro flussi originari.
+
+\noindent Come già visto, dobbiamo confrontare l'investimento
+con il valore attuale dei primi quattro incassi.
+
+\[
+    CAF(8\%,4)
+    =
+    \frac{1}{0{,}08}
+    -
+    \frac{1}{0{,}08(1{,}08)^4}
+    \approx3{,}31
+\]
+
+\noindent Anche qui si conserva nei calcoli il valore completo
+del coefficiente.
+
+\subsubsection*{Progetto C}
+
+\[
+    -55.000{,}00
+    +22.000{,}00\cdot CAF(8\%,4)
+    \approx17.866{,}79>0
+\]
+
+\subsubsection*{Progetto D}
+
+\[
+    -50.000{,}00
+    +19.000{,}00\cdot CAF(8\%,4)
+    \approx12.930{,}41>0
+\]
+
+\subsubsection*{Progetto E}
+
+\[
+    -45.000{,}00
+    +17.500{,}00\cdot CAF(8\%,4)
+    \approx12.962{,}22>0
+\]
+
+\noindent Per tutti e tre, il valore attuale dei primi quattro incassi
+è sufficiente a coprire l'investimento iniziale.
+
+\[
+    \boxed{\text{Recuperano entro quattro anni: C, D, E}}
+\]
+
+
+\section{Piani di ammortamento, TAN e TAEG}
+
+\subsection*{Breve richiamo di teoria e formule}
+
+\noindent La rata comprende una quota capitale, che riduce il debito,
+e una quota interessi, che remunera il finanziatore:
+
+\[
+    R_k=Q_k+I_k
+\]
+
+\[
+    I_k=C_{k-1}\cdot i
+\]
+
+\[
+    Q_k=R_k-I_k,
+    \qquad
+    C_k=C_{k-1}-Q_k
+\]
+
+\noindent Dove $C_T=C_0$ è il capitale iniziale e $C_k$
+è il debito residuo dopo la rata $k$.
+
+\noindent Nel piano francese la rata è costante:
+
+\[
+    R=C_T\frac{i(1+i)^n}{(1+i)^n-1}
+\]
+
+\noindent Nel piano italiano la quota capitale è costante:
+
+\[
+    Q_k=\frac{C_T}{n}
+\]
+
+\noindent Nel piano americano, senza fondo di accumulazione,
+si pagano gli interessi durante il prestito
+e si restituisce tutto il capitale alla fine.
+
+\noindent Il TAEG considera anche le spese:
+
+\[
+    C_{\text{netto}}=C_T-S_0
+\]
+
+\[
+    S_k=cR_k,
+    \qquad
+    U_k=R_k+S_k=R_k(1+c)
+\]
+
+\noindent Qui $U_k$ indica il pagamento effettivo del debitore.
+
+\noindent Con due rate annuali:
+
+\[
+    C_{\text{netto}}
+    =
+    \frac{U_1}{1+TAEG}
+    +
+    \frac{U_2}{(1+TAEG)^2}
+\]
+
+\noindent Ponendo $x=1+TAEG$:
+
+\[
+    C_{\text{netto}}x^2-U_1x-U_2=0
+\]
+
+\noindent Si prende la soluzione positiva e si ricava $TAEG=x-1$.
+
+\subsection*{Dati dell'esercizio}
+
+\[
+    C_T=150.000{,}00,
+    \qquad TAN=5\%,
+    \qquad n=2
+\]
+
+\noindent Le rate sono annuali posticipate, quindi:
+
+\[
+    i=0{,}05
+\]
+
+\[
+    S_0=3.000{,}00,
+    \qquad c=0{,}50\%
+\]
+
+\noindent Il capitale effettivamente ricevuto è:
+
+\[
+    C_{\text{netto}}
+    =
+    150.000{,}00-3.000{,}00
+    =
+    147.000{,}00
+\]
+
+\subsection{Punto a): costruzione dei piani}
+
+\subsubsection*{Piano francese}
+
+\noindent La formula della rata è:
+
+\[
+    R
+    =
+    150.000{,}00
+    \frac{0{,}05(1{,}05)^2}{(1{,}05)^2-1}
+    \approx80.670{,}73
+\]
+
+\noindent Utilizziamo la rata di 80.670,73 indicata nella consegna.
+
+\textbf{Primo anno}
+
+\[
+    I_1=150.000{,}00\cdot0{,}05=7.500{,}00
+\]
+
+\[
+    Q_1=80.670{,}73-7.500{,}00=73.170{,}73
+\]
+
+\[
+    C_1=150.000{,}00-73.170{,}73=76.829{,}27
+\]
+
+\textbf{Secondo anno}
+
+\[
+    I_2=76.829{,}27\cdot0{,}05
+    \approx3.841{,}46
+\]
+
+\[
+    Q_2=80.670{,}73-3.841{,}46=76.829{,}27
+\]
+
+\[
+    C_2=76.829{,}27-76.829{,}27=0{,}00
+\]
+
+\noindent Il piano è espresso ai centesimi, coerentemente
+con la rata fornita.
+
+\begin{center}
+    \begin{tabular}{crrrr}
+        \hline
+        Anno & Rata & Interessi & Capitale & Residuo \\
+        \hline
+        1 & 80.670,73 & 7.500,00 & 73.170,73 & 76.829,27 \\
+        2 & 80.670,73 & 3.841,46 & 76.829,27 & 0,00 \\
+        \hline
+    \end{tabular}
+\end{center}
+
+\[
+    I_{\text{totali, francese}}
+    =
+    7.500{,}00+3.841{,}46
+    =
+    11.341{,}46
+\]
+
+\subsubsection*{Piano italiano}
+
+\noindent La quota capitale è uguale in entrambi gli anni:
+
+\[
+    Q=\frac{150.000{,}00}{2}=75.000{,}00
+\]
+
+\textbf{Primo anno}
+
+\[
+    I_1=150.000{,}00\cdot0{,}05=7.500{,}00
+\]
+
+\[
+    R_1=75.000{,}00+7.500{,}00=82.500{,}00
+\]
+
+\[
+    C_1=150.000{,}00-75.000{,}00=75.000{,}00
+\]
+
+\textbf{Secondo anno}
+
+\[
+    I_2=75.000{,}00\cdot0{,}05=3.750{,}00
+\]
+
+\[
+    R_2=75.000{,}00+3.750{,}00=78.750{,}00
+\]
+
+\[
+    C_2=75.000{,}00-75.000{,}00=0{,}00
+\]
+
+\begin{center}
+    \begin{tabular}{crrrr}
+        \hline
+        Anno & Rata & Interessi & Capitale & Residuo \\
+        \hline
+        1 & 82.500,00 & 7.500,00 & 75.000,00 & 75.000,00 \\
+        2 & 78.750,00 & 3.750,00 & 75.000,00 & 0,00 \\
+        \hline
+    \end{tabular}
+\end{center}
+
+\[
+    I_{\text{totali, italiano}}
+    =
+    7.500{,}00+3.750{,}00
+    =
+    11.250{,}00
+\]
+
+\subsubsection*{Piano americano}
+
+\noindent Il capitale viene restituito interamente alla fine
+del secondo anno.
+
+\textbf{Primo anno}
+
+\[
+    I_1=150.000{,}00\cdot0{,}05=7.500{,}00
+\]
+
+\[
+    Q_1=0{,}00,
+    \qquad R_1=7.500{,}00,
+    \qquad C_1=150.000{,}00
+\]
+
+\textbf{Secondo anno}
+
+\[
+    I_2=150.000{,}00\cdot0{,}05=7.500{,}00
+\]
+
+\[
+    Q_2=150.000{,}00
+\]
+
+\[
+    R_2=150.000{,}00+7.500{,}00=157.500{,}00
+\]
+
+\[
+    C_2=0{,}00
+\]
+
+\begin{center}
+    \begin{tabular}{crrrr}
+        \hline
+        Anno & Rata & Interessi & Capitale & Residuo \\
+        \hline
+        1 & 7.500,00 & 7.500,00 & 0,00 & 150.000,00 \\
+        2 & 157.500,00 & 7.500,00 & 150.000,00 & 0,00 \\
+        \hline
+    \end{tabular}
+\end{center}
+
+\[
+    I_{\text{totali, americano}}
+    =
+    7.500{,}00+7.500{,}00
+    =
+    15.000{,}00
+\]
+
+\subsection{Punto b): flussi effettivi e TAEG}
+
+\subsubsection*{Commissioni e pagamenti effettivi}
+
+La commissione è lo 0,50\% di ogni rata contrattuale.
+
+\textbf{Francese}
+
+\[
+    S_1=S_2
+    =
+    80.670{,}73\cdot\frac{0{,}50}{100}
+    \approx403{,}35
+\]
+
+\[
+    U_1=U_2
+    =
+    80.670{,}73
+    \left(1+\frac{0{,}50}{100}\right)
+    \approx81.074{,}08
+\]
+
+\textbf{Italiano}
+
+\[
+    S_1=82.500{,}00\cdot\frac{0{,}50}{100}
+    =412{,}50
+\]
+
+\[
+    U_1=82.500{,}00+412{,}50=82.912{,}50
+\]
+
+\[
+    S_2=78.750{,}00\cdot\frac{0{,}50}{100}
+    =393{,}75
+\]
+
+\[
+    U_2=78.750{,}00+393{,}75=79.143{,}75
+\]
+
+\textbf{Americano}
+
+\[
+    S_1=7.500{,}00\cdot\frac{0{,}50}{100}=37{,}50
+\]
+
+\[
+    U_1=7.500{,}00+37{,}50=7.537{,}50
+\]
+
+\[
+    S_2=157.500{,}00\cdot\frac{0{,}50}{100}=787{,}50
+\]
+
+\[
+    U_2=157.500{,}00+787{,}50=158.287{,}50
+\]
+
+\subsubsection*{Flussi dal punto di vista del debitore}
+
+Il segno positivo indica denaro ricevuto;
+il segno negativo indica denaro pagato.
+
+\begin{center}
+    \begin{tabular}{lrrr}
+        \hline
+        Piano & Tempo 0 & Fine anno 1 & Fine anno 2 \\
+        \hline
+        Francese & +147.000,00 & -81.074,08 & -81.074,08 \\
+        Italiano & +147.000,00 & -82.912,50 & -79.143,75 \\
+        Americano & +147.000,00 & -7.537,50 & -158.287,50 \\
+        \hline
+    \end{tabular}
+\end{center}
+
+\subsubsection*{Procedimento per il TAEG}
+
+\noindent Come già visto nel formulario, poniamo:
+
+\[
+    x=1+TAEG
+\]
+
+\noindent Partendo da:
+
+\[
+    147.000{,}00=\frac{U_1}{x}+\frac{U_2}{x^2}
+\]
+
+\noindent moltiplichiamo per $x^2$:
+
+\[
+    147.000{,}00x^2-U_1x-U_2=0
+\]
+
+\noindent La soluzione positiva è:
+
+\[
+    x=
+    \frac{
+        U_1+\sqrt{U_1^2+4\cdot147.000{,}00\cdot U_2}
+    }{294.000{,}00}
+\]
+
+\noindent  Infine sottraiamo uno, senza arrotondare prima $x$.
+
+\subsubsection*{TAEG del piano francese}
+
+\[
+    147.000{,}00x^2
+    -81.074{,}08x
+    -81.074{,}08
+    \approx0
+\]
+
+\[
+    TAEG_{\text{francese}}
+    \approx
+    \frac{
+        81.074{,}08+
+        \sqrt{
+            (81.074{,}08)^2+
+            4\cdot147.000{,}00\cdot81.074{,}08
+        }
+    }{294.000{,}00}
+    -1
+\]
+
+\[
+    \boxed{TAEG_{\text{francese}}\approx6{,}80\%}
+\]
+
+\subsubsection*{TAEG del piano italiano}
+
+\[
+    147.000{,}00x^2
+    -82.912{,}50x
+    -79.143{,}75
+    =0
+\]
+
+\[
+    TAEG_{\text{italiano}}
+    =
+    \frac{
+        82.912{,}50+
+        \sqrt{
+            (82.912{,}50)^2+
+            4\cdot147.000{,}00\cdot79.143{,}75
+        }
+    }{294.000{,}00}
+    -1
+\]
+
+\[
+    \boxed{TAEG_{\text{italiano}}\approx6{,}81\%}
+\]
+
+\subsubsection*{TAEG del piano americano}
+
+\[
+    147.000{,}00x^2
+    -7.537{,}50x
+    -158.287{,}50
+    =0
+\]
+
+\[
+    TAEG_{\text{americano}}
+    =
+    \frac{
+        7.537{,}50+
+        \sqrt{
+            (7.537{,}50)^2+
+            4\cdot147.000{,}00\cdot158.287{,}50
+        }
+    }{294.000{,}00}
+    -1
+\]
+
+\[
+    \boxed{TAEG_{\text{americano}}\approx6{,}36\%}
+\]
+
+\subsubsection*{Confronto e spiegazione}
+
+\begin{center}
+    \begin{tabular}{lrr}
+        \hline
+        Piano & Interessi complessivi & TAEG \\
+        \hline
+        Francese & 11.341,46 & 6,80\% \\
+        Italiano & 11.250,00 & 6,81\% \\
+        Americano & 15.000,00 & 6,36\% \\
+        \hline
+    \end{tabular}
+\end{center}
+
+\[
+    \boxed{\text{Minori interessi complessivi: piano italiano}}
+\]
+
+\noindent Il piano italiano restituisce più capitale già alla prima
+scadenza rispetto al francese. Nel secondo anno rimane
+quindi meno debito su cui calcolare gli interessi.
+
+\[
+    \boxed{\text{TAEG più basso: piano americano}}
+\]
+
+\noindent Nel piano americano il debitore conserva tutto il capitale
+fino alla scadenza finale. La stessa spesa iniziale incide
+quindi su un capitale che rimane disponibile più a lungo.
+
+\noindent Gli interessi complessivi sommano gli importi pagati;
+il TAEG considera anche le spese e il momento dei pagamenti.
+Per questo le due graduatorie possono essere diverse.
+
+
+\section{Portafoglio, beta e CAPM}
+
+\subsection*{Breve richiamo di teoria e formule}
+
+Il CAPM collega il rendimento richiesto al rischio
+di mercato del portafoglio:
+
+\[
+    \widehat r_i
+    =
+    r_f+\beta_i(\widehat r_M-r_f)
+\]
+
+\noindent Dove $r_f$ è il rendimento privo di rischio,
+$\widehat r_M$ il rendimento atteso del mercato
+e $\beta_i$ la sensibilità del portafoglio al mercato.
+
+\noindent Il premio per il rischio di mercato è:
+
+\[
+    Premio_M=\widehat r_M-r_f
+\]
+
+\noindent Per stimare il beta dai dati osservati:
+
+\[
+    \overline r_M=\frac{\sum_{t=1}^{N}r_{M,t}}{N},
+    \qquad
+    \overline r_i=\frac{\sum_{t=1}^{N}r_{i,t}}{N}
+\]
+
+\[
+    \sigma_M^2
+    =
+    \frac{\sum_{t=1}^{N}(r_{M,t}-\overline r_M)^2}{N}
+\]
+
+\[
+    \sigma_{iM}
+    =
+    \frac{
+        \sum_{t=1}^{N}
+        (r_{i,t}-\overline r_i)
+        (r_{M,t}-\overline r_M)
+    }{N}
+\]
+
+\[
+    \beta_i=\frac{\sigma_{iM}}{\sigma_M^2}
+\]
+
+\noindent Per ottenere un guadagno atteso $G$ acquistando quote
+al prezzo $p$:
+
+\[
+    Capitale=\frac{G}{\widehat r_i}
+\]
+
+\[
+    N_{\text{quote}}
+    =
+    \left\lceil\frac{G}{p\widehat r_i}\right\rceil
+\]
+
+\noindent Il numero di quote si arrotonda all'intero superiore.
+
+\subsection*{Dati dell'esercizio}
+
+\[
+    r_f=2{,}50\%,
+    \qquad
+    \widehat r_M=8{,}50\%
+\]
+
+\begin{center}
+    \begin{tabular}{crr}
+        \hline
+        Mese & Mercato & Portafoglio \\
+        \hline
+        1 & 4,00\% & 7,00\% \\
+        2 & -2,00\% & -1,00\% \\
+        3 & 6,00\% & 9,00\% \\
+        4 & 0,00\% & 1,00\% \\
+        \hline
+    \end{tabular}
+\end{center}
+
+\subsection{Punto a): SML e premio per il rischio}
+
+\[
+    Premio_M=8{,}50\%-2{,}50\%=6{,}00\%
+\]
+
+\[
+    \boxed{Premio_M=6{,}00\%}
+\]
+
+\noindent L'equazione della Security Market Line è:
+
+\[
+    \boxed{
+        \widehat r_i
+        =
+        2{,}50\%+\beta_i\cdot6{,}00\%
+    }
+\]
+
+\noindent Il rendimento richiesto parte dal rendimento privo
+di rischio e aggiunge un premio proporzionale al beta.
+
+\subsection{Punto b): calcolo del beta}
+
+\subsubsection*{Rendimenti medi}
+
+\[
+    \overline r_M
+    =
+    \frac{4{,}00\%-2{,}00\%+6{,}00\%+0{,}00\%}{4}
+    =
+    2{,}00\%
+\]
+
+\[
+    \overline r_i
+    =
+    \frac{7{,}00\%-1{,}00\%+9{,}00\%+1{,}00\%}{4}
+    =
+    4{,}00\%
+\]
+
+\subsubsection*{Scarti dalle medie}
+
+Per rendere leggibili i calcoli, nella tabella esprimiamo
+gli scarti in punti percentuali.
+
+\noindent Questo cambio di scala non modifica il beta,
+perché riguarda nello stesso modo numeratore e denominatore.
+
+\begin{center}
+    \begin{tabular}{crrrr}
+        \hline
+        Mese & Scarto mercato & Scarto portafoglio
+        & Quadrato mercato & Prodotto \\
+        \hline
+        1 & 2,00 & 3,00 & 4,00 & 6,00 \\
+        2 & -4,00 & -5,00 & 16,00 & 20,00 \\
+        3 & 4,00 & 5,00 & 16,00 & 20,00 \\
+        4 & -2,00 & -3,00 & 4,00 & 6,00 \\
+        \hline
+        Totale & & & 40,00 & 52,00 \\
+        \hline
+    \end{tabular}
+\end{center}
+
+\noindent Per esempio, nel primo mese:
+
+\[
+    4{,}00-2{,}00=2{,}00
+\]
+
+\[
+    7{,}00-4{,}00=3{,}00
+\]
+
+\[
+    (2{,}00)^2=4{,}00,
+    \qquad
+    2{,}00\cdot3{,}00=6{,}00
+\]
+
+\subsubsection*{Varianza, covarianza e beta}
+
+Nella scala utilizzata, varianza e covarianza
+sono espresse in punti percentuali al quadrato:
+
+\[
+    \sigma_M^2=\frac{40{,}00}{4}=10{,}00
+\]
+
+\[
+    \sigma_{iM}=\frac{52{,}00}{4}=13{,}00
+\]
+
+\[
+    \beta_i=\frac{13{,}00}{10{,}00}=1{,}30
+\]
+
+\noindent Equivalentemente, semplificando il divisore comune:
+
+\[
+    \beta_i=\frac{52{,}00}{40{,}00}=1{,}30
+\]
+
+\[
+    \boxed{\beta_i=1{,}30}
+\]
+
+\noindent Il beta è maggiore di uno: il portafoglio presenta
+una sensibilità al mercato superiore a quella
+del portafoglio di mercato.
+
+\subsection{Punto c): rendimento richiesto dal CAPM}
+
+\noindent Sostituiamo il beta nella SML:
+
+\[
+    \widehat r_i
+    =
+    2{,}50\%+1{,}30(8{,}50\%-2{,}50\%)
+\]
+
+\[
+    \widehat r_i
+    =
+    2{,}50\%+1{,}30\cdot6{,}00\%
+\]
+
+\[
+    \widehat r_i
+    =
+    2{,}50\%+7{,}80\%
+    =
+    10{,}30\%
+\]
+
+\[
+    \boxed{\widehat r_i=10{,}30\%}
+\]
+
+\noindent Il rendimento richiesto si riferisce allo stesso
+orizzonte temporale dei rendimenti attesi
+utilizzati nel CAPM.
+
+\subsection{Punto d): quote del fondo e capitale necessario}
+
+\noindent Il guadagno atteso desiderato è almeno la metà
+del budget di 150.000,00:
+
+\[
+    G=\frac{150.000{,}00}{2}=75.000{,}00
+\]
+
+\noindent Il prezzo di una quota è:
+
+\[
+    p=250{,}00
+\]
+
+\noindent Si assume, come richiesto dalla consegna, che il portafoglio
+realizzi il rendimento del punto c).
+
+\subsubsection*{Capitale teoricamente necessario}
+
+\[
+    Capitale
+    =
+    \frac{G}{\widehat r_i}
+    =
+    \frac{75.000{,}00}{10{,}30/100}
+    \approx728.155{,}34
+\]
+
+\noindent Questo è il capitale teorico prima di imporre
+l'acquisto di un numero intero di quote.
+
+\subsubsection*{Numero di quote}
+
+\[
+    N_{\text{quote, teorico}}
+    =
+    \frac{75.000{,}00}
+    {250{,}00\cdot(10{,}30/100)}
+    \approx2.912{,}62
+\]
+
+\noindent Occorre arrotondare verso l'alto per raggiungere
+almeno il guadagno richiesto:
+
+\[
+    N_{\text{quote}}
+    =
+    \left\lceil
+        \frac{75.000{,}00}
+        {250{,}00\cdot(10{,}30/100)}
+    \right\rceil
+    =
+    2.913
+\]
+
+\subsubsection*{Capitale effettivamente necessario}
+
+\[
+    Capitale_{\text{effettivo}}
+    =
+    2.913\cdot250{,}00
+    =
+    728.250{,}00
+\]
+
+\subsubsection*{Verifica del guadagno atteso}
+
+\[
+    G_{\text{atteso}}
+    =
+    728.250{,}00\cdot\frac{10{,}30}{100}
+    =
+    75.009{,}75
+\]
+
+\[
+    75.009{,}75\geq75.000{,}00
+\]
+
+\[
+    \boxed{N_{\text{quote}}=2.913}
+\]
+
+\[
+    \boxed{Capitale_{\text{effettivo}}=728.250{,}00}
+\]
+
+\noindent Il budget di 150.000,00 serve qui a determinare
+il guadagno desiderato; la domanda chiede di calcolare
+il capitale necessario per ottenerlo.
+
 \newpage
