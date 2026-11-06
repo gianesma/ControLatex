@@ -3728,3 +3728,518 @@ Nello schema precedente, \texttt{Studente}
 è un'entità debole perché la sola
 \texttt{Matricola} non è sufficiente
 a identificarlo.
+
+\subsection{Vincoli di identificazione di entità}
+\subsubsection*{1. Esercizio 17: identificazione dei voli}
+Consideriamo uno schema E-R:
+
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.4\linewidth]{../images/ea17.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent
+Dobbiamo rappresentare due vincoli:
+\begin{enumerate}
+    \item Ogni volo ha un codice unico
+    \textbf{all'interno della propria compagnia}.
+    \item Due voli diversi della stessa compagnia
+    devono differire nell'aeroporto di partenza
+    oppure in quello di arrivo.
+\end{enumerate}
+
+\subsubsection*{2. Primo identificatore esterno}
+
+Il primo vincolo significa che il solo Codice
+non identifica necessariamente un volo.\\
+Ad esempio, due compagnie diverse possono avere
+entrambe un volo con codice 100.\\
+Per identificare un volo dobbiamo conoscere:
+\[
+\boxed{\text{Codice}+\text{Compagnia}}
+\]
+Nello schema E-R questo identificatore esterno
+è formato da:
+\begin{itemize}
+    \item l'attributo Codice di Volo;
+    \item il ruolo di Volo nella relazione Della.
+\end{itemize}
+\noindent
+La cardinalità $(1,1)$ di Volo in Della garantisce
+che ogni volo appartenga a una sola compagnia.
+
+\subsubsection*{3. Secondo identificatore esterno}
+Il secondo vincolo stabilisce che, all'interno
+della stessa compagnia, due voli diversi non
+possono avere contemporaneamente lo stesso
+aeroporto di partenza e quello di arrivo.\\
+Quindi un volo è identificabile anche mediante:
+\[
+\boxed{
+\text{Compagnia}+
+\text{AeroportoPartenza}+
+\text{AeroportoArrivo}
+}
+\]
+Questo secondo identificatore esterno è formato da:
+\begin{itemize}
+    \item il ruolo di Volo nella relazione Della;
+    \item il ruolo di Volo nella relazione ArrPart.
+\end{itemize}
+\noindent
+La relazione ArrPart comprende già entrambi
+gli aeroporti, distinti dai ruoli Partenza e Arrivo.
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.4\linewidth]{../images/es17s.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+
+\paragraph{Esempio}
+Consideriamo i seguenti voli:
+\begin{center}
+\begin{tabular}{c|c|c|c}
+Compagnia & Codice & Partenza & Arrivo \\
+\hline
+A & 100 & Roma & Milano \\
+A & 200 & Roma & Napoli \\
+B & 100 & Roma & Milano
+\end{tabular}
+\end{center}
+I tre voli rispettano entrambi i vincoli.\\
+In particolare, il primo e il terzo possono
+avere lo stesso codice e gli stessi aeroporti
+perché appartengono a compagnie diverse.
+\noindent
+
+\subsubsection*{Identificatore esterno formato solo da una relazione}
+
+Consideriamo:
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.4\linewidth]{../images/ides.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent
+Due fornitori diversi devono partecipare
+a forniture che differiscono almeno
+nel ministero o nel prodotto.\\
+Di conseguenza, la partecipazione alla
+relazione Fornitura identifica univocamente
+il fornitore.
+
+\[
+\boxed{
+\text{Identificatore esterno}
+=
+\text{ruolo Fornitore in Fornitura}
+}
+\]
+\textbf{Osservazione importante:}
+un identificatore esterno può essere formato
+anche esclusivamente da un ruolo di relazione,
+senza utilizzare alcun attributo.\\
+Nello schema della slide, Fornitore possiede
+anche un identificatore interno: Codice.
+
+\subsubsection*{Identificazione esterna implicita}
+Consideriamo due entità E e F collegate
+da una relazione R con cardinalità:
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.5\linewidth]{../images/idesen.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent
+Questo significa che:
+\begin{itemize}
+    \item ogni istanza di E partecipa
+    esattamente una volta a R;
+    \item ogni istanza di F partecipa
+    al massimo una volta a R.
+\end{itemize}
+\noindent
+Supponiamo che due istanze diverse di E
+siano collegate alla stessa istanza di F.\\
+Questo violerebbe la cardinalità massima 1
+di F nella relazione R.\\
+Pertanto, la partecipazione a R
+identifica univocamente ogni istanza di E.
+\[
+\boxed{
+\text{R identifica esternamente E}
+}
+\]
+Il vincolo di identificazione può essere
+disegnato esplicitamente, ma è già implicito
+nelle cardinalità.\\
+\textbf{Regola generale:}
+se E partecipa a R con cardinalità $(1,1)$
+e almeno un altro ruolo di R ha cardinalità
+massima 1, allora il ruolo di E in R
+è un identificatore esterno per E.
+
+\subsubsection*{Identificatori essenziali}
+
+Un identificatore si dice \textbf{essenziale}
+quando nessuna delle proprietà che lo
+compongono può essere eliminata senza perdere
+la capacità di identificare univocamente
+le istanze dell'entità.
+Le proprietà possono essere attributi
+oppure ruoli di relazioni.\medskip\\
+\textcolor{verdeEsempio}{\textbf{Esempio. }}
+Supponiamo che l'entità E abbia due attributi
+E e F e partecipi alla relazione R
+con cardinalità $(1,1)$.
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.3\linewidth]{../images/ides1.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent
+Consideriamo l'identificatore:
+\[
+W=\{A,R\}
+\]
+Supponiamo che:
+\begin{itemize}
+    \item A da solo non identifichi E;
+    \item la partecipazione a R da sola
+    non identifichi E;
+    \item A e R insieme identifichino E.
+\end{itemize}
+\noindent
+Allora:
+\[
+\boxed{W=\{A,R\}
+\text{ è essenziale}}
+\]
+Se aggiungiamo anche l'attributo E:
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.5\linewidth]{../images/ides2.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent
+otteniamo ancora un identificatore,
+ma \textbf{non essenziale}, perché B
+è superfluo: possiamo eliminarlo
+e continuare a identificare E mediante
+A e R.
+
+
+\subsection{Vincoli di identificazione di relazione}
+
+\noindent
+Anche per le \textbf{relazioni} è possibile definire
+dei vincoli di identificazione.
+
+\noindent
+Un \textbf{identificatore di relazione} è un insieme
+di proprietà (attributi con cardinalità $(1,1)$
+e/o ruoli) che permette di identificare
+univocamente ogni istanza della relazione.
+
+\noindent
+Ogni relazione possiede sempre un
+\textbf{identificatore implicito}, formato
+da tutti i ruoli che partecipano alla relazione.
+Questo significa che non possono esistere
+due istanze della stessa relazione aventi
+le stesse entità in tutti i ruoli.
+L'identificatore implicito, per convenzione,
+non viene rappresentato nello schema E-R.
+
+\subsubsection*{Notazione grafica}
+
+\noindent
+La notazione è simile a quella degli
+identificatori di entità, ma con una differenza:
+
+\noindent
+\textbf{La linea che rappresenta un identificatore
+di relazione parte dal rombo della relazione.}
+
+\begin{itemize}
+    \item \textbf{Un attributo:}
+    si annerisce il pallino dell'attributo.
+
+    \item \textbf{Più attributi:}
+    si collegano con una linea che parte
+    dal rombo e termina con un pallino nero.
+
+    \item \textbf{Attributi e ruoli, oppure solo ruoli:}
+    si collegano le proprietà identificanti
+    con una linea che parte dal rombo
+    e termina con un pallino nero.
+\end{itemize}
+
+\subsubsection*{Esempio di identificatore di relazione}
+Consideriamo due entità E ed F
+collegate dalla relazione R, che possiede
+l'attributo A.
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.5\linewidth]{../images/vinidre.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent
+Nello schema sono presenti due identificatori
+della relazione R:
+\[
+\textcolor{verdeEsempio}{
+\underbrace{\{U1,U2\}}_{\text{implicito}}
+\qquad
+\underbrace{\{A,U1\}}_{\text{esplicito}}
+}
+\]
+\noindent
+L'identificatore esplicito $\{A,U1\}$
+stabilisce che due istanze diverse di R
+non possono avere contemporaneamente
+lo stesso valore di A e la stessa entità
+nel ruolo U1.
+
+\subsubsection*{Semantica del vincolo}
+\noindent
+Se un identificatore di una relazione R
+è formato dagli attributi
+$A_1,\ldots,A_k$ e dai ruoli
+$U_1,\ldots,U_h$, allora due istanze
+diverse di R devono differire:
+
+\begin{itemize}
+    \item nel valore di almeno uno degli attributi;
+    \item oppure nell'entità presente
+    in almeno uno dei ruoli.
+\end{itemize}
+
+\noindent
+Nel caso dell'identificatore $\{A,U1\}$,
+per due istanze diverse $r_1$ e $r_2$ deve valere:
+
+\[
+r_1\neq r_2
+\Rightarrow
+A(r_1)\neq A(r_2)
+\;\lor\;
+U1(r_1)\neq U1(r_2)
+\]
+
+\noindent
+Anche per le relazioni vale il concetto di
+\textbf{identificatore essenziale}:
+un identificatore dal quale non è possibile
+eliminare alcuna proprietà senza perdere
+l'univocità.\\
+\textcolor{verdeEsempio}{\textbf{Esempio. }} istanza non legale\\
+\noindent
+Consideriamo nuovamente lo schema E-R
+con identificatore $\{A,U1\}$.
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.5\linewidth]{../images/vinidre.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent
+Supponiamo di avere la seguente istanza I:
+\[
+\begin{array}{c|c|c}
+U1 & U2 & A \\ \hline
+e_1 & f_1 & v_1\\
+e_1 & f_2 & v_1\\
+e_2 & f_2 & v_2
+\end{array}
+\]
+L'istanza \textbf{non è legale}, perché
+le prime due istanze di R hanno:
+\begin{itemize}
+    \item lo stesso valore di A, cioè $v_1$;
+    
+    \item la stessa entità nel ruolo U1,
+    cioè $e_1$.
+\end{itemize}
+\noindent
+Anche se il ruolo U2 contiene entità diverse
+($f_1$ e $f_2$), il vincolo viene violato,
+perché U2 non fa parte dell'identificatore
+esplicito.\\
+\textcolor{verdeEsempio}{\textbf{Esempio. }} istanza legale\\
+\noindent
+Consideriamo lo stesso schema E-R,
+ma modifichiamo il valore di A
+nella seconda istanza.
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.5\linewidth]{../images/vinidre.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent
+\[
+\begin{array}{c|c|c}
+U1 & U2 & A \\ \hline
+e_1 & f_1 & v_1\\
+e_1 & f_2 & v_2\\
+e_2 & f_2 & v_2
+\end{array}
+\]
+\noindent
+Questa istanza è \textbf{legale}, perché:
+
+
+\begin{itemize}
+    \item la prima e la seconda istanza
+    differiscono per A;
+    
+
+    \item 
+    la seconda e la terza istanza
+    differiscono per U1;
+    
+
+    \item la prima e la terza istanza
+    differiscono sia per A sia per U1.
+    
+\end{itemize}
+
+\noindent
+Ogni coppia di istanze diverse è quindi
+distinguibile attraverso almeno una proprietà
+dell'identificatore $\{A,U1\}$.
+
+\subsection*{Vincoli derivati di identificazione di relazione}
+
+I \textbf{vincoli derivati di identificazione} sono identificatori di una
+relazione che si possono dedurre da vincoli già presenti nello schema,
+senza doverli indicare esplicitamente.
+Esistono due casi principali.
+
+\subsubsection*{Caso 1: identificatore derivato dalla cardinalità massima}
+
+Se un'entità $E$ partecipa a una relazione $R$ nel ruolo $U$ con
+\textbf{cardinalità massima pari a 1}, allora il ruolo $U$
+è un identificatore della relazione $R$.\\
+Infatti, ogni istanza di $E$ può partecipare al massimo a una
+istanza di $R$: non possono quindi esistere due istanze distinte
+di $R$ con lo stesso valore nel ruolo $U$.\\
+\textbf{Conseguenza:} è possibile omettere l'identificatore
+esplicito di $R$, perché è già implicito nella cardinalità.\medskip\\
+\noindent
+\textcolor{verdeEsempio}{\textbf{Esempio. }} Volo e Aeroporto\\
+Consideriamo la relazione ternaria
+\textbf{ArrPart}, che collega:
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.5\linewidth]{../images/esempio1.png}
+    \caption{il simbolo dell'identificatore si può omettere}
+    %\label{label}
+\end{figure}
+\noindent
+Poiché Volo partecipa con cardinalità $(1,1)$,
+ogni volo compare in una sola istanza di ArrPart.\\
+Quindi \textbf{Volo identifica univocamente ArrPart}:
+conoscendo il volo, si individua la corrispondente
+coppia di aeroporti di arrivo e partenza.\\
+Non è necessario rappresentare esplicitamente
+l'identificatore di ArrPart.
+
+\subsubsection*{Caso 2: identificatore derivato da un identificatore di entità}
+Supponiamo che una relazione $R$ abbia i ruoli
+$U_1,U_2,\ldots,U_h$.\\
+Se il ruolo $U_1$:
+\begin{itemize}
+    \item collega l'entità $E$ alla relazione $R$;
+    \item ha cardinalità $(1,1)$;
+    \item costituisce, da solo, un \textbf{identificatore di $E$};
+\end{itemize}
+\noindent
+allora gli altri ruoli $U_2,\ldots,U_h$ formano
+un \textbf{identificatore derivato della relazione $R$}.\\
+Il motivo è che due istanze di $R$ non possono avere
+gli stessi valori in tutti gli altri ruoli e differire
+soltanto in $U_1$: in tal caso, due entità distinte
+di $E$ avrebbero lo stesso identificatore.
+\[
+U_1 \text{ identifica } E
+\quad\Longrightarrow\quad
+(U_2,\ldots,U_h) \text{ identifica } R
+\]
+Anche in questo caso vale il contrario, purché
+$U_1$ abbia cardinalità $(1,1)$.\medskip\\
+\noindent
+\textcolor{verdeEsempio}{\textbf{Esempio:. }} Fornitura\\
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.5\linewidth]{../images/esempio2.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent
+Supponiamo che:
+\begin{itemize}
+    \item Fornitore partecipi a Fornitura con cardinalità $(1,1)$;
+    \item la partecipazione a Fornitura identifichi
+    univocamente ogni Fornitore.
+\end{itemize}
+\noindent
+Questo significa che \textbf{ogni coppia
+(Ministero, Prodotto) identifica un solo Fornitore}.\\
+Di conseguenza, non possono esistere due istanze
+distinte di Fornitura con la stessa coppia
+(Ministero, Prodotto).
+Pertanto:
+\[
+(\text{Ministero},\text{Prodotto})
+\]
+è un \textbf{identificatore derivato di Fornitura}.
+Possiamo rappresentare:
+\begin{itemize}
+    \item soltanto l'identificatore di Fornitore;
+            \begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.5\linewidth]{../images/esempio2.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+    \item soltanto l'identificatore di Fornitura;
+    \begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.5\linewidth]{../images/esempio2.1.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+    \item entrambi, anche se uno è ridondante.
+    \begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.5\linewidth]{../images/esempio2.2.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\end{itemize}
+
+\subsubsection*{Combinazione dei due casi}
+Supponiamo ora che, nello stesso esempio,
+\textbf{Ministero} partecipi a Fornitura con
+cardinalità $(0,1)$.\\
+Per il \textbf{caso 1}, Ministero diventa
+un identificatore della relazione Fornitura.\\
+Per il \textbf{caso 2}, anche la coppia
+(Ministero, Prodotto) identifica Fornitura.\\
+Tuttavia, quest'ultima non è più un identificatore
+essenziale, perché contiene già Ministero,
+che è sufficiente da solo.
+\[
+\underbrace{\text{Ministero}}_{\text{identificatore essenziale}}
+\subset
+\underbrace{(\text{Ministero},\text{Prodotto})}_{\text{non essenziale}}
+\]
