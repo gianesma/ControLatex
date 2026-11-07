@@ -86,4 +86,73 @@ Per definire la complessità temporale deterministica utilizzeremo la notazione 
    La \textbf{complessità temporale} $t_m: \mathbb{N}\to \mathbb{N}$ di $M$ è la funzione
    \[  t_M (n) = \max_{\{x \in \Sigma^* | \ |x| = n\}} |E_M(x)|   \]
 \end{definition}}}\smallskip\\
+Tale funzione associa a ogni lunghezza $n$ dell'input il massimo tempo necessario alla macchina per terminare su un input di quella lunghezza.
+Ecco le varie componenti della funzione:
+\begin{itemize}
+    \item $t_M(n)$: complessità temporale di $M$ per input di lunghezza $n$
+    \item $x \in \Sigma^*$: una possibile stringa di input
+    \item $|x| = n$: stringhe di lunghezza $n$
+    \item $E_M(x)$ esecuzione di $M$ sull'input $x$
+    \item $|E_M(x)|$: numero di configurazioni dell'esecuzione
+\end{itemize}
+Ovviamente questa definizione si riferisce alle macchine che terminano su tutti gli input, così da avere una complessità temporale finita per ogni $n$. 
+Inoltre prendiamo il valore massimo ($\max$ numero di configurazioni in una esecuzione) poichè vogliamo analizzare il caso peggiore. Vediamo un'altra definizione importante:\smallskip\\
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
+   Sia $g: \mathbb{N}\to \mathbb{N}$ una funzione. \textsc{time}$(g)$ è la famiglia dei linguaggi che possono essere decisi da una macchina di Turing $M$ la cui complessità temporale $t_M$ è un $\mathcal{O}$-grande di $g$
+\end{definition}}}\smallskip\\
+In altre parole \textsc{time}$(g)$ è la famiglia dei problemi decisionali/linguaggi che possono essere risolti con una macchina il cui tempo di esecuzione cresce al più quanto la funzione $g$.
+Ad esempio se la complessità temporale di una macchina è $n^2$, la famiglia di problemi che si risolve con tale macchina faà parte di \textsc{time}$(n^2)$.\smallskip\\
+Vediamo un esempio di un analisi della complessità temporale:\\
+\textit{Esempio.} Consideriamo il \textbf{linguaggio dei palindromi} sull'alfabeto $\{ a,b\}$:
+\[     \textsc{pal}_{\{ a,b\}}  = \big\{ w \in \{ a,b \} \ |\ w = reverse(w)     \big\}    \]
+Progettiamo una macchina di Turing deterministica con un solo nastro che riesca a riconoscere il linguaggio \textsc{pal}. Tale macchina sarà costruita con il seguente ragionamento:
+\begin{itemize}
+    \item \textit{Selezione}: marca con $\#$ il primo simbolo ancora da esaminare
+    \item \textit{Ricerca}: scorre verso destra fino al primo $\sqcup$, poi torna sul simbolo precedente
+    \item \textit{Confronto}: se il simbolo coincide con quello appena marcato con $\#$, lo cancella, se è diverso, rifiuta
+    \item \textit{Ripetizione}: torna al marcatore $\#$ più recente e procede con il prossimo simbolo 
+\end{itemize}
+Già solo spiegando il ragionamento di come funzionerà la macchina, possiamo avere una idea di quale sarà la complessità temporale. Infatti, data una stringa in input lunga $n$,
+sappiamo che la macchina confronterà l'i-esimo simbolo con il simbolo $(n-i+1)$, quindi verrano effettuati $\frac{n}{2}$ confronti. Ma visto che per fare ogni confronto bisogna andare sempre agli estremi dell'input con al più $2n+1$ passi,
+la macchina $M$ avrà complessità temporale $t_M = \mathcal{O}(n^2)$, di conseguenza possiamo affermare che:
+\[   \textsc{pal}_{\{a,b\}} \text{ è in } \textsc{time}(n^2)   \]
+Convenzionalmente, consideriamo \textbf{trattabili nella pratica} i problemi per cui il corrispondente linguaggio si trova in \textsc{time}$(n^k)$ per un qualche $k \in \mathbb{N}$ e li definiamo formalmente come segue:\smallskip\\
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
+   La classe \textbf{P} è definita come
+   \[     P = \bigcup_{k \in \mathbb{N}} \textsc{time}(n^k)   \]
+\end{definition}}}\smallskip\\
+Chiameremo questa classe di complessità classe \textsc{ptime}, e rappresenta l'unione di tutti i linguaggi decidibili con una macchina di Turing il cui tempo di esecuzione cresce al più come un \textbf{polinomio} nella dimensione dell'input.
+\newpage
+\noindent D'altra parte, convenzionalmente consideriamo \textbf{non trattabili nella pratica} i problemi per cui il corrispondente linguaggio si trova in \textsc{time}$(2^{n^k})$ ma non in $P$ per qualche $k \in \mathbb{N}$ e li definiamo 
+formalmente come segue:\smallskip\\
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
+   La classe \textbf{EXPTIME} è definita come
+   \[   \textsc{exptime} =  \bigcup_{k \in \mathbb{N}} \textsc{time}(2^{n^k})   \]
+\end{definition}}}\smallskip\\
+L'unione di tutti i linguaggi decidibili con una macchina di Turing il cui tempo di esecuzione cresce al più come un \textbf{esponenziale} nella dimensione dell'input. \\
+Vediamo un esempio di un linguaggio che appartiene alla classe \textsc{exptime}.\smallskip\\
+\textit{Esempio.} Dato il seguente linguaggio:
+\[         H_b = \big\{    e(M), e (\sigma), e(n) \ | \ M \text{ termina entro } n \text{ passi su input } \sigma  \big\}    \]
+dove:
+\begin{itemize}[label = --]
+    \item $e(M)$ è l'encoding di una macchina di Turing
+    \item $e(\sigma)$ è l'encoding dell'input di $M$ 
+    \item $e(n)$ è l'encoding binario di $n$
+\end{itemize}
+Per risolvere il problema possiamo costruire una macchina deterministica $M'$ che:
+\begin{enumerate}
+    \item Legge la codifica di $M$, di $\sigma$ e di $n$
+    \item Simula $M$ sull'input $\sigma$
+    \item Conta i passi eseguiti
+    \item Se $M$ termina entro $n$ passi, accetta
+    \item Se raggiunge $n$ passi senza terminazione, rifiuta 
+\end{enumerate}
+Se $n$ è rappresentato con $k$ bit si ha che:
+\[    n < 2^k  \]
+Quindi la macchina deve simulare al massimo un numero esponenziale di passi rispetto a $k$. In altre parole diciamo che il problema $H_b$ appartiene a \textsc{exptime} perchè possiamo risolverlo simulando al massimo $n$ passi della 
+macchina e il numero di passi $n$, essendo codificato in binario, può essere esponenziale rispetto alla lunghezza dell'input.
 
+
+
+
+\section{Complessità temporale non deterministica}
