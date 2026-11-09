@@ -226,20 +226,170 @@ Le soluzioni sono:
 
 
 \section{Algebra booleana}
-Base dell'algebra booleana: 0 corrisponde a false e 1 corrisponde a true\medskip\\
-Tabelle di verità\medskip\\
-Ad ogni riga corrisponde un interpretazione\medskip\\
-Posso associare ad ogni funzione booleana una formula in logica proposizionale 
-la cui tabella di verità corrisponda a quella della funzione booleana? Si tramite l'algoritmo
-\[  F = \neg(\text{formule per cui risulta falso (tanti quanti gli 0 della tabella)})  \]
-possiamo fare la stessa cosa con gli 1 della tabella (mettendo le formule vere).\medskip\\
-Definizioni di formule valide, soddisfabili e non soddisfabile. Algoritmo per capire se una formula è soddisfabile: 
-provo tutte le interpretazioni e vedo se la formula è soddisfacibile.
-(Computazionalmente esponenziale)\medskip\\
-Definizioni su insiemi di formule (non più formule singole) $\Gamma$: validità, soddisfabilità ecc.. 
-D'ora in poi parleremo di formule singole o insieme di formule (sets of formule), non cambia un cazz.\medskip\\
-Esercizio finale: usare le tabelle di verità per verificare se delle formule sono valide, soddsfacibili o non soddisfacibili (slide 53)\medskip\\
-Proprietà tra 2 insiemi di formule ("Refutation" significa "confutazione") 
+L'algebra booleana consiste nell'associare dei valori algebrici ai valori di verità. Nella logica la convenzione è:
+\begin{itemize}
+    \item \textbf{True} corrisponde a \textbf{1}
+    \item \textbf{False} corrisponde a \textbf{0}
+\end{itemize}
+Quindi un interpretazione può essere vista come una funzione che associa ad un insieme di formula l'insieme $\{0,1\}$, che rappresentano i valori di verità. 
+
+
+\subsection{Tabelle di verità}
+Le tabelle di verità sono uno strumento che permette di rappresentare il significato dei connettivi logici e determinare il valore di verità di una formula proposizionale. Per comprendere come funzionano queste tabelle
+facciamo subito un esempio. Consideriamo la seguente formula proposizionale:
+\[   A \wedge B        \]
+Sappiamo che una congiunzione è vera se e solo se entrambe le proposizioni sono vere.\\
+Le tabella di verità corrispondente a questa formula è la seguente:
+\begin{center}
+    % Prima tabella (valori booleani letterali)
+    \begin{tabular}{|c|c||c|}
+        \hline
+        $A$ & $B$ & $A \land B$ \\
+        \hline \hline
+        False & False & False \\
+        False & True  & False \\
+        True  & False & False \\
+        True  & True  & True \\
+        \hline
+    \end{tabular}
+    \qquad \qquad % Aggiunge uno spazio largo tra le due tabelle
+    % Seconda tabella (valori booleani binari)
+    \begin{tabular}{|c|c||c|}
+        \hline
+        $A$ & $B$ & $A \land B$ \\
+        \hline \hline
+        0 & 0 & 0 \\
+        0 & 1 & 0 \\
+        1 & 0 & 0 \\
+        1 & 1 & 1 \\
+        \hline
+    \end{tabular}
+\end{center}
+Le due tabelle sono equivalenti, quella a sinistra è costruita con i valori di verità, mentre quella a destra con l'algebra booleana.
+Un connettivo è detto \textbf{n-ario} se opera su $n$ proposizioni. Ad esempio $\neg$ è un connettivo unario, mentre $\wedge, \vee$ e $\to$ sono connettivi binari, e poichè ogni proposizione può assumere
+due valori (vero o falso), il numero totale delle combinazioni è:
+\[   2^n    \] 
+Tale numero quindi corrisponde al numero di righe di una tabella di verità. Mentre il numero di colonne di una tabella di verità
+è $n+1$, poichè le prime $n$ colonne rappresentano i valori di verità dei singoli operandi e l'ultima colonna rappresenta il valore di verità ottenuto 
+applicando il connettivo.\smallskip\\
+Le tabelle di verità ci permettono di rappresentare non solo delle formule proposizionali con i connettivi, ma qualunque funzione booleana
+\[    \{False,True\}^n \to \{False, True \} \qquad \text{oppure} \qquad \{ 0,1 \}^n \to \{ 0,1 \}   \]
+Vediamo un esempio di una tabella di verità di una funzione con 3 operandi ($n = 3$):
+\begin{center}
+    \begin{tabular}{|c|c|c||c|}
+        \hline
+        $A$ & $B$ & $C$ & $f(A, B, C)$ \\
+        \hline \hline
+        0 & 0 & 0 & 0 \\
+        0 & 0 & 1 & 0 \\
+        0 & 1 & 0 & 0 \\
+        0 & 1 & 1 & 1 \\
+        1 & 0 & 0 & 0 \\
+        1 & 0 & 1 & 1 \\
+        1 & 1 & 0 & 1 \\
+        1 & 1 & 1 & 1 \\
+        \hline
+    \end{tabular}
+\end{center}
+Si noti che con $n = 3$, le righe della tabella sono $2^n = 2^3 = 8$, mentre le colonne sono $n+1 = 3+1 = 4.$\smallskip\\
+Ora analizziamo dei \textbf{diversi casi} di funzioni booleane:
+\begin{itemize}
+    \item Funzioni booleani con \textbf{0 argomenti}: non riceve alcun valore in input e restituisce sempre lo stesso risultato. Esistono soltanto due funzioni di questo tipo:
+    \begin{itemize}
+        \item $\bm{f_T}$: restituisce sempre 1, corrispondente al connettivo costante $\top$ (Vero)
+        \item $\bm{f_F}$: restituisce sempre 0, corrispondente al connettivo costante $\bot$ (Falso)
+    \end{itemize}
+    Ricapitolando si ha che 
+    \[      f_T() = 1 \qquad f_F() = 0  \]
+Questi connettivi sono detti anche \textbf{costanti logiche}.
+
+    \item Funzioni booleane con \textbf{un argomento}: riceve solo un valore $A$ e restituisce 0 oppure 1. Poichè l'input può assumere soltanto due valori, esistonon quattro funzioni booleana unario ($2^2$)
+    \begin{itemize}
+        \item \textbf{Funzione identità} $f_{id}$ che restituisce esattamente il valore ricevuto:
+        \[ f_{id}(A) = A  \]
+        \item \textbf{Funzione negazione} $f_{\neg}$ che inverte il valore di verità:
+        \[  f_{\neg}(A) = \neg A     \]
+        \item \textbf{Funzione costante Vero} $f_{1,1}$ che restituisce sempre 1:
+        \[   f_{1,1}(A) = 1     \]
+        \item \textbf{Funzione costante Falso} $f_{0,0}$ che restituisce sempre 0:
+        \[    f_{0,0}(A) = 0    \]
+    \end{itemize}
+Possiamo rappresentare questo tipo di funzioni nel seguente modo:
+\[     \mathcal{I}(\circ A) = f_{\circ}\big(\mathcal{I(A)}\big)  \]
+dove:
+\begin{itemize}
+    \item $\mathcal{I}$ è un interpretazione
+    \item $A$ è una formula proposizionale
+    \item $\circ$ rappresenta un generico connettivo unario (es. $\neg$)
+    \item $f_{\circ}$ è la funzione booleana associata al connettivo 
+\end{itemize}
+In parole semplici, per calcolare il valore di verità di una formula con un connettivo unario, prima valutiamo la formula \(A\), poi applichiamo la funzione booleana corrispondente.
+
+
+
+\item Funzioni booleane con \textbf{due argomenti}: ricevono due valori di verità:
+\[     f: \{ 0,1 \}^2 \to \{ 0,1 \}    \]
+I connettivi binari che abbiamo visto sono:
+\begin{center}
+    \renewcommand{\arraystretch}{1.5} % Aumenta lo spazio verticale tra le righe
+    \begin{tabular}{|c|c|c|c|c|c|}
+        \hline
+        $A$ & $B$ & $A \land B$ & $A \lor B$ & $A \rightarrow B$ & $A \equiv B$ \\
+        \hline
+        0 & 0 & 0 & 0 & 1 & 1 \\
+        0 & 1 & 0 & 1 & 1 & 0 \\
+        1 & 0 & 0 & 1 & 0 & 0 \\
+        1 & 1 & 1 & 1 & 1 & 1 \\
+        \hline
+    \end{tabular}
+\end{center}
+Quindi, per esempio, la funzione associata alla congiunzione è:
+\[ f_{\wedge}(A,B) = \begin{cases}
+    1 \qquad \text{se } A = 1 \text{ e } B = 1 \\
+    0 \qquad \text{altrimenti}
+\end{cases}   \]
+La semantica dei connettivi binari è quindi la seguente:
+\[  \mathcal{I}(A\circ B) = f_{\circ}\big(  \mathcal{I}(A), \mathcal{I}(B)      \big) \]
+dove:
+\begin{itemize}
+    \item $\mathcal{I}$ è un interpretazione
+    \item $A,B$ sono formule proposizionali
+    \item $\circ$ rappresenta un generico connettivo binario (es. $\wedge$)
+    \item $f_{\circ}$ è la funzione booleana associata al connettivo 
+\end{itemize}
+In parole semplici per determinare il valore di verità di una formula composta da due sottoformule, calcoliamo prima il valore di ciascuna e poi applichiamo la funzione booleana associata al connettivo.
+\end{itemize} 
+
+\noindent Invece quante funzioni booleane esistono con $\bm{n}$ \textbf{argomenti}? Una funzione booleana di questo genere riceve $n$
+valori booleani, poichè ogni argomento può valere 0 oppure 1, esistono 
+\[  2^n  \]
+possibili combinazioni degli input, quindi la tabella di verità contiene $2^n$ righe. Per ciascuna delle $2^n$ righe, possiamo scegliere liberamente se la funzione restituisce 0 oppure 1, quindi abbiamo due possibilità
+per ogni riga. Poichè le righe sono $2^n$, il numero totale di possibili colonne dei risultati è:
+\[    \underbrace{2\cdot 2 \cdot\cdot\cdot 2}_{2^n \text{ volte}}    \]
+Di conseguenza il numero di ogni possibile colonna dei risultati (funzioni booleane diverse) sono 
+\[  2^{2^n}  \]
+Ricapitolando si ha che:
+\[
+\boxed{
+\begin{aligned}
+2^n&=\text{numero di combinazioni degli input}\\
+2^{2^n}&=\text{numero di funzioni booleane}
+\end{aligned}
+}
+\]
+SLIDE 19.
+% Ad ogni riga corrisponde un interpretazione\medskip\\
+% Posso associare ad ogni funzione booleana una formula in logica proposizionale 
+% la cui tabella di verità corrisponda a quella della funzione booleana? Si tramite l'algoritmo
+% \[  F = \neg(\text{formule per cui risulta falso (tanti quanti gli 0 della tabella)})  \]
+% possiamo fare la stessa cosa con gli 1 della tabella (mettendo le formule vere).\medskip\\
+% Definizioni di formule valide, soddisfabili e non soddisfabile. Algoritmo per capire se una formula è soddisfabile: 
+% provo tutte le interpretazioni e vedo se la formula è soddisfacibile.
+% (Computazionalmente esponenziale)\medskip\\
+% Definizioni su insiemi di formule (non più formule singole) $\Gamma$: validità, soddisfabilità ecc.. 
+% D'ora in poi parleremo di formule singole o insieme di formule (sets of formule), non cambia un cazz.\medskip\\
+% Esercizio finale: usare le tabelle di verità per verificare se delle formule sono valide, soddsfacibili o non soddisfacibili (slide 53)\medskip\\
+% Proprietà tra 2 insiemi di formule ("Refutation" significa "confutazione") 
 
 
 

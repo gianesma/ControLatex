@@ -115,7 +115,7 @@ Progettiamo una macchina di Turing deterministica con un solo nastro che riesca 
 Già solo spiegando il ragionamento di come funzionerà la macchina, possiamo avere una idea di quale sarà la complessità temporale. Infatti, data una stringa in input lunga $n$,
 sappiamo che la macchina confronterà l'i-esimo simbolo con il simbolo $(n-i+1)$, quindi verrano effettuati $\frac{n}{2}$ confronti. Ma visto che per fare ogni confronto bisogna andare sempre agli estremi dell'input con al più $2n+1$ passi,
 la macchina $M$ avrà complessità temporale $t_M = \mathcal{O}(n^2)$, di conseguenza possiamo affermare che:
-\[   \textsc{pal}_{\{a,b\}} \text{ è in } \textsc{time}(n^2)   \]
+\[   \textsc{pal}_{\{a,b\}} \in \textsc{time}(n^2)   \]
 Convenzionalmente, consideriamo \textbf{trattabili nella pratica} i problemi per cui il corrispondente linguaggio si trova in \textsc{time}$(n^k)$ per un qualche $k \in \mathbb{N}$ e li definiamo formalmente come segue:\smallskip\\
 \colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
    La classe \textbf{P} è definita come
@@ -156,3 +156,101 @@ macchina e il numero di passi $n$, essendo codificato in binario, può essere es
 
 
 \section{Complessità temporale non deterministica}
+Sia $M = <  \Sigma,\Gamma, Q, \delta, q_0, q_{yes}, q_{no}   >$ una macchina di Turing non deterministica e $x \in \Sigma^*$ input per M. Per definire la complessità temporale non deterministica 
+utilizzeremo la notazione $\bm{E_M(x)}$ per indicare l'insieme di tutte le esecuzioni di $M$ con input $x$. Ecco la definizione formale:\smallskip\\
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
+   La \textbf{complessità temporale} $t_M : \mathbb{N} \to \mathbb{N}$ di $M$ è la funzione:
+   \[    t_M(n) = \max_{\{  x \in \Sigma^* \ | \ |x| = n  \}  \text{ e } E \in E_M(x)   }\  |E| \] 
+\end{definition}}}\smallskip\\
+Tale funzione associa a ogni lunghezza $n$ dell'input il numero massimo di passi eseguiti dalla macchina di Turing $M$, considerando tutte le possibili esecuzioni su tutti gli input di lunghezza $n$. 
+Ecco la varie componenti della funzione:
+\begin{itemize}
+    \item $t_M(n)$: complessità temporale di $M$ per input di lunghezza $n$
+    \item $x \in \Sigma^*$: una possbile stringa di input
+    \item $|x| = n$: stringhe di lunghezza $n$
+    \item $E_M(x)$: insieme delle possibili esecuzioni di $M$ su $x$
+    \item $E \in E_M(x)$: una particolare esecuzione tra quelle possibili
+    \item $|E|$: lunghezza di tale esecuzione
+\end{itemize}
+Analogamente al caso deterministico, prendiamo i valori massimi per analizzare sempre il caso peggiore. Ricordiamo che, a differenza delle macchine deterministiche, le macchine non deterministiche possono avere 
+più transizioni possibili a partire dalla stessa configurazione, creando così un albero di esecuzioni. Possiamo quindi visualizzare graficamente l'analisi del caso peggiore come l'analisi
+ del sottoalbero delle esecuzioni più grande.\smallskip\\
+ \colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
+    Sia $g: \mathbb{N}\to \mathbb{N}$ una funzione. \textsc{ntime}$(g)$ è la famiglia dei linguaggi che possono essere decisi da una macchina di Turing non deterministica $M$ la cui complessità temporale $t_M$ è
+    un $\mathcal{O}$-grande di $g$
+\end{definition}}}\smallskip\\
+In altre parole \textsc{ntime}$(g)$ è la famiglia dei problemi decisionali/linguaggi che possono essere risolti con una macchina non deterministica il cui tempo di esecuzione cresce al più quanto la funzione $g$.\smallskip\\
+Vediamo un esempio\smallskip\\
+\textit{Esempio.} Consideriamo il seguente linguaggio:
+\[     L = \big\{   w \in \{a,b\}^* \ | \ w \text{ contiene la sottostringa } ab   \big\}   \]
+Per riconoscere questo linguaggio costruiamo una macchina di Turing non deterministica che:
+\begin{enumerate}
+    \item Scorre l'input da sinistra verso destra 
+    \item Quando legge una "a" può continuare oppure controllare il simbolo successivo 
+\end{enumerate} 
+Nel caso peggiore, la macchina passa per ogni simbolo della stringa input, quindi se la stringa è lunga $n$, la macchina effettua almeno $n$ passi. Di conseguenza possiamo affermare che la complessità temporale 
+della macchina non deterministica che riconosce il linguaggio $L$ è $\mathcal{O}(n)$ e quindi:
+\[    L \in \textsc{ntime}(n)    \]  
+Come abbiamo fatto con la complessità deterministica possiamo dare le seguenti definizioni:\smallskip\\
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
+    L'unione di tutti i linguaggi che sono in \textsc{ntime}($n^k$) per un qualche $k \in \mathbb{N}$, viene denotata con \textbf{NP} (Non Deterministic Polynomial Time), ovvero
+    \[     \textsc{np } = \bigcup_{k \in \mathbb{N}} \textsc{ntime}(n^k)  \]
+\end{definition}}}\smallskip\\
+Visto che ogni problema risolvibile con una macchina deterministica è sempre risolvibile anche con una macchina non deterministica, possiamo affermare che ogni problema in \textsc{p} è anche in \textsc{np}, ovvero
+\[    \textsc{p} \subseteq \textsc{np}  \]
+Ora trattiamo la classe di linguaggi che vengono risolti con una macchina di Turing non deterministica e hanno complessità temporale esponenziale:\smallskip\\
+ \colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
+    L'unione di tutti i linguaggi che sono in \textsc{ntime}$(2^{n^k})$ per un qualche $k \in \mathbb{N}$ viene denotata con \textbf{NEXPTIME} (Non Deterministic Exponential Time), ovvero
+    \[    \textsc{nexptime} = \bigcup_{k \in \mathbb{N}} \textsc{ntime}(2^{n^k})    \]
+\end{definition}}}\smallskip\\
+Anche in questo caso, visto che ogni problema risolvibile con una macchina deterministica è sempre risolvibile anche con una macchina non deterministica, possiamo affermare che ogni problema in \textsc{np} è anche
+in \textsc{nexptime}, ovvero
+\[   \textsc{np} \subseteq \textsc{nexptime}        \]
+
+
+\subsection{Coloring}
+Vediamo il concetto di \textbf{colorazione di un grafo}, per introdurre il problema \textsc{colorable}.\smallskip\\
+ \colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
+    Sia $G(V,E)$ un grafo non orientato e $C$ un insieme (insieme dei colori). Una \textbf{colorazione} di $G$ con $C$ è una funzione:
+    \[   f:V \to C   \quad \text{tale che} \quad f(v_1) \neq f(v_2) \]
+    per ogni $\{ v_1,v_2  \} \in E  $
+\end{definition}}}\smallskip\\
+Ricordiamo che nella dichiarazione di un grafo $V$ è l'insieme dei vertici (nodi) mentre $E$ è l'insieme degli archi. Quindi questa funzione $f$ associa ad un nodo del grafo $G$ un colore presente in $C$.\smallskip\\
+ \colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
+    Sia $G(V,E)$ un grafo non orientato e sia $f:V \to C$ una colorazione di $G$ con $C$. Chiamiamo $f$ una \textbf{n-colorazione} se 
+    \[    |C| = n \]
+\end{definition}}}\smallskip\\
+$|C|$ rappresenta la cardinalità dell'insieme $C$, ovvero il numero di colori presenti nell'insieme.\\
+Diremo che un grafo è \textbf{n-colorabile}, con $n \ge 1$, se esiste una n-colorazione di $G$.\smallskip\\
+Ecco un esempio di una 3-colorazione (3-coloring):\\
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.4\linewidth]{../../images/colo.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent Ora possiamo definire il linguaggio \textsc{3-colorable}\smallskip\\
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
+    Il linguaggio $\bm{3-COLORABLE}$ è  sull'alfabeto $\Sigma$ definito come segue:
+    \[    \big\{    e(G) \ |\ G \text{ è } \textsc{3-colorabile}    \big\}    \] 
+\end{definition}}}\smallskip\\
+Dove $e(G)$ è l'encoding del grafo $G$. Dimostriamo che il linguaggio $3-\textsc{colorable}$ appartiene alla classe \textsc{np}.
+\[     \textsc{3-colorable} \in \textsc{np}  \]
+\begin{proof}
+    Per dimostrare l'appartenenza alla classe \textsc{np}, costruiamo una macchina di Turing $M $ non deterministica che riconosca \textsc{3-colorable} in tempo polinomiale rispetto al grafo in input.\smallskip\\
+    Assumiamo che l'input sia il grafo $G(V,E)$, la macchina $M$ può eseguire due fasi:
+    \begin{enumerate}
+        \item $M$ genera non determisticamente, per ogni $v \in V$, un intero da 1 a 3 (GUESS). Per ogni vertice $v$, la macchina $M$ sceglie un colore, quindi la macchina esegue tanti passi quanti sono i vertici del 
+        grafo $G$, pertanto questa fase può essere eseguita in un numero polinomiale di passi della macchina.
+
+        \item $M$ verifica che, per ogni arco $\{  v, v' \}$, i vertici $v,v'$ sono stati assegnati ad interi distinti (CHECK). Anche questa fase è possibile effettuarla in tempo polinomiale rispetto al numero di archi.
+    \end{enumerate}
+
+
+    \noindent La macchina accetta il linguaggio se almeno una esecuzione trova un 3-Coloring.
+\end{proof} 
+
+
+%Linguaggio Indipendent Set
+%Linguaggio Vertex Cover
+%Linguaggio Set Cover
