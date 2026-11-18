@@ -1,0 +1,60 @@
+% PROBLEMI CON CUI DOVREMMO FARE LE RIDUZIONI ALL'ESAME
+\chapter{Problemi difficili e completi}
+\section{Introduzione}
+Vediamo in cosa consistono i \textbf{problemi difficili e completi}:\smallskip\\
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
+   Un problema $\mathcal{P}$ è $\bm{\mathbb{C}-\textbf{hard}}$ se una Macchina di Turing che risolve $\mathcal{P}$
+   può risolvere ogni problema nella clasee $\mathbb{C}$ se utilizzata come subroutine di da altre macchine
+\end{definition}}}\smallskip\\
+In sostanza vuol dire che il problema $\mathcal{P}$ è almeno tanto difficile quanto ogni altro problema 
+in $\mathbb{C}$, se non di più.\smallskip\\
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
+   Un problema $\mathcal{P}$ è $\bm{\mathbf{\mathbb{C}}-\textbf{complete}}$ se è $\mathbb{C}$-hard e appartiene a $\mathbb{C}$
+\end{definition}}}\smallskip\\
+Qui invece significa che $\mathcal{P}$ è tanto difficile quanto ogni altro problema in $\mathbb{C}$, ma è anche in $\mathbb{C}$.\\
+Una macchina per $\mathcal{P}$ risolve ogni problema in $\mathbb{C}$ se, per ogni problema $\mathcal{P'}$ di 
+$\mathbb{C}$ esiste una \textbf{riduzione} da $\mathcal{P}$ a $\mathcal{P'}$.\\
+Ricordiamo che $A$ è riducibile (molti a uno) a $B$ ($A \le_m B$), se esiste una funzione calcolabile 
+$f:\Sigma_{A}^* \to \Sigma_B^*$ tale che, per ogni $x \in \Sigma_A^*$, $x \in A$ se e solo se $f(x) \in B$. 
+(La spiegazione completa delle riduzioni sta qui \ref{riduzioni}).\smallskip\\
+Utilizziamo il concetto di riduzione per definire i \textbf{linguaggi difficili} ($\mathbb{C}$-hard):\smallskip\\
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
+    Un linguaggio $\mathcal{L}$ è $\bm{\mathbb{C}-\textbf{hard}}$ se, per ogni $\mathcal{L}' \in \mathbb{C}$ 
+    esiste una macchina di Turing $M$ tale che:
+    \begin{itemize}[label = --]
+        \item $M$ definisce una \textbf{riduzione} da $\mathcal{L}'$ a $\mathcal{L}$
+        \item $M$ ha complessità compatibile (inferiore) a quella necessaria per riconoscere i linguaggi di $\mathbb{C}$
+    \end{itemize}
+\end{definition}}}\smallskip\\
+
+
+%NP COMPLETEZZA
+
+
+\section{Riduzioni efficienti}
+Le riduzioni efficienti le chiamiamo \textbf{riduzioni di Karp}, vediamo la definizione:\smallskip\\
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
+    Siano $A$ e $B$ due linguaggi sugli alfabeti $\Sigma_A^*$ e $\Sigma_B^*$, rispettivamente. \\Diremo che 
+    $\bm{A}$ \textbf{è Karp-riducibile in tempo polinomiale a B} (denotato con $A \le_{m}^{p}B$) se esiste una
+    riduzione 
+    \[f:\Sigma_A^* \to \Sigma_A^*\]
+    da $A$ a $B$ tale che $f$ è calcolabile in tempo polinomiale  
+\end{definition}}}\smallskip\\
+La funzione $f$ viene chiamata \textbf{Karp-riduzione da} $\bm{A}$ in $\bm{B}$
+
+%LINGUAGGI DIFFICILI E COMPLETI PER NP
+
+
+
+\section{Teorema di Cook-Levin}
+Per enunciare e dimostrare il teorema di Cook-Levin dobbiamo definire il linguaggio \textsc{sat}:\smallskip\\
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
+    \textsc{sat} è il linguaggio di stringhe definito come segue:
+    \[    \big\{    e(\varphi)  \ | \ \varphi \text{ è una formula proposizionale soddisfacibile su V}  \big\}      \]
+    dove V è un insieme di formule proposizionali.
+\end{definition}}}\smallskip\\
+\begin{proof}
+    %DIMOSTRAZIONE TEOREMA DI COOK LEVIN
+\end{proof}
+
+% ARRIVATO ALLA FINE DELLA DIMOSTRAZIONE
