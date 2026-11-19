@@ -4243,3 +4243,224 @@ che è sufficiente da solo.
 \subset
 \underbrace{(\text{Ministero},\text{Prodotto})}_{\text{non essenziale}}
 \]
+
+\subsection{Documentazione associata agli schemi ER}
+
+\noindent
+Uno \textbf{schema concettuale} non è costituito soltanto dal diagramma ER,
+ma anche da un documento chiamato \textbf{dizionario dei dati}.\\
+Il dizionario dei dati serve a descrivere in modo più dettagliato gli elementi
+dello schema e a specificare informazioni che il diagramma non rappresenta.
+
+\noindent
+Il dizionario dei dati è composto da quattro tabelle:
+\begin{itemize}
+    \item \textbf{Entità}: descrive le entità, i loro attributi e identificatori.
+    \item \textbf{Relazioni}: descrive le relazioni, le entità coinvolte,
+    gli attributi e gli identificatori.
+    \item \textbf{Attributi}: specifica il dominio e il significato degli attributi.
+    \item \textbf{Vincoli esterni}: descrive i vincoli che non possono essere
+    rappresentati direttamente nel diagramma ER.
+\end{itemize}
+
+\noindent
+La tabella dei \textbf{vincoli esterni} è particolarmente importante:
+se questi vincoli non vengono riportati nel dizionario dei dati,
+non fanno parte dello schema concettuale.
+
+\subsubsection*{Dizionario dei dati: entità}
+
+\noindent
+La tabella delle entità contiene:
+\begin{itemize}
+    \item \textbf{Entità}: nome dell'entità.
+    \item \textbf{Descrizione}: significato dell'entità.
+    \item \textbf{Attributi}: proprietà associate all'entità.
+    \item \textbf{Identificatori}: proprietà che identificano univocamente
+    le istanze dell'entità.
+\end{itemize}
+
+\noindent
+\textcolor{verdeEsempio}{\textbf{Esempio. }}
+Consideriamo uno schema ER relativo a un'azienda.
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.5\linewidth]{../images/diz1.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+
+\noindent
+In particolare, \textbf{Dipartimento} possiede un identificatore esterno:
+il suo nome è univoco soltanto all'interno della sede a cui appartiene.\\
+L'entità \textbf{Sede}, invece, è identificata dalla combinazione
+di Città e Indirizzo.
+
+\subsubsection*{Dizionario dei dati: entità}
+
+\noindent
+La \textbf{tabella delle entità} descrive tutte le entità presenti
+nel diagramma ER, specificando per ciascuna:
+\begin{itemize}
+    \item \textbf{Entità}: nome dell'entità.
+    \item \textbf{Descrizione}: significato dell'entità.
+    \item \textbf{Attributi}: proprietà associate all'entità.
+    \item \textbf{Identificatori}: attributi e/o ruoli che
+    identificano univocamente le sue istanze.
+\end{itemize}
+
+\noindent
+\textcolor{verdeEsempio}{\textbf{Esempio. }}
+Consideriamo lo schema ER di un'azienda, composto dalle entità
+Impiegato, Progetto, Dipartimento e Sede.
+
+\begin{center}
+\noindent
+\small
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{|p{2.3cm}|p{2.7cm}|p{3.3cm}|p{3.1cm}|}
+\hline
+\textbf{Entità} &
+\textbf{Descrizione} &
+\textbf{Attributi} &
+\textbf{Identificatori} \\
+\hline
+
+Impiegato &
+Dipendente dell'azienda &
+Codice, Cognome, Stipendio, Anzianità &
+$\{\text{Codice}\}$ \\
+\hline
+
+Progetto &
+Progetti aziendali &
+Nome, Budget &
+$\{\text{Nome}\}$ \\
+\hline
+
+Dipartimento &
+Struttura aziendale &
+Nome, Telefono &
+$\{\text{Nome, Sede}\}$ \\
+\hline
+
+Sede &
+Sede dell'azienda &
+Città, Indirizzo (Via, CAP) &
+$\{\text{Città, Indirizzo}\}$ \\
+\hline
+
+\end{tabular}
+\end{center}
+
+
+\subsubsection*{Dizionario dei dati: relazioni}
+
+\noindent
+La tabella delle relazioni specifica:
+\begin{itemize}
+    \item \textbf{Relazione}: nome della relazione.
+    \item \textbf{Descrizione}: significato della relazione.
+    \item \textbf{Componenti}: entità che partecipano alla relazione.
+    \item \textbf{Attributi}: eventuali attributi della relazione.
+    \item \textbf{Identificatori}: eventuali identificatori espliciti.
+\end{itemize}
+
+\noindent
+\textcolor{verdeEsempio}{\textbf{Esempio. }}
+Nello schema aziendale sono presenti quattro relazioni.
+
+\begin{center}
+\noindent
+\small
+\begin{tabular}{|l|l|l|l|l|}
+\hline
+\textbf{Relazione} & \textbf{Descrizione} & \textbf{Componenti} & \textbf{Attributi} & \textbf{Identificatori}\\
+\hline
+Direzione & Descrizione di un dipartimento & Impiegato, Dipartimento & -- & -- \\
+\hline
+Afferenza & Afferenza ad un dipartimento & Impiegato, Dipartimento & Data & -- \\
+\hline
+Partecipazione & Partecipazione ad un progetto & Impiegato, Progetto & -- & -- \\
+\hline
+Composizione & Composizione dell'Azienda & Dipartimento, Sede & -- & -- \\
+\hline
+\end{tabular}
+\end{center}
+
+\noindent
+Le relazioni rappresentano rispettivamente:
+\begin{itemize}
+    \item \textbf{Direzione}: un impiegato dirige un dipartimento.
+    \item \textbf{Afferenza}: un impiegato afferisce a un dipartimento.
+    \item \textbf{Partecipazione}: un impiegato partecipa a un progetto.
+    \item \textbf{Composizione}: un dipartimento appartiene a una sede.
+\end{itemize}
+
+\subsubsection*{Dizionario dei dati: attributi}
+
+\noindent
+La tabella degli attributi descrive più precisamente ogni proprietà
+presente nello schema ER.\\
+Per ogni attributo vengono indicati:
+\begin{itemize}
+    \item \textbf{Attributo}: nome della proprietà.
+    \item \textbf{Entità/Relazione}: elemento a cui appartiene.
+    \item \textbf{Dominio}: insieme dei valori ammessi.
+    \item \textbf{Descrizione}: significato dell'attributo.
+\end{itemize}
+
+\noindent
+\textcolor{verdeEsempio}{\textbf{Esempio. }}
+
+\begin{center}
+\noindent
+\small
+\begin{tabular}{|l|l|l|l|}
+\hline
+\textbf{Attributo} & \textbf{Entità} & \textbf{Dominio} & \textbf{Descrizione} \\
+\hline
+Codice & Impiegato & Intero & Codice identificativo di impiegati\\
+\hline
+Cognome & Impiegato & Stringa & Cognome di impiegato\\
+\hline
+Stipendio & Impiegato & Reale & Stipendio di impiegato\\
+\hline
+Nome & Progetto & Stringa & Nome del progetto\\
+\hline
+\end{tabular}
+\end{center}
+
+\subsubsection*{Dizionario dei dati: vincoli esterni}
+
+\noindent
+I \textbf{vincoli di integrità esterni} sono condizioni che devono
+essere rispettate dalle istanze dello schema, ma che non sono
+espresse direttamente dal diagramma ER.
+
+\noindent
+Questi vincoli possono riguardare contemporaneamente più entità,
+relazioni o attributi.
+
+\noindent
+\textcolor{verdeEsempio}{\textbf{Esempio. }}
+Nello schema aziendale sono presenti i seguenti vincoli esterni:
+
+\begin{center}
+\noindent
+\small
+\begin{tabular}{|l|}
+\hline
+\textbf{Vincoli di integrità esterni} \\
+\hline
+Il direttore di un dipartimento deve afferire allo stesso dipartimento.\\
+\hline
+Un impiegato non può avere uno stipendio maggiore di quello del direttore del dipartimento a cui afferisce.\\
+\hline
+Un dipartimento con sede a Roma deve essere diretto da un impiegato con più di dieci anni di anzianità.\\
+
+\hline
+Un impiegato che non afferisce ad alcun dipartimento non può partecipare ad alcun progetto.\\
+\hline
+\end{tabular}
+\end{center}
