@@ -378,7 +378,40 @@ Ricapitolando si ha che:
 \end{aligned}
 }
 \]
-SLIDE 19.
+
+
+
+\subsection{Funzioni booleane e formule}
+Può essere dimostrato (ma non lo faremo) che a partire da una formula è possibile definire 
+funzione booleana, e viceversa. Formalmente:\smallskip\\
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
+   Per ogni formula $A$ con $n$ variabili proposizionali $p_1, \dots, p_n$, si può definire una funzione booleana $f_A$ con $n$ argomenti tale che, per ogni combinazione di valori di verità per $p_1, \dots, p_n$ corrispondente all'interpretazione $\mathcal{I}$,
+$f_A(\mathcal{I}(p_1), \dots, \mathcal{I}(p_n)) = \mathcal{I}(A)$.
+\end{definition}}}\smallskip\\
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
+   Per ogni funzione booleana $f$ con $n$ argomenti, esiste una corrispondente formula $A_f$ con $n$ variabili proposizionali $p_1, \dots, p_n$, tale che per ogni interpretazione $\mathcal{I}$, $\mathcal{I}(A_f) = f(\mathcal{I}(p_1), \dots, \mathcal{I}(p_n))$.
+\end{definition}}}\smallskip\\
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 % Ad ogni riga corrisponde un interpretazione\medskip\\
 % Posso associare ad ogni funzione booleana una formula in logica proposizionale 
 % la cui tabella di verità corrisponda a quella della funzione booleana? Si tramite l'algoritmo
@@ -391,7 +424,55 @@ SLIDE 19.
 % D'ora in poi parleremo di formule singole o insieme di formule (sets of formule), non cambia un cazz.\medskip\\
 % Esercizio finale: usare le tabelle di verità per verificare se delle formule sono valide, soddsfacibili o non soddisfacibili (slide 53)\medskip\\
 % Proprietà tra 2 insiemi di formule ("Refutation" significa "confutazione") 
+%IMPLICAZIONE LOGICA SLIDE 45
 
 
 
+%ULTIMA LEZIONE
+% Refutation principle SLIDE 55, molto importante e ci servirà per altre cose
 
+
+
+\noindent Ci sono due forme di ragionamento basate sull'implicazione logica
+\begin{itemize}
+    \item \textbf{Ragionamento deduttivo} (quello che useremo noi) ci permette di analizzare $A$,
+    tramite l'utilizzo degli insiemi di formule $\Gamma$, controllando se la formula $A$ può essere \textit{"dedotta"}
+    dall'insieme di formule, verificando che:
+    \[  \Gamma \models A   \]
+    
+    \item \textbf{Ragionamento abduttivo} (in questo corso non lo verdremo) piccola spiegazione su come funziona il 
+    ragionamento abduttivo.
+
+\end{itemize}
+
+
+
+% RIFUTAZIONE DEBOLE E FORTE
+
+% --- PER ESERCIZI ---
+% TEORIA PROPOSIZIONALE = INSIEME DI FORMULE PROPOSIZIONALI 
+% ASSIOMI = FORMULE PROPOSIZIONALI 
+% CONSEGUENZE LOGICHE = LE FORMULE LOGICAMENTE IMPLICATE DALLA TEORIA PROPOSIZIONALE (ANCHE FACENTE PARTI)
+
+
+% --- NUOVO PPT ---
+% SATISFABILITY, utile anche per l'implicazione logica
+% ALGORITMO DPLL (Davis Putnam Logeman Loveland), problema dell'algoritmo: complessità computazionale ESPONENZIALE, 
+% serve a risolvere il problema della soddisfacibilità booleana 
+% EQUI-SATISFAIABLE, 2 formule sono equisatisfaiable se
+% LETTERALE: o la lettera o (not lettera ?)
+% CLAUSOLA: è una disgiunzione di litterali, i.e. serie di OR
+% CONJUNCTIVE NORMAL FORM: congiunzione di clausole, i.e. clausole unite con l'and \/ (CNF)
+% PROPRIETA DI AND E OR
+% PROPRIETA DELLE CLAUSOLE
+% SATISFAIABILITY DI UN INSIEME DI CLAUSOLE
+% INTERPRETAZIONE PARZIALI 
+% TRASFRORMAZIONE DI TSEITIN: algoritmo che converte qualsiasi formula proposizionale in una equivalente in CNF, 
+% con size constante (con esempio), serve a fare il DPLL
+% TEOREMA: per ogni formula, TSEITIN(formula) è soddisfacibile se e solo se lo è la formula. Inoltre T(formula) è una formula 3-CNF che ha size lineare
+% DPLL si basa su 2 subroutine, SEMPLIFICATION e UNIT PROPAGATION
+% SEMPLIFICATION: rimuove clasole e le not letterale
+% UNIT PROPAGATION: ciclo in cui usa le SEMPLIFICATION, costo polinomiale visto che ad ogni giro elimina clausole, quindi visita al max n volte
+% PROCESSO COMPLETO DPLL, algoritmo ricorsivo con UNIT PROPAGATION
+% ogni volta che vediamo un algoritmo, dimostreremo TERMINAZIONE e CORRETTEZZA
+%
