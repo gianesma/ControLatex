@@ -406,6 +406,8 @@ Formalizziamo questo concetto introducendo le DNF e le CNF: \smallskip\\
    e un \textbf{letterale} è una variabile proposizionale (o la sua negazione)
 \end{definition}}}\smallskip\\
 Quindi, una formula in DNF è vera quando almeno una delle sue congiunzioni è vera. \\
+Possiamo generalizzare la notazione di una DNF in questo modo:
+\[\bigvee_{i = 1}^{m} \left(  \bigwedge_{j = 1}^{n_j} L_{ij}  \right)\]
 Un esempio di DNF è la seguente formula:
 \[     (p \wedge q) \quad \vee \quad (\neg p \wedge r)   \]
 dove $p,q,r,\neg p$ sono tutti letterali e $(p \wedge q ), (\neg p \wedge r)$ sono minterm.\smallskip\\
@@ -417,9 +419,32 @@ dove $p,q,r,\neg p$ sono tutti letterali e $(p \wedge q ), (\neg p \wedge r)$ so
    e un \textbf{letterale} è una variabile proposizionale (o la sua negazione)
 \end{definition}}}\smallskip\\
 Quindi, una formula in CNF è vera quando tutte le sue clausole sono vere.\\
+Possiamo generalizzare la notazione di una CNF in questo modo:
+\[    \bigwedge_{i = 1}^{m} \left( \bigvee_{j = 1}^{n_j} L_{ij}  \right)   \]
 Un esempio di CNF è la seguente formula:
 \[      (p\lor q)   \quad    \land    \quad    (\neg p\lor r)         \]
 dove $p,q,r,\neg p$ sono tutti letterali e $(p \vee q ), (\neg p \vee r)$ sono minterm.\smallskip\\
+Vediamo alcune proprietà delle formule scritte in CNF:
+\begin{itemize}
+    \item \textbf{L'ordine dei letterali non conta}: se una clausola $C$ è ottenuta riordinando 
+    i letterali di una clausola $C'$, allora $C$ e $C'$ sono equivalenti, ad esempio:
+    \[   (p \vee q \vee r \vee \neg r) \equiv (\neg r \vee q \vee p \vee r)      \]
+    \item \textbf{Letterali multipli possono essere uniti}: se una clausola contiene una o più occorrenze dello stesso 
+    letterale, allora è equivalente alla clausola ottenuta cancellando le occorrenze multiple dei letterali, ad esempio:
+    \[   (p \vee \textcolor{red}{q}\vee r \vee \textcolor{red}{q} \vee \neg r) \equiv (p \vee \textcolor{red}{q} \vee r \vee \neg r)    \]
+    \item \textbf{Clausole come insiemi di letterali}: possiamo rappresentare le clausole come un insieme di letterali, ad esempio:
+    \[  (p \vee q \vee r \vee \neg r) \text{ è rappresentato dall'insieme } \{ p,q,r,\neg r   \}  \] 
+    \item \textbf{L'ordine delle clausole non conta}: se una formula in CNF $\phi$ è ottenuta riordinando le clausole 
+     di una formula in CNF $\phi'$, allora $\phi$ e $\phi'$ sono equivalenti, ad esempio:
+    \[   (a \vee b) \wedge (c \vee \neg b) \wedge (\neg b) \quad \equiv \quad (c \vee \neg b) \wedge  (\neg b) \wedge (a \vee b) \]
+    \item \textbf{Clausole multiple possono essere unite}: Se una formula in CNF contiene più di una occorrenza della stessa clausola 
+    allora è equivalente alla formula ottenuta cancellando le occorrenze multiple delle clausole, ad esempio:
+    \[   \mathcolor{red}{(a \vee b)} \wedge (c \vee \neg b) \wedge \mathcolor{red}{(a \vee b)}\quad \equiv \quad \mathcolor{red}{(a \vee b)} \wedge (c \vee \neg b)    \]
+    \item \textbf{Formule in CNF come insieme di clausole}: Possiamo rappresentare una formula in CNF come un 
+    insieme di insiemi di letterali, ed è una diretta conseguenza della proprietà che abbiamo visto sui letterali,
+    ad esempio:
+    \[  (\neg b) \wedge (b \vee a \vee b) \wedge (c \vee \neg b) \wedge (\neg b)  \text{ è rappresentato da }   \big\{\{a, b\}, \{c, ¬b\}, \{¬b\}\big\}   \]
+\end{itemize}
 
 
 
@@ -574,6 +599,15 @@ Qui approfondiremo tre forme basiche di argomentazione uitlizzando l'implicazion
 
 
 \end{itemize}
+
+
+
+
+
+
+
+
+
 
 % FARE PPT DDPL
 
