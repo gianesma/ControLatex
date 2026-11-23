@@ -5326,3 +5326,352 @@ possiamo capire se il progetto
 sta rispettando il budget,
 se è in ritardo e quanto
 potrebbe costare alla conclusione.
+
+\section{La gestione dei rischi}
+
+\subsection*{Rischio, opportunità e issue}
+
+\noindent Un \textbf{rischio} è qualcosa di incerto che può cambiare
+il risultato del progetto. Se un fornitore potrebbe consegnare in
+ritardo, abbiamo una \textbf{minaccia}. Se potrebbe consegnare prima
+e farci risparmiare tempo, abbiamo un'\textbf{opportunità}.
+
+\noindent Se la consegna è già saltata e il ritardo blocca il lavoro,
+abbiamo un'\textbf{issue}: un problema concreto abbastanza serio da
+richiedere un intervento.
+
+\noindent L'incertezza può dipendere da ciò che sappiamo del cliente,
+dalla tecnologia, dai concorrenti o dalle risorse disponibili.
+Le conseguenze possono riguardare \textbf{tempi, costi, qualità}
+o ciò che il progetto deve consegnare (\emph{scope}).
+
+\subsubsection*{Quanto conosciamo la situazione?}
+
+\noindent Il \emph{Risk Continuum} indica quante informazioni abbiamo.
+Quando sappiamo poco, facciamo fatica a stimare che cosa succederà.
+Con informazioni parziali possiamo individuare alcuni rischi e valutarli.
+Se l'esito è già noto, per quell'esito l'incertezza è finita.
+
+\noindent Un orologio è \textbf{complicato}: possiamo studiarne i pezzi
+uno alla volta. Un organismo è \textbf{complesso}: per capirlo conta
+anche come i pezzi si influenzano. Nei progetti accade lo stesso.
+L'esperienza aiuta, ma una serie di consegne puntuali da sola
+non garantisce che la prossima arrivi in tempo.
+
+\subsection*{Le sei fasi del Project Risk Management}
+
+\noindent L'approccio \textbf{proattivo} prepara una risposta prima
+che il problema si presenti. L'approccio \textbf{reattivo} interviene
+quando il problema si è già presentato.
+
+\begin{enumerate}
+    \item \textbf{Pianificare.} Decidiamo come lavorare, chi fa che cosa
+        e con quali criteri valutiamo i rischi. Otteniamo il piano di
+        gestione dei rischi.
+    \item \textbf{Identificare.} Raccogliamo i rischi nel registro.
+    \item \textbf{Analizzare in modo qualitativo.} Usiamo probabilità
+        e impatto per stabilire quali rischi hanno priorità.
+    \item \textbf{Analizzare in modo quantitativo, se serve.}
+        Stimiamo con i numeri, per esempio quanto potrebbe costare
+        un ritardo o quanto è probabile rispettare una scadenza.
+    \item \textbf{Pianificare la risposta.} Scegliamo le azioni e
+        assegniamo un responsabile a ciascuna.
+    \item \textbf{Monitorare e controllare.} Aggiorniamo il registro
+        e il piano di risposta man mano che abbiamo nuovi dati.
+\end{enumerate}
+
+\noindent Nello schema delle slide le prime quattro fasi sono
+raggruppate nel \emph{Risk Assessment}. La tabella delle responsabilità
+distingue chi esegue o coordina il lavoro (\textbf{R}), chi dà supporto
+(\textbf{S}) e chi approva (\textbf{A}).
+
+\subsection*{Come si trovano e si valutano i rischi}
+
+\subsubsection*{Identificazione e registro}
+
+\noindent Si cercano rischi legati sia al risultato da consegnare
+(per esempio specifiche poco chiare), sia al modo in cui si lavora
+(per esempio tempi sottostimati o fornitori in difficoltà).
+
+\begin{itemize}
+    \item \textbf{Brainstorming.} Il gruppo raccoglie idee insieme.
+    \item \textbf{Delphi.} Gli esperti rispondono in forma anonima.
+        Un moderatore riassume le risposte e le ripropone al gruppo.
+    \item \textbf{Interviste.} Si fanno domande a chi conosce il progetto.
+    \item \textbf{Diagramma di Ishikawa.} Si collegano un possibile
+        effetto e le cause che potrebbero produrlo.
+    \item \textbf{SWOT.} Si osservano punti di forza, debolezze,
+        opportunità e minacce.
+\end{itemize}
+
+\noindent Nel \textbf{registro dei rischi} annotiamo per ogni rischio
+codice, categoria, descrizione, possibili cause, quando potrebbe
+verificarsi, probabilità, impatto, priorità, responsabile, risposte
+possibili e stato. I registri dei progetti conclusi possono alimentare
+un archivio da consultare nei progetti futuri.
+
+\subsubsection*{Analisi qualitativa e matrice probabilità--impatto}
+
+\noindent Per ogni rischio facciamo due domande: \textbf{quanto è
+probabile che succeda?} E \textbf{quanto pesano le conseguenze?}
+Per situazioni ricorrenti possiamo usare dati passati. Per situazioni
+nuove ci aiutiamo anche con il giudizio degli esperti.
+
+\noindent Nella matrice cerchiamo l'incrocio tra la riga della
+probabilità e la colonna dell'impatto. La casella indica la priorità.
+Per esempio, nella slide 24, probabilità di livello 4 e impatto
+di livello 5 danno una casella rossa. Il team definisce le scale
+e decide fino a quale livello il rischio è accettabile.
+Le scale possono cambiare in base a ciò che misuriamo, come
+costo, ritardo o cambiamenti nel lavoro da consegnare.
+Si può usare la matrice anche per le opportunità, considerando
+i possibili benefici.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{../images/matrice_probabilita_impatto.png}
+    \caption{Esempio di matrice probabilità--impatto.}
+    %\label{fig:matrice_probabilita_impatto}
+\end{figure}
+
+\subsubsection*{Analisi quantitativa e diagramma Tornado}
+
+\noindent Quando una priorità generica non basta, stimiamo il rischio
+con numeri. Possiamo, per esempio, stimare la probabilità di rispettare
+la scadenza o la perdita economica attesa. La lezione cita anche la
+\textbf{FMEA}, che esamina i modi in cui qualcosa può guastarsi
+e gli effetti del guasto.
+
+\noindent \textbf{Come già visto:} il PERT aiuta a stimare la probabilità
+di finire in tempo. Il VAN misura il valore attuale netto.
+
+\noindent Il \textbf{diagramma Tornado} mostra quali variabili fanno
+cambiare di più il VAN. Si parte da un caso base. Si cambia una
+variabile alla volta e si lascia tutto il resto uguale. Si ricalcola
+il VAN per i due valori estremi provati. Più è lunga la barra,
+più cambia il VAN. Nelle slide la barra più lunga è quella delle
+\textbf{ore di utilizzo al mese}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{../images/diagramma_tornado.png}
+    \caption{Diagramma Tornado delle variabili che influenzano il VAN.}
+    %\label{fig:diagramma_tornado}
+\end{figure}
+
+\subsection*{Rispondere ai rischi e controllarli nel tempo}
+
+\begin{itemize}
+    \item \textbf{Evitare.} Cambiamo il piano per togliere la minaccia.
+    \item \textbf{Trasferire.} Affidiamo a un altro soggetto una parte
+        delle conseguenze, per esempio con un'assicurazione.
+    \item \textbf{Mitigare.} Riduciamo la probabilità o l'impatto.
+        Per esempio, proviamo un componente in anticipo.
+        Ciò che resta dopo l'intervento è il \textbf{rischio residuo}.
+    \item \textbf{Accettare.} Decidiamo di convivere con il rischio.
+        Possiamo mettere da parte una riserva per affrontarne il costo.
+\end{itemize}
+
+\noindent Anche i contratti ripartiscono il rischio dei maggiori costi.
+A \textbf{forfait}, il prezzo è fisso e il fornitore sopporta gli
+aumenti dei propri costi entro il lavoro concordato. A \textbf{tempo
+e spesa}, il committente paga in base al lavoro e alle spese effettive.
+Con un \textbf{prezzo massimo}, gli aumenti oltre il tetto concordato
+restano al fornitore.
+
+\noindent \textbf{Come già visto:} la \emph{Contingency Reserve}
+per i rischi identificati sta nella \emph{Cost Baseline}.
+La \emph{Management Reserve} si aggiunge alla baseline nel budget.
+
+\noindent Durante il progetto il responsabile confronta ciò che
+accade con ciò che era previsto. Se la probabilità o l'impatto
+cambiano, aggiorna il registro e rivede le azioni. Per esempio,
+se un fornitore comincia a ritardare spesso, il team rivaluta
+il rischio di non ricevere in tempo la prossima consegna.
+
+\section{Esercitazione sul valore monetario atteso}
+
+\subsection*{Richiamo e formula}
+
+\noindent \textbf{Come già visto:} per il valore atteso si moltiplica
+ogni risultato per la sua probabilità e si somma. Se i risultati
+sono importi di denaro, si parla di \textbf{Expected Monetary Value}
+(\textbf{EMV}):
+\[
+    EMV = \sum_j p_j X_j,
+    \qquad
+    \sum_j p_j = 1.
+\]
+
+\noindent $p_j$ è la probabilità dell'esito $j$. $X_j$ è l'importo
+netto di quell'esito, cioè quanto incassiamo meno i costi considerati.
+L'EMV è una media. Il risultato effettivo sarà uno degli esiti.
+
+\noindent In un \textbf{albero decisionale}, il nodo decisionale
+indica una scelta, il nodo probabilistico indica un evento incerto
+e le foglie indicano gli importi finali. Si parte dalle foglie e
+si calcola l'EMV di ogni scelta. Nell'esempio delle slide, con
+domanda alta al $60\%$ e bassa al $40\%$, in milioni si ha:
+\begin{align*}
+    EMV_{\text{radicale}}
+        &= 0{,}60(360-200) + 0{,}40(180-200) = 88{,}00, \\
+    EMV_{\text{incrementale}}
+        &= 0{,}60(200-100) + 0{,}40(80-100) = 52{,}00.
+\end{align*}
+\noindent In base all'EMV si sceglie lo sviluppo radicale.
+
+\subsection*{Prima offerta di assicurazione contro le gelate}
+
+\noindent Il raccolto è di $100.000$ quintali. Senza assicurazione,
+le pesche si vendono a $3{,}00$ al quintale con gelata e a $15{,}00$
+con bel tempo:
+\begin{align*}
+    X_{\text{gelata}} &= 100.000 \cdot 3{,}00 = 300.000{,}00, \\
+    X_{\text{bel tempo}} &= 100.000 \cdot 15{,}00 = 1.500.000{,}00.
+\end{align*}
+\noindent La prima offerta garantisce $10{,}00$ al quintale in
+entrambi i casi e costa $200.000{,}00$. Quindi l'importo netto
+è sempre lo stesso e coincide con il suo EMV:
+\[
+    EMV_{\text{con polizza}}
+        = 100.000 \cdot 10{,}00 - 200.000{,}00 = 800.000{,}00.
+\]
+
+\noindent \textbf{Con l'esperienza dell'agricoltore.}
+Tre gelate su cinque anni danno una frequenza del $60\%$.
+Il bel tempo pesa quindi il $40\%$:
+\begin{align*}
+    EMV_{\text{senza polizza}}
+        &= 0{,}60 \cdot 300.000{,}00 + 0{,}40 \cdot 1.500.000{,}00 \\
+        &= 180.000{,}00 + 600.000{,}00 = 780.000{,}00.
+\end{align*}
+\noindent Con questa stima, l'EMV con polizza è più alto:
+\textbf{conviene assicurarsi}.
+
+\noindent \textbf{Con il dato del Ministero.}
+La gelata ha probabilità del $20\%$ e il bel tempo dell'$80\%$:
+\begin{align*}
+    EMV_{\text{senza polizza}}
+        &= 0{,}20 \cdot 300.000{,}00 + 0{,}80 \cdot 1.500.000{,}00 \\
+        &= 60.000{,}00 + 1.200.000{,}00 = 1.260.000{,}00.
+\end{align*}
+\noindent Con questa probabilità, \textbf{conviene rifiutare}
+la prima offerta secondo l'EMV.
+
+\subsection*{Seconda offerta di assicurazione}
+
+\noindent La nuova polizza costa $120.000{,}00$. Paga $9{,}00$
+al quintale con gelata e $15{,}00$ con bel tempo.
+Manteniamo le probabilità del Ministero:
+\begin{align*}
+    X_{\text{gelata, con polizza}}
+        &= 100.000 \cdot 9{,}00 - 120.000{,}00 = 780.000{,}00, \\
+    X_{\text{bel tempo, con polizza}}
+        &= 100.000 \cdot 15{,}00 - 120.000{,}00 = 1.380.000{,}00, \\
+    EMV_{\text{con polizza}}
+        &= 0{,}20 \cdot 780.000{,}00 + 0{,}80 \cdot 1.380.000{,}00 \\
+        &= 156.000{,}00 + 1.104.000{,}00 = 1.260.000{,}00.
+\end{align*}
+\noindent Anche senza polizza l'EMV è $1.260.000{,}00$.
+\textbf{Il criterio dell'EMV dà parità.} Con la polizza, però,
+in caso di gelata si ricevono $780.000{,}00$ anziché $300.000{,}00$.
+Il prezzo di questa protezione è un incasso più basso con bel tempo.
+
+\section{Esercitazione sulla riserva di contingenza}
+
+\subsection*{Richiamo e formule}
+
+\noindent Chiamiamo $L$ la perdita se il rischio si verifica,
+$p_0$ la probabilità iniziale, $p_1$ quella dopo la mitigazione
+e $C_m$ il costo della misura. Nell'esempio la misura riduce
+la probabilità e la perdita $L$ resta uguale:
+\begin{align*}
+    R_0 &= p_0 \cdot L
+        && \text{(riserva iniziale)}, \\
+    R_1 &= p_1 \cdot L
+        && \text{(riserva residua)}, \\
+    \text{Risparmio atteso} &= R_0 - (C_m + R_1).
+\end{align*}
+\noindent Se il risparmio è positivo, mitigare costa meno in media.
+Se è negativo, nell'esercizio si mantiene la riserva iniziale.
+Se è zero, le due scelte hanno lo stesso costo atteso.
+
+\subsection*{Passo 1. Trovare la perdita se il ritardo si verifica}
+
+\noindent \textbf{Come già visto:} il \emph{Project Buffer} è un
+margine di tempo. Qui vale tre giorni e ogni giorno di ritardo
+oltre il margine costa $10.000{,}00$. Per l'attività 1.2, quattro
+giorni di ritardo ne lasciano uno da pagare:
+\[
+    L_{1.2} = (4-3)\cdot 10.000{,}00 = 10.000{,}00.
+\]
+\noindent Per le attività 2.1 e 3.4 usiamo l'impatto economico nullo
+indicato nella slide 43. La sola durata del ritardo indicata nella
+tabella non basta a ricostruire quei due impatti.
+
+\subsection*{Passo 2. Confrontare le due scelte per l'attività 1.2}
+
+\noindent Prima della misura il rischio ha probabilità del $50\%$.
+Pagando $1.500{,}00$ per mitigarlo, la probabilità scende al $30\%$:
+\begin{align*}
+    R_0 &= 0{,}50 \cdot 10.000{,}00 = 5.000{,}00, \\
+    R_1 &= 0{,}30 \cdot 10.000{,}00 = 3.000{,}00, \\
+    C_m + R_1 &= 1.500{,}00 + 3.000{,}00 = 4.500{,}00, \\
+    \text{Risparmio atteso} &= 5.000{,}00 - 4.500{,}00 = 500{,}00.
+\end{align*}
+\noindent Per l'attività 1.2 \textbf{si mitiga}. Nel budget si
+prevedono $1.500{,}00$ per la misura e $3.000{,}00$ di riserva residua.
+
+\subsection*{Passo 3. Ripetere il confronto per tutte le attività}
+
+\noindent La probabilità iniziale è sempre del $50\%$.
+La tabella usa gli impatti economici forniti nella slide 43.
+
+\begin{center}
+    \small
+    \begin{tabular}{lrrrrr}
+        \hline
+        Attività & $L$ & $p_1$ & $R_0$ & $C_m$ & $R_1$ \\
+        \hline
+        1.2 & 10.000,00 & 30\% & 5.000,00 & 1.500,00 & 3.000,00 \\
+        2.1 & 0,00 & 10\% & 0,00 & 7.000,00 & 0,00 \\
+        2.5 & 30.000,00 & 15\% & 15.000,00 & 8.000,00 & 4.500,00 \\
+        3.3 & 20.000,00 & 20\% & 10.000,00 & 4.500,00 & 4.000,00 \\
+        3.4 & 0,00 & 15\% & 0,00 & 10.000,00 & 0,00 \\
+        4.3 & 10.000,00 & 30\% & 5.000,00 & 3.500,00 & 3.000,00 \\
+        7.2 & 20.000,00 & 10\% & 10.000,00 & 10.000,00 & 2.000,00 \\
+        \hline
+    \end{tabular}
+\end{center}
+
+\begin{center}
+    \small
+    \begin{tabular}{lrrrr}
+        \hline
+        Attività & $C_m+R_1$ & Risparmio atteso & Mitigare? & Budget \\
+        \hline
+        1.2 & 4.500,00 & 500,00 & Sì & 4.500,00 \\
+        2.1 & 7.000,00 & $-7.000{,}00$ & No & 0,00 \\
+        2.5 & 12.500,00 & 2.500,00 & Sì & 12.500,00 \\
+        3.3 & 8.500,00 & 1.500,00 & Sì & 8.500,00 \\
+        3.4 & 10.000,00 & $-10.000{,}00$ & No & 0,00 \\
+        4.3 & 6.500,00 & $-1.500{,}00$ & No & 5.000,00 \\
+        7.2 & 12.000,00 & $-2.000{,}00$ & No & 10.000,00 \\
+        \hline
+    \end{tabular}
+\end{center}
+
+\noindent Si mitigano soltanto \textbf{1.2, 2.5 e 3.3}.
+Per queste attività paghiamo le misure e teniamo la riserva residua.
+Per le altre teniamo la riserva iniziale:
+\begin{align*}
+    \text{Costo delle misure}
+        &= 1.500{,}00 + 8.000{,}00 + 4.500{,}00 = 14.000{,}00, \\
+    \text{Riserva dopo le scelte}
+        &= 3.000{,}00 + 4.500{,}00 + 4.000{,}00 \\
+        &\quad {}+ 5.000{,}00 + 10.000{,}00 = 26.500{,}00, \\
+    \text{Budget per i rischi}
+        &= 14.000{,}00 + 26.500{,}00 = 40.500{,}00.
+\end{align*}
+\noindent Senza interventi la somma delle riserve iniziali sarebbe
+$45.000{,}00$. Il risparmio atteso è quindi
+$45.000{,}00 - 40.500{,}00 = \boxed{4.500{,}00}$.
