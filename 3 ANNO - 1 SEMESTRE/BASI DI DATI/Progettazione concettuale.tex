@@ -4243,3 +4243,719 @@ che è sufficiente da solo.
 \subset
 \underbrace{(\text{Ministero},\text{Prodotto})}_{\text{non essenziale}}
 \]
+
+\subsection{Documentazione associata agli schemi ER}
+
+\noindent
+Uno \textbf{schema concettuale} non è costituito soltanto dal diagramma ER,
+ma anche da un documento chiamato \textbf{dizionario dei dati}.\\
+Il dizionario dei dati serve a descrivere in modo più dettagliato gli elementi
+dello schema e a specificare informazioni che il diagramma non rappresenta.
+
+\noindent
+Il dizionario dei dati è composto da quattro tabelle:
+\begin{itemize}
+    \item \textbf{Entità}: descrive le entità, i loro attributi e identificatori.
+    \item \textbf{Relazioni}: descrive le relazioni, le entità coinvolte,
+    gli attributi e gli identificatori.
+    \item \textbf{Attributi}: specifica il dominio e il significato degli attributi.
+    \item \textbf{Vincoli esterni}: descrive i vincoli che non possono essere
+    rappresentati direttamente nel diagramma ER.
+\end{itemize}
+
+\noindent
+La tabella dei \textbf{vincoli esterni} è particolarmente importante:
+se questi vincoli non vengono riportati nel dizionario dei dati,
+non fanno parte dello schema concettuale.
+
+\subsubsection*{Dizionario dei dati: entità}
+
+\noindent
+La tabella delle entità contiene:
+\begin{itemize}
+    \item \textbf{Entità}: nome dell'entità.
+    \item \textbf{Descrizione}: significato dell'entità.
+    \item \textbf{Attributi}: proprietà associate all'entità.
+    \item \textbf{Identificatori}: proprietà che identificano univocamente
+    le istanze dell'entità.
+\end{itemize}
+
+\noindent
+\textcolor{verdeEsempio}{\textbf{Esempio. }}
+Consideriamo uno schema ER relativo a un'azienda.
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.5\linewidth]{../images/diz1.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+
+\noindent
+In particolare, \textbf{Dipartimento} possiede un identificatore esterno:
+il suo nome è univoco soltanto all'interno della sede a cui appartiene.\\
+L'entità \textbf{Sede}, invece, è identificata dalla combinazione
+di Città e Indirizzo.
+
+\subsubsection*{Dizionario dei dati: entità}
+
+\noindent
+La \textbf{tabella delle entità} descrive tutte le entità presenti
+nel diagramma ER, specificando per ciascuna:
+\begin{itemize}
+    \item \textbf{Entità}: nome dell'entità.
+    \item \textbf{Descrizione}: significato dell'entità.
+    \item \textbf{Attributi}: proprietà associate all'entità.
+    \item \textbf{Identificatori}: attributi e/o ruoli che
+    identificano univocamente le sue istanze.
+\end{itemize}
+
+\noindent
+\textcolor{verdeEsempio}{\textbf{Esempio. }}
+Consideriamo lo schema ER di un'azienda, composto dalle entità
+Impiegato, Progetto, Dipartimento e Sede.
+
+\begin{center}
+\noindent
+\small
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{|p{2.3cm}|p{2.7cm}|p{3.3cm}|p{3.1cm}|}
+\hline
+\textbf{Entità} &
+\textbf{Descrizione} &
+\textbf{Attributi} &
+\textbf{Identificatori} \\
+\hline
+
+Impiegato &
+Dipendente dell'azienda &
+Codice, Cognome, Stipendio, Anzianità &
+$\{\text{Codice}\}$ \\
+\hline
+
+Progetto &
+Progetti aziendali &
+Nome, Budget &
+$\{\text{Nome}\}$ \\
+\hline
+
+Dipartimento &
+Struttura aziendale &
+Nome, Telefono &
+$\{\text{Nome, Sede}\}$ \\
+\hline
+
+Sede &
+Sede dell'azienda &
+Città, Indirizzo (Via, CAP) &
+$\{\text{Città, Indirizzo}\}$ \\
+\hline
+
+\end{tabular}
+\end{center}
+
+
+\subsubsection*{Dizionario dei dati: relazioni}
+
+\noindent
+La tabella delle relazioni specifica:
+\begin{itemize}
+    \item \textbf{Relazione}: nome della relazione.
+    \item \textbf{Descrizione}: significato della relazione.
+    \item \textbf{Componenti}: entità che partecipano alla relazione.
+    \item \textbf{Attributi}: eventuali attributi della relazione.
+    \item \textbf{Identificatori}: eventuali identificatori espliciti.
+\end{itemize}
+
+\noindent
+\textcolor{verdeEsempio}{\textbf{Esempio. }}
+Nello schema aziendale sono presenti quattro relazioni.
+
+\begin{center}
+\noindent
+\small
+\begin{tabular}{|l|l|l|l|l|}
+\hline
+\textbf{Relazione} & \textbf{Descrizione} & \textbf{Componenti} & \textbf{Attributi} & \textbf{Identificatori}\\
+\hline
+Direzione & Descrizione di un dipartimento & Impiegato, Dipartimento & -- & -- \\
+\hline
+Afferenza & Afferenza ad un dipartimento & Impiegato, Dipartimento & Data & -- \\
+\hline
+Partecipazione & Partecipazione ad un progetto & Impiegato, Progetto & -- & -- \\
+\hline
+Composizione & Composizione dell'Azienda & Dipartimento, Sede & -- & -- \\
+\hline
+\end{tabular}
+\end{center}
+
+\noindent
+Le relazioni rappresentano rispettivamente:
+\begin{itemize}
+    \item \textbf{Direzione}: un impiegato dirige un dipartimento.
+    \item \textbf{Afferenza}: un impiegato afferisce a un dipartimento.
+    \item \textbf{Partecipazione}: un impiegato partecipa a un progetto.
+    \item \textbf{Composizione}: un dipartimento appartiene a una sede.
+\end{itemize}
+
+\subsubsection*{Dizionario dei dati: attributi}
+
+\noindent
+La tabella degli attributi descrive più precisamente ogni proprietà
+presente nello schema ER.\\
+Per ogni attributo vengono indicati:
+\begin{itemize}
+    \item \textbf{Attributo}: nome della proprietà.
+    \item \textbf{Entità/Relazione}: elemento a cui appartiene.
+    \item \textbf{Dominio}: insieme dei valori ammessi.
+    \item \textbf{Descrizione}: significato dell'attributo.
+\end{itemize}
+
+\noindent
+\textcolor{verdeEsempio}{\textbf{Esempio. }}
+
+\begin{center}
+\noindent
+\small
+\begin{tabular}{|l|l|l|l|}
+\hline
+\textbf{Attributo} & \textbf{Entità} & \textbf{Dominio} & \textbf{Descrizione} \\
+\hline
+Codice & Impiegato & Intero & Codice identificativo di impiegati\\
+\hline
+Cognome & Impiegato & Stringa & Cognome di impiegato\\
+\hline
+Stipendio & Impiegato & Reale & Stipendio di impiegato\\
+\hline
+Nome & Progetto & Stringa & Nome del progetto\\
+\hline
+\end{tabular}
+\end{center}
+
+\subsubsection*{Dizionario dei dati: vincoli esterni}
+
+\noindent
+I \textbf{vincoli di integrità esterni} sono condizioni che devono
+essere rispettate dalle istanze dello schema, ma che non sono
+espresse direttamente dal diagramma ER.
+
+\noindent
+Questi vincoli possono riguardare contemporaneamente più entità,
+relazioni o attributi.
+
+\noindent
+\textcolor{verdeEsempio}{\textbf{Esempio. }}
+Nello schema aziendale sono presenti i seguenti vincoli esterni:
+
+\begin{center}
+\noindent
+\small
+\begin{tabular}{|l|}
+\hline
+\textbf{Vincoli di integrità esterni} \\
+\hline
+Il direttore di un dipartimento deve afferire allo stesso dipartimento.\\
+\hline
+Un impiegato non può avere uno stipendio maggiore di quello del direttore del dipartimento a cui afferisce.\\
+\hline
+Un dipartimento con sede a Roma deve essere diretto da un impiegato con più di dieci anni di anzianità.\\
+
+\hline
+Un impiegato che non afferisce ad alcun dipartimento non può partecipare ad alcun progetto.\\
+\hline
+\end{tabular}
+\end{center}
+
+\section{Metodologia per la progettazione concettuale}
+\subsection{Attività della progettazione concettuale}
+
+La progettazione concettuale è preceduta dalla
+\textbf{raccolta dei requisiti}, cioè dall'acquisizione
+delle informazioni necessarie per progettare la base di dati.\\
+A partire dai requisiti raccolti, si svolgono quattro attività:
+
+\begin{enumerate}
+    \item \textbf{Strutturazione e organizzazione dei requisiti}.
+    \item \textbf{Costruzione del glossario} (opzionale).
+    \item \textbf{Costruzione dello schema concettuale},
+    comprendente diagramma ER e dizionario dei dati.
+    \item \textbf{Controllo di qualità} dello schema.
+\end{enumerate}
+\noindent
+Queste attività non vengono necessariamente eseguite
+in sequenza, ma sono spesso interconnesse.
+
+
+\subsection*{Strutturazione e organizzazione dei requisiti}
+
+I requisiti iniziali sono generalmente espressi in
+linguaggio naturale e devono essere riorganizzati
+per facilitarne l'analisi.
+Le principali operazioni sono:
+
+\begin{itemize}
+    \item Raggruppare le frasi che riguardano lo stesso concetto.
+    \item Individuare sinonimi e omonimi.
+    \item Unificare la terminologia utilizzata.
+    \item Rendere espliciti i riferimenti tra concetti.
+    \item Costruire, eventualmente, un glossario.
+\end{itemize}
+\medskip
+\textcolor{verdeEsempio}{\textbf{Esempio.} }società di formazione\\
+Una descrizione iniziale di una società che organizza corsi
+può contenere informazioni mescolate su studenti, docenti,
+corsi e datori di lavoro.
+Dopo l'organizzazione, i requisiti vengono suddivisi
+in gruppi omogenei:
+
+\begin{itemize}
+    \item \textbf{Partecipanti:}
+    codice identificativo, codice fiscale, cognome,
+    età, sesso, città di nascita, rapporti di lavoro,
+    corsi frequentati e votazioni finali.
+
+    \item \textbf{Datori di lavoro:}
+    nome, indirizzo e telefono.
+    Per i rapporti di lavoro precedenti si registrano
+    anche le date di inizio e fine.
+
+    \item \textbf{Corsi:}
+    codice, titolo ed edizioni.
+    Ogni edizione ha date di inizio e fine,
+    numero di partecipanti e informazioni sulle lezioni.
+
+    \item \textbf{Tipi di partecipanti:}
+    i liberi professionisti hanno un'area di interesse
+    ed eventualmente un titolo professionale;
+    i dipendenti hanno livello e posizione ricoperta.
+
+    \item \textbf{Docenti:}
+    cognome, età, città di nascita, numeri telefonici,
+    corsi insegnati, insegnati in passato
+    e insegnabili.
+    Possono essere interni oppure esterni.
+\end{itemize}
+\noindent
+Lo scopo di questa attività non è ancora disegnare
+il diagramma ER, ma ottenere una specifica
+\textbf{chiara, coerente e organizzata}.
+
+
+\subsection*{Costruzione del glossario}
+
+Il \textbf{glossario} è uno strumento opzionale
+che permette di chiarire il significato dei termini
+presenti nei requisiti. Per ogni termine si possono indicare:
+
+\begin{itemize}
+    \item \textbf{Termine}: nome del concetto.
+    \item \textbf{Descrizione}: significato del concetto.
+    \item \textbf{Sinonimi}: termini equivalenti.
+    \item \textbf{Collegamenti}: altri concetti correlati.
+\end{itemize}
+
+\medskip
+
+\textcolor{verdeEsempio}{\textbf{Esempio}}
+
+\begin{center}
+\noindent
+\small
+\begin{tabular}{|l|l|l|l|}
+\hline
+\textbf{Termine} & \textbf{Descrizione} & \textbf{Sinonimi} & \textbf{Collegamenti} \\
+\hline
+\textcolor{blue}{Partecipante} & Persona che partecipa ai corsi & Studente & \textcolor{verdeEsempio}{Corso, Società}\\
+\hline
+\textcolor{blue}{Docente} & Docente dei corsi. Può essere esterno & Insegnante & \textcolor{verdeEsempio}{Corso}\\
+\hline
+\textcolor{blue}{Corso} & Corso organizzato dalla società. Può avere più edizioni & Seminario & \textcolor{verdeEsempio}{Docente}\\
+\hline
+\textcolor{blue}{Società} & Ente presso cui i partecipanti lavorano o hanno lavorato & Posti & \textcolor{verdeEsempio}{Partecipante}\\
+\hline
+\end{tabular}
+\end{center}
+\noindent
+Il glossario aiuta a evitare ambiguità
+durante la costruzione dello schema concettuale.
+
+
+\subsection{Costruzione dello schema concettuale}
+
+Dopo aver organizzato i requisiti,
+si costruisce lo \textbf{schema concettuale}
+utilizzando il modello Entità-Relazione (ER).
+Il risultato comprende:
+\begin{itemize}
+    \item \textbf{Diagramma ER}: rappresentazione grafica
+    di entità, relazioni, attributi e vincoli.
+
+    \item \textbf{Dizionario dei dati}: descrizione
+    testuale degli elementi dello schema.
+\end{itemize}
+\noindent
+Durante questa fase bisogna effettuare tre scelte:
+
+\begin{enumerate}
+    \item Scelta dei costrutti ER più adatti.
+    \item Scelta dei pattern di modellazione.
+    \item Scelta delle trasformazioni dello schema.
+\end{enumerate}
+\noindent
+Lo schema deve inoltre rispettare opportuni
+\textbf{fattori di qualità}.
+
+
+\subsection*{Trasformazioni dello schema ed equivalenza}
+
+Durante la progettazione può essere necessario
+trasformare uno schema concettuale $S$
+in un nuovo schema $T$.
+Una trasformazione \textbf{preserva l'equivalenza}
+quando i due schemi rappresentano
+le stesse informazioni, pur utilizzando
+strutture differenti.
+Formalmente, devono esistere due funzioni:
+\[
+g : I(S) \rightarrow I(T)
+\]
+
+\[
+h : I(T) \rightarrow I(S)
+\]
+dove $I(S)$ e $I(T)$ sono gli insiemi
+delle possibili istanze dei due schemi.
+Le funzioni devono soddisfare:
+\[
+\forall s \in I(S), \qquad h(g(s)) = s
+\]
+
+\[
+\forall t \in I(T), \qquad g(h(t)) = t
+\]
+Quindi è possibile passare da un'istanza
+di $S$ a una di $T$ e viceversa,
+\textbf{senza perdere informazioni}.\\
+\textbf{Attenzione:}
+due schemi equivalenti dal punto di vista semantico
+non sono necessariamente ugualmente adatti
+a rappresentare la realtà.
+
+
+\subsection{Scelta dei costrutti ER}
+
+Per rappresentare un concetto dei requisiti
+bisogna scegliere il costrutto ER più appropriato.
+
+\begin{itemize}
+    \item \textbf{Entità}: quando il concetto
+    rappresenta oggetti con esistenza autonoma
+    e proprietà significative.
+
+    \item \textbf{Attributo}: quando il concetto
+    rappresenta una proprietà locale di un altro
+    concetto e non possiede proprietà proprie.
+
+    \item \textbf{Relazione}: quando il concetto
+    rappresenta un'associazione tra due o più concetti.
+
+    \item \textbf{ISA o generalizzazione}: quando
+    un concetto rappresenta un caso particolare
+    di un altro concetto.
+\end{itemize}
+
+
+\subsection{Scelta tra ruolo ed entità}
+
+Un concetto può talvolta essere rappresentato
+sia come \textbf{ruolo di una relazione}
+sia come \textbf{entità specializzata}.
+
+\medskip
+
+\textcolor{green!60!black}{\textbf{Esempio: direttore di un'azienda}}
+
+\textbf{Prima soluzione: direttore come ruolo}
+
+Si utilizzano:
+
+\begin{itemize}
+    \item Entità \texttt{Persona}.
+    \item Entità \texttt{Azienda}.
+    \item Relazione \texttt{Dirige}.
+    \item Ruolo \texttt{Direttore} svolto da Persona.
+\end{itemize}
+
+Una persona può dirigere al massimo un'azienda:
+
+\[
+\text{Persona} \xrightarrow{(0,1)}
+\text{Dirige}
+\]
+
+\textbf{Seconda soluzione: direttore come entità}
+
+Si introduce una sotto-entità:
+
+\[
+\text{Direttore ISA Persona}
+\]
+
+e si collega \texttt{Direttore}
+ad \texttt{Azienda} tramite \texttt{Dirige}.
+
+Ogni direttore partecipa alla relazione
+con cardinalità $(1,1)$.
+
+\medskip
+
+I due schemi rappresentano lo stesso concetto.
+
+Tuttavia, se vogliamo memorizzare
+proprietà specifiche del direttore,
+ad esempio \texttt{Anzianità},
+è preferibile utilizzare la seconda soluzione.
+
+\textbf{Regola pratica:}
+se un concetto ha proprietà specifiche,
+conviene rappresentarlo come entità;
+se indica soltanto la funzione svolta
+in una relazione, può essere sufficiente un ruolo.
+
+
+\subsection{Pattern di modellazione}
+
+Un \textbf{pattern di modellazione} è una soluzione
+ricorrente per rappresentare determinati fenomeni
+all'interno di uno schema ER.
+
+Due pattern importanti sono:
+
+\begin{enumerate}
+    \item Scelta tra relazioni binarie e relazioni n-arie.
+    \item Rappresentazione degli aspetti dinamici.
+\end{enumerate}
+
+
+\subsection{Relazioni binarie e relazioni n-arie}
+
+Supponiamo che un'entità $E$ partecipi
+a $N$ relazioni binarie differenti,
+tutte con cardinalità $(1,1)$ dal lato di $E$.
+
+È possibile accorpare queste relazioni
+in un'unica relazione di grado:
+
+\[
+N+1
+\]
+
+mantenendo la cardinalità $(1,1)$
+di $E$ nella nuova relazione.
+
+Questa trasformazione può preservare
+l'equivalenza semantica,
+ma deve essere anche
+\textbf{concettualmente significativa}.
+
+\medskip
+
+\textcolor{green!60!black}{\textbf{Esempio: gestione di un'azienda}}
+
+Un'azienda è collegata a:
+
+\begin{itemize}
+    \item Una banca tramite \texttt{Finanza}.
+    \item Un'agenzia tramite \texttt{Marketing}.
+    \item Una persona tramite \texttt{Direzione}.
+\end{itemize}
+
+L'entità \texttt{Azienda} partecipa
+a ciascuna relazione con cardinalità $(1,1)$.
+
+Le tre relazioni binarie possono essere
+accorpate in una relazione quaternaria:
+
+\[
+\text{Gestione}(
+\text{Azienda},
+\text{Banca},
+\text{Agenzia},
+\text{Persona}
+)
+\]
+
+I nomi \texttt{Finanza}, \texttt{Marketing}
+e \texttt{Direzione} diventano ruoli
+nella relazione \texttt{Gestione}.
+
+I due schemi sono semanticamente equivalenti,
+poiché rappresentano le stesse associazioni.
+
+\medskip
+
+\textcolor{green!60!black}{\textbf{Controesempio: immobile}}
+
+Un immobile può essere collegato a:
+
+\begin{itemize}
+    \item \texttt{Catasto} tramite \texttt{Iscrizione}.
+    \item \texttt{Comune} tramite \texttt{Luogo}.
+    \item \texttt{Persona} tramite \texttt{Proprietà}.
+\end{itemize}
+
+Anche se le tre relazioni hanno cardinalità
+$(1,1)$ dal lato di \texttt{Immobile},
+accorparle in un'unica relazione quaternaria
+non sarebbe una scelta ragionevole.
+
+Infatti, iscrizione catastale, ubicazione
+e proprietà sono concetti differenti,
+non aspetti omogenei di un'unica relazione.
+
+\textbf{Conclusione:}
+
+\begin{itemize}
+    \item \textbf{Equivalenza semantica}:
+    gli schemi rappresentano le stesse informazioni.
+
+    \item \textbf{Adeguatezza pragmatica}:
+    lo schema rappresenta la realtà in modo
+    chiaro, naturale e concettualmente appropriato.
+\end{itemize}
+
+L'equivalenza semantica da sola
+non garantisce una buona modellazione.
+
+
+\subsection{Quando le relazioni non possono essere accorpate}
+
+La condizione $(1,1)$ nelle relazioni binarie
+è fondamentale per l'accorpamento
+descritto in precedenza.
+
+Se una partecipazione è opzionale,
+la trasformazione può non preservare
+l'equivalenza semantica.
+
+\medskip
+
+\textcolor{green!60!black}{\textbf{Esempio: esercizio 23}}
+
+Consideriamo quattro entità:
+
+\[
+E,\quad F,\quad G,\quad H
+\]
+
+L'entità $E$ partecipa a tre relazioni:
+
+\[
+R_1(E,F) \qquad (1,1)
+\]
+
+\[
+R_2(E,G) \qquad (0,1)
+\]
+
+\[
+R_3(E,H) \qquad (1,1)
+\]
+
+Le cardinalità indicate si riferiscono
+alla partecipazione di $E$.
+
+Nel primo schema, ogni istanza di $E$:
+
+\begin{itemize}
+    \item Deve essere collegata a un'istanza di $F$.
+    \item Può non essere collegata ad alcuna istanza di $G$.
+    \item Deve essere collegata a un'istanza di $H$.
+\end{itemize}
+
+Se accorpiamo le tre relazioni
+in un'unica relazione quaternaria $R$
+con cardinalità $(1,1)$ su $E$,
+ogni istanza di $E$ deve partecipare
+a una tupla di $R$.
+
+Di conseguenza, ogni istanza di $E$
+risulta necessariamente associata
+anche a un'istanza di $G$.
+
+Questo contraddice la cardinalità
+originaria $(0,1)$.
+
+\[
+\boxed{\text{I due schemi non sono semanticamente equivalenti.}}
+\]
+
+Cambiare la cardinalità di $E$ in $R$
+da $(1,1)$ a $(0,1)$ non risolve il problema,
+perché diventerebbero opzionali
+anche i collegamenti con $F$ e $H$.
+
+\textbf{Da ricordare:}
+l'accorpamento delle relazioni binarie
+non è generalmente valido quando
+le partecipazioni dell'entità comune
+non sono tutte $(1,1)$.
+
+
+\subsection{Rappresentazione degli aspetti dinamici}
+
+Durante la progettazione concettuale
+bisogna distinguere tra:
+
+\begin{itemize}
+    \item \textbf{Aspetti statici}:
+    proprietà e associazioni che non cambiano
+    durante l'evoluzione del sistema informativo.
+
+    \item \textbf{Aspetti dinamici}:
+    proprietà e associazioni che possono
+    cambiare nel tempo.
+\end{itemize}
+
+Per gli aspetti dinamici possono essere
+necessarie tecniche di modellazione specifiche.
+
+Si distinguono due casi principali:
+
+\begin{enumerate}
+    \item \textbf{Rappresentazione degli eventi}:
+    si modellano eventi che coinvolgono
+    istanze di entità o relazioni.
+
+    \item \textbf{Storicizzazione}:
+    si conservano i diversi valori assunti
+    da una proprietà nel corso del tempo.
+\end{enumerate}
+
+\medskip
+
+\textcolor{green!60!black}{\textbf{Esempio: storicizzazione}}
+
+Se interessa conoscere non soltanto
+l'attuale datore di lavoro di una persona,
+ma anche quelli precedenti,
+non basta memorizzare un unico valore.
+
+Occorre rappresentare i diversi rapporti
+di lavoro e i rispettivi periodi:
+
+\[
+(\text{Persona},\text{Datore},
+\text{DataInizio},\text{DataFine})
+\]
+
+In questo modo è possibile ricostruire
+la storia lavorativa della persona.
+
+Se la proprietà da storicizzare appartiene
+a una relazione, è possibile trasformare
+la relazione in entità e applicare
+una tecnica di storicizzazione analoga.
+
+\textbf{Obiettivo:}
+conservare i valori storici senza sovrascriverli
+quando cambiano nel tempo.

@@ -1,0 +1,970 @@
+% PROBLEMI CON CUI DOVREMMO FARE LE RIDUZIONI ALL'ESAME
+\chapter{Problemi difficili e completi*}
+\section{Introduzione}
+Vediamo in cosa consistono i \textbf{problemi difficili e completi}:\smallskip\\
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
+   Un problema $\mathcal{P}$ è $\bm{\mathbb{C}-\textbf{hard}}$ se una Macchina di Turing che risolve $\mathcal{P}$
+   può risolvere ogni problema nella clasee $\mathbb{C}$ se utilizzata come subroutine di da altre macchine
+\end{definition}}}\smallskip\\
+In sostanza vuol dire che il problema $\mathcal{P}$ è almeno tanto difficile quanto ogni altro problema 
+in $\mathbb{C}$, se non di più.\smallskip\\
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
+   Un problema $\mathcal{P}$ è $\bm{\mathbf{\mathbb{C}}-\textbf{complete}}$ se è $\mathbb{C}$-hard e appartiene a $\mathbb{C}$
+\end{definition}}}\smallskip\\
+Qui invece significa che $\mathcal{P}$ è tanto difficile quanto ogni altro problema in $\mathbb{C}$, ma è anche in $\mathbb{C}$.\\
+Una macchina per $\mathcal{P}$ risolve ogni problema in $\mathbb{C}$ se, per ogni problema $\mathcal{P'}$ di 
+$\mathbb{C}$ esiste una \textbf{riduzione} da $\mathcal{P}$ a $\mathcal{P'}$.\\
+Ricordiamo che $A$ è riducibile (molti a uno) a $B$ ($A \le_m B$), se esiste una funzione calcolabile 
+$f:\Sigma_{A}^* \to \Sigma_B^*$ tale che, per ogni $x \in \Sigma_A^*$, $x \in A$ se e solo se $f(x) \in B$. 
+(La spiegazione completa delle riduzioni sta qui \ref{riduzioni}).\smallskip\\
+Utilizziamo il concetto di riduzione per definire i \textbf{linguaggi difficili} ($\mathbb{C}$-hard):\smallskip\\
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
+    Un linguaggio $\mathcal{L}$ è $\bm{\mathbb{C}-\textbf{hard}}$ se, per ogni $\mathcal{L}' \in \mathbb{C}$ 
+    esiste una macchina di Turing $M$ tale che:
+    \begin{itemize}[label = --]
+        \item $M$ definisce una \textbf{riduzione} da $\mathcal{L}'$ a $\mathcal{L}$
+        \item $M$ ha complessità compatibile (inferiore) a quella necessaria per riconoscere i linguaggi di $\mathbb{C}$
+    \end{itemize}
+\end{definition}}}\smallskip\\
+
+
+%NP COMPLETEZZA
+
+\section{NP-completezza}
+Abbiamo visto che per definire problemi completi e difficili servono necessariamente le riduzioni. Per i problemi NP (\ref{np}) utilizzeremo \textbf{riduzioni polinomiali},
+poichè una macchina deterministica con complessità temporale $\mathcal{O}(n^k)$ può essere simulata da una macchina non deterministica con la stessa complessità.\\
+Una funzione $f: \Sigma^* \to \Gamma^*$ è calcolabile in tempo polinomiale se esiste una macchina di Turing $M$ tale che $M$ calcola $f$ e $M$ ha complessità temporale $\mathcal{O}(n^k)$
+per qualche $k \in \mathbb{N}$.
+
+
+\subsection{Riduzioni efficienti}
+Le riduzioni efficienti le chiamiamo \textbf{riduzioni di Karp}, vediamo la definizione:\smallskip\\
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
+    Siano $A$ e $B$ due linguaggi sugli alfabeti $\Sigma_A^*$ e $\Sigma_B^*$, rispettivamente. \\Diremo che 
+    $\bm{A}$ \textbf{è Karp-riducibile in tempo polinomiale a B} (denotato con $A \le_{m}^{p}B$) se esiste una
+    riduzione 
+    \[f:\Sigma_A^* \to \Sigma_A^*\]
+    da $A$ a $B$ tale che $f$ è calcolabile in tempo polinomiale  
+\end{definition}}}\smallskip\\
+La funzione $f$ viene chiamata \textbf{Karp-riduzione da} $\bm{A}$ in $\bm{B}$
+
+%LINGUAGGI DIFFICILI E COMPLETI PER NP
+\newpage
+\subsection{Linguaggi difficili e completi per NP}
+Ora che abbiamo introdotto le riduzioni efficienti, possiamo utilizzarle per definire linguaggi completi e difficili in NP. \smallskip\\
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
+    Un linguaggio $\mathcal{L}$ si dice \textbf{NP-hard} sotto le riduzioni polinomiali se per ogni linguaggio $\mathcal{L}'\in NP$ è tale che  
+    \[\mathcal{L}' \le^{p}_{m} \mathcal{L} \quad(\text{riduzione di efficiente Karp}) \]
+\end{definition}}}\smallskip\\
+In altre parole significa che il linguaggio $\mathcal{L}$ è almeno tanto difficile quanto qualsiasi problema della classe NP.\smallskip\\
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
+    Un linguaggio $\mathcal{L}$ si dice \textbf{NP-complete} sotto le riduzioni in tempo polinomiale se $\mathcal{L} \in NP$ e $\mathcal{L} $ è NP-hard 
+    sotto le riduzioni in tempo polinomiale 
+\end{definition}}}\smallskip\\
+In altre parole un linguaggio NP-completo è un linguaggio che appartiene alla classe NP ed è almeno tanto difficile quanto tutti gli altri problemi di NP.\smallskip\\
+Per dare queste due definizioni abbiamo semplicemente applicato le definizioni generali viste nella sezione di introduzione del capitolo.\\
+Successivamente vedremo il teorema di Cook e Levin, che si occupa di dimostrare che il linguaggio dei palindromi \textsc{sat} è NP-completo. 
+
+
+
+\section{Teorema di Cook-Levin}
+Per enunciare e dimostrare il teorema di Cook-Levin dobbiamo definire il linguaggio \textsc{sat}:\smallskip\\
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
+    \textsc{sat} è il linguaggio di stringhe definito come segue:
+    \[    \big\{    e(\varphi)  \ | \ \varphi \text{ è una formula proposizionale soddisfacibile su V}  \big\}      \]
+    dove V è un insieme di formule proposizionali.
+\end{definition}}}\smallskip\\
+Il \textbf{Teorema di Cook-Levin} dimostra che il problema
+della soddisfacibilità proposizionale ($SAT$) è
+\textbf{NP-completo}.Fissiamo un encoding $e$ per le formule proposizionali,
+utilizzando un alfabeto finito $\Sigma_{SAT}$.
+L'encoding deve essere ragionevole, cioè deve permettere
+di rappresentare e manipolare le formule in modo efficiente.\\
+Enunciamo il teorema: \smallskip\\
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{
+\begin{theorem}[Cook-Levin]
+Il problema $SAT$ è \textbf{NP-hard} e, poiché
+$SAT\in NP$, è anche \textbf{NP-completo}.
+\end{theorem}
+}}
+Attenzione, la dimostrazione di questo teorema è abbastanza lunga e articolata poichè non possiamo appoggiarci 
+a nessun risultato/linguaggi noti, mentre le prossime dimostrazioni saranno più semplici. 
+\begin{proof}
+\vspace{0.1cm}    
+Per dimostrare che $SAT$ è NP-hard dobbiamo provare che
+\textbf{ogni linguaggio appartenente a NP può essere
+ridotto a SAT in tempo polinomiale}.
+Consideriamo quindi un linguaggio arbitrario
+$L\in NP$, definito su un alfabeto $\Sigma_L$.
+Vogliamo costruire una funzione
+\[
+f_L:\Sigma_L^*\rightarrow\Sigma_{SAT}^*
+\]
+calcolabile in tempo polinomiale, tale che:
+\[
+\boxed{
+x\in L\iff f_L(x)\in SAT
+}
+\]
+Poiché $L\in NP$, per definizione esiste una macchina
+di Turing non deterministica $M_L$ che decide $L$
+in tempo polinomiale.
+Quindi esiste $k\in\mathbb N$ tale che:
+\[
+t_{M_L}(n)=O(n^k).
+\]
+L'idea della dimostrazione consiste nel costruire,
+per ogni input $x$, una formula proposizionale
+$\varphi_x$ che rappresenti una possibile
+esecuzione accettante di $M_L$ su $x$.\\
+La formula deve soddisfare la seguente proprietà:
+\[
+\boxed{
+M_L\text{ accetta }x
+\iff
+\varphi_x\text{ è soddisfacibile}
+}
+\]
+Infatti:
+\begin{itemize}
+    \item Se esiste un'esecuzione accettante di $M_L$
+    su $x$, deve esistere un assegnamento di verità
+    che soddisfa $\varphi_x$.
+
+    \item Se $\varphi_x$ è soddisfacibile, il suo
+    assegnamento deve rappresentare un'esecuzione
+    valida e accettante di $M_L$ su $x$.
+\end{itemize}
+Infine, dimostreremo che $\varphi_x$ può essere
+costruita in tempo polinomiale rispetto alla
+lunghezza dell'input $x$.\\
+Poiché $M_L$ decide $L$ in tempo polinomiale,
+esiste un polinomio $p(n)$ tale che:
+\[
+p(n)>\max\{n,t_{M_L}(n)\}.
+\]
+Il polinomio $p(n)$ dipende soltanto dalla macchina
+$M_L$ e non dal particolare input.\\
+Poniamo:
+\[
+n=|x|,\qquad T=p(n).
+\]
+Possiamo quindi stabilire che ogni esecuzione di
+$M_L$ su un input di lunghezza $n$ utilizza
+al più $T$ configurazioni.
+Inoltre, una macchina di Turing può raggiungere
+al massimo una nuova cella di nastro per transizione.
+Di conseguenza, se l'esecuzione dura al più $T$
+configurazioni, il numero di celle di nastro
+necessarie è anch'esso limitato da $T$.
+Pertanto possiamo rappresentare ogni esecuzione
+considerando:
+\begin{itemize}
+    \item Al più $T$ istanti temporali.
+    \item Al più $T$ celle del nastro.
+    \item Un numero finito di stati della macchina.
+\end{itemize}
+Poiché la macchina termina in tempo polinomiale,
+non può visitare un numero di celle superiore
+a un limite polinomiale.
+Questo ci permette di rappresentare un'intera
+esecuzione mediante una tabella di dimensione
+polinomiale rispetto all'input.
+Consideriamo la macchina:
+\[
+M_L=
+\langle
+\Sigma,\Gamma,Q,\delta,q_0,q_{yes},q_{no}
+\rangle.
+\]
+Una configurazione di $M_L$ è determinata da
+tre informazioni:
+\begin{enumerate}
+    \item Lo \textbf{stato corrente} della macchina.
+    \item La \textbf{posizione della testina} sul nastro.
+    \item Il \textbf{contenuto delle celle} del nastro.
+\end{enumerate}
+Possiamo rappresentare un'esecuzione come una tabella in cui:
+\begin{itemize}
+    \item Ogni riga rappresenta una configurazione,
+    ossia un istante temporale.
+
+    \item Le colonne rappresentano lo stato della
+    macchina, la posizione della testina e le $T$
+    celle del nastro.
+\end{itemize}
+La tabella possiede dunque al più $T$ righe e
+$T+2$ colonne.\medskip\\
+\textit{Esempio.}
+Supponiamo che una macchina abbia cinque celle
+di nastro e che l'input sia $aa$.
+Una possibile esecuzione può essere rappresentata
+dalla seguente tabella:
+\[
+\begin{array}{c|c|ccccc}
+\text{Stato} & \text{Testina}
+& p_1 & p_2 & p_3 & p_4 & p_5\\
+\hline
+q_0     & 1 & a & a & \sqcup & \sqcup & \sqcup\\
+q_0     & 2 & b & a & \sqcup & \sqcup & \sqcup\\
+q_0     & 3 & b & b & \sqcup & \sqcup & \sqcup\\
+q_1     & 3 & b & b & a & \sqcup & \sqcup\\
+q_{yes} & 3 & b & b & a & \sqcup & \sqcup
+\end{array}
+\]
+Ogni riga descrive completamente la situazione
+della macchina in un determinato istante.
+Il nostro obiettivo è costruire una formula
+proposizionale che rappresenti una tabella di
+questo tipo e garantisca che essa descriva
+un'esecuzione valida.\\
+Per rappresentare le configurazioni introduciamo
+tre famiglie di variabili proposizionali.
+Definiamo:
+\[
+H_j^i
+\qquad i,j=1,\ldots,T.
+\]
+La variabile $H_j^i$ è vera se e solo se,
+all'istante $i$, la testina si trova nella
+posizione $j$ del nastro.
+Formalmente:
+\[
+H_j^i=1
+\iff
+\text{testina in posizione }j
+\text{ all'istante }i.
+\]
+Definiamo:
+\[
+Q_c^i
+\qquad i=1,\ldots,T,\quad c\in Q.
+\]
+La variabile $Q_c^i$ è vera se e solo se
+la macchina si trova nello stato $c$
+all'istante $i$.
+Formalmente:
+\[
+Q_c^i=1
+\iff
+\text{stato corrente }c
+\text{ all'istante }i.
+\]
+Definiamo:
+\[
+V_g^{i,j}
+\qquad
+i,j=1,\ldots,T,\quad g\in\Gamma.
+\]
+La variabile $V_g^{i,j}$ è vera se e solo se,
+all'istante $i$, la cella $j$ contiene
+il simbolo $g$.
+Formalmente:
+\[
+V_g^{i,j}=1
+\iff
+\text{la cella }j\text{ contiene }g
+\text{ all'istante }i.
+\]
+\textit{Esempio.}
+Consideriamo la prima configurazione della tabella:
+\[
+(q_0,1,aa\sqcup\sqcup\sqcup).
+\]
+Essa viene rappresentata assegnando valore vero
+alle variabili:
+\[
+H_1^1\quad Q_{q_0}^1\quad
+V_a^{1,1}\quad V_a^{1,2} \quad
+V_{\sqcup}^{1,3}\quad
+V_{\sqcup}^{1,4}\quad
+V_{\sqcup}^{1,5}
+\]
+Le variabili che descrivono posizioni della testina,
+stati o simboli diversi da quelli effettivi
+assumono invece valore falso.
+In questo modo, un assegnamento di verità
+può rappresentare una possibile esecuzione.
+Tuttavia, non tutti gli assegnamenti descrivono
+esecuzioni valide: dobbiamo imporre dei vincoli.\smallskip\\
+Costruiamo ora delle formule proposizionali
+che garantiscano la correttezza di ogni
+configurazione rappresentata.
+In particolare, dobbiamo imporre tre condizioni:
+\begin{enumerate}
+    \item La testina occupa esattamente una posizione.
+    \item La macchina si trova esattamente in uno stato.
+    \item Ogni cella contiene esattamente un simbolo.
+\end{enumerate}
+Per ogni istante $i$, almeno una delle variabili
+$H_1^i,\ldots,H_T^i$ deve essere vera:
+\[
+\bigvee_{j=1}^{T}H_j^i.
+\]
+Inoltre, due posizioni differenti non possono
+essere contemporaneamente occupate:
+\[
+\bigwedge_{1\le j<k\le T}
+(\neg H_j^i\lor\neg H_k^i).
+\]
+Combinando le due condizioni otteniamo:
+\[
+\boxed{
+\varphi_H=
+\bigwedge_{i=1}^{T}
+\left[
+\left(\bigvee_{j=1}^{T}H_j^i\right)
+\quad
+\land
+\quad
+\left(
+\bigwedge_{1\le j<k\le T}
+(\neg H_j^i\lor\neg H_k^i)
+\right)
+\right]
+}
+\]
+La prima parte impone che la testina si trovi
+\textbf{in almeno una posizione}; la seconda
+impone che si trovi \textbf{in al più una posizione}.
+Insieme garantiscono che occupi
+\textbf{esattamente una posizione}.\smallskip\\
+Analogamente, a ogni istante la macchina deve
+trovarsi esattamente in uno stato dell'insieme $Q$.
+Imponiamo:
+\[
+\boxed{
+\varphi_Q=
+\bigwedge_{i=1}^{T}
+\left[
+\left(\bigvee_{c\in Q}Q_c^i\right)
+\quad
+\land
+\quad
+\left(
+\bigwedge_{\substack{c,d\in Q\\c\ne d}}
+(\neg Q_c^i\lor\neg Q_d^i)
+\right)
+\right]
+}
+\]
+La prima parte garantisce che almeno uno stato
+sia attivo, mentre la seconda impedisce
+che due stati distinti siano attivi
+contemporaneamente.
+Ogni cella del nastro deve contenere esattamente
+un simbolo dell'alfabeto $\Gamma$.
+Definiamo:
+\[
+\boxed{
+\begin{aligned}
+\varphi_V=
+\bigwedge_{i=1}^{T}
+\bigwedge_{j=1}^{T}
+\Bigg[
+\left(\bigvee_{g\in\Gamma}V_g^{i,j}\right)\quad
+\land
+\quad
+\left(
+\bigwedge_{\substack{g,h\in\Gamma\\g\ne h}}
+(\neg V_g^{i,j}\lor\neg V_h^{i,j})
+\right)
+\Bigg]
+\end{aligned}
+}
+\]
+Questa formula garantisce che ogni cella
+contenga un simbolo e non possa contenerne
+due diversi nello stesso istante. Definiamo:
+\[
+\boxed{
+\varphi_{\text{cons}}=
+\varphi_H\land\varphi_Q\land\varphi_V
+}
+\]
+Un assegnamento che soddisfa
+$\varphi_{\text{cons}}$ rappresenta una sequenza
+di configurazioni strutturalmente corrette.
+Tuttavia, questo non garantisce ancora che
+le configurazioni consecutive rispettino
+le transizioni di $M_L$.\smallskip\\
+Dobbiamo ora garantire che ogni configurazione
+sia ottenuta dalla precedente applicando
+una transizione valida della macchina.
+Supponiamo che, nello stato $q$ e leggendo
+il simbolo $a$, la funzione di transizione
+non deterministica restituisca:
+\[
+\delta(q,a)=
+\{
+(q_1,b_1,d_1),\ldots,(q_s,b_s,d_s)
+\}
+\]
+Questo significa che la macchina può scegliere
+una delle $s$ transizioni disponibili.
+Ogni transizione specifica:
+\begin{itemize}
+    \item Il nuovo stato $q_m$.
+    \item Il simbolo $b_m$ da scrivere.
+    \item La direzione $d_m$ dello spostamento.
+\end{itemize}
+Indichiamo con $j_m$ la posizione raggiunta
+dalla testina applicando la transizione $m$:
+\[
+j_m=
+\begin{cases}
+j, & d_m=-,\\
+j+1, & d_m=\rightarrow,\\
+j-1, & d_m=\leftarrow,\ j>1,\\
+1, & d_m=\leftarrow,\ j=1
+\end{cases}
+\]
+Assumiamo, come nella costruzione delle slide,
+che un movimento verso sinistra dalla prima cella
+lasci la testina nella posizione 1.
+Se all'istante $i$:
+\begin{itemize}
+    \item La testina è nella posizione $j$.
+    \item La macchina è nello stato $q$.
+    \item La cella $j$ contiene il simbolo $a$.
+\end{itemize}
+allora all'istante successivo deve verificarsi
+una delle transizioni appartenenti a $\delta(q,a)$.
+Questa condizione si rappresenta con:
+\[
+\begin{aligned}
+H_j^i\land Q_q^i\land V_a^{i,j}
+\quad\Rightarrow\quad
+\bigvee_{m=1}^{s}
+\left(
+H_{j_m}^{i+1}
+\land Q_{q_m}^{i+1}
+\land V_{b_m}^{i+1,j}
+\right)
+\end{aligned}
+\]
+La parte a sinistra descrive la situazione
+corrente della macchina.
+La disgiunzione a destra rappresenta
+\textbf{tutte le possibili transizioni valide}.
+È sufficiente che una delle alternative
+sia soddisfatta, perché una macchina
+non deterministica deve scegliere
+una sola transizione tra quelle disponibili.
+Ripetiamo il vincolo per tutti gli istanti,
+le posizioni, gli stati e i simboli:
+\[
+\boxed{
+\begin{aligned}
+\varphi_\delta=
+\bigwedge_{i=1}^{T-1}
+\bigwedge_{j=1}^{T}
+\bigwedge_{q\in Q}
+\bigwedge_{a\in\Gamma}
+\Bigg[
+&(H_j^i\land Q_q^i\land V_a^{i,j})
+&\Rightarrow
+\bigvee_{(q',b,d)\in\delta(q,a)}
+\left(
+H_{\mu(j,d)}^{i+1}
+\land Q_{q'}^{i+1}
+\land V_b^{i+1,j}
+\right)
+\Bigg]
+\end{aligned}
+}
+\]
+Qui $\mu(j,d)$ indica la nuova posizione
+della testina dopo il movimento $d$.
+Le transizioni che supererebbero il limite
+delle $T$ celle vengono escluse dalla
+rappresentazione: nessuna esecuzione valida
+entro il limite temporale scelto ne ha bisogno.\smallskip\\
+La formula precedente impone il comportamento
+della cella attualmente letta dalla testina.
+Dobbiamo però garantire che tutte le altre
+celle rimangano invariate.
+Se all'istante $i$ la testina non si trova
+nella posizione $j$, il simbolo contenuto
+nella cella $j$ deve essere lo stesso
+all'istante $i+1$.
+Formalmente:
+\[
+\boxed{
+\begin{aligned}
+\varphi_{\text{inv}}=
+\bigwedge_{i=1}^{T-1}
+\bigwedge_{j=1}^{T}
+\bigwedge_{a\in\Gamma}
+\Big[
+(\neg H_j^i\land V_a^{i,j})
+\Rightarrow V_a^{i+1,j}
+\Big]
+\end{aligned}
+}
+\]
+Una transizione della macchina può modificare
+soltanto la cella sulla quale si trova la
+testina. Tutte le altre celle devono
+conservare il proprio contenuto.\smallskip\\
+Senza perdita di generalità, assumiamo che
+gli stati $q_{yes}$ e $q_{no}$ abbiano
+transizioni che mantengono invariati
+lo stato, la posizione della testina
+e il contenuto del nastro.
+In questo modo, quando la macchina termina,
+possiamo ripetere la configurazione terminale
+nelle righe successive della tabella,
+fino a raggiungere esattamente $T$ righe.
+Questa convenzione semplifica la costruzione
+delle formule.
+Supponiamo che:
+\[
+\delta(q_0,a)=
+\{
+(q_0,b,\rightarrow),
+(q_{yes},\sqcup,\leftarrow),
+(q_{no},a,-)
+\}
+\]
+Consideriamo l'istante $i=2$ e la posizione
+$j=2$ del nastro.
+Se la macchina si trova nello stato $q_0$
+e legge $a$ nella seconda cella, può:
+\begin{enumerate}
+    \item Scrivere $b$, spostarsi a destra
+    ed entrare nello stato $q_0$.
+
+    \item Scrivere $\sqcup$, spostarsi a sinistra
+    ed entrare nello stato $q_{yes}$.
+
+    \item Lasciare $a$, non spostarsi
+    ed entrare nello stato $q_{no}$.
+\end{enumerate}
+La corrispondente formula è:
+\[
+\begin{aligned}
+H_2^2\land Q_{q_0}^2\land V_a^{2,2}
+\quad
+\Rightarrow
+\quad
+\bigg[
+(H_3^3\land Q_{q_0}^3\land V_b^{3,2})
+\quad\lor\quad
+(H_1^3\land Q_{q_{yes}}^3\land V_{\sqcup}^{3,2})
+\quad\lor\quad
+(H_2^3\land Q_{q_{no}}^3\land V_a^{3,2})
+\bigg]
+\end{aligned}
+\]
+La disgiunzione rappresenta le tre possibili
+scelte non deterministiche.
+L'assegnamento di verità seleziona una
+di queste alternative, rappresentando
+una particolare esecuzione della macchina.\smallskip\\
+Dobbiamo ora imporre che la prima riga della
+tabella rappresenti esattamente la
+configurazione iniziale di $M_L$ su $x$.
+Sia:
+\[
+x=c_1c_2\cdots c_n
+\]
+All'istante iniziale:
+\begin{itemize}
+    \item La macchina si trova nello stato $q_0$.
+    \item La testina si trova nella posizione 1.
+    \item Le prime $n$ celle contengono l'input.
+    \item Le celle successive contengono il
+    simbolo bianco $\sqcup$.
+\end{itemize}
+Definiamo quindi:
+\[
+\boxed{
+\begin{aligned}
+\varphi_{\text{init}}={}&
+Q_{q_0}^{1}\quad\land\quad H_1^1
+\quad
+\land
+\quad
+\bigwedge_{j=1}^{n}V_{c_j}^{1,j}
+\quad
+\land
+\quad
+\bigwedge_{j=n+1}^{T}V_{\sqcup}^{1,j}
+\end{aligned}
+}
+\]
+Per l'input vuoto, tutte le celle iniziali
+sono bianche.\smallskip\\
+\textit{Esempio.}
+Se $x=aa$ e $T=5$, otteniamo:
+\[
+\begin{aligned}
+\varphi_{\text{init}}={}&
+Q_{q_0}^{1} \quad\land\quad H_1^1
+\quad\land \quad V_a^{1,1}
+\quad\land\quad V_a^{1,2}
+\quad
+\land\quad V_{\sqcup}^{1,3}
+\quad\land\quad V_{\sqcup}^{1,4}
+\quad\land \quad V_{\sqcup}^{1,5}
+\end{aligned}
+\]
+Questa formula descrive la configurazione
+iniziale della macchina con input $aa$.\smallskip\\
+Infine, vogliamo imporre che l'esecuzione
+rappresentata dalla tabella sia accettante.
+Per questo è sufficiente richiedere che
+lo stato $q_{yes}$ venga raggiunto
+in almeno uno degli istanti temporali.
+Definiamo:
+\[
+\boxed{
+\varphi_{\text{acc}}=
+\bigvee_{i=1}^{T}Q_{q_{yes}}^i
+}
+\]
+La formula è vera se esiste almeno un
+istante nel quale la macchina si trova
+nello stato accettante.
+\textit{Esempio.}
+Per $T=5$:
+\[
+\varphi_{\text{acc}}=
+Q_{q_{yes}}^1\quad\lor\quad Q_{q_{yes}}^2
+\quad\lor\quad Q_{q_{yes}}^3\quad\lor\quad Q_{q_{yes}}^4
+\quad\lor\quad Q_{q_{yes}}^5
+\]
+È sufficiente che una di queste variabili
+sia vera per soddisfare il vincolo.\smallskip\\
+Abbiamo costruito diverse formule,
+ciascuna delle quali impone una particolare
+condizione sull'esecuzione.
+Le combiniamo mediante una congiunzione:
+\[
+\boxed{
+\begin{aligned}
+\varphi_x={}
+\varphi_{\text{cons}}
+\quad\land\quad\varphi_\delta
+\quad\land\quad\varphi_{\text{inv}}
+\quad\land\quad\varphi_{\text{init}}
+\quad\land\quad\varphi_{\text{acc}}
+\end{aligned}
+}
+\]
+Le componenti hanno i seguenti significati:
+\begin{itemize}
+    \item $\varphi_{\text{cons}}$:
+    ogni configurazione è strutturalmente valida.
+
+    \item $\varphi_\delta$:
+    ogni passaggio tra configurazioni
+    rispetta una transizione di $M_L$.
+
+    \item $\varphi_{\text{inv}}$:
+    le celle non lette dalla testina
+    mantengono il proprio contenuto.
+
+    \item $\varphi_{\text{init}}$:
+    l'esecuzione parte dalla configurazione
+    iniziale corretta per l'input $x$.
+
+    \item $\varphi_{\text{acc}}$:
+    l'esecuzione raggiunge uno stato accettante.
+\end{itemize}
+Pertanto, soddisfare $\varphi_x$ significa
+poter descrivere una sequenza valida
+di configurazioni che parte dall'input $x$
+e raggiunge lo stato accettante.\smallskip\\
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{
+\begin{theorem}[\textbf{Lemma 1}]
+La formula $\varphi_x$ è soddisfacibile
+se e solo se esiste un'esecuzione accettante
+della macchina $M_L$ sull'input $x$.
+\end{theorem}
+}}\smallskip\\
+Dimostriamo entrambe le implicazioni.\smallskip\\
+$\bullet$ \textbf{Prima direzione}:
+Supponiamo che $M_L$ abbia un'esecuzione
+accettante sull'input $x$.
+Poiché $M_L$ termina in tempo polinomiale,
+l'esecuzione può essere rappresentata
+con al più $T$ configurazioni e $T$ celle.
+Costruiamo un assegnamento di verità alle
+variabili proposizionali nel seguente modo:
+\begin{itemize}[label = --]
+    \item Rendiamo vera $H_j^i$ se la testina,
+    all'istante $i$, si trova nella posizione $j$.
+
+    \item Rendiamo vera $Q_c^i$ se lo stato
+    corrente all'istante $i$ è $c$.
+
+    \item Rendiamo vera $V_g^{i,j}$ se
+    la cella $j$, all'istante $i$, contiene $g$.
+\end{itemize}
+Poiché l'esecuzione è valida:
+\begin{itemize}[label = --]
+    \item I vincoli di consistenza sono rispettati.
+    \item Le transizioni corrispondono a quelle
+    della macchina.
+    \item Le celle non modificate restano invariate.
+    \item La configurazione iniziale è corretta.
+    \item Viene raggiunto lo stato accettante.
+\end{itemize}
+L'assegnamento soddisfa quindi tutti
+i congiunti di $\varphi_x$.
+Pertanto:
+\[
+M_L\text{ accetta }x
+\Rightarrow
+\varphi_x\text{ è soddisfacibile}.
+\]
+$\bullet$ \textbf{Seconda direzione}:
+Supponiamo che $\varphi_x$ sia soddisfacibile.
+Esiste quindi un assegnamento di verità
+che rende veri tutti i vincoli della formula.
+Dai vincoli di consistenza possiamo ricostruire
+una sequenza di configurazioni ben definite.
+Dai vincoli sulle transizioni sappiamo
+che ogni configurazione successiva è ottenuta
+applicando una transizione valida di $M_L$.
+I vincoli di inizializzazione garantiscono
+che la sequenza parta dalla configurazione
+iniziale di $M_L$ sull'input $x$.
+Infine, la condizione di accettazione garantisce
+che almeno una configurazione raggiunga
+lo stato $q_{yes}$.
+Di conseguenza, la sequenza rappresenta
+un'esecuzione valida e accettante di $M_L$
+sull'input $x$.
+Pertanto:
+\[
+\varphi_x\text{ è soddisfacibile}
+\Rightarrow
+M_L\text{ accetta }x.
+\]
+Avendo dimostrato entrambe le implicazioni:
+\[
+\boxed{
+M_L\text{ accetta }x
+\iff
+\varphi_x\text{ è soddisfacibile}.
+}
+\]
+Per completare la dimostrazione dobbiamo
+mostrare che $\varphi_x$ può essere costruita
+in \textbf{tempo polinomiale rispetto a $|x|$}.\smallskip\\
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{
+\begin{theorem}[\textbf{Lemma 2}]
+La formula proposizionale $\varphi_x$
+può essere costruita in tempo polinomiale
+rispetto alla lunghezza dell'input $x$.
+\end{theorem}
+}}\smallskip\\
+Dimostriamo questo lemma ricordando che:
+\[
+T=p(n),\qquad n=|x|
+\]
+dove $p(n)$ è un polinomio.
+Calcoliamo innanzitutto quante variabili
+proposizionali sono necessarie.\\
+Per ogni istante temporale abbiamo:
+\begin{itemize}
+    \item $T$ variabili per la posizione
+    della testina.
+
+    \item $|Q|$ variabili per lo stato corrente.
+
+    \item $|\Gamma|\cdot T$ variabili
+    per il contenuto del nastro.
+\end{itemize}
+Il totale per una configurazione è quindi:
+\[
+T+|Q|+|\Gamma|T
+\]
+Poiché consideriamo $T$ configurazioni,
+il numero complessivo di variabili è:
+\[
+\boxed{
+N_{\text{var}}=
+T(T+|Q|+|\Gamma|T)
+}
+\]
+Sviluppando:
+\[
+N_{\text{var}}=
+(1+|\Gamma|)T^2+|Q|T
+\]
+Poiché $M_L$ è fissata, gli insiemi
+$Q$ e $\Gamma$ hanno dimensione costante.
+Quindi:
+\[
+\boxed{N_{\text{var}}=O(T^2)}
+\]
+Essendo $T=p(n)$ un polinomio,
+anche il numero delle variabili è
+polinomiale rispetto a $n$.\smallskip\\
+Consideriamo ora le formule costruite
+precedentemente:
+\begin{center}
+\begin{tabular}{|l|c|}
+\hline
+\textbf{Tipologia di vincolo}
+& \textbf{Quantità} \\
+\hline
+Consistenza della testina & $O(T^3)$ \\
+\hline
+Consistenza dello stato & $O(T)$ \\
+\hline
+Consistenza dei simboli & $O(T^2)$ \\
+\hline
+Transizioni & $O(T^2)$ \\
+\hline
+Celle invariate & $O(T^2)$ \\
+\hline
+Inizializzazione e accettazione & $O(T)$ \\
+\hline
+\end{tabular}
+\end{center}
+La quantità maggiore è quella dei vincoli
+di consistenza sulla posizione della testina,
+pari a $O(T^3)$.
+Questo accade perché, per ciascuno dei $T$
+istanti, dobbiamo impedire che due delle $T$
+posizioni siano occupate contemporaneamente.
+Il numero delle coppie di posizioni è:
+\[
+\binom{T}{2}=\frac{T(T-1)}{2}=O(T^2).
+\]
+Ripetendo il controllo per tutti gli istanti:
+\[
+T\cdot O(T^2)=O(T^3)
+\]
+Le altre tipologie di vincoli richiedono
+un numero inferiore di formule elementari.
+Poiché la macchina $M_L$ è fissata,
+le dimensioni di $Q$, $\Gamma$ e della
+funzione di transizione sono costanti
+rispetto alla lunghezza dell'input.
+La formula completa ha quindi dimensione
+polinomiale in $T$.
+Essendo:
+\[
+T=p(n)
+\]
+con $p(n)$ polinomiale, anche la dimensione
+di $\varphi_x$ è polinomiale rispetto a $n$.
+Inoltre, i vincoli possono essere generati
+sistematicamente enumerando gli istanti,
+le posizioni, gli stati e i simboli necessari.
+Pertanto la costruzione non richiede soltanto
+uno spazio polinomiale per la formula,
+ma anche un \textbf{tempo polinomiale}
+per produrla.
+Concludiamo:
+\[
+\boxed{
+\varphi_x\text{ è costruibile in tempo polinomiale}.
+}
+\]
+Abbiamo dimostrato che, per ogni input $x$,
+è possibile costruire una formula $\varphi_x$
+con le seguenti proprietà:
+\begin{enumerate}
+    \item $\varphi_x$ è soddisfacibile
+    se e solo se $M_L$ accetta $x$.
+
+    \item $\varphi_x$ può essere costruita
+    in tempo polinomiale rispetto a $|x|$.
+\end{enumerate}
+Definiamo quindi la funzione:
+\[
+\boxed{f_L(x)=e(\varphi_x).}
+\]
+Questa funzione associa a ogni input $x$
+la codifica della formula costruita.\smallskip\\
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{
+\begin{theorem}[Lemma 3]
+La funzione $f_L$ è una riduzione
+molti-a-uno polinomiale da $L$ a $SAT$.
+\end{theorem}
+}}\smallskip\\
+Per il Lemma 2, la funzione $f_L$
+è calcolabile in tempo polinomiale.
+Inoltre, per il Lemma 1:
+\[
+\begin{aligned}
+x\in L
+&\iff M_L\text{ accetta }x\\
+&\iff \varphi_x\text{ è soddisfacibile}\\
+&\iff e(\varphi_x)\in SAT\\
+&\iff f_L(x)\in SAT
+\end{aligned}
+\]
+Pertanto:
+\[
+\boxed{L\le_p SAT}
+\]
+Abbiamo considerato un linguaggio arbitrario
+$L\in NP$ e dimostrato che:
+\[
+L\le_p SAT
+\]
+Poiché la costruzione vale per
+\textbf{qualsiasi linguaggio appartenente a NP},
+possiamo concludere che:
+\[
+\boxed{
+\forall L\in NP,\quad L\le_p SAT.
+}
+\]
+Per definizione, questo significa che
+$SAT$ è NP-hard.\\
+Inoltre, sappiamo che:
+\[
+SAT\in NP
+\]
+poiché una macchina non deterministica
+può scegliere un assegnamento di verità
+e verificare in tempo polinomiale
+se esso soddisfa la formula.
+Dunque $SAT$ è sia NP-hard sia appartenente
+a NP.\smallskip\\
+Possiamo finalmente concludere:
+\[
+\boxed{
+SAT\text{ è NP-completo}
+}
+\]
+\end{proof}
+
+\noindent Il Teorema di Cook-Levin dimostra che
+\textbf{qualsiasi computazione non deterministica
+di durata polinomiale può essere rappresentata
+tramite una formula proposizionale}.
+In particolare:
+\begin{itemize}
+    \item Le variabili descrivono le configurazioni
+    della macchina.
+
+    \item I vincoli garantiscono che le configurazioni
+    rappresentino un'esecuzione valida.
+
+    \item La condizione di accettazione impone
+    che l'esecuzione raggiunga $q_{yes}$.
+
+    \item La formula è soddisfacibile esattamente
+    quando esiste un'esecuzione accettante.
+
+    \item La costruzione richiede soltanto
+    tempo polinomiale.
+\end{itemize}
+Di conseguenza, qualsiasi problema in NP
+può essere trasformato in un'istanza di SAT
+senza introdurre un aumento più che polinomiale
+della dimensione dell'input.
+Questo rende SAT uno dei problemi fondamentali
+della teoria della complessità computazionale.
+
+
