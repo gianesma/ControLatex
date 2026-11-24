@@ -1,0 +1,932 @@
+\chapter{Progettazione Logica}
+\section{Introduzione alla progettazione logica}
+\subsection{Fasi della progettazione}
+La progettazione di una base di dati si articola in tre fasi:
+\begin{enumerate}
+    \item \textbf{Progettazione concettuale}: a partire dai requisiti
+    si costruisce uno schema concettuale nel modello ER.
+    Definisce \textbf{cosa} rappresentare.
+
+    \item \textbf{Progettazione logica}: traduce lo schema concettuale
+    in uno schema logico, espresso nel modello logico del DBMS scelto
+    (nel nostro caso, il modello relazionale).
+
+    \item \textbf{Progettazione fisica e tuning}: definisce le modalità
+    di memorizzazione e accesso ai dati, producendo lo schema fisico.
+    Questa fase non viene trattata nel corso.
+\end{enumerate}
+\noindent
+La progettazione logica e quella fisica riguardano il
+\textbf{come} rappresentare e gestire i dati.
+
+\subsection{Obiettivo della progettazione logica}
+
+L'obiettivo della progettazione logica è tradurre lo schema
+concettuale, espresso nel modello ER con vincoli, in uno
+schema logico espresso nel modello relazionale con vincoli.
+La traduzione deve essere:
+
+\begin{itemize}
+    \item \textbf{Corretta}: deve rispettare la semantica dello
+    schema concettuale.
+    \item \textbf{Completa}: deve rappresentare tutte le informazioni
+    e i vincoli del dominio modellato.
+    \item \textbf{Efficiente}: deve ottimizzare le prestazioni
+    rispetto all'utilizzo della base di dati.
+\end{itemize}
+\noindent
+\subsection*{Dati di ingresso e di uscita}
+\textbf{Ingresso:}
+\begin{itemize}
+    \item Schema concettuale, costituito dal diagramma ER
+    e dal dizionario dei dati.
+    \item Informazioni sull'utilizzo della base di dati,
+    dette \textbf{carico applicativo}.
+\end{itemize}
+\noindent
+Il carico applicativo descrive le operazioni che verranno
+eseguite sulla base di dati e permette di orientare
+le scelte progettuali verso una maggiore efficienza.\\
+\textbf{Uscita:}
+\begin{itemize}
+    \item Schema logico espresso nel modello relazionale.
+    \item Vincoli aggiuntivi.
+    \item Documentazione associata.
+\end{itemize}
+\noindent
+\subsection*{Semantica e ottimizzazione delle prestazioni}
+La traduzione dello schema concettuale in uno schema
+relazionale è guidata da due obiettivi fondamentali:
+\begin{itemize}
+    \item \textbf{Mantenere la semantica}: preservare il significato
+    delle informazioni e dei vincoli dello schema concettuale.
+    \item \textbf{Ottimizzare le prestazioni}: rendere efficiente
+    l'utilizzo della base di dati rispetto al carico applicativo.
+\end{itemize}
+\noindent
+Durante la traduzione si distinguono due tipi di scelte:
+\begin{itemize}
+    \item \textbf{Scelte fisse}: determinate dalla struttura
+    dello schema ER e dalle decisioni prese durante
+    la progettazione concettuale.
+    \item \textbf{Scelte progettuali}: effettuate dal progettista
+    con l'obiettivo di migliorare le prestazioni del sistema.
+\end{itemize}
+\noindent
+La metodologia distingue quindi le fasi eseguibili
+automaticamente da quelle che richiedono l'intervento
+del progettista.
+
+\subsection{Fasi della progettazione logica}
+La progettazione logica si suddivide in tre fasi.
+\subsubsection{1. Ristrutturazione dello schema ER}
+Consiste nel modificare lo schema concettuale per renderlo
+adatto alla traduzione nel modello relazionale.
+Le operazioni principali sono:
+\begin{itemize}
+    \item Eliminazione dei costrutti ER non direttamente
+    traducibili nel modello relazionale, mantenendone
+    la semantica.
+    \item Scelta degli identificatori principali delle
+    entità e delle relazioni.
+\end{itemize}
+\noindent
+Il risultato è uno \textbf{schema concettuale ristrutturato},
+ancora espresso nel modello ER.
+
+\subsubsection{2. Traduzione diretta}
+Consiste nel tradurre lo schema ER ristrutturato
+nel modello relazionale.
+Questa fase:
+\begin{itemize}
+    \item Può essere eseguita automaticamente o quasi
+    automaticamente.
+    \item Non richiede scelte fondamentali da parte del
+    progettista, salvo situazioni eccezionali.
+    \item Rispetta le scelte effettuate durante la
+    progettazione concettuale.
+    \item Produce uno schema relazionale privo di
+    ridondanze, salvo quelle introdotte intenzionalmente.
+\end{itemize}
+\noindent
+Il risultato è uno \textbf{schema logico ottenuto
+mediante traduzione diretta}.
+\subsubsection{3. Ristrutturazione dello schema relazionale}
+Consiste nel modificare lo schema relazionale ottenuto
+dalla traduzione diretta per ottimizzarne le prestazioni.
+A differenza della fase precedente, richiede scelte
+da parte del progettista, basate sul
+\textbf{carico applicativo}.\\
+Il risultato è lo \textbf{schema logico ristrutturato},
+che deve mantenere la semantica dello schema concettuale
+originario.
+\subsection*{Analogia con la progettazione del software}
+La progettazione logica di una base di dati è analoga
+al processo di progettazione e realizzazione del software:
+in entrambi i casi si passa da una rappresentazione
+astratta a una rappresentazione più vicina
+all'implementazione.
+\begin{center}
+\renewcommand{\arraystretch}{1.5}
+\begin{tabular}{|p{6cm}|p{6cm}|}
+\hline
+\textbf{Basi di dati} & \textbf{Software} \\
+\hline
+Schema concettuale (ER) &
+Specifica concettuale (UML) \\
+\hline
+Schema concettuale ristrutturato &
+Programma Java \\
+\hline
+Schema logico ottenuto mediante traduzione diretta &
+Programma in assembler \\
+\hline
+Schema logico ristrutturato &
+Programma in linguaggio macchina \\
+\hline
+\end{tabular}
+\end{center}
+\noindent
+L'analogia evidenzia che, nonostante le successive
+trasformazioni, il risultato finale deve essere una
+\textbf{fedele rappresentazione} della specifica iniziale.
+
+\section{Ristrutturazione dello schema ER}
+La ristrutturazione dello schema ER rappresenta la prima
+fase della progettazione logica e ha due obiettivi:
+
+\begin{itemize}
+    \item \textbf{Semplificare la traduzione} nel modello
+    relazionale, eliminando i costrutti non direttamente
+    traducibili, senza perderne la semantica.
+    \item Tenere conto di alcuni aspetti relativi
+    all'\textbf{efficienza} della base di dati.
+\end{itemize}
+\noindent
+Uno schema ER ristrutturato è quindi uno schema ER
+\textbf{opportunamente degradato}, ossia privato di alcuni
+costrutti espressivi per avvicinarsi al modello relazionale.
+La ristrutturazione non deve comportare una perdita
+di informazioni o di vincoli.
+
+\subsubsection{Attività della ristrutturazione}
+
+\begin{enumerate}
+    \setcounter{enumi}{-1}
+    \item Preparazione iniziale dello schema ER.
+    \item Analisi delle ridondanze.
+    \item Eliminazione degli attributi multivalore.
+    \item Eliminazione degli attributi composti.
+    \item Eliminazione delle ISA e delle generalizzazioni.
+    \item Scelta degli identificatori principali
+    di entità e relazioni.
+    \item Specifica degli ulteriori vincoli esterni.
+\end{enumerate}
+
+\subsection{Attività 0: preparazione iniziale dello schema ER}
+Lo scopo di questa attività è fornire al progettista
+un quadro completo dello schema concettuale, evitando
+che alcuni vincoli vengano ignorati durante la
+progettazione logica.\\
+Si ridisegna quindi lo schema ER rendendo espliciti
+i \textbf{vincoli impliciti rilevanti}, ossia quei vincoli
+che derivano da altri vincoli già presenti nello schema.\\
+In particolare:
+\begin{itemize}
+    \item Per ogni entità $E$, si riportano tutti
+    i vincoli di identificazione rilevanti,
+    compresi quelli derivati.
+
+    \item Per ogni relazione $R$, si riportano tutti
+    i vincoli di identificazione rilevanti,
+    compresi quelli derivati.
+\end{itemize}
+\noindent
+Generalmente non si riporta l'identificatore implicito
+di una relazione, costituito dall'insieme di tutti
+i suoi ruoli.
+
+\subsection{Attività 1: analisi delle ridondanze}
+Una \textbf{ridondanza estensionale} consiste nella
+presenza di dati significativi che possono essere
+derivati da altri dati già presenti nella base di dati.
+Mentre le ridondanze intensionali dovrebbero essere
+evitate, quelle estensionali possono essere mantenute
+intenzionalmente per migliorare le prestazioni.
+Le principali forme di ridondanza estensionale sono:
+\begin{itemize}
+    \item Attributi derivabili da altri attributi
+    della stessa entità o relazione.
+    \item Attributi derivabili da attributi di altre
+    entità o relazioni.
+    \item Relazioni derivabili dalla composizione
+    di altre relazioni, in presenza di cicli.
+\end{itemize}
+\noindent
+In questa fase si decide se eliminare le ridondanze
+esistenti, mantenerle oppure introdurne di nuove.\\
+\textbf{Vantaggi:}
+\begin{itemize}
+    \item Potenziale maggiore efficienza delle interrogazioni,
+    poiché non è necessario ricalcolare i dati derivabili.
+\end{itemize}
+\noindent
+\textbf{Svantaggi:}
+\begin{itemize}
+    \item Necessità di gestire vincoli aggiuntivi
+    per garantire la coerenza dei dati.
+    \item Maggiore costo degli aggiornamenti.
+    \item Maggiore occupazione di spazio.
+\end{itemize}
+\medskip
+\noindent
+\textcolor{verdeEsempio}{\textbf{Esempio. }}
+Si consideri un'entità Dipartimento con l'attributo
+NumeroDipendenti, collegata all'entità Dipendente.
+L'attributo NumeroDipendenti è ridondante, poiché
+può essere calcolato contando i dipendenti associati
+al dipartimento.
+\begin{itemize}
+    \item Mantenendolo, si velocizzano le interrogazioni
+    sul numero dei dipendenti.
+    \item Eliminandolo, si evita di doverlo aggiornare
+    a ogni assunzione o licenziamento.
+\end{itemize}
+\noindent
+Se si mantiene la ridondanza, occorre specificare
+un vincolo che garantisca che NumeroDipendenti
+corrisponda sempre al numero effettivo dei dipendenti.\medskip\\
+\noindent
+La scelta dipende dal \textbf{carico applicativo},
+considerando interrogazioni, aggiornamenti e
+occupazione di spazio.\\
+Ogni ridondanza mantenuta deve essere documentata
+mediante opportuni vincoli.\\
+\textbf{Convenzione del corso:} salvo indicazioni
+contrarie, si assume di eliminare ogni forma
+di ridondanza.
+
+\subsection{Attività 2: eliminazione degli attributi multivalore}
+Un \textbf{attributo multivalore} è un attributo
+con cardinalità massima maggiore di $1$.
+Nel modello relazionale un attributo deve assumere
+un singolo valore per ogni tupla. Pertanto, gli
+attributi multivalore devono essere eliminati
+dallo schema ER prima della traduzione.
+L'eliminazione riguarda il costrutto, non le
+informazioni che esso rappresenta.
+
+\subsubsection{Attributi multivalore di entità}
+Dato un attributo multivalore $A$, di dominio $D$,
+associato a un'entità $E$:
+\begin{enumerate}
+    \item Si introduce una nuova entità $H$ che
+    rappresenta i valori del dominio $D$.
+
+    \item Si assegna a $H$ un attributo identificatore
+    avente dominio $D$.
+
+    \item Si trasforma l'attributo $A$ in una relazione
+    binaria tra $E$ e $H$.
+
+    \item Si mantiene, dal lato di $E$, la cardinalità
+    originaria dell'attributo, mentre dal lato di $H$
+    si assegna cardinalità $(1,n)$.
+\end{enumerate}
+\medskip
+\noindent
+\textcolor{verdeEsempio}{\textbf{Esempio. }}
+L'entità Persona possiede l'attributo multivalore
+Telefono, di dominio Stringa e cardinalità $(1,n)$.\\
+Si introduce l'entità Telefono, identificata
+dall'attributo Numero, e la relazione HaTelefono:
+
+\[
+\boxed{\text{Persona}}
+\xrightarrow{(1,n)}
+\text{HaTelefono}
+\xleftarrow{(1,n)}
+\boxed{\text{Telefono}}
+\]
+La cardinalità $(1,n)$ dal lato di Persona indica
+che ogni persona possiede almeno un numero di telefono.\\
+La cardinalità $(1,n)$ dal lato di Telefono indica
+che uno stesso numero può essere associato a più
+persone e che ogni numero rappresentato è associato
+ad almeno una persona.
+
+\subsubsection{Attributi multivalore di relazioni:
+caso generale}
+Se l'attributo multivalore appartiene a una relazione
+$R$, non è possibile collegare direttamente una nuova
+relazione a $R$, poiché una relazione ER collega entità.\\
+Si procede quindi nel seguente modo:
+\begin{enumerate}
+    \item Si trasforma la relazione $R$ in un'entità.
+    \item Si introducono relazioni binarie tra la nuova
+    entità $R$ e le entità originariamente coinvolte.
+    \item Si trasforma l'attributo multivalore in una
+    relazione binaria, introducendo una nuova entità
+    per il suo dominio.
+\end{enumerate}
+\noindent
+Se $R$ era una relazione binaria tra $E$ e $F$,
+con cardinalità rispettivamente $(x,y)$ e $(w,z)$,
+si ottiene:
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.4\linewidth]{../images/log1.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent
+La nuova entità $R$ è identificata esternamente
+mediante le relazioni $RE$ e $RF$, corrispondenti
+ai ruoli originari.
+Se l'attributo $A$ aveva cardinalità $(s,t)$
+e dominio $D$, si introduce inoltre:
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.5\linewidth]{../images/log2.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent
+dove $H$ è identificata da un attributo $AH$
+di dominio $D$.
+
+\subsubsection{Attributi multivalore di relazioni:
+caso particolare}
+È possibile effettuare una trasformazione più semplice
+quando sono soddisfatte entrambe le condizioni:
+
+\begin{itemize}
+    \item L'attributo multivalore ha cardinalità $(1,n)$.
+    \item Tutti i ruoli della relazione $R$ hanno
+    cardinalità massima $n$.
+\end{itemize}
+\noindent
+In questo caso non è necessario trasformare $R$
+in un'entità.
+Si trasforma direttamente l'attributo multivalore
+in una nuova entità $H$, collegandola alla relazione
+$R$ e aumentandone quindi l'\textbf{arietà}.\\
+Ad esempio, una relazione binaria:
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.4\linewidth]{../images/log3.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent
+con attributo multivalore $A$ viene trasformata
+in una relazione ternaria:
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.5\linewidth]{../images/log4.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent
+La nuova entità $H$ rappresenta i valori
+dell'attributo $A$ e partecipa a $R$ con
+cardinalità $(1,n)$.\\
+La cardinalità minima $1$ dell'attributo originario
+è fondamentale: ogni istanza originaria di $R$
+possiede almeno un valore di $A$ e può quindi
+essere rappresentata nella nuova relazione.\medskip\\
+\noindent
+\textbf{Gestione delle ISA:}
+Se originariamente era presente una ISA tra relazioni:
+\[
+Q \subseteq R
+\]
+dopo la trasformazione $Q$ rimane binaria, mentre
+$R$ diventa ternaria. La ISA non è quindi più
+direttamente rappresentabile come prima.\\
+Si introduce il seguente vincolo esterno:
+\[
+\forall(e,f)\in Q,\quad
+\exists h\in H : (e,f,h)\in R
+\]
+Equivalentemente:
+\[
+Q \subseteq \pi_{E,F}(R)
+\]
+Ossia, per ogni coppia appartenente a $Q$ deve
+esistere almeno una tripla in $R$ contenente
+quella coppia.
+
+\subsection{Attività 3: eliminazione degli attributi composti}
+Un \textbf{attributo composto} è un attributo
+costituito da più attributi componenti.
+Poiché gli attributi multivalore sono già stati
+eliminati nell'attività precedente, a questo punto
+un attributo composto può avere cardinalità
+$(1,1)$ oppure $(0,1)$.
+La modalità di eliminazione dipende dalla cardinalità.
+
+\subsubsection{Alternativa 1: separazione degli attributi}
+Si elimina l'attributo composto e si associano
+direttamente i suoi attributi componenti all'entità
+o alla relazione originaria.\medskip\\
+\noindent
+\textcolor{verdeEsempio}{\textbf{Esempio 1. }}
+attributo obbligatorio $(1,1)$\\
+Si consideri l'entità Persona con l'attributo composto:
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.5\linewidth]{../images/log5.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent
+L'attributo Indirizzo viene eliminato e i suoi
+componenti vengono associati direttamente a Persona:
+\[
+\text{Persona}(\text{Via},\text{Numero},\text{CAP})
+\]
+In questo esempio tutti e tre gli attributi
+mantengono cardinalità $(1,1)$.\medskip\\
+\noindent
+\textcolor{verdeEsempio}{\textbf{Esempio 2. }}
+attributo opzionale $(0,1)$\\
+Si consideri l'attributo composto DataMatr
+dell'entità Persona, formato da Giorno, Mese e Anno.
+Dopo la trasformazione:
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.5\linewidth]{../images/log6.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent
+ciascuno con cardinalità $(0,1)$.\\
+Tuttavia, le sole cardinalità non garantiscono
+la semantica originaria: una data di matrimonio
+non può essere definita soltanto parzialmente.
+Occorre quindi introdurre un \textbf{vincolo esterno}
+che imponga che i tre attributi siano tutti definiti
+oppure tutti non definiti.
+\[
+\begin{aligned}
+&(\text{GMatr definito} \land
+  \text{MMatr definito} \land
+  \text{AMatr definito})\\
+&\lor\\
+&(\text{GMatr non definito} \land
+  \text{MMatr non definito} \land
+  \text{AMatr non definito})
+\end{aligned}
+\]
+
+\subsubsection{Alternativa 2: introduzione di una nuova entità}
+Nel caso di un attributo composto opzionale $(0,1)$,
+si può introdurre una nuova entità contenente
+gli attributi componenti e sostituire l'attributo
+composto con una relazione binaria.\medskip\\
+\noindent
+\textcolor{verdeEsempio}{\textbf{Esempio. }}
+L'attributo composto DataMatr di Persona (esempio precedente) viene
+sostituito dall'entità Data:
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.5\linewidth]{../images/log7.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent
+L'identificatore di Data è costituito dall'insieme
+dei tre attributi.
+In questo modo:
+\begin{itemize}
+    \item Una persona può non avere una data di
+    matrimonio oppure averne una sola.
+    \item Una stessa data può essere associata
+    a più persone.
+    \item Non è necessario introdurre il vincolo
+    esterno dell'alternativa precedente, poiché
+    ogni istanza di Data possiede tutti e tre
+    gli attributi obbligatori.
+\end{itemize}
+\noindent
+Se l'attributo composto appartiene a una relazione
+e si sceglie questa alternativa, occorre prima
+trasformare la relazione in un'entità.
+
+\subsection{Attività 4: eliminazione delle ISA tra entità}
+
+Una relazione ISA tra due entità $E$ ed $F$:
+
+\[
+E \text{ ISA } F
+\]
+viene sostituita da una nuova relazione binaria
+\textbf{ISA-E-F} tra le due entità, tale che:
+
+\begin{itemize}
+    \item $E$ partecipa con cardinalità $(1,1)$,
+    poiché ogni istanza dell'entità figlia deve
+    corrispondere a un'istanza dell'entità padre.
+
+    \item $F$ partecipa con cardinalità $(0,1)$,
+    poiché non tutte le istanze dell'entità padre
+    devono appartenere all'entità figlia.
+\end{itemize}
+\noindent
+Agli eventuali identificatori di $E$ viene aggiunto
+un \textbf{identificatore esterno}, costituito dalla
+partecipazione alla relazione ISA-E-F.\medskip\\
+\noindent
+\textcolor{verdeEsempio}{\textbf{Esempio. }}
+Si consideri la relazione ISA tra Studente e Persona:
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.50\linewidth]{../images/log8.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent
+La ISA viene sostituita dalla relazione ISA-S-P:
+
+\begin{itemize}
+    \item Ogni Studente è associato esattamente
+    a una Persona.
+    \item Ogni Persona è associata al massimo
+    a uno Studente.
+    \item Studente mantiene il proprio identificatore
+    interno Matricola e acquisisce un identificatore
+    esterno attraverso ISA-S-P.
+\end{itemize}
+\noindent
+Gli attributi Cognome ed Età rimangono associati
+a Persona, mentre Matricola rimane associato
+a Studente.
+
+\subsubsection{Eliminazione delle ISA a livello estensionale}
+
+Indichiamo con:
+
+\begin{itemize}
+    \item $S_o$: lo schema ER originario.
+    \item $S_r$: lo schema ER ottenuto eliminando
+    le ISA tra entità.
+\end{itemize}
+\noindent
+Nello schema originario, se $E$ ISA $F$, vale:
+\[
+\operatorname{istanze}(I,E)
+\subseteq
+\operatorname{istanze}(I,F)
+\]
+Ciò significa che uno stesso oggetto può appartenere
+contemporaneamente a entrambe le entità.\\
+Nello schema ristrutturato, invece, le istanze
+delle due entità sono rappresentate mediante
+oggetti distinti, collegati dalla relazione ISA-E-F.\medskip\\
+\noindent
+\textcolor{verdeEsempio}{\textbf{Esempio. }}
+Si consideri lo schema originario $S_o$, in cui
+$E$ ISA $F$, con $A$ attributo identificatore
+di $F$ e $B$ attributo di $E$.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.60\linewidth]{../images/log9.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent
+Nello schema originario, consideriamo l'istanza $I$:
+
+\[
+\begin{aligned}
+\operatorname{istanze}(I,F)
+    &= \{f_1,f_2,f_3\}\\
+\operatorname{istanze}(I,E)
+    &= \{f_1,f_2\}\\
+\operatorname{istanze}(I,A)
+    &= \{(f_1,a_1),(f_2,a_2),(f_3,a_3)\}\\
+\operatorname{istanze}(I,B)
+    &= \{(f_1,b_1),(f_2,b_2)\}
+\end{aligned}
+\]
+Nello schema ristrutturato, si ottiene l'istanza $J$:
+
+\[
+\begin{aligned}
+\operatorname{istanze}(J,F)
+    &= \{f_1,f_2,f_3\}\\
+\operatorname{istanze}(J,E)
+    &= \{e_1,e_2\}\\
+\operatorname{istanze}(J,A)
+    &= \{(f_1,a_1),(f_2,a_2),(f_3,a_3)\}\\
+\operatorname{istanze}(J,B)
+    &= \{(e_1,b_1),(e_2,b_2)\}\\
+\operatorname{istanze}(J,\text{ISA-E-F})
+    &= \{(e_1,f_1),(e_2,f_2)\}
+\end{aligned}
+\]
+Gli oggetti $f_1$ ed $e_1$ sono distinti nello
+schema ristrutturato, ma rappresentano lo stesso
+oggetto dello schema originario. Lo stesso vale
+per $f_2$ ed $e_2$.\\
+\noindent
+\textbf{Osservazione:} nello schema risultante
+dall'eliminazione di tutte le ISA tra entità,
+le entità sono \textbf{disgiunte a coppie},
+ossia non hanno più istanze in comune.
+L'informazione relativa all'appartenenza di uno
+stesso oggetto a più entità viene mantenuta
+attraverso le relazioni introdotte.
+
+\subsubsection{Corrispondenza tra istanze}
+
+Esiste una stretta corrispondenza tra le istanze
+dello schema originario $S_o$ e quelle dello
+schema ristrutturato $S_r$.
+Per dimostrare che la trasformazione non comporta
+una perdita di informazioni, si introducono
+due funzioni totali:
+
+\[
+g:\operatorname{istanze}(S_o)
+\longrightarrow
+\operatorname{istanze}(S_r)
+\]
+\[
+h:\operatorname{istanze}(S_r)
+\longrightarrow
+\operatorname{istanze}(S_o)
+\]
+dove:
+\begin{itemize}
+    \item $g$ trasforma un'istanza dello schema
+    originario in un'istanza dello schema ristrutturato.
+
+    \item $h$ ricostruisce un'istanza dello schema
+    originario a partire da un'istanza dello
+    schema ristrutturato.
+\end{itemize}
+\noindent
+Le due funzioni soddisfano la seguente proprietà:
+
+\[
+\boxed{
+\forall I_o \in \operatorname{istanze}(S_o),
+\qquad h(g(I_o))=I_o
+}
+\]
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.25\linewidth]{../images/log10.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent
+Ciò significa che, trasformando un'istanza
+originaria mediante $g$ e applicando successivamente
+$h$, si ottiene esattamente l'istanza di partenza.
+La trasformazione permette quindi di
+\textbf{preservare la semantica e le informazioni}
+dello schema originario.
+
+\subsubsection*{Funzione $g$: dallo schema originario
+allo schema ristrutturato}
+
+Sia $I_o$ un'istanza dello schema originario $S_o$.
+La funzione $g$ costruisce un'istanza $I_r$ dello
+schema ristrutturato $S_r$:
+
+\[
+I_r=g(I_o)
+\]
+La trasformazione avviene nel seguente modo:
+
+\begin{enumerate}
+    \item Le istanze dell'entità padre $F$
+    rimangono invariate:
+
+    \[
+    \operatorname{istanze}(I_r,F)
+    =
+    \operatorname{istanze}(I_o,F)
+    \]
+
+    \item Anche le istanze dell'attributo $A$
+    rimangono invariate:
+
+    \[
+    \operatorname{istanze}(I_r,A)
+    =
+    \operatorname{istanze}(I_o,A)
+    \]
+
+    \item Per ogni oggetto
+    $x\in\operatorname{istanze}(I_o,E)$
+    si introduce un nuovo oggetto distinto $g_E(x)$.
+
+    \[
+    \operatorname{istanze}(I_r,E)
+    =
+    \{g_E(x)\mid x\in\operatorname{istanze}(I_o,E)\}
+    \]
+
+    \item Si costruisce la relazione ISA-E-F,
+    associando ogni nuovo oggetto all'oggetto
+    originario:
+
+    \[
+    \begin{aligned}
+    &\operatorname{istanze}(I_r,\text{ISA-E-F})=\\
+    &\quad\{(g_E(x),x)\mid
+    x\in\operatorname{istanze}(I_o,E)\}
+    \end{aligned}
+    \]
+
+    \item Si trasferiscono i valori dell'attributo
+    $B$ agli oggetti della nuova entità $E$:
+
+    \[
+    \begin{aligned}
+    &\operatorname{istanze}(I_r,B)=\\
+    &\quad\{(g_E(x),b)\mid
+    (x,b)\in\operatorname{istanze}(I_o,B)\}
+    \end{aligned}
+    \]
+\end{enumerate}
+\noindent
+In sostanza, la funzione $g$ separa gli oggetti
+che appartenevano contemporaneamente a $E$ e $F$,
+mantenendo la loro corrispondenza attraverso
+la relazione ISA-E-F.
+
+\subsubsection*{Funzione $h$: dallo schema ristrutturato
+allo schema originario}
+
+Sia $I_r$ un'istanza dello schema ristrutturato $S_r$.
+La funzione $h$ ricostruisce un'istanza $I_o$
+dello schema originario $S_o$:
+
+\[
+I_o=h(I_r)
+\]
+La ricostruzione avviene nel seguente modo:
+
+\begin{enumerate}
+    \item Le istanze dell'entità $F$ e
+    dell'attributo $A$ rimangono invariate:
+
+    \[
+    \operatorname{istanze}(I_o,F)
+    =
+    \operatorname{istanze}(I_r,F)
+    \]
+
+    \[
+    \operatorname{istanze}(I_o,A)
+    =
+    \operatorname{istanze}(I_r,A)
+    \]
+
+    \item Si ricostruiscono le istanze di $E$
+    selezionando gli oggetti di $F$ associati
+    a un oggetto di $E$ mediante ISA-E-F:
+
+    \[
+    \begin{aligned}
+    &\operatorname{istanze}(I_o,E)=\\
+    &\quad\{x\in\operatorname{istanze}(I_r,F)\mid\\
+    &\qquad \exists y\in\operatorname{istanze}(I_r,E):
+    (y,x)\in
+    \operatorname{istanze}(I_r,\text{ISA-E-F})\}
+    \end{aligned}
+    \]
+
+    \item Si ricostruiscono i valori dell'attributo
+    $B$, associandoli nuovamente agli oggetti
+    originari:
+
+    \[
+    \begin{aligned}
+    &\operatorname{istanze}(I_o,B)=\\
+    &\quad\{(x,b)\mid
+    x\in\operatorname{istanze}(I_o,E),\\
+    &\qquad \exists y\in\operatorname{istanze}(I_r,E):\\
+    &\qquad (y,x)\in
+    \operatorname{istanze}(I_r,\text{ISA-E-F})\\
+    &\qquad \land
+    (y,b)\in\operatorname{istanze}(I_r,B)\}
+    \end{aligned}
+    \]
+\end{enumerate}
+\noindent
+In sostanza, la funzione $h$ ricostruisce
+l'appartenenza degli oggetti di $F$ all'entità $E$,
+utilizzando le informazioni contenute nella
+relazione ISA-E-F.
+
+\subsubsection*{Osservazione sullo schema risultante}
+
+Nonostante nello schema ristrutturato tutte le
+entità siano disgiunte a coppie, è possibile
+stabilire se due oggetti distinti rappresentano
+uno stesso oggetto dello schema originario.
+Nell'esempio precedente:
+
+\[
+e_1 \longleftrightarrow f_1
+\qquad
+e_2 \longleftrightarrow f_2
+\]
+La relazione ISA-E-F conserva l'informazione
+relativa all'identità originaria degli oggetti.\\
+Le funzioni $g$ e $h$ permettono quindi di
+dimostrare che l'eliminazione delle ISA non
+comporta una perdita di informazioni:
+
+\[
+\boxed{h\circ g=\operatorname{id}}
+\]
+dove $\operatorname{id}$ è la funzione identità
+sull'insieme delle istanze dello schema originario.
+
+\subsubsection{Attributi in comune nell'eliminazione
+delle ISA tra entità}
+
+Due entità non disgiunte nello schema originario
+possono avere un attributo $A$ in comune.
+Dopo l'eliminazione delle ISA, le due entità
+diventano disgiunte e i rispettivi attributi $A$
+rappresentano due funzioni distinte.\\
+Per mantenere la semantica originaria, occorre
+garantire che, se due oggetti dello schema
+ristrutturato corrispondono allo stesso oggetto
+originario, i valori dell'attributo comune
+coincidano.\\
+Ciò viene garantito mediante un
+\textbf{vincolo esterno} sullo schema ristrutturato.\medskip\\
+\noindent
+\textcolor{verdeEsempio}{\textbf{Esempio. }}
+Si considerino le entità Impiegato e Operaio,
+entrambe specializzazioni di Persona ed entrambe
+dotate dell'attributo Stipendio:
+
+\[
+\begin{aligned}
+\text{Impiegato}&\text{ ISA Persona}\\
+\text{Operaio}&\text{ ISA Persona}
+\end{aligned}
+\]
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\linewidth]{../images/log11.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent
+Nello schema originario una stessa persona può
+essere contemporaneamente un Impiegato e un
+Operaio.
+Poiché Stipendio è un attributo in comune,
+esso assume lo stesso valore per tale oggetto.
+Dopo l'eliminazione delle ISA si introducono
+due relazioni binarie:
+
+\begin{itemize}
+    \item ISA-I-P, tra Impiegato e Persona.
+    \item ISA-O-P, tra Operaio e Persona.
+\end{itemize}
+\noindent
+Entrambe le relazioni hanno cardinalità $(1,1)$
+dal lato dell'entità figlia e $(0,1)$ dal lato
+di Persona.
+Tuttavia, gli attributi Stipendio di Impiegato
+e Operaio rappresentano ora due funzioni distinte
+e potrebbero assumere valori differenti.\medskip\\
+\noindent
+\textbf{Vincolo esterno:} per ogni persona $p$,
+se esistono un impiegato $i$ e un operaio $o$
+associati entrambi a $p$, allora i due oggetti
+devono avere lo stesso stipendio.
+Formalmente, utilizzando una notazione semplificata:
+\[
+\begin{aligned}
+\forall p\in\text{Persona},\quad
+\forall i\in\text{Impiegato},\quad
+\forall o\in\text{Operaio}:\\
+\big((i,p)\in\text{ISA-I-P}
+\land
+(o,p)\in\text{ISA-O-P}\big)\\
+\Longrightarrow
+\text{Stipendio}(i)=\text{Stipendio}(o)
+\end{aligned}
+\]
+Ad esempio, se una persona è associata sia
+a un'istanza di Impiegato sia a un'istanza
+di Operaio, non è possibile assegnare
+uno stipendio di 1500 euro alla prima
+e di 1800 euro alla seconda.
+Il vincolo esterno garantisce che l'attributo
+comune mantenga la semantica dello schema
+originario.
