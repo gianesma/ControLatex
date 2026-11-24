@@ -410,7 +410,7 @@ Possiamo generalizzare la notazione di una DNF in questo modo:
 \[\bigvee_{i = 1}^{m} \left(  \bigwedge_{j = 1}^{n_j} L_{ij}  \right)\]
 Un esempio di DNF è la seguente formula:
 \[     (p \wedge q) \quad \vee \quad (\neg p \wedge r)   \]
-dove $p,q,r,\neg p$ sono tutti letterali e $(p \wedge q ), (\neg p \wedge r)$ sono minterm.\smallskip\\
+dove $p,q,r,\neg p$ sono tutti letterali e $(p \wedge q ), (\neg p \wedge r)$ sono minterm.\smallskip\\ \label{cnc}
 \colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
    Ogni funzione booleana può essere espressa mediante una formula della logica proposizionale in \textbf{Forma Normale Congiuntiva (CNF)}, cioè una formula della forma:
    \[   \beta_1 \wedge \beta_2 \wedge \cdot\cdot\cdot \wedge\  \beta_k   \]
@@ -595,13 +595,58 @@ Qui approfondiremo tre forme basiche di argomentazione uitlizzando l'implicazion
     accettate come premesse, che implicano logicamente la negazione di \(S\), formalmente:
     \[   \Gamma \models \neg S      \]
     In altre parole significa che ogni interpretazione che soddisfa le premesse rende falsa l'affermazione $S$.
-
-
-
 \end{itemize}
 
 
+%24
+\section{Algoritmo DPLL}
+In questa sezione vedremo l'algoritmo DPLL (Davis-Putnam-Logemann-Loveland) che è un algoritmo 
+che permette di determinare la soddisfacibilità di una formula scritta in forma normale 
+congiuntiva (CNC vd. \ref{cnc}). Questo algoritmo è molto utile perchè cerca di risolvere il 
+problema della soddisfacibilità cercando di minimizzare il costo computazionale e della memoria,
+evitando, quando possibile, di esaminare tutte le possibili interpretazioni, come farebbe un algoritmo a forza bruta. 
+Per comprendere a fondo l'algoritmo, dobbiamo prima conoscere alcuni concetti.
 
+\subsection{Equi-soddisfacibilità }
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{theorem}
+   Due formule $\phi$ e $\phi '$ sono \textbf{equi-soddisfacibili} se:
+   \[   \phi \text{ è soddisfacibile} \quad \Longleftrightarrow  \quad \phi' \text{ è soddisfacibile }  \]
+\end{theorem}}}\smallskip\\
+In altre parole due formule sono soddisfacibili se sono entrambe soddisfacibili oppure entrambe
+insoddisfacibili. Attenzione, questo non significa che debbano avere gli stessi valori di verità
+in tutte le interpretazioni, infatti si tratterebbe di equivalenza logica. Possiamo quindi affermare
+che se due formule sono equi-soddisfacibili sono necessariamente equivalenti? Assolutamente no, 
+come abbiamo appena spiegato due formule sono equisoddisfacibili se entrambe ammettono \textbf{almeno}
+un modello oppure entrambe non ne ammettono uno. \\
+Questo concetto ci servirà per capire in cosa consiste la \textbf{trasformazione di Tseitin}.
+
+
+\subsection{Trasformazione di Tseitin}
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{theorem}
+   la \textbf{trasformazione di Tseitin} converte ogni formula proposizionale $\phi$ in una 
+   formula CNF $\phi'$ equi-soddisfacibile a $\phi$ e la cui dimensione cresce soltanto linearmente rispetto alla 
+   formula originale $\phi$
+\end{theorem}}}\smallskip\\
+L'idea principale è quello di utiilizzare delle variabili ausiliarie che identificano delle sotto-formule.
+In altre parole scomponiamo la formula in parti più piccole e rappresentiamo ciascuna parte attraverso una nuova variabile.
+Vediamo formalmente come funziona la trasformazione:\\
+Sia $\psi$ una qualsiasi formula proposizionale. Per ogni sottoformula $\phi$ di $\psi$, definiamo un nome $n_{\phi}$ come segue:
+\begin{itemize}
+    \item se $\phi$ è un letterale, $n_{\phi}$ è semplicemente $\phi$
+    \item se $\phi$ non è un letterale, $n_{\phi}$ è una nuova variabile proposizionale 
+\end{itemize}
+La trasformazione di Tseitin $T(\psi)$ di $\psi$ è la congiunzione ($\wedge$) tra:
+\begin{enumerate}
+    \item $n_{\psi}$
+    \item \(\textsc{CNF}(q\equiv\neg n_\phi)\), per ogni sottoformula non letterale della forma \(\neg\phi\), con nome \(q\).
+    \item \(\textsc{CNF}(q\equiv(n_{\phi_1}\circ n_{\phi_2}))\), per ogni sottoformula della forma \(\phi_1\circ\phi_2\), con nome \(q\), dove $\circ \in \{ \vee, \wedge, \to, \equiv  \}$
+\end{enumerate}
+
+
+%Esempio di 
+
+
+%  SLide 28 
 
 
 
