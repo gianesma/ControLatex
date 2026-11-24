@@ -638,48 +638,75 @@ Sia $\psi$ una qualsiasi formula proposizionale. Per ogni sottoformula $\phi$ di
 La trasformazione di Tseitin $T(\psi)$ di $\psi$ è la congiunzione ($\wedge$) tra:
 \begin{enumerate}
     \item $n_{\psi}$
-    \item \(\textsc{CNF}(q\equiv\neg n_\phi)\), per ogni sottoformula non letterale della forma \(\neg\phi\), con nome \(q\).
-    \item \(\textsc{CNF}(q\equiv(n_{\phi_1}\circ n_{\phi_2}))\), per ogni sottoformula della forma \(\phi_1\circ\phi_2\), con nome \(q\), dove $\circ \in \{ \vee, \wedge, \to, \equiv  \}$
+    \item \(\textsc{cnf}(q\equiv\neg n_\phi)\), per ogni sottoformula non letterale della forma \(\neg\phi\), con nome \(q\).
+    \item \(\textsc{cnf}(q\equiv(n_{\phi_1}\circ n_{\phi_2}))\), per ogni sottoformula della forma \(\phi_1\circ\phi_2\), con nome \(q\), dove $\circ \in \{ \vee, \wedge, \to, \equiv  \}$
 \end{enumerate}
+Vediamo un esempio di trasformazione:\\
+\textit{Esempio.} Sia $\psi$ la seguente formula:
+\[   \psi  = (p \vee q) \to (p \wedge \neg r )    \]
+Per tutte le sotto-formule (escludendo i letterali), introduciamo delle variabili $x_1,x_2,x_3$:
+\[    x_1 \equiv (x_2 \to x_3) \qquad x_2 \equiv (p \vee q) \qquad x_3 \equiv (p \wedge \neg r )    \]
+Ora mettiamo le congiunzioni ($\wedge$) fra le variabili appena create:
+\[  x_1 \quad \wedge \quad \textsc{cnf}\big[  x_1 \equiv (x_2 \to x_3)  \big] \quad \wedge \quad  \textsc{cnf}\big[  x_2 \equiv (p \vee q) \big]  \quad \wedge \quad 
+    \textsc{cnf}\big[  x_3 \equiv (p \wedge \neg r ) \big]    \]
+Resta da vedere solo come si comporta \textsc{cnf}:
+\begin{itemize}
+    \item $\textsc{cnf}(x_1 \equiv x_2 \rightarrow x_3) \ \Rightarrow \ \phi_1 : \  (\neg x_1 \lor \neg x_2 \lor x_3) \land (x_2 \lor x_1) \land  (\neg x_3 \lor x_1) $
+    \item $\textsc{cnf}(x_2 \equiv (p \vee q)) \ \Rightarrow \ \phi_2 : \  (\neg x_2 \lor p \lor q) \land (\neg p \lor x_2) \land (\neg q \lor x_2) $
+    \item $\textsc{cnf}(x_3 \equiv (p \wedge \neg r)) \ \Rightarrow \ \phi_3 : \ (\neg x_3 \lor p) \land (\neg x_3 \lor \neg r) \land  (\neg p \lor r \lor x_3)$
+    
+\end{itemize}
+La trasformazione completa $T(\psi)$ è la seguente:
+\[  \boxed{x_1 \wedge \phi_1 \wedge \phi_2 \wedge \phi_3   }    \]
 
 
-%Esempio di 
+\newpage
+\subsection{Unit Propagation}
+Lo Unit Propagation è un algoritmo necessario per il funzionamento dell'algoritmo DPLL, quindi possiamo chiamarlo a tutti gli effetti una \textbf{sub-routine} per il DPLL.
+Questo algoritmo permette di semplificare una formula in CNF, determinando i valori di verità di clausole composte da un solo letterale. Perciò i parametri necessari ad eseguire questo algoritmo 
+sono due: il primo è ovviamente la formula proposizionale in CNF, il secondo è un interpretazione parziale $\mathcal{I}$, che ci permetterà di tenere traccia dei valori di verità delle variabili proposizionali della formula.
+Ecco lo pseudocodice dell'algoritmo:\smallskip\\
+\begin{center}
+\begin{minipage}{0.65\textwidth}
+\begin{verbatim}
+UNIT_PROPAGATION(formula phi, interpretazione I)
+  while phi contains a unit clause {lambda}
+    phi := phi|_lambda;
+    if lambda = p, then I(p) := true;
+    if lambda = not p, then I(p) := false
+  end;
+  return (phi, I)
+\end{verbatim}
+\end{minipage}
+\end{center}
+Inizialmente, l'algoritmo esegue un ciclo \texttt{while} che
+continua finché nella formula $\phi$ sono presenti
+\textbf{Unit-Clause}, ovvero clausole contenenti
+un solo letterale $\lambda$. Quando viene individuata una Unit-Clause $\{\lambda\}$,
+l'algoritmo deve necessariamente assegnare a $\lambda$
+il valore \texttt{True}, affinché la clausola sia soddisfatta.
+Successivamente, la formula $\phi$ viene sostituita con
+$\phi|_{\lambda}$, detta \textbf{Simplification} di
+$\phi$ rispetto a $\lambda$, ottenuta attraverso
+due operazioni:
+\begin{itemize}
+    \item Si eliminano tutte le clausole che contengono
+    $\lambda$, poiché risultano già soddisfatte.
 
+    \item Si eliminano tutte le occorrenze di
+    $\neg\lambda$ dalle clausole rimanenti, poiché
+    tali letterali risultano falsi.
+\end{itemize}
+Infine, si aggiorna l'interpretazione parziale
+$\mathcal{I}$ assegnando alla variabile proposizionale
+il valore che rende vero $\lambda$:
+\begin{itemize}
+    \item Se $\lambda=p$, allora $\mathcal{I}(p)=True$.
+    \item Se $\lambda=\neg p$, allora $\mathcal{I}(p)=False$.
+\end{itemize}
+Il procedimento viene ripetuto finché non sono
+più presenti clausole unitarie, restituendo
+la formula semplificata e l'interpretazione
+parziale aggiornata.
 
-%  SLide 28 
-
-
-
-
-
-
-
-% FARE PPT DDPL
-
-% --- PER ESERCIZI ---
-% TEORIA PROPOSIZIONALE = INSIEME DI FORMULE PROPOSIZIONALI 
-% ASSIOMI = FORMULE PROPOSIZIONALI 
-% CONSEGUENZE LOGICHE = LE FORMULE LOGICAMENTE IMPLICATE DALLA TEORIA PROPOSIZIONALE (ANCHE FACENTE PARTI)
-
-
-% --- NUOVO PPT ---
-% SATISFABILITY, utile anche per l'implicazione logica
-% ALGORITMO DPLL (Davis Putnam Logeman Loveland), problema dell'algoritmo: complessità computazionale ESPONENZIALE, 
-% serve a risolvere il problema della soddisfacibilità booleana 
-% EQUI-SATISFAIABLE, 2 formule sono equisatisfaiable se
-% LETTERALE: o la lettera o (not lettera ?)
-% CLAUSOLA: è una disgiunzione di litterali, i.e. serie di OR
-% CONJUNCTIVE NORMAL FORM: congiunzione di clausole, i.e. clausole unite con l'and \/ (CNF)
-% PROPRIETA DI AND E OR
-% PROPRIETA DELLE CLAUSOLE
-% SATISFAIABILITY DI UN INSIEME DI CLAUSOLE
-% INTERPRETAZIONE PARZIALI 
-% TRASFRORMAZIONE DI TSEITIN: algoritmo che converte qualsiasi formula proposizionale in una equivalente in CNF, 
-% con size constante (con esempio), serve a fare il DPLL
-% TEOREMA: per ogni formula, TSEITIN(formula) è soddisfacibile se e solo se lo è la formula. Inoltre T(formula) è una formula 3-CNF che ha size lineare
-% DPLL si basa su 2 subroutine, SEMPLIFICATION e UNIT PROPAGATION
-% SEMPLIFICATION: rimuove clasole e le not letterale
-% UNIT PROPAGATION: ciclo in cui usa le SEMPLIFICATION, costo polinomiale visto che ad ogni giro elimina clausole, quindi visita al max n volte
-% PROCESSO COMPLETO DPLL, algoritmo ricorsivo con UNIT PROPAGATION
-% ogni volta che vediamo un algoritmo, dimostreremo TERMINAZIONE e CORRETTEZZA
-%
+% FARE DDPL SLIDE 50
