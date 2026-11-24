@@ -661,7 +661,7 @@ La trasformazione completa $T(\psi)$ è la seguente:
 
 
 \newpage
-\subsection{Unit Propagation}
+\subsection{Unit Propagation} \label{unit}
 Lo Unit Propagation è un algoritmo necessario per il funzionamento dell'algoritmo DPLL, quindi possiamo chiamarlo a tutti gli effetti una \textbf{sub-routine} per il DPLL.
 Questo algoritmo permette di semplificare una formula in CNF, determinando i valori di verità di clausole composte da un solo letterale. Perciò i parametri necessari ad eseguire questo algoritmo 
 sono due: il primo è ovviamente la formula proposizionale in CNF, il secondo è un interpretazione parziale $\mathcal{I}$, che ci permetterà di tenere traccia dei valori di verità delle variabili proposizionali della formula.
@@ -707,6 +707,383 @@ il valore che rende vero $\lambda$:
 Il procedimento viene ripetuto finché non sono
 più presenti clausole unitarie, restituendo
 la formula semplificata e l'interpretazione
-parziale aggiornata.
+parziale aggiornata.\\
+In alcuni casi, applicare la procedura Unit Propagation a una formula \(\phi\) è sufficiente per determinarne la soddisfacibilità, 
+ad esempio quando la procedura termina con uno dei seguenti risultati:
+\begin{enumerate}
+    \item \textbf{Primo caso}:
+    \[   \Big(\{\}, \mathcal{I}\Big)    \]
+    Non rimane alcuna clausola da soddisfare. Questo significa che la formula iniziale è soddisfacibile 
+e che possiamo ricavare facilmente un'interpretazione che la soddisfa a partire da \(\mathcal I\)
+\item \textbf{Secondo caso}:
+\[      (\phi,\mathcal I)\qquad \{\}\in\phi       \]
+La formula contiene una clausola vuota, che non può essere soddisfatta da alcuna interpretazione. Di conseguenza, la formula iniziale è insoddisfacibile
 
-% FARE DDPL SLIDE 50
+\item \textbf{Terzo caso}: quando Unit Propagation termina senza ottenere nessuno dei due risultati precedenti, ovvero quando non sono presenti clausole unitarie, oppure 
+la formula CNF non è vuota oppure la formula contiene clausole non vuote.
+\end{enumerate}
+In conclusione, in alcuni casi l'algoritmo di Unit Propagation è sufficiente per determinare la soddisfabilità, altrimenti questo algoritmo viene utilizzato come sub-routine 
+dell'algoritmo DPLL, che copre qualsiasi formula in CNF.  
+
+
+
+
+
+\subsection{DPLL}
+
+L'algoritmo \textbf{Davis-Putnam-Logemann-Loveland
+(DPLL)} è una procedura per verificare la
+soddisfacibilità di una formula proposizionale
+$\phi$ espressa in CNF.
+L'algoritmo combina due tecniche:
+\begin{itemize}
+    \item \textbf{Unit Propagation}: semplifica la
+    formula sfruttando le clausole unitarie,
+    assegnando i valori di verità obbligati. (vd. \ref{unit})
+
+    \item \textbf{Splitting Rule}: quando la
+    propagazione non è sufficiente, sceglie un
+    letterale e prova ricorsivamente entrambi
+    i suoi possibili valori di verità.
+\end{itemize}
+Per verificare la soddisfacibilità di $\phi$,
+invochiamo:
+\[
+DPLL(\phi,\varnothing)
+\]
+dove $\varnothing$ rappresenta l'interpretazione
+parziale inizialmente vuota. Ecco lo pseudocodice delll'algoritmo:\smallskip\\
+\begin{center}
+\begin{minipage}{0.75\textwidth}
+\begin{verbatim}
+DPLL(formula phi, interpretazione I)
+  (psi, I) := UNIT_PROPAGATION(phi, I);
+  if psi contains {}
+  then return ({{}}, empty)
+  elseif psi = {} then return ({}, I)
+  else select a literal lambda in C in psi;
+    if DPLL(psi U {{lambda}}, I) = ({}, I')
+    then return ({}, I')
+    else return DPLL(psi U {{not lambda}}, I)
+\end{verbatim}
+\end{minipage}
+\end{center}
+\noindent L'algoritmo esegue i seguenti passaggi:
+\begin{enumerate}
+    \item \textbf{Unit Propagation}: applica la procedura di propagazione unitaria:
+    \[
+    (\psi,\mathcal I):=
+    UnitPropagation(\phi,\mathcal I).
+    \]
+    Otteniamo una formula semplificata $\psi$
+    e un'interpretazione parziale aggiornata
+    $\mathcal I$.
+
+    \item \textbf{Controllo di insoddisfacibilità}: se $\psi$ contiene una clausola vuota:
+    \[
+    \{\}\in\psi
+    \]
+    allora è stata individuata una contraddizione
+    e il ramo corrente non può soddisfare la formula.
+    L'algoritmo restituisce:
+    \[
+    (\{\{\}\},\varnothing).
+    \]
+    \item \textbf{Controllo di soddisfacibilità}: se la formula risultante è vuota:
+    \[
+    \psi=\{\}
+    \]
+    allora tutte le clausole sono state soddisfatte.
+    L'algoritmo restituisce:
+    \[
+    (\{\},\mathcal I).
+    \]
+    \item \textbf{Splitting Rule}: se la formula non è vuota, non contiene
+    clausole vuote e non sono presenti ulteriori
+    clausole unitarie, l'algoritmo sceglie
+    un letterale $\lambda$ presente in $\psi$.
+    A questo punto prova due possibilità:
+    \begin{enumerate}
+        \item Assume $\lambda=True$ e richiama:
+        \[
+        DPLL(\psi\cup\{\{\lambda\}\},\mathcal I).
+        \]
+        Se questa chiamata restituisce
+        un risultato soddisfacibile, l'algoritmo
+        termina restituendo tale risultato.
+        \item Se il primo tentativo fallisce,
+        assume $\lambda=False$, imponendo
+        quindi $\neg\lambda=True$, e richiama:
+        \[
+        DPLL(\psi\cup\{\{\neg\lambda\}\},\mathcal I).
+        \]
+    \end{enumerate}
+\end{enumerate}
+La \textbf{Splitting Rule} permette quindi
+di esplorare ricorsivamente entrambe le
+possibilità associate a un letterale.
+Se un ramo produce una contraddizione,
+l'algoritmo torna alla scelta precedente
+ed esplora l'alternativa.
+Questo meccanismo prende il nome di
+\textbf{backtracking}.
+
+\smallskip
+
+\noindent \textit{Osservazione.}
+Ogni scelta della Splitting Rule aggiunge una
+clausola unitaria alla formula.
+Di conseguenza, nella successiva chiamata
+ricorsiva, la Unit Propagation assegnerà
+alla variabile il valore di verità
+corrispondente alla scelta effettuata.
+
+\subsubsection*{Correttezza dell'algoritmo DPLL}
+
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{
+\begin{theorem}
+Per ogni formula CNF $\phi$, la procedura
+$DPLL(\phi,\varnothing)$ restituisce:
+\begin{itemize}
+    \item $(\{\},\mathcal I)$ se $\phi$
+    è \textbf{soddisfacibile}.
+
+    \item $(\{\{\}\},\varnothing)$ se $\phi$
+    è \textbf{insoddisfacibile}.
+\end{itemize}
+\end{theorem}
+}}\smallskip\\
+La correttezza deriva dal fatto che:
+\begin{itemize}
+    \item La \textbf{Unit Propagation} effettua
+    soltanto assegnamenti obbligati dalle
+    clausole unitarie.
+
+    \item La \textbf{Splitting Rule} considera
+    entrambe le possibili assegnazioni
+    di un letterale, senza escludere
+    alcuna soluzione possibile.
+\end{itemize}
+Pertanto, se esiste un modello della formula,
+l'algoritmo è in grado di individuarlo.
+Inoltre, quando restituisce
+$(\{\},\mathcal I)$, l'interpretazione parziale
+$\mathcal I$ può essere estesa a un
+\textbf{modello completo} della formula iniziale.
+
+\subsubsection*{Complessità temporale di Unit Propagation}
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{
+\begin{theorem}
+Per ogni formula CNF $\phi$ e interpretazione
+parziale $\mathcal I$, la procedura
+$UnitPropagation(\phi,\mathcal I)$ termina
+ed è eseguibile in \textbf{tempo polinomiale}
+rispetto alla dimensione di $\phi$.
+\end{theorem}
+}}\smallskip\\
+La dimostrazione è abbastanza intuitiva.
+A ogni iterazione del ciclo \texttt{while},
+la procedura individua una clausola unitaria
+e semplifica la formula:
+\begin{itemize}
+    \item Elimina almeno una clausola,
+    quella unitaria individuata.
+
+    \item Può eliminare ulteriori clausole
+    già soddisfatte.
+
+    \item Può eliminare letterali falsi
+    dalle clausole rimanenti.
+\end{itemize}
+Il numero delle clausole diminuisce
+progressivamente e ogni operazione di
+semplificazione richiede tempo polinomiale.
+Pertanto, indicando con $m$ la dimensione
+della formula iniziale:
+\[
+\boxed{
+T_{UnitPropagation}(m)=O(m^k)
+}
+\]
+per qualche costante $k\in\mathbb N$.
+
+\subsubsection*{Complessità temporale di DPLL}
+Sebbene la Unit Propagation richieda
+tempo polinomiale, la \textbf{Splitting Rule}
+può generare un albero di ricerca
+di dimensione esponenziale.
+Supponiamo che la formula contenga $n$
+variabili proposizionali.
+Ogni applicazione della Splitting Rule
+può generare due rami:
+\begin{itemize}
+    \item Uno in cui il letterale scelto è vero.
+    \item Uno in cui il letterale scelto è falso.
+\end{itemize}
+Poiché ogni scelta assegna almeno una nuova
+variabile, la profondità massima dell'albero
+di ricerca è $n$.
+Nel caso peggiore, l'albero può contenere:
+\[
+1+2+4+\cdots+2^n=2^{n+1}-1    \qquad \text{nodi }
+\]
+Di conseguenza, il numero di chiamate
+ricorsive è limitato da:
+\[
+\boxed{O(2^n)}.
+\]
+Ogni chiamata esegue operazioni di costo
+polinomiale rispetto alla dimensione
+della formula.
+Se $m$ è la dimensione complessiva
+della formula, otteniamo:
+\[
+\boxed{
+T_{DPLL}(m)=O(2^n\cdot poly(m))
+}
+\]
+e, poiché $n\le m$:
+\[
+\boxed{
+T_{DPLL}(m)=2^{O(m)}.
+}
+\]
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{
+\begin{theorem}
+Per ogni formula CNF $\phi$, l'algoritmo
+DPLL termina e ha una complessità
+temporale \textbf{esponenziale nel caso peggiore}
+rispetto alla dimensione della formula.
+\end{theorem}
+}}\smallskip\\
+\textit{Osservazione.}
+La complessità esponenziale rappresenta
+il caso peggiore.
+In molti casi, la struttura della formula
+permette alla Unit Propagation di effettuare
+numerose semplificazioni e di individuare
+rapidamente contraddizioni
+Di conseguenza, DPLL può esplorare soltanto
+una piccola parte dell'albero di ricerca,
+risultando molto più efficiente rispetto
+all'algoritmo a forza bruta.
+
+\subsection{Formule di Horn}
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{
+\begin{definition}
+Una clausola è detta \textbf{clausola di Horn}
+se contiene \textbf{al massimo un letterale positivo},
+cioè un letterale non negato.
+\end{definition}}}\smallskip\\
+Una formula proposizionale in CNF è detta
+\textbf{formula di Horn} se tutte le sue
+clausole sono clausole di Horn.\smallskip\\
+\textit{Esempi.}
+Consideriamo le seguenti clausole:
+\begin{itemize}
+    \item $(p)$: clausola di Horn,
+    perché contiene un solo letterale positivo.
+
+    \item $(\neg p\lor q)$: clausola di Horn,
+    perché contiene un solo letterale positivo.
+
+    \item $(\neg p\lor\neg q)$: clausola di Horn,
+    perché non contiene letterali positivi.
+
+    \item $(p\lor q)$: non è una clausola
+    di Horn, perché contiene due
+    letterali positivi.
+\end{itemize}
+
+\subsubsection*{Soddisfacibilità delle formule di Horn}
+Una proprietà fondamentale delle formule
+di Horn è che \textbf{la sola Unit Propagation
+è sufficiente per determinarne la
+soddisfacibilità}.\smallskip\\
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{
+\begin{theorem}
+Una formula di Horn $\phi$ è soddisfacibile
+se e solo se:
+\[
+UnitPropagation(\phi,\varnothing)
+=(\psi,\mathcal I)
+\]
+dove $\psi$ non contiene clausole vuote:
+\[
+\boxed{\{\}\notin\psi.}
+\]
+\end{theorem}
+}}\smallskip\\
+Se la Unit Propagation produce una
+clausola vuota, significa che è stata
+individuata una contraddizione e quindi
+la formula è insoddisfacibile.
+Supponiamo invece che la procedura termini
+senza generare clausole vuote.\\
+La formula residua $\psi$:
+\begin{itemize}
+    \item Non contiene clausole unitarie.
+    \item Non contiene clausole vuote.
+    \item È ancora una formula di Horn.
+\end{itemize}
+Poiché ogni clausola di Horn contiene
+al massimo un letterale positivo, una
+clausola residua non unitaria deve
+contenere almeno un letterale negativo.
+Possiamo quindi assegnare
+\texttt{False} a tutte le variabili
+non ancora assegnate.
+In questo modo, ogni clausola residua
+contiene almeno un letterale negativo vero
+e risulta quindi soddisfatta.
+Pertanto la formula iniziale è soddisfacibile.\smallskip\\
+\textit{Esempio.} Consideriamo:
+\[
+\phi=
+(p)\land(\neg p\lor q)\land(\neg q\lor r).
+\]
+Tutte le clausole sono di Horn.
+Applicando la Unit Propagation:
+\[
+\begin{aligned}
+p=True
+&\Rightarrow q=True\\
+&\Rightarrow r=True.
+\end{aligned}
+\]
+Tutte le clausole vengono soddisfatte,
+quindi la formula è soddisfacibile.
+
+
+\subsubsection*{Complessità delle formule di Horn}
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{
+\begin{theorem}
+La soddisfacibilità delle formule di Horn
+può essere decisa in \textbf{tempo polinomiale}.
+\end{theorem}
+}}\smallskip\\
+Questo risultato segue direttamente
+dalle proprietà precedenti:
+\begin{enumerate}
+    \item La Unit Propagation termina
+    in tempo polinomiale.
+
+    \item Per le formule di Horn, la Unit
+    Propagation è sufficiente per
+    determinare la soddisfacibilità.
+
+    \item Non è quindi necessario applicare
+    la Splitting Rule ed esplorare
+    un albero di ricerca esponenziale.
+\end{enumerate}
+Di conseguenza:
+\[
+\boxed{Horn\text{-}SAT\in P.}
+\]
+Il problema SAT generale è NP-completo,
+ma alcune classi particolari di formule,
+come le formule di Horn, possono essere
+risolte in tempo polinomiale.
+Questo dimostra che la struttura delle
+clausole può influenzare notevolmente
+la complessità della ricerca di un modello.
