@@ -4664,57 +4664,32 @@ bisogna scegliere il costrutto ER più appropriato.
 \end{itemize}
 
 
-\subsection{Scelta tra ruolo ed entità}
+\subsection*{Scelta tra ruolo ed entità}
 
 Un concetto può talvolta essere rappresentato
 sia come \textbf{ruolo di una relazione}
-sia come \textbf{entità specializzata}.
-
-\medskip
-
-\textcolor{green!60!black}{\textbf{Esempio: direttore di un'azienda}}
-
-\textbf{Prima soluzione: direttore come ruolo}
-
-Si utilizzano:
-
-\begin{itemize}
-    \item Entità \texttt{Persona}.
-    \item Entità \texttt{Azienda}.
-    \item Relazione \texttt{Dirige}.
-    \item Ruolo \texttt{Direttore} svolto da Persona.
-\end{itemize}
-
-Una persona può dirigere al massimo un'azienda:
-
-\[
-\text{Persona} \xrightarrow{(0,1)}
-\text{Dirige}
-\]
-
+sia come \textbf{entità specializzata}.\medskip\\
+\textcolor{verdeEsempio}{\textbf{Esempio. }} direttore di un'azienda\\
+\textbf{Prima soluzione: direttore come ruolo}\\
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.35\linewidth]{../images/scr1.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
 \textbf{Seconda soluzione: direttore come entità}
-
-Si introduce una sotto-entità:
-
-\[
-\text{Direttore ISA Persona}
-\]
-
-e si collega \texttt{Direttore}
-ad \texttt{Azienda} tramite \texttt{Dirige}.
-
-Ogni direttore partecipa alla relazione
-con cardinalità $(1,1)$.
-
-\medskip
-
-I due schemi rappresentano lo stesso concetto.
-
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.35\linewidth]{../images/scr2.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent
+I due schemi rappresentano lo stesso concetto.\\
 Tuttavia, se vogliamo memorizzare
 proprietà specifiche del direttore,
 ad esempio \texttt{Anzianità},
-è preferibile utilizzare la seconda soluzione.
-
+è preferibile utilizzare la seconda soluzione.\\
 \textbf{Regola pratica:}
 se un concetto ha proprietà specifiche,
 conviene rappresentarlo come entità;
@@ -4723,13 +4698,10 @@ in una relazione, può essere sufficiente un ruolo.
 
 
 \subsection{Pattern di modellazione}
-
 Un \textbf{pattern di modellazione} è una soluzione
 ricorrente per rappresentare determinati fenomeni
 all'interno di uno schema ER.
-
 Due pattern importanti sono:
-
 \begin{enumerate}
     \item Scelta tra relazioni binarie e relazioni n-arie.
     \item Rappresentazione degli aspetti dinamici.
@@ -4737,83 +4709,49 @@ Due pattern importanti sono:
 
 
 \subsection{Relazioni binarie e relazioni n-arie}
-
 Supponiamo che un'entità $E$ partecipi
 a $N$ relazioni binarie differenti,
-tutte con cardinalità $(1,1)$ dal lato di $E$.
-
+tutte con cardinalità $(1,1)$ dal lato di $E$.\\
 È possibile accorpare queste relazioni
 in un'unica relazione di grado:
-
 \[
 N+1
 \]
-
 mantenendo la cardinalità $(1,1)$
-di $E$ nella nuova relazione.
-
+di $E$ nella nuova relazione.\\
 Questa trasformazione può preservare
 l'equivalenza semantica,
 ma deve essere anche
-\textbf{concettualmente significativa}.
-
-\medskip
-
-\textcolor{green!60!black}{\textbf{Esempio: gestione di un'azienda}}
-
-Un'azienda è collegata a:
-
-\begin{itemize}
-    \item Una banca tramite \texttt{Finanza}.
-    \item Un'agenzia tramite \texttt{Marketing}.
-    \item Una persona tramite \texttt{Direzione}.
-\end{itemize}
-
-L'entità \texttt{Azienda} partecipa
-a ciascuna relazione con cardinalità $(1,1)$.
-
-Le tre relazioni binarie possono essere
-accorpate in una relazione quaternaria:
-
-\[
-\text{Gestione}(
-\text{Azienda},
-\text{Banca},
-\text{Agenzia},
-\text{Persona}
-)
-\]
-
+\textbf{concettualmente significativa}.\medskip\\
+\textcolor{verdeEsempio}{\textbf{Esempio. }} gestione di un'azienda\\
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.7\linewidth]{../images/scr3.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent
 I nomi \texttt{Finanza}, \texttt{Marketing}
 e \texttt{Direzione} diventano ruoli
-nella relazione \texttt{Gestione}.
-
+nella relazione \texttt{Gestione}.\\
 I due schemi sono semanticamente equivalenti,
-poiché rappresentano le stesse associazioni.
-
-\medskip
-
-\textcolor{green!60!black}{\textbf{Controesempio: immobile}}
-
-Un immobile può essere collegato a:
-
-\begin{itemize}
-    \item \texttt{Catasto} tramite \texttt{Iscrizione}.
-    \item \texttt{Comune} tramite \texttt{Luogo}.
-    \item \texttt{Persona} tramite \texttt{Proprietà}.
-\end{itemize}
-
+poiché rappresentano le stesse associazioni.\medskip\\
+\textcolor{verdeEsempio}{\textbf{Controesempio. }} immobile\\
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.7\linewidth]{../images/scr4.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent
 Anche se le tre relazioni hanno cardinalità
 $(1,1)$ dal lato di \texttt{Immobile},
 accorparle in un'unica relazione quaternaria
-non sarebbe una scelta ragionevole.
-
+non sarebbe una scelta ragionevole.\\
 Infatti, iscrizione catastale, ubicazione
 e proprietà sono concetti differenti,
 non aspetti omogenei di un'unica relazione.
-
 \textbf{Conclusione:}
-
 \begin{itemize}
     \item \textbf{Equivalenza semantica}:
     gli schemi rappresentano le stesse informazioni.
@@ -4823,89 +4761,48 @@ non aspetti omogenei di un'unica relazione.
     chiaro, naturale e concettualmente appropriato.
 \end{itemize}
 
-L'equivalenza semantica da sola
-non garantisce una buona modellazione.
-
-
-\subsection{Quando le relazioni non possono essere accorpate}
+\subsection*{Quando le relazioni non possono essere accorpate}
 
 La condizione $(1,1)$ nelle relazioni binarie
 è fondamentale per l'accorpamento
 descritto in precedenza.
-
 Se una partecipazione è opzionale,
 la trasformazione può non preservare
-l'equivalenza semantica.
-
-\medskip
-
-\textcolor{green!60!black}{\textbf{Esempio: esercizio 23}}
-
-Consideriamo quattro entità:
-
-\[
-E,\quad F,\quad G,\quad H
-\]
-
-L'entità $E$ partecipa a tre relazioni:
-
-\[
-R_1(E,F) \qquad (1,1)
-\]
-
-\[
-R_2(E,G) \qquad (0,1)
-\]
-
-\[
-R_3(E,H) \qquad (1,1)
-\]
-
-Le cardinalità indicate si riferiscono
-alla partecipazione di $E$.
-
-Nel primo schema, ogni istanza di $E$:
-
-\begin{itemize}
-    \item Deve essere collegata a un'istanza di $F$.
-    \item Può non essere collegata ad alcuna istanza di $G$.
-    \item Deve essere collegata a un'istanza di $H$.
-\end{itemize}
-
+l'equivalenza semantica.\medskip\\
+\textcolor{verdeEsempio}{\textbf{Esempio. }} esercizio 23\\
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.7\linewidth]{../images/scr5.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent
 Se accorpiamo le tre relazioni
 in un'unica relazione quaternaria $R$
 con cardinalità $(1,1)$ su $E$,
 ogni istanza di $E$ deve partecipare
-a una tupla di $R$.
-
+a una tupla di $R$.\\
 Di conseguenza, ogni istanza di $E$
 risulta necessariamente associata
 anche a un'istanza di $G$.
-
 Questo contraddice la cardinalità
 originaria $(0,1)$.
-
 \[
 \boxed{\text{I due schemi non sono semanticamente equivalenti.}}
 \]
-
 Cambiare la cardinalità di $E$ in $R$
 da $(1,1)$ a $(0,1)$ non risolve il problema,
 perché diventerebbero opzionali
-anche i collegamenti con $F$ e $H$.
-
+anche i collegamenti con $F$ e $H$.\\
 \textbf{Da ricordare:}
 l'accorpamento delle relazioni binarie
 non è generalmente valido quando
 le partecipazioni dell'entità comune
 non sono tutte $(1,1)$.
 
-
 \subsection{Rappresentazione degli aspetti dinamici}
-
 Durante la progettazione concettuale
 bisogna distinguere tra:
-
 \begin{itemize}
     \item \textbf{Aspetti statici}:
     proprietà e associazioni che non cambiano
@@ -4915,10 +4812,9 @@ bisogna distinguere tra:
     proprietà e associazioni che possono
     cambiare nel tempo.
 \end{itemize}
-
+\noindent
 Per gli aspetti dinamici possono essere
-necessarie tecniche di modellazione specifiche.
-
+necessarie tecniche di modellazione specifiche.\\
 Si distinguono due casi principali:
 
 \begin{enumerate}
@@ -4930,16 +4826,12 @@ Si distinguono due casi principali:
     si conservano i diversi valori assunti
     da una proprietà nel corso del tempo.
 \end{enumerate}
-
-\medskip
-
-\textcolor{green!60!black}{\textbf{Esempio: storicizzazione}}
-
+\noindent
+\textcolor{verdeEsempio}{\textbf{Esempio. }} storicizzazione\\
 Se interessa conoscere non soltanto
 l'attuale datore di lavoro di una persona,
 ma anche quelli precedenti,
 non basta memorizzare un unico valore.
-
 Occorre rappresentare i diversi rapporti
 di lavoro e i rispettivi periodi:
 
@@ -4947,15 +4839,281 @@ di lavoro e i rispettivi periodi:
 (\text{Persona},\text{Datore},
 \text{DataInizio},\text{DataFine})
 \]
-
 In questo modo è possibile ricostruire
 la storia lavorativa della persona.
-
 Se la proprietà da storicizzare appartiene
 a una relazione, è possibile trasformare
 la relazione in entità e applicare
-una tecnica di storicizzazione analoga.
-
+una tecnica di storicizzazione analoga.\\
 \textbf{Obiettivo:}
 conservare i valori storici senza sovrascriverli
 quando cambiano nel tempo.
+
+\subsection{Rappresentazione di eventi}
+Un \textbf{evento} rappresenta il verificarsi di un fenomeno in un determinato
+istante o intervallo temporale.
+La scelta del pattern di modellazione dipende dal numero di entità coinvolte
+e dalla possibilità che uno stesso evento si ripeta.
+
+\subsubsection{Eventi che riguardano una sola entità}
+Se una categoria di eventi $V$ riguarda un'entità $E$, possiamo rappresentarla
+mediante una nuova \textbf{entità $V$}, collegata a $E$ attraverso la relazione
+\textit{SoggettoA}.
+Ogni istanza di $V$ rappresenta il verificarsi di un evento che riguarda
+una specifica istanza di $E$.
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.3\linewidth]{../images/scr6.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent
+La granularità temporale dipende dai requisiti: giorno, mese, anno, ecc.\medskip\\
+\textcolor{verdeEsempio}{\textbf{Esempio. }} interventi di manutenzione\\
+Supponiamo che su uno stesso edificio possa essere effettuato
+\textbf{al massimo un intervento all'anno}.
+Lo schema comprende:\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.7\linewidth]{../images/scr7.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent
+Ogni intervento riguarda un solo edificio ed è effettuato da una sola ditta.
+L'intervento è identificato dall'\textbf{edificio e dall'anno}.
+
+\subsubsection{Eventi che riguardano più entità}
+Consideriamo una categoria di eventi $V$ che coinvolge $N$ entità,
+con $N>1$.
+Si distinguono due situazioni.\medskip\\
+\textbf{Caso 1: al massimo un evento per combinazione di istanze}\\
+Se una determinata combinazione di istanze delle $N$ entità può essere
+coinvolta in \textbf{al massimo un evento} di tipo $V$, allora
+l'evento può essere modellato direttamente come una \textbf{relazione}
+tra le entità coinvolte.
+La data dell'evento diventa un attributo della relazione.\medskip\\
+\noindent
+\textcolor{verdeEsempio}{\textbf{Esempio. }} vittoria elettorale\\
+Un candidato può essere eletto al massimo una volta nella stessa
+tornata elettorale.
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.5\linewidth]{../images/scr8.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent
+Ogni istanza della relazione rappresenta una vittoria elettorale.\medskip\\
+\textbf{Caso 2: più eventi per la stessa combinazione di istanze}\\
+Se una stessa combinazione di istanze può essere coinvolta in
+\textbf{più eventi} dello stesso tipo, una semplice relazione
+non è sufficiente a distinguerli.
+Si introduce quindi un'\textbf{entità $V$}, collegata mediante
+opportune relazioni alle $N$ entità coinvolte.
+\begin{itemize}
+    \item Ogni istanza di $V$ rappresenta un evento distinto.
+    \item Ogni evento è associato a una specifica istanza di ciascuna
+    entità coinvolta, con cardinalità $(1,1)$ sul lato di $V$.
+    \item Se non possono verificarsi due eventi per la stessa combinazione
+    di istanze nella stessa data, l'identificatore di $V$ comprende
+    \textbf{Data e i riferimenti alle entità coinvolte}.
+\end{itemize}
+\noindent
+\textcolor{verdeEsempio}{\textbf{Esempio. }} visite ordinarie\\
+Un capo di Stato può effettuare più visite nella stessa nazione,
+ma \textbf{non più di una visita ordinaria all'anno} nella medesima nazione.\\
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.6\linewidth]{../images/scr9.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent
+L'identificatore della visita è composto da
+\textbf{CapoDiStato, Nazione e Anno}.
+
+\subsection{Rappresentazione storicizzata di entità}
+La \textbf{storicizzazione} permette di conservare i valori assunti
+nel tempo dalle proprietà di un'entità, invece di memorizzare
+soltanto quelli attuali.
+Si distinguono:
+\begin{itemize}
+    \item \textbf{Proprietà rigide}: non cambiano, oppure non interessa
+    registrarne l'evoluzione.
+    \item \textbf{Proprietà storicizzate}: possono cambiare e interessa
+    conservare la storia dei loro valori.
+\end{itemize}
+\noindent
+Il pattern consiste nell'introdurre un'entità
+\textit{StatoDiE}, collegata all'entità originale $E$
+mediante una relazione \textit{HaStato}.
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.4\linewidth]{../images/scr10.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent
+Quando cambia una proprietà storicizzata, viene creata una
+\textbf{nuova istanza di StatoDiE}, contenente i valori di
+\textbf{tutte} le proprietà storicizzate, anche di quelle rimaste invariate.
+
+\subsubsection{Storicizzazione di una singola proprietà}
+\noindent
+\textcolor{verdeEsempio}{\textbf{Esempio. }} residenza di una persona\\
+Consideriamo l'entità \textit{Persona}, caratterizzata da:
+\begin{itemize}
+    \item \textit{CF}, \textit{DataNascita} e città di nascita:
+    proprietà rigide.
+    \item \textit{Salario} e città di residenza: proprietà
+    potenzialmente variabili.
+\end{itemize}
+\noindent
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.5\linewidth]{../images/scr11.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent
+Se interessa soltanto la situazione attuale, si mantiene
+\textit{Residenza} come relazione tra \textit{Persona} e \textit{Città}.
+Se invece interessa conservare \textbf{tutte le residenze precedenti},
+si introduce l'entità \textit{StatoResidenza}.
+Lo schema comprende:
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.5\linewidth]{../images/scr12.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent
+Ogni stato rappresenta una residenza della persona a partire
+da una certa data.
+L'identificatore di \textit{StatoResidenza} è costituito
+da \textbf{Persona e DataInizio}.
+
+\subsubsection{Storicizzazione di più proprietà}
+Se occorre storicizzare anche il salario e l'azienda presso cui
+una persona lavora, esistono due possibili soluzioni.
+\paragraph{Soluzione 1: entità di stato separate}
+Si introducono due entità distinte:
+\begin{itemize}
+    \item \textbf{StatoResidenza}: registra i cambiamenti di residenza.
+    \item \textbf{StatoLavoro}: registra i cambiamenti di salario
+    e azienda.
+\end{itemize}
+\noindent
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.8\linewidth]{../images/scr13.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent
+\textit{StatoLavoro} è collegata a \textit{Persona} tramite
+\textit{HaStatoLavoro} e ad \textit{Azienda} tramite \textit{LavoraIn}.\\
+Il salario è un attributo della relazione \textit{LavoraIn}.
+La partecipazione di \textit{StatoLavoro} a \textit{LavoraIn}
+è $(0,1)$: uno stato può infatti rappresentare un periodo
+in cui la persona non lavora.\\
+\textbf{Vantaggio:} un cambiamento di residenza non richiede
+la creazione di un nuovo stato lavorativo, e viceversa.
+
+\paragraph{Soluzione 2: un'unica entità di stato}
+Si introduce un'unica entità \textit{StatoPersona},
+che comprende tutte le proprietà da storicizzare.
+Essa è collegata:
+\begin{itemize}
+    \item a \textit{Persona} mediante \textit{HaStato};
+    \item a \textit{Città} mediante \textit{Luogo};
+    \item a \textit{Azienda} mediante \textit{LavoraIn},
+    con attributo \textit{Salario}.
+\end{itemize}
+\noindent
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.8\linewidth]{../images/scr14.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent
+Ogni volta che cambia \textbf{almeno una proprietà storicizzata},
+si crea un nuovo stato che registra la situazione complessiva
+della persona.
+\textbf{Differenza principale:}
+\begin{itemize}
+    \item Con \textbf{stati separati}, ogni aspetto evolve
+    indipendentemente.
+    \item Con \textbf{uno stato unico}, qualsiasi cambiamento
+    produce una nuova fotografia complessiva della persona.
+\end{itemize}
+\noindent
+In entrambe le soluzioni, i valori attuali delle proprietà
+sono quelli dello \textbf{stato con la data di inizio più recente}.
+
+\subsection{Rappresentazione storicizzata di relazioni}
+La storicizzazione può essere applicata anche alle
+\textbf{relazioni}, quando interessa conservare i cambiamenti
+delle loro proprietà nel tempo.
+In questo caso si può utilizzare la \textbf{reificazione},
+cioè trasformare una relazione in un'entità.
+Successivamente si introduce un'entità che rappresenta
+i diversi stati della relazione originaria.\medskip\\
+\textcolor{verdeEsempio}{\textbf{Esempio. }}collaborazione tra rivista e scienziato\\
+Inizialmente esiste la relazione \textit{Collaborazione}
+tra \textit{Rivista} e \textit{Scienziato}, con attributo
+multivalore \textit{Argomento}.
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.4\linewidth]{../images/scr15.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent
+Se interessa registrare come cambiano nel tempo gli argomenti
+di collaborazione, si procede così:
+\begin{enumerate}
+    \item Si trasforma \textit{Collaborazione} in un'entità,
+    identificata dalla coppia \textit{Rivista--Scienziato}.
+    \item Si collegano \textit{Rivista} e \textit{Scienziato}
+    alla nuova entità mediante le relazioni \textit{Offre}
+    e \textit{Fornisce}.
+    \item Si introduce l'entità \textit{StatoCollaborazione},
+    collegata a \textit{Collaborazione} tramite \textit{HaStato}.
+    \item A \textit{StatoCollaborazione} si associano
+    \textit{Data} e l'attributo multivalore \textit{Argomento}.
+\end{enumerate}
+\noindent
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.65\linewidth]{../images/scr16.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent
+Assumendo che una collaborazione non possa avere due stati
+diversi nello stesso giorno, ogni stato è identificato
+dalla \textbf{collaborazione e dalla data}.
+In questo modo si conserva la storia degli argomenti trattati
+dalla stessa coppia rivista--scienziato.
+
+\subsection{Eventi e stati: criteri di scelta}
+Le proprietà dinamiche di un sistema informativo possono essere
+rappresentate mediante \textbf{eventi} oppure mediante
+\textbf{sequenze di stati}.
+\begin{itemize}
+    \item \textbf{Eventi}: si utilizzano quando interessa il
+    verificarsi di un fenomeno in un determinato tempo o contesto.
+    L'attenzione è rivolta all'\textbf{accadimento}.
+
+    \item \textbf{Stati}: si utilizzano quando interessa conoscere
+    gli effetti dei cambiamenti e la situazione risultante.
+    L'attenzione è rivolta alla \textbf{condizione del sistema}.
+\end{itemize}
+\noindent
+\textcolor{verdeEsempio}{\textbf{Esempio. }}
+Se vogliamo registrare ogni intervento di manutenzione effettuato
+su un edificio, conviene modellare gli \textbf{eventi}.
+Se vogliamo conoscere come è cambiata nel tempo la residenza
+di una persona, conviene modellare gli \textbf{stati}.
