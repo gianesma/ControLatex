@@ -1,5 +1,5 @@
 % PROBLEMI CON CUI DOVREMMO FARE LE RIDUZIONI ALL'ESAME
-\chapter{Problemi difficili e completi}
+\chapter{Problemi difficili e completi*}
 \section{Introduzione}
 Vediamo in cosa consistono i \textbf{problemi difficili e completi}:\smallskip\\
 \colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
@@ -30,8 +30,14 @@ Utilizziamo il concetto di riduzione per definire i \textbf{linguaggi difficili}
 
 %NP COMPLETEZZA
 
+\section{NP-completezza}
+Abbiamo visto che per definire problemi completi e difficili servono necessariamente le riduzioni. Per i problemi NP (\ref{np}) utilizzeremo \textbf{riduzioni polinomiali},
+poichè una macchina deterministica con complessità temporale $\mathcal{O}(n^k)$ può essere simulata da una macchina non deterministica con la stessa complessità.\\
+Una funzione $f: \Sigma^* \to \Gamma^*$ è calcolabile in tempo polinomiale se esiste una macchina di Turing $M$ tale che $M$ calcola $f$ e $M$ ha complessità temporale $\mathcal{O}(n^k)$
+per qualche $k \in \mathbb{N}$.
 
-\section{Riduzioni efficienti}
+
+\subsection{Riduzioni efficienti}
 Le riduzioni efficienti le chiamiamo \textbf{riduzioni di Karp}, vediamo la definizione:\smallskip\\
 \colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
     Siano $A$ e $B$ due linguaggi sugli alfabeti $\Sigma_A^*$ e $\Sigma_B^*$, rispettivamente. \\Diremo che 
@@ -43,6 +49,21 @@ Le riduzioni efficienti le chiamiamo \textbf{riduzioni di Karp}, vediamo la defi
 La funzione $f$ viene chiamata \textbf{Karp-riduzione da} $\bm{A}$ in $\bm{B}$
 
 %LINGUAGGI DIFFICILI E COMPLETI PER NP
+\newpage
+\subsection{Linguaggi difficili e completi per NP}
+Ora che abbiamo introdotto le riduzioni efficienti, possiamo utilizzarle per definire linguaggi completi e difficili in NP. \smallskip\\
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
+    Un linguaggio $\mathcal{L}$ si dice \textbf{NP-hard} sotto le riduzioni polinomiali se per ogni linguaggio $\mathcal{L}'\in NP$ è tale che  
+    \[\mathcal{L}' \le^{p}_{m} \mathcal{L} \quad(\text{riduzione di efficiente Karp}) \]
+\end{definition}}}\smallskip\\
+In altre parole significa che il linguaggio $\mathcal{L}$ è almeno tanto difficile quanto qualsiasi problema della classe NP.\smallskip\\
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
+    Un linguaggio $\mathcal{L}$ si dice \textbf{NP-complete} sotto le riduzioni in tempo polinomiale se $\mathcal{L} \in NP$ e $\mathcal{L} $ è NP-hard 
+    sotto le riduzioni in tempo polinomiale 
+\end{definition}}}\smallskip\\
+In altre parole un linguaggio NP-completo è un linguaggio che appartiene alla classe NP ed è almeno tanto difficile quanto tutti gli altri problemi di NP.\smallskip\\
+Per dare queste due definizioni abbiamo semplicemente applicato le definizioni generali viste nella sezione di introduzione del capitolo.\\
+Successivamente vedremo il teorema di Cook e Levin, che si occupa di dimostrare che il linguaggio dei palindromi \textsc{sat} è NP-completo. 
 
 
 

@@ -191,7 +191,7 @@ Per riconoscere questo linguaggio costruiamo una macchina di Turing non determin
 Nel caso peggiore, la macchina passa per ogni simbolo della stringa input, quindi se la stringa è lunga $n$, la macchina effettua almeno $n$ passi. Di conseguenza possiamo affermare che la complessità temporale 
 della macchina non deterministica che riconosce il linguaggio $L$ è $\mathcal{O}(n)$ e quindi:
 \[    L \in \textsc{ntime}(n)    \]  
-Come abbiamo fatto con la complessità deterministica possiamo dare le seguenti definizioni:\smallskip\\
+Come abbiamo fatto con la complessità deterministica possiamo dare le seguenti definizioni:\smallskip\\ \label{np}
 \colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
     L'unione di tutti i linguaggi che sono in \textsc{ntime}($n^k$) per un qualche $k \in \mathbb{N}$, viene denotata con \textbf{NP} (Non Deterministic Polynomial Time), ovvero
     \[     \textsc{np } = \bigcup_{k \in \mathbb{N}} \textsc{ntime}(n^k)  \]
@@ -250,10 +250,6 @@ Dove $e(G)$ è l'encoding del grafo $G$. Dimostriamo che il linguaggio $3-\texts
     \noindent La macchina accetta il linguaggio se almeno una esecuzione trova un 3-Coloring.
 \end{proof} 
 
-
-%Linguaggio Indipendent Set
-%Linguaggio Vertex Cover
-%Linguaggio Set Cover
 
 
 % ALL'ESAME: UN AUTOMA, UNA RIDUZIONE DI QUELLE CHE FACCIAMO DA OGGI IN POI

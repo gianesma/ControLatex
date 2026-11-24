@@ -381,7 +381,7 @@ Ricapitolando si ha che:
 
 
 
-\subsection{Funzioni booleane e formule}
+\section{Funzioni booleane e formule}
 Può essere dimostrato (ma non lo faremo) che a partire da una formula è possibile definire 
 funzione booleana, e viceversa. Formalmente:\smallskip\\
 \colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
@@ -390,64 +390,226 @@ $f_A(\mathcal{I}(p_1), \dots, \mathcal{I}(p_n)) = \mathcal{I}(A)$.
 \end{definition}}}\smallskip\\
 \colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
    Per ogni funzione booleana $f$ con $n$ argomenti, esiste una corrispondente formula $A_f$ con $n$ variabili proposizionali $p_1, \dots, p_n$, tale che per ogni interpretazione $\mathcal{I}$, $\mathcal{I}(A_f) = f(\mathcal{I}(p_1), \dots, \mathcal{I}(p_n))$.
+\end{definition}}}
+
+\subsection{DNF e CNF}
+
+Un osservazione importante è che ogni formula della logica proposizionale può essere espressa tramite il solo utliizzo dei connettivi:
+\[   \neg \qquad \vee \qquad \wedge       \]
+Possiamo dire che l'insieme dei connettivi $\{  \neg,\wedge, \vee   \}$ è \textbf{completo} perchè permettono di esprimere ogni formula che corrisponde ad una funzione booleana.
+Formalizziamo questo concetto introducendo le DNF e le CNF: \smallskip\\
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
+   Ogni funzione booleana può essere espressa mediante una formula della logica proposizionale in \textbf{Forma Normale Disgiuntiva (DNF)}, cioè una formula della forma:
+   \[   \alpha_1 \vee \alpha_2 \vee \cdot\cdot\cdot \vee\  \alpha_k   \]
+   dove ogni $\alpha_i$ è un \textbf{minterm}, cioè una congiunzione di letterali:
+   \[    \alpha_i = \gamma_1 \wedge \gamma_2 \wedge \cdot \cdot \cdot \wedge \gamma_n  \]
+   e un \textbf{letterale} è una variabile proposizionale (o la sua negazione)
 \end{definition}}}\smallskip\\
+Quindi, una formula in DNF è vera quando almeno una delle sue congiunzioni è vera. \\
+Possiamo generalizzare la notazione di una DNF in questo modo:
+\[\bigvee_{i = 1}^{m} \left(  \bigwedge_{j = 1}^{n_j} L_{ij}  \right)\]
+Un esempio di DNF è la seguente formula:
+\[     (p \wedge q) \quad \vee \quad (\neg p \wedge r)   \]
+dove $p,q,r,\neg p$ sono tutti letterali e $(p \wedge q ), (\neg p \wedge r)$ sono minterm.\smallskip\\
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
+   Ogni funzione booleana può essere espressa mediante una formula della logica proposizionale in \textbf{Forma Normale Congiuntiva (CNF)}, cioè una formula della forma:
+   \[   \beta_1 \wedge \beta_2 \wedge \cdot\cdot\cdot \wedge\  \beta_k   \]
+   dove ogni $\beta_i$ è una \textbf{clausola}, cioè una disgiunzione di letterali:
+   \[    \beta_i = \gamma_1 \vee \gamma_2 \vee \cdot \cdot \cdot \vee \gamma_n  \]
+   e un \textbf{letterale} è una variabile proposizionale (o la sua negazione)
+\end{definition}}}\smallskip\\
+Quindi, una formula in CNF è vera quando tutte le sue clausole sono vere.\\
+Possiamo generalizzare la notazione di una CNF in questo modo:
+\[    \bigwedge_{i = 1}^{m} \left( \bigvee_{j = 1}^{n_j} L_{ij}  \right)   \]
+Un esempio di CNF è la seguente formula:
+\[      (p\lor q)   \quad    \land    \quad    (\neg p\lor r)         \]
+dove $p,q,r,\neg p$ sono tutti letterali e $(p \vee q ), (\neg p \vee r)$ sono minterm.\smallskip\\
+Vediamo alcune proprietà delle formule scritte in CNF:
+\begin{itemize}
+    \item \textbf{L'ordine dei letterali non conta}: se una clausola $C$ è ottenuta riordinando 
+    i letterali di una clausola $C'$, allora $C$ e $C'$ sono equivalenti, ad esempio:
+    \[   (p \vee q \vee r \vee \neg r) \equiv (\neg r \vee q \vee p \vee r)      \]
+    \item \textbf{Letterali multipli possono essere uniti}: se una clausola contiene una o più occorrenze dello stesso 
+    letterale, allora è equivalente alla clausola ottenuta cancellando le occorrenze multiple dei letterali, ad esempio:
+    \[   (p \vee \textcolor{red}{q}\vee r \vee \textcolor{red}{q} \vee \neg r) \equiv (p \vee \textcolor{red}{q} \vee r \vee \neg r)    \]
+    \item \textbf{Clausole come insiemi di letterali}: possiamo rappresentare le clausole come un insieme di letterali, ad esempio:
+    \[  (p \vee q \vee r \vee \neg r) \text{ è rappresentato dall'insieme } \{ p,q,r,\neg r   \}  \] 
+    \item \textbf{L'ordine delle clausole non conta}: se una formula in CNF $\phi$ è ottenuta riordinando le clausole 
+     di una formula in CNF $\phi'$, allora $\phi$ e $\phi'$ sono equivalenti, ad esempio:
+    \[   (a \vee b) \wedge (c \vee \neg b) \wedge (\neg b) \quad \equiv \quad (c \vee \neg b) \wedge  (\neg b) \wedge (a \vee b) \]
+    \item \textbf{Clausole multiple possono essere unite}: Se una formula in CNF contiene più di una occorrenza della stessa clausola 
+    allora è equivalente alla formula ottenuta cancellando le occorrenze multiple delle clausole, ad esempio:
+    \[   \mathcolor{red}{(a \vee b)} \wedge (c \vee \neg b) \wedge \mathcolor{red}{(a \vee b)}\quad \equiv \quad \mathcolor{red}{(a \vee b)} \wedge (c \vee \neg b)    \]
+    \item \textbf{Formule in CNF come insieme di clausole}: Possiamo rappresentare una formula in CNF come un 
+    insieme di insiemi di letterali, ed è una diretta conseguenza della proprietà che abbiamo visto sui letterali,
+    ad esempio:
+    \[  (\neg b) \wedge (b \vee a \vee b) \wedge (c \vee \neg b) \wedge (\neg b)  \text{ è rappresentato da }   \big\{\{a, b\}, \{c, ¬b\}, \{¬b\}\big\}   \]
+\end{itemize}
 
 
 
+\subsection{Formule valide e soddisfacibili}
+ \colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
+   Un interpretazione $\mathcal{I}$ è detta \textbf{model} (modello) di una formula proposizionale $A$ se $\mathcal{I}$ soddisfa $A$, cioè
+   \[    \mathcal{I} \models A  \]
+\end{definition}}}\smallskip\\
+In altre parole, un modello è semplicemente un'interpretazione che assegna alle variabili valori di verità tali da rendere la formula vera. Vediamo un esempio:\\
+\textit{Esempio.} Assumiamo che le variabili $p$ e $q$ siano entrambi vere e consideriamo la seguente formula:
+\[A = p \wedge q\]
+Siccome $p$ e $q$ sono vere allora possiamo dire che l'interpretazione $\mathcal{I} = \{  p,q  \}$ soddisfa $A$, ovvero:
+\[\mathcal{I} \models p \wedge q\]
+\newpage
+\noindent Con la definizione di modello ora possiamo le seguenti definizioni importanti sulle formule:\smallskip\\
+ \colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
+   Una formula $A$ è:
+   \begin{itemize}
+    \item \textbf{Valida} (o tautologica): se è vera per ogni possibile interpretazione, formalmente:
+    \[   \forall \ \mathcal{I}, \qquad \mathcal{I} \models A    \]
+
+    \item \textbf{Soddisfacibile}: se esiste almeno una interpretazione che la rende vera, formalmente:
+    \[   \exists \ \mathcal{I} : \mathcal{I} \models A      \]
+
+    \item \textbf{Insoddisfacibile}: se non esiste alcuna interpretazione che la rende vera 
+    \[     \forall \ \mathcal{I}, \qquad \mathcal{I} \not\models A  \]
+
+   \end{itemize}
+\end{definition}}}\smallskip\\
+L'algoritmo per controllare la soddisfacibilità (e la insoddisfracibilità) o la validità di una formula $A$ è il più semplice che possiamo pensare, ovvero controlliamo tutte le possibili 
+interpretazioni $\mathcal{I}$, verificando se $\mathcal{I} \models A$.\\
+E' possibile mettere in relazione queste 3 caratteristiche tramite la seguente tabella:
+\begin{center}
+    \begin{tabular}{c c}
+        \hline
+        \textbf{se $\bm{A}$ è valido}  & \textbf{allora $\bm{\neg A}$ è }\\
+        \hline
+        \hline
+        Valida & Insoddisfacibile \\
+        \hline
+        Soddisfacibile & non Valida \\
+        \hline
+        non Valida & Soddisfacibile \\
+        \hline 
+        Insoddisfacibile & Valida \\
+        \hline
+    \end{tabular}
+\end{center}
+Possiamo definire la validità e la soddisfacibilità anche per degli \textbf{insiemi di formule}.\smallskip\\
+ \colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
+   Un interpretazione $\mathcal{I}$ che soddisfa tutte le formule di un insieme $\Gamma$, ovvero 
+   \[    \mathcal{I} \models A \qquad \text{per ogni formula } A \in \Gamma    \]
+   si chiama un \textbf{model} (modello) di $\Gamma$, cioè:
+   \[     \mathcal{I}\models \Gamma  \] 
+\end{definition}}}\smallskip\\
+Analogamente a quanto fatto per le singole formule, definiamo validità e soddisfacibilità: \smallskip\\
+ \colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
+   Un insieme di formule $\Gamma$ è:
+   \begin{itemize}
+    \item \textbf{Valido}: se per ogni $\mathcal{I},\ \mathcal{I} \models \Gamma$, cioè ogni interpretazione è un modello di $\Gamma$
+    \item \textbf{Soddisfacibile}: se c'è una $\mathcal{I}$ tale che $\mathcal{I}\models \Gamma$, cioè $\Gamma$ ha almeno un modello 
+    \item \textbf{Insoddisfacibile}: se per nessuna $\mathcal{I},\ \mathcal{I}\models \Gamma$, cioè $\Gamma$ non ha un modello
+   \end{itemize}
+\end{definition}}}
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-% Ad ogni riga corrisponde un interpretazione\medskip\\
-% Posso associare ad ogni funzione booleana una formula in logica proposizionale 
-% la cui tabella di verità corrisponda a quella della funzione booleana? Si tramite l'algoritmo
-% \[  F = \neg(\text{formule per cui risulta falso (tanti quanti gli 0 della tabella)})  \]
-% possiamo fare la stessa cosa con gli 1 della tabella (mettendo le formule vere).\medskip\\
-% Definizioni di formule valide, soddisfabili e non soddisfabile. Algoritmo per capire se una formula è soddisfabile: 
-% provo tutte le interpretazioni e vedo se la formula è soddisfacibile.
-% (Computazionalmente esponenziale)\medskip\\
-% Definizioni su insiemi di formule (non più formule singole) $\Gamma$: validità, soddisfabilità ecc.. 
-% D'ora in poi parleremo di formule singole o insieme di formule (sets of formule), non cambia un cazz.\medskip\\
-% Esercizio finale: usare le tabelle di verità per verificare se delle formule sono valide, soddsfacibili o non soddisfacibili (slide 53)\medskip\\
-% Proprietà tra 2 insiemi di formule ("Refutation" significa "confutazione") 
-%IMPLICAZIONE LOGICA SLIDE 45
-
-
-
-%ULTIMA LEZIONE
-% Refutation principle SLIDE 55, molto importante e ci servirà per altre cose
-
-
-
-\noindent Ci sono due forme di ragionamento basate sull'implicazione logica
+\section{Implicazione e Equivalenza logica}
+Ora vediamo il concetto di conseguenza (implicazione) logica, che permette di stabilire se una formula proposizionale è necessariamente vera quando sono vere determinate altre formule.
+Vediamo la definizione formale:\smallskip\\
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
+    Una formula $A$ è un \textbf{implicazione logica} di un insieme di formule $\Gamma$, se ogni modello di $\Gamma$ è anche modello di $A$, e viene denotato come:
+    \[   \Gamma \models A   \]
+\end{definition}}}\smallskip\\
+Quando vogliamo indicare che $\emptyset \models A$, possiamo semplicemente scrivere $\models A $. Per indicare invece che $A$ non è implicato logicamente da $\Gamma$, possiamo denotarlo con 
+$\Gamma \not\models A$. Quest'ultima notazione indica che esiste almeno un model di $\Gamma$ dove $A$ è falsa. In generale per verificare che:
+\[    \Gamma \models A  \]
+dobbiamo accertarci che non esista alcuna interpretazione in cui tutte le premesse di $\Gamma$ siano vere e $A$ sia falsa.\\
+Di conseguenza, possiamo definire un criterio molto utile:
+\[     \text{Se }\Gamma \models A \text{ allora } \Gamma \cup \{ \neg A \} \text{ è insoddisfacibile}       \]
+Il simbolo $\models$ rappresenta sia la soddisfabilità sia l'implicazione, quindi tecnicamente si dice che il simbolo $\models$ è \textbf{sovraccaricato}. Ecco 
+un trick per non confondersi nell'uso di tale simbolo:
+\begin{itemize}
+    \item quando alla sinistra di $\models$ c'è un interpretazione $\mathcal{I}$, allora $\models$ indica la soddisfabilità:
+    \[  \mathcal{I} \models \alpha \text{ significa che } A \text{ soddisfa } \alpha   \]
+    \item quando alla sinistra di $\models$ c'è un insieme di formule $\Gamma$, allora $\models$ indica l'implicazione logica:
+    \[     \Gamma \models \alpha \text{ significa che } \Gamma \text{ implica logicamente } \alpha    \]
+\end{itemize}
+\noindent Ci sono due forme di ragionamento basate sull'implicazione logica:
 \begin{itemize}
     \item \textbf{Ragionamento deduttivo} (quello che useremo noi) ci permette di analizzare $A$,
     tramite l'utilizzo degli insiemi di formule $\Gamma$, controllando se la formula $A$ può essere \textit{"dedotta"}
     dall'insieme di formule, verificando che:
     \[  \Gamma \models A   \]
     
-    \item \textbf{Ragionamento abduttivo} (in questo corso non lo verdremo) piccola spiegazione su come funziona il 
-    ragionamento abduttivo.
+    \item \textbf{Ragionamento abduttivo}: permette di individurare una formula $B$ che possa essere utilizzata per dedurre un'altra formula $A$,
+    considerando un insieme di conoscenza iniziali $\Gamma$ che, da sole, non implicano logicamente $A$. Si tratta quindi di cercare una formula $B$ tale che siano soddisfatte entrambe 
+    le seguenti condizioni:
+    \[   \begin{cases}
+        \Gamma \cup \{B\} \text{  è soddisfacibile} \\
+         \Gamma \cup \{B\} \models A
+    \end{cases}       \]
+
+\end{itemize}
+Ora passiamo al concetto di equivalenza logica, che permette di stabilire quando due formule proposizionali hanno esattamente lo stesso significato logico. 
+Vediamo la definizione formale:\smallskip\\
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
+    Due formule $F$ e $G$ sono \textbf{logicamente equivalenti} se valgono entrambi:
+    \[     F \models G \qquad \text{e} \qquad G \models F  \]
+    e si denota con
+    \[  F \bimodels G  \]
+\end{definition}}}\smallskip\\
+In altre parole $F$ e $G$ sono logicamente equivalenti se per ogni interpretazione $\mathcal{I}$:
+\[  \mathcal{I}(F) = \mathcal{I}(G)     \]
+ovvero l'insieme dei modelli di $F$ e $G$ coincidono. 
+
+
+
+
+\subsection{Proprietà degli insiemi di formule}
+Se $\Gamma$ e $\Sigma$ sono due insiemi di formule proposizionali e, $A$ e $B$ sono due formule, allora valgono le seguenti proprietà:
+\begin{itemize}
+    \item \textbf{Riflessività} (Reflexivity): Se \(A\in\Gamma\), allora \(\Gamma\models A\)
+    \item \textbf{Ex falso sequitur quodlibet}: Se \(\Gamma\) è insoddisfacibile, allora \(\Gamma\models A\) per ogni formula \(A\)
+    \item \textbf{Monotonicità} (Monotonicity): Se \(\Gamma\models A\), allora \(\Gamma\cup\Sigma\models A\)
+    \item \textbf{Taglio} (Cut): Se \(\Gamma\models A\) e \(\Sigma\cup\{A\}\models B\), allora \(\Gamma\cup\Sigma\models B\)
+    \item \textbf{Compattezza} (Compactness): Se \(\Gamma\models A\), allora esiste un sottoinsieme finito \(\Gamma_0\subseteq\Gamma\) tale che \(\Gamma_0\models A\)
+    \item \textbf{Teorema di deduzione} (Deduction theorem): Se \(\Gamma\cup\{A\}\models B\), allora \(\Gamma\models A\rightarrow B\)
+    \item \textbf{Principio di deduzione} (Deduction principle): \(\Gamma\cup\{A\}\models B\) se e solo se \(\Gamma\models A\rightarrow B\)
+    \item \textbf{Principio di refutazione} (Confutazione): \(\Gamma\models A\) se e solo se \(\Gamma\cup\{\neg A\}\) è insoddisfacibile
+\end{itemize}
+
+
+\subsection{Argomentazione logica}
+Qui approfondiremo tre forme basiche di argomentazione uitlizzando l'implicazione logica:
+\begin{itemize}
+    \item \textbf{Supporto} (Support): per supportare un'affermazione $S$ durante un'argomentazione, possiamo presentare un insieme di formule 
+    \(\Gamma\), accettate come valide nel contesto dell'argomentazione, che implicano logicamente \(S\), formalmente:
+    \[   \Gamma \models S  \]
+    In altre parole supportare un affermazione significa dimostrare che essa è necessariamente vera quando sono vere tutte le premesse (insieme di formule $\Gamma$).
+
+    \item \textbf{Confutazione debole} (Weak Refutation): Per confutare debolmente un'affermazione \(S\), sostenuta sulla base di un insieme di premesse \(\Gamma\), 
+    è sufficiente mostrare un modello di \(\Gamma\) che non sia un modello di \(S\), formalmente:
+    \[   \Gamma \not\models S     \]
+    In altre parole bisogna trovare almeno un'interpretazione in cui tutte le premesse sono vere, ma l'affermazione $S$ è falsa.
+
+    \item \textbf{Confutazione forte} (Strong Refutation): per confutare fortemente un'affermazione \(S\), possiamo presentare un insieme di formule \(\Gamma\), 
+    accettate come premesse, che implicano logicamente la negazione di \(S\), formalmente:
+    \[   \Gamma \models \neg S      \]
+    In altre parole significa che ogni interpretazione che soddisfa le premesse rende falsa l'affermazione $S$.
+
+
 
 \end{itemize}
 
 
 
-% RIFUTAZIONE DEBOLE E FORTE
+
+
+
+
+
+
+
+% FARE PPT DDPL
 
 % --- PER ESERCIZI ---
 % TEORIA PROPOSIZIONALE = INSIEME DI FORMULE PROPOSIZIONALI 
