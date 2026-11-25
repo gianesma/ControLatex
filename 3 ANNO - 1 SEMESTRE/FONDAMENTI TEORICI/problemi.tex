@@ -968,3 +968,100 @@ Questo rende SAT uno dei problemi fondamentali
 della teoria della complessità computazionale.
 
 
+
+\section{Problemi NP-completi}
+\subsection{Indipendent Sets}
+Il problema Indipendent Set si basa sui gradi non orientati. Un grafo non orientato è una coppia $G = (V,E)$
+dove $V$ l'insieme dei vertici e $E$ è un insieme di coppie non ordinate di vertici in $V$ distinti. 
+Vediamo la definizione del problema:\smallskip\\
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
+   Sia $G = (V,E)$ un grafo non orientato. Un \textbf{indipendent set} $I \subseteq V$ di $G$ è un insieme 
+   di vertici tale che, per ogni coppia di vertici, $v, v' \in I$,
+   \[   \text{la coppia }  \{ v,v'  \} \notin E \]  
+   ovvero non è un arco
+\end{definition}}}\smallskip\\
+Chiaramente un vertice singolo è sempre un indipendent set, quindi proveremo l'esistenza degli indipendent sets 
+sopra una certa dimensione. Annotiamo la dimensione di un indipendent set con $|I|$.\smallskip\\
+Il linguaggio associato a questo problema è il seguente:
+\[   \textsc{indset} = \{  e(G), b(k) \ | \ \text{Esiste un indipendent set } I \text{ di } G \text{ di dimensione almeno } k     \}    \]
+assumendo un encoding standard $e$ dei grafi su alfabeto $\Sigma$ e un encoding binario $b$ di numeri naturali.\\
+Vogliamo dimostrare che il linguaggio \textsc{indset} è NP.\smallskip\\
+\begin{proof}
+    Costruiamo una macchina di Turing non deterministica che decide \textsc{indset} in tempo polinomiale rispetto all'input\\
+    CONTINUARE DIMOSTRAZIONE \\
+    DIMOSTRAZIONE NP HARD E COMPLETEZZA CON RIDUZIONE\\
+    METTERE IMMAGINI (sopra)
+\end{proof}
+
+
+
+\subsection{Vertex Cover}
+Anche il problema Vertex Cover si basa sui grafi. Un grafo non orientato è una coppia $G = (V,E)$
+dove $V$ l'insieme dei vertici e $E$ è un insieme di coppie non ordinate di vertici in $V$ distinti. 
+Vediamo la definizione del problema:\smallskip\\
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
+   Sia $G (V,E)$ un grafo non orientato. Un \textbf{Vertex cover} $I \subseteq V$ di $G$ è un insieme 
+   di vertici tale che, per ogni arco $\{ v, v'  \}$
+   \[   v \in I \quad \text{oppure} \quad v' \in I      \]
+   ovvero ogni arco è coperto da almeno un vertice nel cover
+\end{definition}}}\smallskip\\
+Chiaramente tutto $V$ è un vertex cover di $G = (V,E)$, quindi ne proveremo l'esistenza solo sotto una certa 
+dimensione. (METTERE IMMAGINE)\smallskip\\
+Il linguaggio associato a questo problema è il seguente:
+\[     \textsc{vertex cover} = \{  e(G), b(k) \ | \ \text{Esiste un Vertex Cover } C \text{ di } G \text{ di dimensione almeno } k     \}    \]
+assumendo un encoding standard $e$ dei grafi su alfabeto $\Sigma$ e un encoding binario $b$ di numeri naturali.\\
+Vogliamo dimostrare che il linguaggio \textsc{indset} è NP.\smallskip\\
+\begin{proof}
+    Costruiamo una macchina di Turing non deterministica che decide \textsc{vertex cover} in tempo polinomiale rispetto all'input\\
+    CONTINUARE DIMOSTRAZIONE \\
+    DIMOSTRAZIONE NP COMPLETO CON RIDUZIONE \\
+\end{proof}
+
+
+
+
+
+\subsection{Clique}
+Anche il problema Clique si basa sui grafi. Un grafo non orientato è una coppia $G = (V,E)$
+dove $V$ l'insieme dei vertici e $E$ è un insieme di coppie non ordinate di vertici in $V$ distinti. 
+Vediamo la definizione del problema:\smallskip\\
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
+   Sia $G = (V,E)$ un grafo non orientato. Una \textbf{Clique} $I \subseteq V$ di $G$ è un insieme 
+   di vertici tale che, per ogni $v,v' \in I$ con $v \neq v'$:
+   \[   \{ v,v'  \in E  \}       \]
+   ovvero ogni vertice è connesso agli altri da un arco
+\end{definition}}}\smallskip\\
+Chiaramente $ \emptyset  $ è una clique $G (V,E)$ di dimensione 0, quindi ne proveremo l'esistenza solo sopra una certa dimensione.
+(METTERE IMMAGINE) \smallskip\\
+Il linguaggio associato a questo il problema è il seguente:
+\[   \textsc{clique} = \{  e(G), b(k) \ | \ \text{Esiste una clique } C \text{ di } G \text{ di dimensione almeno } k     \}         \]
+assumendo un encoding standard $e$ dei grafi su alfabeto $\Sigma$ e un encoding binario $b$ di numeri naturali.\\
+Vogliamo dimostrare che il linguaggio \textsc{indset} è NP.\smallskip\\
+\begin{proof}
+    Costruiamo una macchina di Turing non deterministica che decide \textsc{clique} in tempo polinomiale rispetto all'input\\
+    CONTINUARE DIMOSTRAZIONE \\
+    DIMOSTRAZIONE NP COMPLETO CON RIDUZIONE \\
+\end{proof}
+
+
+
+\subsection{Set Cover}
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
+   Sia $U$ un insieme finito e $S \subseteq P(U)$ una famiglia di insiemi. Una sotto-famiglia $C \subseteq S$ è 
+   \textbf{Set Cover} di $U$ in $S$ se l'unione di insiemi in $C$ coincide con $U$
+\end{definition}}}\smallskip\\
+Per capire meglio vediamo un esempio.\\
+\textit{Esempio.} Siano $U$ e $S$ i seguenti insiemi:
+\[   U = \{1,2,3,4,5       \} \qquad S = \Big\{    \{ 1,2,3 \}, \{2,4 \}, \{ 3,4  \}, \{ 4,5  \}      \Big\}      \]
+Allora l'insieme $C \subseteq S  $ è un set cover di dimensione 2:
+\[   C = \Big\{    \{1,2,3\}, \{ 4,5    \}       \Big\}    \]
+Il linguaggio associato a questo problema è il seguente:
+\[  \textsc{sc} = \{ e(U),e(S), b(k) \ | \ \text{Esiste un Set Cover } C \text{ di } U \text{ in } S \text{ con } |C|\le k \}     \] 
+assumendo un encoding standard $e$ dei grafi su alfabeto $\Sigma$ e un encoding binario $b$ di numeri naturali.\\
+Vogliamo dimostrare che il linguaggio \textsc{setcover} è NP.\smallskip\\
+\begin{proof}
+    Costruiamo una macchina di Turing non deterministica che decide \textsc{vertex cover} in tempo polinomiale rispetto all'input\\
+    CONTINUARE DIMOSTRAZIONE \\
+    DIMOSTRAZIONE NP COMPLETO CON RIDUZIONE \\
+\end{proof}
+
