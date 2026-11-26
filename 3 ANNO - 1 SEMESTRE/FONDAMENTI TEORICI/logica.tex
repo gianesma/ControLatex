@@ -1100,7 +1100,6 @@ modello di $A$. Possiamo affrontare la deduzione anche sul piano
 \textbf{sintattico}, costruendo una sequenza di formule mediante regole
 fissate. Scriviamo $\Gamma \vdash_\Sigma A$ per indicare che $A$ è
 derivabile dalle ipotesi $\Gamma$ nel sistema $\Sigma$.
-
 Nelle dimostrazioni in linguaggio naturale alcuni passaggi o alcune
 ipotesi possono restare impliciti. Un esempio storico è la dimostrazione
 errata del teorema dei quattro colori proposta da Kempe. Una dimostrazione
@@ -1176,7 +1175,6 @@ Se una tale dimostrazione esiste, scriviamo $\Gamma\vdash_\Sigma A$ e
 diciamo che $A$ è \textbf{derivabile} da $\Gamma$. Quando il sistema è
 chiaro dal contesto, si scrive semplicemente $\Gamma\vdash A$.
 Con $\Gamma=\emptyset$ si ritrova la dimostrabilità senza ipotesi.
-
 Un insieme $\Gamma$ è \textbf{coerente in $\Sigma$} se da esso
 non si possono derivare contemporaneamente una formula e la sua
 negazione. È quindi \textbf{incoerente in $\Sigma$} se esiste una
@@ -1428,3 +1426,479 @@ e i tableaux. L'importanza storica del sistema di Hilbert sta
 nell'aver mostrato come formalizzare un ragionamento con un
 insieme ristretto di operazioni puramente sintattiche, rendendo
 possibile la verifica meccanica delle dimostrazioni.
+
+\section{Risoluzione proposizionale}
+La risoluzione, introdotta da J.~A. Robinson nel 1965, è un metodo
+di \textbf{refutazione}: stabilisce se un insieme finito di clausole
+è insoddisfacibile. Per usarla nella deduzione automatica si parte
+da un insieme finito di premesse $\Gamma$ e da una conclusione
+$\varphi$. Per il principio di refutazione vale
+\[
+    \Gamma\models\varphi
+    \quad\Longleftrightarrow\quad
+    \Gamma\cup\{\neg\varphi\}\text{ è insoddisfacibile}
+\]
+Si aggiunge quindi alle premesse la negazione della conclusione e
+si cerca di ricavare una contraddizione.
+
+\subsection{Forma clausale e regola di risoluzione}
+Ogni formula proposizionale si può trasformare in una formula
+equivalente in forma normale congiuntiva (CNF). In \textbf{forma
+clausale}, la formula è un insieme di clausole, interpretato come
+una congiunzione, e ogni clausola è un insieme di letterali,
+interpretato come una disgiunzione. Per esempio,
+\[
+    (p\vee s)\wedge(\neg p\vee q)
+    \qquad\longleftrightarrow\qquad
+    \bigl\{\{p,s\},\{\bar p,q\}\bigr\}
+\]
+Qui $\bar p$ indica $\neg p$. Il \textbf{complementare} di un
+letterale $\ell$, indicato con $\ell^c$, si ottiene invertendone
+il segno: $p^c=\bar p$ e $(\bar p)^c=p$
+
+\medskip
+\noindent
+Una clausola che contiene sia $\ell$ sia $\ell^c$ è sempre vera.
+La chiamiamo \textbf{banale} e possiamo eliminarla dalla congiunzione.
+La \textbf{clausola vuota}, denotata da $\square$, è sempre falsa
+perché non contiene letterali che possano renderla vera. L'insieme
+vuoto di clausole, invece, rappresenta una congiunzione senza
+condizioni ed è soddisfatto da ogni interpretazione.
+
+\medskip
+\noindent
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{
+\begin{definition}[Risolvente]
+    Siano $C_1$ e $C_2$ due clausole con $\ell\in C_1$ e
+    $\ell^c\in C_2$. Il loro \textbf{risolvente} rispetto a $\ell$ è
+    \[
+        \operatorname{Res}_{\ell}(C_1,C_2)
+        =(C_1\setminus\{\ell\})\cup(C_2\setminus\{\ell^c\})
+    \]
+    Le clausole $C_1$ e $C_2$ sono dette \textbf{clausole genitrici}.
+    La regola di risoluzione aggiunge all'insieme corrente il
+    risolvente se questo non è banale.
+\end{definition}
+}}%
+
+\medskip
+\noindent
+In un singolo passo si elimina una sola coppia di letterali
+complementari. Se il risolvente contiene ancora una coppia
+complementare, è banale. La regola è corretta perché, se
+un'interpretazione soddisfa entrambe le clausole genitrici e
+rende falso $\ell$, deve rendere vero un altro letterale di $C_1$.
+Se rende vero $\ell$, allora rende falso $\ell^c$ e deve rendere vero
+un altro letterale di $C_2$. In entrambi i casi soddisfa il risolvente.
+
+\medskip
+\noindent
+\textit{Esempio.} Consideriamo le clausole delle slide, nell'ordine
+\[
+    C_1=\{p,s\},\quad C_2=\{\bar p,q\},\quad C_3=\{\bar r\},
+    \quad C_4=\{\bar p,\bar q,r\},\quad C_5=\{r\}
+\]
+Si possono ottenere, tra gli altri, i seguenti risolventi
+\[
+    \begin{aligned}
+        \operatorname{Res}_{\bar r}(C_3,C_4)&=\{\bar p,\bar q\}\\
+        \operatorname{Res}_{p}(C_1,C_4)&=\{s,\bar q,r\}\\
+        \operatorname{Res}_{\bar r}(C_3,C_5)&=\square
+    \end{aligned}
+\]
+L'ultimo passo è già una refutazione, perché le clausole unitarie
+$\{\bar r\}$ e $\{r\}$ impongono valori opposti allo stesso atomo.
+
+\subsection{Derivazione e procedura di risoluzione}
+Una \textbf{derivazione per risoluzione} di $C$ da un insieme
+$S$ è una sequenza finita $(C_1,\ldots,C_m)$ che termina con
+$C_m=C$. Ogni riga appartiene a $S$ oppure è ottenuta risolvendo
+due clausole di righe precedenti. Scriviamo $S\vdash_r C$ se esiste
+una derivazione di questo tipo. Per la correttezza della regola,
+ogni modello di $S$ soddisfa tutte le righe della derivazione, quindi
+\[
+    S\vdash_r C\quad\Longrightarrow\quad S\models C
+\]
+Una derivazione $S\vdash_r\square$ è una \textbf{refutazione per
+risoluzione} di $S$. Scriviamo $\Gamma\vdash_r\varphi$ se si può
+refutare l'insieme di clausole ottenuto da
+$\Gamma\cup\{\neg\varphi\}$
+
+\medskip
+\noindent
+La procedura parte da $S_0=S$, dopo aver rimosso le clausole banali.
+Se è già presente $\square$, termina subito. Altrimenti, a ogni
+passo sceglie due clausole dell'insieme corrente e una coppia di
+letterali complementari su cui non le ha ancora risolte. Calcola il
+risolvente e, se non è banale, lo aggiunge. Le nuove clausole possono
+a loro volta partecipare a passi successivi. Si termina quando si
+ottiene $\square$ oppure quando non rimangono passi da esaminare.
+Nel secondo caso l'insieme è \textbf{saturo} per risoluzione.
+
+\subsubsection*{Terminazione, correttezza e completezza}
+Se le clausole iniziali usano $n$ atomi, ogni clausola non banale
+può contenere, per ciascun atomo, il letterale positivo, quello
+negativo oppure nessuno dei due. Ci sono quindi al più $3^n$
+clausole non banali, inclusa quella vuota. La regola non introduce
+atomi nuovi e ogni scelta di clausole e letterali viene esaminata
+al più una volta, perciò la procedura \textbf{termina}.
+
+\medskip
+\noindent
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{
+\begin{theorem}[Refutazione per risoluzione]
+    Per ogni insieme finito $S$ di clausole proposizionali vale
+    \[
+        S\text{ è insoddisfacibile}
+        \quad\Longleftrightarrow\quad
+        S\vdash_r\square
+    \]
+\end{theorem}
+}}%
+
+\begin{proof}
+    La correttezza segue dal fatto che, se $S\vdash_r\square$,
+    ogni modello di $S$ dovrebbe soddisfare la clausola vuota.
+
+    \noindent
+    Per la completezza mostriamo per induzione sul numero di atomi
+    che un insieme saturo di clausole non banali privo di $\square$
+    ha un modello. Con zero atomi, l'insieme è vuoto e ogni
+    interpretazione lo soddisfa. Al passo induttivo scegliamo un
+    atomo $p$ e consideriamo le clausole che non contengono né $p$
+    né $\bar p$. Questo sottoinsieme è ancora saturo, perché
+    risolvere clausole prive di $p$ non introduce $p$. Per ipotesi
+    induttiva esiste un'interpretazione che lo soddisfa.
+
+    \noindent
+    Restano le clausole contenenti $p$ o $\bar p$. Una clausola in
+    cui tutti gli altri letterali sono falsi impone il valore di
+    $p$ che la rende vera. Se due clausole imponessero valori
+    opposti, il loro risolvente su $p$ sarebbe falso nella nostra
+    interpretazione. Quel risolvente non potrebbe essere banale e,
+    per saturazione, apparterrebbe al sottoinsieme privo di $p$,
+    che l'interpretazione soddisfa. Le richieste sono quindi
+    compatibili e possiamo estendere l'interpretazione a $p$.
+    Di conseguenza, se $S$ è insoddisfacibile la procedura non può
+    terminare con un insieme saturo privo di $\square$
+\end{proof}
+
+\section{Tableaux proposizionali}
+Anche i \textbf{tableaux analitici} sono un metodo di refutazione.
+Per verificare $\Gamma\models\varphi$ si costruisce un albero
+binario con radice etichettata da $\Gamma\cup\{\neg\varphi\}$.
+Le formule lungo un ramo devono essere vere simultaneamente.
+Quando una formula ammette due modi per essere vera, si aprono due
+rami che rappresentano le alternative. Quando un ramo contiene una
+formula e la sua negazione, lo si può chiudere. Se si chiudono tutti
+i rami, l'insieme alla radice è insoddisfacibile.
+
+\subsection{Regole di espansione}
+Una regola si può applicare a una foglia se la formula da espandere
+compare lungo il cammino dalla radice a quella foglia. Nella
+notazione uniforme di Smullyan, le formule di tipo $\alpha$
+richiedono che entrambe le componenti siano vere. Le formule di
+tipo $\beta$ richiedono che almeno una delle due sia vera.
+
+\begin{center}
+\begin{tabular}{lll@{\qquad}lll}
+    \toprule
+    $\alpha$ & $\alpha_1$ & $\alpha_2$ &
+    $\beta$ & $\beta_1$ & $\beta_2$\\
+    \midrule
+    $\varphi\wedge\psi$ & $\varphi$ & $\psi$ &
+    $\varphi\vee\psi$ & $\varphi$ & $\psi$\\
+    $\neg(\varphi\vee\psi)$ & $\neg\varphi$ & $\neg\psi$ &
+    $\neg(\varphi\wedge\psi)$ & $\neg\varphi$ & $\neg\psi$\\
+    $\neg(\varphi\to\psi)$ & $\varphi$ & $\neg\psi$ &
+    $\varphi\to\psi$ & $\neg\varphi$ & $\psi$\\
+    \bottomrule
+\end{tabular}
+\end{center}
+
+\noindent
+Una regola $\alpha$ aggiunge $\alpha_1$ e $\alpha_2$ sullo stesso
+ramo. Una regola $\beta$ estende il ramo con due figli, uno con
+$\beta_1$ e l'altro con $\beta_2$. La regola di
+\textbf{eliminazione della doppia negazione} aggiunge $\varphi$
+allo stesso ramo quando vi compare $\neg\neg\varphi$. La regola
+di \textbf{chiusura} segna la foglia con $\times$ se sul ramo
+compaiono $\varphi$ e $\neg\varphi$. Per il bicondizionale si usa
+la riscrittura in $(\varphi\to\psi)\wedge(\psi\to\varphi)$
+
+\medskip
+\noindent
+\textit{Esempio.} Per provare la validità di
+$(q\vee p)\to(p\vee q)$ partiamo dalla sua negazione. La regola
+$\alpha$ per l'implicazione negata aggiunge $q\vee p$ e
+$\neg(p\vee q)$. Espandendo prima la disgiunzione negata otteniamo
+$\neg p$ e $\neg q$ sullo stesso ramo. La disgiunzione $q\vee p$
+produce poi due rami, entrambi chiusi.
+
+\begin{center}
+\begin{tikzpicture}[grow=down, level distance=9mm, sibling distance=34mm]
+    \node {$\neg((q\vee p)\to(p\vee q))$}
+        child {node {$q\vee p,\ \neg(p\vee q)$}
+            child {node {$\neg p,\ \neg q$}
+                child {node {$q$} child {node {$\times$}}}
+                child {node {$p$} child {node {$\times$}}}
+            }
+        };
+\end{tikzpicture}
+\end{center}
+
+\subsection{Tableaux chiusi, saturi e algoritmo}
+Un \textbf{ramo chiuso} contiene una coppia di formule
+contraddittorie e termina con $\times$. Un tableau è
+\textbf{chiuso} quando tutti i suoi rami sono chiusi. È
+\textbf{saturo} quando nessuna espansione può aggiungere nuove
+formule ai rami non chiusi. Per una regola $\beta$ su un ramo
+basta che vi compaia già una delle due alternative, perché il
+vincolo espresso dalla formula è già rappresentato. Un ramo non
+chiuso di un tableau saturo si dice \textbf{aperto}. Scriviamo
+$\Gamma\vdash_t\varphi$ quando esiste un tableau chiuso per
+$\Gamma\cup\{\neg\varphi\}$
+
+\begin{enumerate}
+    \item Si inizializza la radice con $\Gamma\cup\{\neg\varphi\}$
+    \item Si marcano come chiusi i rami contraddittori. Se sono
+          tutti chiusi, si restituisce un esito positivo.
+    \item Se il tableau è saturo e rimane un ramo aperto, si
+          restituisce un esito negativo.
+    \item Altrimenti si sceglie un ramo non chiuso e vi si applica
+          una regola che aggiunga informazioni. Si torna al passo 2.
+\end{enumerate}
+
+\noindent
+L'algoritmo termina perché le formule prodotte dalle espansioni
+sono più corte delle formule di partenza. Dopo aver riscritto
+eventuali bicondizionali, l'insieme delle formule ottenibili è
+finito, perché ogni regola produce al più due formule e il numero
+di applicazioni consecutive che le generano è limitato dalla
+lunghezza iniziale. Su ciascun ramo si espande la stessa formula
+al più una volta, quindi la profondità è limitata. Poiché ogni
+nodo ha al più due figli, anche il numero di nodi è finito.
+
+\medskip
+\noindent
+\textit{Esempi.} Per la legge di Peirce
+$((P\to Q)\to P)\to P$, la negazione produce $(P\to Q)\to P$
+e $\neg P$. Espandendo $(P\to Q)\to P$ si ottengono due rami.
+Quello con $P$ si chiude subito, mentre quello con $\neg(P\to Q)$
+si chiude dopo aver aggiunto $P$ e $\neg Q$
+
+\medskip
+\noindent
+Per dimostrare $P\to(Q\wedge R),\ \neg Q\vee\neg R\vdash_t\neg P$,
+si aggiunge $\neg\neg P$ alle premesse e si ottiene $P$. La
+prima premessa apre un ramo con $\neg P$, subito chiuso, e un
+ramo con $Q\wedge R$. Aggiunti $Q$ e $R$ al secondo ramo,
+$\neg Q\vee\neg R$ apre due alternative, che si chiudono
+rispettivamente per la presenza di $Q$ e di $R$
+
+\subsection{Correttezza e completezza}
+Un ramo è \textbf{soddisfacibile} se esiste un'interpretazione
+che rende vere tutte le formule che vi compaiono. Le regole
+$\alpha$ e di doppia negazione conservano ogni modello del ramo,
+perché le formule aggiunte sono conseguenze della formula espansa.
+Con una regola $\beta$, ogni modello del ramo soddisfa almeno
+una delle due alternative e quindi rimane modello di almeno uno
+dei figli. Un ramo soddisfacibile non può contenere una
+contraddizione.
+
+\medskip
+\noindent
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{
+\begin{theorem}[Correttezza dei tableaux]
+    Se $\Gamma\vdash_t\varphi$, allora $\Gamma\models\varphi$
+\end{theorem}
+}}%
+
+\begin{proof}
+    Se $\Gamma\cup\{\neg\varphi\}$ avesse un modello, il ramo
+    iniziale sarebbe soddisfacibile. A ogni espansione
+    sopravviverebbe almeno un ramo soddisfacibile e dunque non
+    si potrebbero chiudere tutti i rami. Un tableau chiuso
+    implica perciò che $\Gamma\cup\{\neg\varphi\}$ è
+    insoddisfacibile. Per refutazione segue $\Gamma\models\varphi$
+\end{proof}
+
+\noindent
+Per la completezza serve passare dalle formule di un ramo aperto
+a un'interpretazione che le soddisfi.
+
+\medskip
+\noindent
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{
+\begin{definition}[Insieme di Hintikka]
+    Un insieme $H$ di formule è un \textbf{insieme di Hintikka}
+    se soddisfa le seguenti condizioni.
+    \begin{enumerate}
+        \item Per nessun atomo $p$ contiene sia $p$ sia $\neg p$
+        \item Se contiene $\neg\neg\varphi$, contiene anche $\varphi$
+        \item Se contiene $\alpha$, contiene sia $\alpha_1$ sia $\alpha_2$
+        \item Se contiene $\beta$, contiene almeno una tra $\beta_1$ e $\beta_2$
+    \end{enumerate}
+\end{definition}
+}}%
+
+\medskip
+\noindent
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{
+\begin{lemma}[Lemma di Hintikka]
+    Ogni insieme di Hintikka è soddisfacibile.
+\end{lemma}
+}}%
+
+\begin{proof}
+    Definiamo $\mathcal{I}(p)=\mathrm{T}$ se $p\in H$ e
+    $\mathcal{I}(p)=\mathrm{F}$ altrimenti. Mostriamo per
+    induzione sulla lunghezza che questa interpretazione
+    soddisfa ogni formula in $H$. Per i letterali positivi
+    vale per definizione di $\mathcal{I}$. Se $\neg p\in H$,
+    la prima condizione garantisce che $p\notin H$ e
+    dunque $\mathcal{I}$ soddisfa $\neg p$
+
+    \noindent
+    Per una doppia negazione, la seconda condizione garantisce
+    che la formula interna appartiene a $H$ ed è vera per
+    ipotesi induttiva. Nel caso $\alpha$, la terza condizione
+    permette di applicare l'ipotesi induttiva a entrambe le
+    componenti. Nel caso $\beta$ basta applicarla a una
+    componente presente in $H$. In tutti i casi, per la semantica
+    dei connettivi, l'interpretazione soddisfa la formula iniziale.
+\end{proof}
+
+\noindent
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{
+\begin{theorem}[Completezza dei tableaux]
+    Se $\Gamma\models\varphi$, allora $\Gamma\vdash_t\varphi$
+\end{theorem}
+}}%
+
+\begin{proof}
+    Se l'algoritmo termina con un tableau non chiuso, esiste
+    un ramo aperto. Le sue formule costituiscono un insieme di
+    Hintikka: la mancata chiusura esclude i letterali
+    complementari e la saturazione garantisce le altre condizioni.
+    Per il lemma esiste un modello di tutte le formule del ramo.
+    Poiché il ramo contiene la radice, questo modello soddisfa
+    $\Gamma$ e $\neg\varphi$. È quindi un controesempio a
+    $\Gamma\models\varphi$. Ne segue che, quando la conseguenza
+    logica vale, l'algoritmo termina con un tableau chiuso.
+\end{proof}
+
+\subsection{Soddisfacibilità e costruzione dei modelli}
+Per verificare se una formula $\theta$ è soddisfacibile la si
+pone direttamente alla radice. Se il tableau si chiude,
+$\theta$ è insoddisfacibile. Ogni ramo aperto del tableau
+saturo permette invece di costruire un modello. Si assegna
+vero a $p$ se sul ramo compare $p$, falso se compare $\neg p$.
+Se non compare nessuno dei due letterali, si può scegliere il
+valore liberamente. Ogni modello di $\theta$ segue almeno un
+ramo, perché soddisfa tutte le formule aggiunte dalle regole
+che non sdoppiano e almeno una delle alternative di ciascuna
+regola $\beta$
+
+\medskip
+\noindent
+\textit{Esempio.} Consideriamo la formula
+\[
+    \neg\bigl(((P\to Q)\wedge((P\wedge Q)\to R))\to(P\to R)\bigr)
+\]
+Le regole $\alpha$ danno $P\to Q$, $(P\wedge Q)\to R$, $P$ e
+$\neg R$ sullo stesso ramo. Espandendo $P\to Q$, l'alternativa
+$\neg P$ si chiude e l'altra aggiunge $Q$. Espandendo poi
+$(P\wedge Q)\to R$, l'alternativa $R$ si chiude e
+$\neg(P\wedge Q)$ apre due rami con $\neg P$ e $\neg Q$.
+Anche questi si chiudono, perciò la formula è insoddisfacibile.
+
+\medskip
+\noindent
+\textit{Esempio.} La formula $\neg((P\vee Q)\to(P\wedge Q))$
+produce $P\vee Q$ e $\neg(P\wedge Q)$. Espandendo le due
+formule di tipo $\beta$ si ottiene il tableau seguente.
+
+\begin{center}
+\begin{tikzpicture}[grow=down, level distance=9mm,
+    level 1/.style={sibling distance=54mm},
+    level 2/.style={sibling distance=54mm},
+    level 3/.style={sibling distance=25mm}]
+    \node {$\neg((P\vee Q)\to(P\wedge Q))$}
+        child {node {$P\vee Q,\ \neg(P\wedge Q)$}
+            child {node {$P$}
+                child {node {$\neg P$} child {node {$\times$}}}
+                child {node {$\neg Q$}}
+            }
+            child {node {$Q$}
+                child {node {$\neg P$}}
+                child {node {$\neg Q$} child {node {$\times$}}}
+            }
+        };
+\end{tikzpicture}
+\end{center}
+
+\noindent
+I due rami aperti descrivono tutti i modelli sugli atomi della
+formula: $(P,Q)=(\mathrm{T},\mathrm{F})$ e
+$(P,Q)=(\mathrm{F},\mathrm{T})$
+
+\subsection{Strategie di espansione}
+Conviene di solito applicare prima le chiusure e le regole
+che non sdoppiano i rami. Per esempio, consideriamo
+\[
+    \{(a\vee b)\wedge c,\ \neg b\vee\neg c,\ \neg a\}
+\]
+Espandendo prima la congiunzione, si scrivono $a\vee b$ e $c$
+una volta sola. Espandendo poi $\neg b\vee\neg c$, il ramo con
+$\neg c$ si chiude subito grazie a $c$. Sul ramo con $\neg b$,
+la disgiunzione $a\vee b$ apre due alternative che si chiudono
+grazie a $\neg a$ e $\neg b$. Se si espande subito
+$\neg b\vee\neg c$, occorre invece scomporre la congiunzione
+su entrambi i rami.
+
+\medskip
+\noindent
+Chiudere un ramo appena compare una contraddizione evita di
+esaminare tutte le assegnazioni compatibili con quel ramo.
+Una tabella di verità su $n$ atomi ha sempre $2^n$ righe.
+Un tableau può evitare molte di queste assegnazioni, anche se
+nel caso peggiore le ramificazioni possono comunque produrre
+un albero di dimensione esponenziale.
+
+\medskip
+\noindent
+\textit{Esempio.} Per
+$(P\vee Q)\wedge(P\vee\neg Q)\wedge(\neg P\vee Q)\wedge(\neg P\vee\neg Q)$,
+ogni riga della tabella di verità rende falsa una clausola.
+Nel tableau, dopo aver decomposto le congiunzioni, $P\vee Q$
+apre due rami. Sul ramo con $P$, le ultime due clausole impongono
+$Q$ e $\neg Q$, perché le alternative $\neg P$ si chiudono.
+Sul ramo con $Q$, la seconda e la quarta clausola impongono
+$P$ e $\neg P$, perché le alternative $\neg Q$ si chiudono.
+Anche il tableau conferma quindi l'insoddisfacibilità.
+
+\subsubsection*{Esercizi}
+Per verificare la validità di una formula, si costruisce il tableau
+della sua negazione. Per verificare l'equivalenza di $A$ e $B$,
+si può cercare di chiudere i tableaux di $A\wedge\neg B$ e
+$B\wedge\neg A$, le due formule che descrivono i casi in cui
+$A$ e $B$ hanno valori diversi.
+
+\begin{itemize}
+    \item Mostrare che sono insoddisfacibili
+          $(p\equiv q)\equiv(\neg q\equiv p)$ e
+          $\neg((\neg q\to\neg p)\to((\neg q\to p)\to q))$
+    \item Mostrare che sono soddisfacibili
+          $(p\equiv q)\to(\neg q\equiv p)$ e
+          $\neg((p\vee q)\to((\neg p\wedge q)\vee p\vee\neg q))$
+    \item Mostrare che sono valide
+          $(p\to q)\to((p\to\neg q)\to\neg p)$ e
+          $(p\to r)\to((p\vee q)\to(r\vee q))$
+    \item Trovare tutti i modelli di
+          $(q\to(p\wedge r))\wedge\neg((p\vee r)\to q)$ e di
+          $\neg(((p\to q)\wedge((p\wedge q)\to r))\to(\neg p\to r))$
+    \item Mostrare le equivalenze fra $p\to\neg p$ e $\neg p$,
+          fra $p\to q$ e $\neg q\to\neg p$ e infine fra
+          $(p\vee q)\wedge(p\vee\neg q)$ e $p$
+\end{itemize}
