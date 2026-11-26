@@ -930,3 +930,1274 @@ e di 1800 euro alla seconda.
 Il vincolo esterno garantisce che l'attributo
 comune mantenga la semantica dello schema
 originario.
+\subsection{Attività 4: Eliminazione delle generalizzazioni tra entità}
+
+Una generalizzazione tra un'entità padre $F$ e le
+sottoentità $E_1,E_2,\ldots,E_n$ viene trattata
+come un insieme di $n$ relazioni ISA:
+
+\[
+E_1 \text{ ISA } F,\ldots,E_n \text{ ISA } F
+\]
+Si introducono quindi $n$ relazioni binarie:
+
+\[
+\text{ISA-}E_1\text{-F},\ldots,
+\text{ISA-}E_n\text{-F}
+\]
+Per ciascuna relazione introdotta:
+
+\begin{itemize}
+    \item l'entità figlia $E_i$ partecipa con
+    cardinalità $(1,1)$;
+    \item l'entità padre $F$ partecipa con
+    cardinalità $(0,1)$;
+    \item viene aggiunto un identificatore esterno
+    all'entità figlia $E_i$, costituito dalla
+    partecipazione alla nuova relazione.
+\end{itemize}
+\noindent
+Tuttavia, la semplice eliminazione delle ISA non
+è sufficiente a preservare tutte le proprietà
+della generalizzazione originaria.
+È quindi necessario introdurre opportuni
+\textbf{vincoli esterni}, detti
+\textbf{vincoli di generalizzazione}.
+
+\subsubsection*{Vincoli di generalizzazione}
+\begin{itemize}
+    \item \textbf{Generalizzazione non completa:}
+    le entità figlie sono disgiunte a coppie,
+    ossia per ogni istanza $I$ dello schema:
+
+    \[
+    \operatorname{istanze}(I,E_i)
+    \cap
+    \operatorname{istanze}(I,E_k)
+    =\emptyset
+    \qquad \forall i\neq k
+    \]
+
+    Nello schema ristrutturato tale proprietà
+    viene espressa imponendo che ogni istanza
+    dell'entità padre $F$ partecipi
+    \textbf{al più ad una} delle relazioni
+    introdotte.
+
+    \item \textbf{Generalizzazione completa:}
+    oltre alla disgiunzione delle entità figlie,
+    vale la proprietà:
+
+    \[
+    \bigcup_{i=1}^{n}
+    \operatorname{istanze}(I,E_i)
+    =
+    \operatorname{istanze}(I,F)
+    \]
+
+    Nello schema ristrutturato si impone quindi
+    che ogni istanza dell'entità padre $F$
+    partecipi \textbf{esattamente ad una}
+    delle relazioni introdotte.
+\end{itemize}
+\noindent
+La differenza consiste quindi nel fatto che,
+nel caso non completo, un'istanza dell'entità
+padre può non appartenere ad alcuna sottoentità,
+mentre nel caso completo deve necessariamente
+appartenere a una di esse.\medskip\\
+\noindent
+\textcolor{verdeEsempio}{\textbf{Esempio. }}
+Generalizzazione non completa tra Persona,
+Studente e Docente.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\linewidth]{../images/log12.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent
+La generalizzazione viene sostituita dalle
+relazioni ISA-S-P e ISA-D-P.
+\begin{itemize}
+    \item Studente mantiene l'identificatore interno
+    Matricola e acquisisce un identificatore
+    esterno attraverso ISA-S-P.
+    \item Docente acquisisce un identificatore
+    esterno attraverso ISA-D-P.
+    \item Persona partecipa a entrambe le relazioni
+    con cardinalità $(0,1)$.
+\end{itemize}
+\noindent
+\textbf{Vincolo esterno:} nessuna istanza di Persona
+può partecipare contemporaneamente a ISA-S-P
+e ISA-D-P.\\
+Una persona può quindi essere uno studente,
+un docente oppure nessuno dei due, ma non può
+essere contemporaneamente uno studente e un docente.\medskip\\
+\noindent
+\textcolor{verdeEsempio}{\textbf{Esempio. }}
+Generalizzazione completa tra Persona, Uomo
+e Donna, secondo la modellazione proposta
+nelle slide.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{../images/log13.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent
+La generalizzazione viene sostituita dalle
+relazioni ISA-U-P e ISA-D-P, mantenendo le
+stesse cardinalità utilizzate nel caso precedente.\medskip\\
+\noindent
+\textbf{Vincolo esterno:} ogni istanza di Persona
+deve partecipare a ISA-U-P oppure a ISA-D-P,
+ma non a entrambe.\medskip\\
+\noindent
+\textbf{Osservazione:} le cardinalità delle singole
+relazioni introdotte sono identiche sia nel caso
+completo sia nel caso non completo. La differenza
+tra le due generalizzazioni viene espressa
+esclusivamente attraverso i vincoli esterni.
+
+
+\subsection{Attività 4: Eliminazione delle ISA e delle
+generalizzazioni tra relazioni}
+Le ISA e le generalizzazioni tra relazioni vengono
+eliminate dallo schema e sostituite da opportuni
+\textbf{vincoli esterni}.
+A differenza dell'eliminazione delle ISA tra
+entità, non è necessario introdurre una nuova
+relazione per rappresentare direttamente
+la ISA tra relazioni.
+Si distinguono due casi, a seconda delle entità
+che partecipano alle relazioni coinvolte.
+
+\subsubsection*{Relazioni sulle stesse entità}
+Se le relazioni coinvolte nella ISA insistono
+esattamente sulle stesse entità per tutti i ruoli,
+il vincolo esterno può essere espresso direttamente
+mediante un'inclusione tra insiemi di istanze.
+Data una relazione:
+\[
+R_1 \text{ ISA } R_2
+\]
+si elimina la freccia ISA e si introduce il
+seguente vincolo esterno:
+
+\[
+\boxed{
+\operatorname{istanze}(I,R_1)
+\subseteq
+\operatorname{istanze}(I,R_2)
+}
+\]
+Ogni istanza della relazione figlia deve quindi
+essere anche un'istanza della relazione padre.\medskip\\
+\noindent
+\textcolor{verdeEsempio}{\textbf{Esempio. }}
+Si considerino le relazioni Dirige e Lavora,
+entrambe definite sulle entità Impiegato e Reparto:
+\[
+\text{Dirige ISA Lavora}
+\]
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.55\linewidth]{../images/log141.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent
+Si elimina la ISA tra le due relazioni e si
+introduce il seguente vincolo esterno:
+\[
+\operatorname{istanze}(I,\text{Dirige})
+\subseteq
+\operatorname{istanze}(I,\text{Lavora})
+\]
+In altre parole, se un impiegato dirige un reparto,
+allora deve necessariamente lavorare in quello
+stesso reparto.
+La cardinalità $(1,1)$ di Reparto rispetto
+a Dirige rimane invariata.
+
+\subsubsection*{Relazioni su entità diverse}
+
+Se le relazioni coinvolte nella ISA insistono
+su entità diverse in almeno un ruolo, non è
+possibile esprimere direttamente il vincolo
+mediante un'inclusione tra le rispettive istanze.
+Infatti, dopo l'eliminazione delle ISA tra entità,
+tutte le entità dello schema ristrutturato sono
+\textbf{disgiunte a coppie}.
+È quindi necessario utilizzare le relazioni
+introdotte durante l'eliminazione delle ISA
+tra entità per individuare gli oggetti
+corrispondenti.\medskip\\
+\noindent
+\textcolor{verdeEsempio}{\textbf{Esempio. }}
+Si considerino le seguenti ISA:
+\[
+\begin{aligned}
+\text{Direttore}&\text{ ISA Impiegato}\\
+\text{Dirige}&\text{ ISA Lavora}
+\end{aligned}
+\]
+La relazione Dirige coinvolge Direttore e Reparto,
+mentre Lavora coinvolge Impiegato e Reparto.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{../images/log15.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent
+Eliminando la ISA tra Direttore e Impiegato,
+si introduce la relazione ISA-D-I, con cardinalità:
+
+\begin{itemize}
+    \item $(1,1)$ dal lato di Direttore;
+    \item $(0,1)$ dal lato di Impiegato.
+\end{itemize}
+\noindent
+Nello schema ristrutturato, un direttore $d$
+e il corrispondente impiegato $i$ sono due
+oggetti distinti, collegati da ISA-D-I.
+L'impiegato $i$ associato al direttore $d$
+esiste sempre ed è unico, grazie alla cardinalità
+$(1,1)$ di Direttore rispetto a ISA-D-I.
+In altre parole, se un direttore dirige un reparto,
+allora l'impiegato corrispondente a tale direttore
+deve lavorare nello stesso reparto.\medskip\\
+\noindent
+\textbf{Osservazione:} non sarebbe corretto imporre
+direttamente:
+\[
+\operatorname{istanze}(I,\text{Dirige})
+\subseteq
+\operatorname{istanze}(I,\text{Lavora})
+\]
+poiché le due relazioni coinvolgono oggetti
+appartenenti a entità diverse.
+Nel caso delle generalizzazioni tra relazioni,
+oltre ai vincoli di inclusione, occorre preservare
+anche la disgiunzione delle relazioni figlie
+e, nel caso completo, la copertura della
+relazione padre, tenendo conto delle
+corrispondenze tra gli oggetti.
+
+
+\subsection{Attività 5: scelta degli identificatori
+principali}
+La quinta attività della ristrutturazione dello
+schema concettuale consiste nella:
+\begin{enumerate}
+    \item scelta dell'identificatore principale
+    di ogni entità;
+    \item scelta dell'identificatore principale
+    di ogni relazione.
+\end{enumerate}
+\noindent
+Ogni identificatore principale deve essere
+necessariamente \textbf{essenziale}.
+Un identificatore $K$ di un'entità o relazione
+$W$ si dice essenziale se, eliminando un
+qualsiasi elemento da $K$, l'insieme risultante
+non è più un identificatore di $W$.
+Formalmente:
+\[
+\forall x\in K,\qquad
+K\setminus\{x\}
+\text{ non è un identificatore di } W
+\]
+Un identificatore essenziale non contiene quindi
+elementi superflui ai fini dell'identificazione.\medskip\\
+\noindent
+\textcolor{verdeEsempio}{\textbf{Esempio. }}
+Si consideri un'entità Studente con gli attributi
+Matricola, Nome e Cognome.
+Se Matricola identifica univocamente ogni studente,
+allora:
+\[
+K_1=\{\text{Matricola}\}
+\]
+è un identificatore essenziale, mentre:
+\[
+K_2=\{\text{Matricola},\text{Nome}\}
+\]
+non è essenziale, poiché eliminando Nome si
+ottiene comunque un identificatore.\medskip\\
+\noindent
+\textbf{Osservazione:} un identificatore essenziale
+non deve necessariamente essere costituito da un
+solo elemento. Può essere composto da più elementi,
+purché ciascuno di essi sia indispensabile
+per l'identificazione.
+
+
+\subsubsection{Scelta degli identificatori principali
+delle entità}
+
+Per ogni entità dello schema ristrutturato
+è necessario:
+
+\begin{itemize}
+    \item individuare almeno un identificatore;
+    \item scegliere, tra gli identificatori
+    disponibili, un identificatore principale.
+\end{itemize}
+\noindent
+Se un'entità non possiede alcun identificatore,
+è necessario concordare con gli esperti del
+dominio l'introduzione di un nuovo attributo,
+tipicamente un codice, che possa identificarne
+univocamente le istanze.\medskip\\
+\noindent
+\textbf{Criteri per la scelta dell'identificatore
+principale:}
+
+\begin{itemize}
+    \item \textbf{Essenzialità:} l'identificatore
+    non deve contenere elementi superflui.
+
+    \item \textbf{Semplicità:} si preferiscono
+    identificatori costituiti da pochi elementi.
+
+    \item \textbf{Frequenza di utilizzo:} si
+    privilegiano gli identificatori utilizzati
+    nelle operazioni più frequenti o importanti.
+
+    \item \textbf{Identificazione interna:}
+    si preferiscono gli identificatori interni
+    rispetto a quelli esterni.
+
+    \item \textbf{Identificazione esterna:}
+    tra gli identificatori esterni si privilegiano
+    quelli costituiti da relazioni introdotte
+    durante l'eliminazione delle ISA.
+
+    \item \textbf{Introduzione di un codice:}
+    se nessun identificatore disponibile soddisfa
+    adeguatamente i requisiti precedenti, è
+    possibile introdurre un nuovo attributo
+    avente come unico scopo l'identificazione
+    delle istanze dell'entità.
+\end{itemize}
+\noindent
+Se un'entità possiede più identificatori, quello
+principale viene indicato nel diagramma dello
+schema ristrutturato mediante un
+\textbf{cerchio addizionale intorno al pallino
+dell'identificatore}.
+Gli altri identificatori non vengono eliminati,
+poiché continuano a rappresentare vincoli
+di identificazione dello schema.
+L'identificatore principale sarà utilizzato
+nella successiva traduzione verso il modello
+relazionale per determinare la chiave primaria.
+
+
+\subsubsection{Cicli di identificazione esterna
+su entità}
+
+Durante la scelta degli identificatori principali
+delle entità è necessario evitare la presenza di
+\textbf{cicli tra gli identificatori principali
+esterni}.
+Un ciclo di identificazione esterna si verifica
+quando l'identificazione di un'entità dipende,
+direttamente o indirettamente, dall'identificazione
+dell'entità stessa.
+Per individuare tali cicli si costruisce il
+\textbf{grafo degli identificatori principali
+esterni}.
+Il grafo è definito nel seguente modo:
+
+\begin{itemize}
+    \item ad ogni entità dello schema corrisponde
+    un nodo del grafo;
+
+    \item esiste un arco orientato $E\rightarrow F$
+    se e solo se $E$ partecipa a una relazione
+    che costituisce, interamente o parzialmente,
+    l'identificatore principale esterno di $F$.
+\end{itemize}
+\noindent
+L'arco $E\rightarrow F$ indica quindi che
+l'identificazione di $F$ dipende da quella di $E$.
+Si ha un ciclo di identificazione esterna quando
+il grafo così costruito contiene un ciclo.
+
+\[
+E_1\rightarrow E_2\rightarrow\cdots
+\rightarrow E_n\rightarrow E_1
+\]
+La presenza di un ciclo rende problematica
+la successiva determinazione delle chiavi,
+poiché ciascuna entità del ciclo dipende
+dall'identificazione di un'altra entità
+del medesimo ciclo.
+
+\subsubsection*{Eliminazione dei cicli di
+identificazione esterna}
+
+Per eliminare un ciclo di identificazione
+esterna è necessario scegliere, per almeno
+una delle entità coinvolte nel ciclo, un
+identificatore principale diverso, tale da
+spezzare il ciclo.
+Se non esistono identificatori alternativi
+adeguati, si introduce un nuovo attributo,
+tipicamente un codice, da utilizzare come
+identificatore principale.\medskip\\
+\noindent
+\textcolor{verdeEsempio}{\textbf{Esempio. }}
+Si consideri il seguente schema con quattro
+entità $E_1,E_2,E_3,E_4$.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{../images/log16.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent
+Gli identificatori principali delle entità
+sono costituiti da:
+
+\begin{itemize}
+    \item $E_1$: attributo $A$ e partecipazione
+    alla relazione $R_1$.
+    \item $E_2$: partecipazione alla relazione $R_2$.
+    \item $E_3$: attributo $B$ e partecipazione
+    alla relazione $R_3$.
+    \item $E_4$: attributo $C$.
+\end{itemize}
+\noindent
+Il grafo degli identificatori principali
+esterni contiene i seguenti archi:
+
+\[
+\begin{aligned}
+E_2&\rightarrow E_1\\
+E_1&\rightarrow E_3\\
+E_3&\rightarrow E_2\\
+E_4&\rightarrow E_2
+\end{aligned}
+\]
+Si individua quindi il ciclo:
+
+\[
+\boxed{
+E_1\rightarrow E_3\rightarrow E_2\rightarrow E_1
+}
+\]
+Infatti:
+
+\begin{itemize}
+    \item per identificare $E_1$ è necessario
+    identificare $E_2$;
+    \item per identificare $E_2$ è necessario
+    identificare $E_3$ ed $E_4$;
+    \item per identificare $E_3$ è necessario
+    identificare $E_1$.
+\end{itemize}
+\noindent
+Si crea quindi una dipendenza circolare
+tra gli identificatori principali.
+Per spezzare il ciclo si introduce un nuovo
+attributo Codice in $E_1$, scegliendolo come
+identificatore principale.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.65\linewidth]{../images/log17.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent
+In questo modo viene eliminato dal grafo
+l'arco:
+
+\[
+E_2\rightarrow E_1
+\]
+Il grafo risultante contiene soltanto gli archi:
+
+\[
+E_1\rightarrow E_3,\qquad
+E_3\rightarrow E_2,\qquad
+E_4\rightarrow E_2
+\]
+e non presenta più cicli.\medskip\\
+\noindent
+\textbf{Osservazione:} non viene eliminato il
+precedente identificatore di $E_1$, costituito
+da $A$ e dalla partecipazione a $R_1$.
+Esso rimane un identificatore dell'entità,
+ma non è più quello principale. Il grafo,
+infatti, considera esclusivamente gli
+identificatori principali esterni.\medskip\\
+\noindent
+\textcolor{verdeEsempio}{\textbf{Esempio. }}
+Un caso particolare di ciclo di identificazione
+esterna si verifica quando due entità si
+identificano a vicenda.
+Si considerino le entità Rettore e Università,
+collegate dalla relazione Di.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.45\linewidth]{../images/log18.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent
+Entrambe le entità partecipano alla relazione Di
+con cardinalità $(1,1)$ e utilizzano tale
+partecipazione come identificatore principale.
+Pertanto:
+\begin{itemize}
+    \item Rettore viene identificato attraverso
+    Università;
+    \item Università viene identificata attraverso
+    Rettore.
+\end{itemize}
+\noindent
+Il grafo degli identificatori principali
+esterni contiene quindi il ciclo:
+
+\[
+\text{Rettore}
+\longrightarrow
+\text{Università}
+\longrightarrow
+\text{Rettore}
+\]
+Per spezzare il ciclo è sufficiente scegliere
+come identificatore principale di Università
+il suo identificatore interno Nome.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.45\linewidth]{../images/log19.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent
+Rettore continua a essere identificato
+principalmente attraverso la relazione Di,
+mentre Università viene identificata
+principalmente mediante Nome.
+Il grafo risultante contiene soltanto l'arco:
+
+\[
+\text{Università}\longrightarrow\text{Rettore}
+\]
+Non è quindi più presente alcun ciclo di
+identificazione esterna.
+Anche in questo caso non vengono eliminate
+né la relazione Di né le cardinalità associate,
+ma viene modificata esclusivamente la scelta
+dell'identificatore principale di Università.
+
+\subsubsection{Scelta degli identificatori principali delle relazioni}
+
+Per ogni relazione che non partecipa ad un
+identificatore principale di entità è necessario
+scegliere, tra i suoi identificatori, un
+\textbf{identificatore principale}.
+I criteri per la scelta sono:
+
+\begin{itemize}
+    \item \textbf{Essenzialità:} ogni elemento
+    dell'identificatore deve essere indispensabile
+    per l'identificazione.
+
+    \item \textbf{Semplicità:} si preferiscono
+    identificatori costituiti da pochi elementi.
+
+    \item \textbf{Frequenza di utilizzo:} si
+    privilegiano gli identificatori utilizzati
+    nelle operazioni più frequenti o importanti.
+
+    \item \textbf{Relazioni derivanti da ISA:}
+    si privilegia l'identificatore costituito
+    dal ruolo corrispondente all'entità figlia.
+\end{itemize}
+\noindent
+Analogamente a quanto avviene per le entità,
+in presenza di più identificatori, quello
+principale viene rappresentato mediante un
+\textbf{cerchio addizionale intorno al pallino
+dell'identificatore}.\medskip\\
+\noindent
+Nella scelta dell'identificatore principale
+di una relazione $R$ si distinguono tre casi:
+
+\begin{enumerate}
+    \item \textbf{Relazione che partecipa ad un
+    identificatore principale esterno di entità.}
+
+    Se $R$ partecipa all'identificatore principale
+    esterno di un'entità $E$, l'identificatore
+    principale di $R$ è già determinato attraverso
+    l'identificatore di $E$.
+
+    Non è quindi necessario effettuare un'ulteriore
+    scelta.
+
+    \item \textbf{Relazione con il solo identificatore
+    implicito.}
+
+    Se $R$ non partecipa ad alcun identificatore
+    esterno di entità e non possiede identificatori
+    espliciti diversi da quello implicito,
+    quest'ultimo diventa l'identificatore principale.
+
+    Ricordiamo che l'identificatore implicito
+    di una relazione è costituito dall'insieme
+    di tutti i suoi ruoli.
+
+    Per una relazione $R$ con ruoli
+    $U_1,\ldots,U_n$:
+
+    \[
+    K_R=\{U_1,\ldots,U_n\}
+    \]
+
+    In questo caso non è obbligatorio rappresentare
+    graficamente l'identificatore principale.
+
+    \item \textbf{Relazione con più identificatori.}
+
+    Se $R$ non partecipa ad alcun identificatore
+    principale esterno di entità e possiede uno
+    o più identificatori espliciti diversi da
+    quello implicito, è necessario sceglierne
+    uno come principale.
+
+    È possibile scegliere anche l'identificatore
+    implicito, purché sia essenziale.
+
+    In questo caso l'identificatore scelto deve
+    essere indicato esplicitamente nel diagramma
+    dello schema ristrutturato.
+\end{enumerate}
+\noindent
+\textbf{Osservazione:} l'identificatore implicito
+deve essere indicato esplicitamente quando viene
+scelto come principale in presenza di altri
+identificatori, per evitare ambiguità.\medskip\\
+\noindent
+\textcolor{verdeEsempio}{\textbf{Esempio. }}
+Scelta degli identificatori principali delle
+relazioni.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.50\linewidth]{../images/log20.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent
+Si supponga che le operazioni più frequenti
+utilizzino:
+
+\begin{itemize}
+    \item il Codice per accedere ai direttori;
+    \item la Città per accedere alle informazioni
+    sulla Responsabilità;
+    \item la combinazione di Filiale e Progetto
+    per accedere alle informazioni sullo
+    svolgimento dei progetti.
+\end{itemize}
+\noindent
+Sulla base di queste informazioni vengono
+effettuate le seguenti scelte.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.50\linewidth]{../images/log21.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+
+\begin{itemize}
+    \item \textbf{Direttore:} viene scelto Codice
+    come identificatore principale, poiché
+    utilizzato nelle operazioni più frequenti.
+
+    \item \textbf{Responsabilità:} viene scelto
+    il ruolo corrispondente a Città come
+    identificatore principale.
+
+    Infatti, la cardinalità $(0,1)$ di Città
+    garantisce che una città partecipi al più
+    ad un'istanza di Responsabilità.
+
+    \item \textbf{Svolge:} viene scelto
+    l'identificatore implicito:
+
+    \[
+    K_{\text{Svolge}}=
+    \{\text{Filiale},\text{Progetto}\}
+    \]
+
+    La relazione possiede anche l'identificatore
+    esplicito:
+
+    \[
+    \{\text{Anno},\text{Filiale}\}
+    \]
+
+    Poiché le operazioni utilizzano principalmente
+    la filiale e il numero del progetto, si
+    preferisce l'identificatore implicito.
+
+    È necessario rappresentarlo esplicitamente
+    nel diagramma, altrimenti l'identificatore
+    $(\text{Anno},\text{Filiale})$ verrebbe
+    interpretato come principale.
+
+    \item \textbf{Riguarda:} viene scelto
+    l'identificatore implicito:
+
+    \[
+    K_{\text{Riguarda}}=
+    \{\text{Progetto},\text{Tecnologia}\}
+    \]
+
+    Non essendoci altri identificatori espliciti,
+    non è necessario rappresentarlo nel diagramma.
+
+    \item \textbf{Nascita:} viene identificata
+    attraverso il ruolo Direttore, poiché ogni
+    direttore partecipa esattamente ad un'istanza
+    della relazione Nascita.
+\end{itemize}
+\noindent
+La scelta dell'identificatore principale non
+comporta l'eliminazione degli altri identificatori,
+che continuano a rappresentare vincoli dello
+schema.
+
+
+\subsection{Attività 6: specifica degli ulteriori
+vincoli esterni}
+
+L'ultima attività della ristrutturazione consiste
+nella specifica di tutti i vincoli che non sono
+rappresentati direttamente nello schema
+ristrutturato.
+È necessario:
+
+\begin{itemize}
+    \item riformulare tutti i vincoli esterni
+    dello schema originario utilizzando le
+    entità, le relazioni e gli attributi dello
+    schema ristrutturato;
+
+    \item mettere in evidenza eventuali
+    \textbf{vincoli impliciti}, ossia vincoli
+    che derivano da altri vincoli già presenti;
+
+    \item aggiungere i nuovi vincoli esterni
+    derivanti dalle attività di ristrutturazione.
+\end{itemize}
+
+\noindent
+I principali vincoli derivanti dalla
+ristrutturazione sono:
+
+\begin{itemize}
+    \item \textbf{Vincoli sugli attributi
+    composti opzionali:} necessari per
+    preservare la semantica dell'attributo
+    composto dopo la sua eliminazione.
+
+    \item \textbf{Vincoli sugli attributi
+    comuni:} necessari quando due entità,
+    precedentemente in ISA con una stessa
+    entità padre, possiedono uno stesso
+    attributo.
+
+    \item \textbf{Vincoli di generalizzazione:}
+    necessari per preservare le proprietà
+    di disgiunzione e completezza dopo
+    l'eliminazione delle generalizzazioni.
+
+    \item \textbf{Vincoli sugli identificatori
+    non principali:} necessari qualora tali
+    identificatori non siano più rappresentati
+    direttamente nello schema.
+\end{itemize}
+\noindent
+\textcolor{verdeEsempio}{\textbf{Esempio. }}
+Si consideri una relazione binaria $R$ tra
+due entità $E$ ed $F$, con cardinalità
+$(1,1)$ dal lato di $E$ e $(0,1)$ dal lato
+di $F$.
+Ogni istanza di $E$ è associata esattamente
+ad un'istanza di $F$ e ogni istanza di $F$
+è associata al più ad un'istanza di $E$.
+Pertanto, la partecipazione alla relazione
+$R$ costituisce un identificatore esterno
+di $E$, anche se questo non era stato
+indicato esplicitamente nello schema
+originario.
+Tale vincolo di identificazione deve essere
+messo in evidenza durante la ristrutturazione.
+
+
+\subsection{Riassunto delle attività di ristrutturazione}
+
+La ristrutturazione dello schema concettuale
+ER si articola nelle seguenti attività:
+
+\begin{enumerate}
+    \setcounter{enumi}{-1}
+
+    \item \textbf{Preparazione iniziale dello
+    schema ER.}
+
+    \item \textbf{Analisi delle ridondanze.}
+
+    Si valuta se mantenere o eliminare le
+    informazioni ridondanti, tenendo conto
+    dell'efficienza delle operazioni.
+
+    \item \textbf{Eliminazione degli attributi
+    multivalore.}
+
+    Gli attributi multivalore vengono sostituiti
+    mediante opportune entità e relazioni.
+
+    \item \textbf{Eliminazione degli attributi
+    composti.}
+
+    Gli attributi composti vengono sostituiti
+    dai rispettivi attributi componenti.
+
+    Eventuali cardinalità $(0,1)$ vengono
+    rappresentate mediante opportuni vincoli
+    esterni.
+
+    \item \textbf{Eliminazione delle ISA e
+    delle generalizzazioni.}
+
+    \begin{itemize}
+        \item Le ISA tra entità vengono sostituite
+        da relazioni binarie.
+
+        \item Le ISA tra relazioni vengono
+        sostituite da vincoli esterni.
+
+        \item Si introducono vincoli sugli
+        attributi comuni delle entità figlie.
+
+        \item Si introducono vincoli di
+        disgiunzione e completezza.
+
+        \item Tutte le entità dello schema
+        ristrutturato diventano disgiunte.
+    \end{itemize}
+
+    \item \textbf{Scelta degli identificatori
+    principali di entità e relazioni.}
+
+    \begin{itemize}
+        \item Ogni entità deve possedere almeno
+        un identificatore.
+
+        \item Se necessario, si introducono
+        nuovi attributi di tipo codice.
+
+        \item Si scelgono identificatori
+        principali essenziali.
+
+        \item Si eliminano eventuali cicli
+        di identificazione principale esterna.
+    \end{itemize}
+
+    \item \textbf{Specifica degli ulteriori
+    vincoli esterni.}
+
+    \begin{itemize}
+        \item Si aggiungono i vincoli derivanti
+        dalla ristrutturazione.
+
+        \item Si riformulano i vincoli esterni
+        dello schema originario.
+    \end{itemize}
+\end{enumerate}
+\noindent
+Al termine della ristrutturazione si ottiene
+uno schema ER adatto alla successiva traduzione
+nel modello relazionale, preservando la semantica
+dello schema concettuale originario.\medskip\\
+\noindent
+\textcolor{verdeEsempio}{\textbf{Esercizio 3. }}
+Ristrutturazione di uno schema relativo ai voli
+e alle compagnie aeree.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{../images/log22.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent
+Lo schema originario presenta una relazione
+ISA tra VoloCharter e Volo, un attributo
+multivalore Telefono associato alla relazione
+Sede e diversi identificatori esterni.
+Sono inoltre presenti due vincoli esterni:
+
+\begin{enumerate}
+    \item Per ogni volo charter con $n$ tappe,
+    i valori dell'attributo Ordine devono
+    corrispondere ai numeri interi da $1$ a $n$.
+
+    Indicando con $o_1,\ldots,o_n$ i valori
+    dell'attributo Ordine:
+
+    \[
+    \{o_1,\ldots,o_n\}=\{1,\ldots,n\}
+    \]
+
+    \item Ogni numero di telefono appartiene
+    ad una sola sede.
+\end{enumerate}
+\noindent
+\textbf{Soluzione:}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.60\linewidth]{../images/log23.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent
+Le principali trasformazioni effettuate sono:
+
+\begin{enumerate}
+    \item \textbf{Eliminazione dell'attributo
+    multivalore Telefono.}
+
+    Poiché Telefono è un attributo multivalore
+    della relazione Sede, è necessario
+    trasformare quest'ultima in un'entità.
+
+    Vengono introdotte le entità Sede e Telefono,
+    insieme alle relazioni:
+
+    \begin{itemize}
+        \item C-S, tra Compagnia e Sede;
+        \item S-C, tra Sede e Città;
+        \item TelSede, tra Sede e Telefono.
+    \end{itemize}
+
+    La relazione C-S presenta cardinalità
+    $(1,1)$ da entrambi i lati, poiché ogni
+    compagnia possiede esattamente una sede
+    e ogni sede corrisponde ad una compagnia.
+    La relazione S-C presenta cardinalità
+    $(1,1)$ dal lato di Sede, poiché ogni
+    sede è situata in una sola città.
+    La relazione TelSede presenta cardinalità:
+
+    \[
+    \begin{aligned}
+    \text{Sede}&:\ (1,n)\\
+    \text{Telefono}&:\ (1,1)
+    \end{aligned}
+    \]
+    Ogni sede possiede almeno un numero
+    di telefono, mentre ogni numero appartiene
+    esattamente ad una sede.
+    Telefono viene identificato attraverso
+    l'attributo Numero.
+    \item \textbf{Eliminazione della ISA tra
+    VoloCharter e Volo.}
+    La relazione:
+    \[
+    \text{VoloCharter ISA Volo}
+    \]
+    viene sostituita dalla relazione binaria
+    ISA-VC-V, con cardinalità:
+
+    \[
+    \begin{aligned}
+    \text{VoloCharter}&:\ (1,1)\\
+    \text{Volo}&:\ (0,1)
+    \end{aligned}
+    \]
+    VoloCharter acquisisce un identificatore
+    esterno attraverso ISA-VC-V.
+    Ogni volo charter è associato esattamente
+    ad un volo, mentre non tutti i voli sono
+    necessariamente voli charter.
+
+    \item \textbf{Esplicitazione degli
+    identificatori impliciti.}
+
+    Vengono messi in evidenza gli identificatori
+    delle relazioni che derivano dalle
+    cardinalità massime uguali a $1$.
+    Ad esempio, ArrPart è identificata dal
+    ruolo Volo, poiché ogni volo partecipa
+    esattamente ad un'istanza di ArrPart.
+    Analogamente, Luogo è identificata dal
+    ruolo Aeroporto e Della dal ruolo Volo.
+
+    \item \textbf{Scelta degli identificatori
+    principali.}
+
+    Volo possiede due identificatori esterni
+    composti:
+    \begin{itemize}
+        \item Codice e partecipazione ad ArrPart;
+        \item Codice e partecipazione a Della.
+    \end{itemize}
+
+    Nella soluzione viene scelto come
+    identificatore principale quello costituito
+    da Codice e dalla partecipazione a Della.
+    Compagnia viene identificata principalmente
+    attraverso Nome.
+    Sede può essere identificata attraverso
+    la sola partecipazione a C-S, poiché
+    ogni compagnia è associata ad una sola sede.
+    L'identificatore costituito congiuntamente
+    dalle partecipazioni a C-S e S-C non è
+    essenziale.
+    Infatti, eliminando S-C, la partecipazione
+    a C-S è già sufficiente per identificare
+    univocamente una sede.
+\end{enumerate}
+\noindent
+\textbf{Vincoli esterni dopo la ristrutturazione:}
+Il vincolo relativo all'attributo Ordine
+della relazione Tappa rimane un vincolo
+esterno, poiché non può essere espresso
+mediante le sole cardinalità dello schema.
+Il vincolo secondo cui ogni numero di
+telefono appartiene ad una sola sede
+diventa invece un \textbf{vincolo interno
+allo schema}, grazie all'identificatore
+Numero di Telefono e alla cardinalità
+$(1,1)$ rispetto a TelSede.\medskip\\
+\noindent
+\textbf{Osservazione:} la ristrutturazione può
+trasformare alcuni vincoli esterni dello
+schema originario in vincoli direttamente
+rappresentabili nel diagramma ER.\medskip\\
+\noindent
+\textcolor{verdeEsempio}{\textbf{Esercizio 4. }}
+Ristrutturazione di uno schema relativo alle
+officine e alle riparazioni dei veicoli.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{../images/log24.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent
+Lo schema originario presenta:
+
+\begin{itemize}
+    \item l'attributo multivalore NumTel
+    dell'entità Persona;
+
+    \item le ISA di Direttore e Dipendente
+    rispetto a Persona;
+
+    \item la ISA di Terminata rispetto a
+    Riparazione;
+
+    \item l'attributo AnniAnz presente sia
+    in Direttore sia in Dipendente;
+
+    \item l'attributo ridondante NumDip
+    dell'entità Officina.
+\end{itemize}
+\noindent
+Sono inoltre presenti due vincoli esterni:
+
+\begin{itemize}
+    \item la riconsegna di un veicolo deve
+    avvenire dopo la sua accettazione;
+
+    \item il valore di NumDip deve essere
+    coerente con le istanze della relazione
+    Lavora.
+\end{itemize}
+\noindent
+\textbf{Soluzione:}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.60\linewidth]{../images/log25.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent
+Le principali trasformazioni effettuate sono:
+
+\begin{enumerate}
+    \item \textbf{Analisi delle ridondanze.}
+
+    L'attributo NumDip rappresenta il numero
+    di dipendenti che lavorano in un'officina
+    ed è ricavabile dalla relazione Lavora.
+
+    Nella soluzione si decide di mantenere
+    tale ridondanza.
+
+    È quindi necessario mantenere il vincolo:
+
+    \[
+    \forall o\in\text{Officina},\qquad
+    \text{NumDip}(o)=
+    |\{d\mid(o,d)\in\text{Lavora}\}|
+    \]
+
+    Tale vincolo garantisce la coerenza
+    tra il valore memorizzato e le istanze
+    della relazione Lavora.
+
+    \item \textbf{Eliminazione dell'attributo
+    multivalore NumTel.}
+
+    L'attributo NumTel di Persona viene
+    sostituito dall'entità Telefono, identificata
+    mediante l'attributo Numero, e dalla
+    relazione TelPer.
+    Le cardinalità sono:
+
+    \[
+    \begin{aligned}
+    \text{Persona}&:\ (0,n)\\
+    \text{Telefono}&:\ (1,n)
+    \end{aligned}
+    \]
+    Una persona può non possedere alcun
+    numero di telefono oppure possederne
+    più di uno.
+    Uno stesso numero di telefono può
+    essere associato a più persone.
+
+    \item \textbf{Eliminazione delle ISA
+    tra Direttore, Dipendente e Persona.}
+
+    Le due ISA vengono sostituite dalle
+    relazioni binarie:
+
+    \[
+    \begin{aligned}
+    &\text{ISA-Dr-P}\\
+    &\text{ISA-Dp-P}
+    \end{aligned}
+    \]
+    Entrambe presentano cardinalità $(1,1)$
+    dal lato dell'entità figlia e $(0,1)$
+    dal lato di Persona.
+    Direttore e Dipendente acquisiscono
+    un identificatore esterno attraverso
+    le rispettive relazioni ISA.
+    \textbf{Attenzione:} nello schema originario
+    sono presenti due ISA distinte e non
+    una generalizzazione.
+    Pertanto, una stessa persona può essere
+    contemporaneamente un direttore e un
+    dipendente.
+    Non deve essere introdotto alcun vincolo
+    di disgiunzione tra le due specializzazioni.
+
+    \item \textbf{Eliminazione della ISA
+    tra Terminata e Riparazione.}
+
+    La ISA viene sostituita dalla relazione
+    ISA-T-R, con cardinalità:
+
+    \[
+    \begin{aligned}
+    \text{Terminata}&:\ (1,1)\\
+    \text{Riparazione}&:\ (0,1)
+    \end{aligned}
+    \]
+    Ogni riparazione terminata corrisponde
+    esattamente ad una riparazione, mentre
+    una riparazione può non essere ancora
+    terminata.
+    Terminata viene identificata esternamente
+    attraverso ISA-T-R.
+
+    \item \textbf{Esplicitazione degli
+    identificatori impliciti.}
+
+    La relazione Dirige presenta cardinalità
+    $(1,1)$ da entrambi i lati.
+    Di conseguenza, Officina e Direttore
+    possono identificarsi reciprocamente
+    attraverso tale relazione.
+    Si rendono inoltre espliciti gli
+    identificatori delle relazioni Ripara,
+    Relativa e Possiede, derivanti dalle
+    rispettive cardinalità $(1,1)$.
+
+    \item \textbf{Scelta degli identificatori
+    principali.}
+
+    Officina possiede sia l'identificatore
+    interno Nome sia un identificatore
+    esterno attraverso Dirige.
+    Viene scelto Nome come identificatore
+    principale.
+    Direttore viene identificato principalmente
+    attraverso ISA-Dr-P, privilegiando
+    l'identificatore esterno derivante
+    dall'eliminazione della ISA.
+    Per la relazione Dirige viene scelto
+    come identificatore principale il ruolo
+    Officina.
+    Riparazione mantiene l'identificatore
+    composto costituito da Codice e dalla
+    partecipazione alla relazione Ripara.
+    In questo modo non vengono introdotti
+    cicli tra gli identificatori principali
+    esterni.
+\end{enumerate}
+
+\noindent
+\textbf{Vincoli esterni dopo la ristrutturazione:}
+
+\begin{itemize}
+    \item \textbf{Vincolo temporale:}
+
+    per ogni riparazione terminata, la data
+    e l'ora di riconsegna devono essere
+    successive alla data e all'ora di
+    accettazione della corrispondente
+    riparazione.
+
+    \item \textbf{Vincolo di ridondanza:}
+
+    il valore di NumDip deve coincidere
+    con il numero di dipendenti associati
+    all'officina attraverso Lavora.
+
+    \item \textbf{Vincolo sull'attributo
+    comune AnniAnz:}
+
+    se una persona è contemporaneamente
+    un direttore e un dipendente, i valori
+    dell'attributo AnniAnz nelle due entità
+    devono coincidere.
+\end{itemize}
+
+\section{Traduzione diretta nel modello relazionale}
