@@ -1,4 +1,4 @@
-\chapter{Logica}
+\chapter{Logica proposizionale}
 Un sistema logico formale è costituito da:
 \begin{itemize}
     \item \textbf{Linguaggio}: sintassi (come sono formate le frasi) e semantica (come assegnare un significato ad una frase) e 
@@ -1087,3 +1087,344 @@ risolte in tempo polinomiale.
 Questo dimostra che la struttura delle
 clausole può influenzare notevolmente
 la complessità della ricerca di un modello.
+
+
+
+
+
+
+\section{Sistemi formali di dimostrazione}
+Nelle sezioni precedenti abbiamo studiato la \textbf{conseguenza logica}:
+$\Gamma \models A$ significa che ogni modello di $\Gamma$ è anche un
+modello di $A$. Possiamo affrontare la deduzione anche sul piano
+\textbf{sintattico}, costruendo una sequenza di formule mediante regole
+fissate. Scriviamo $\Gamma \vdash_\Sigma A$ per indicare che $A$ è
+derivabile dalle ipotesi $\Gamma$ nel sistema $\Sigma$.
+
+Nelle dimostrazioni in linguaggio naturale alcuni passaggi o alcune
+ipotesi possono restare impliciti. Un esempio storico è la dimostrazione
+errata del teorema dei quattro colori proposta da Kempe. Una dimostrazione
+formale rende esplicite le ipotesi e scompone il ragionamento in passi
+elementari. L'approccio simbolico, sviluppato tra gli altri da Frege,
+Russell e Hilbert, permette di controllare ciascun passo a partire dalla
+forma delle formule e dalle regole dichiarate.
+
+\medskip
+\noindent
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{
+\begin{definition}
+    Un \textbf{sistema formale di dimostrazione} $\Sigma$ per la logica
+    proposizionale è costituito da:
+    \begin{itemize}
+        \item un insieme di \textbf{assiomi}, per il quale esiste una
+        procedura effettiva che decide se una formula data vi appartiene
+        \item un insieme finito di \textbf{regole di inferenza}
+        $R_1,\ldots,R_m$. Ogni regola specifica quali conclusioni si
+        possono ottenere direttamente da determinate premesse
+    \end{itemize}
+\end{definition}
+}}%
+
+\medskip
+\noindent
+Indichiamo con la seguente notazione che $A$ è una conseguenza diretta
+delle premesse $A_1,\ldots,A_j$ per la regola $R$:
+\[
+    \frac{A_1,\ldots,A_j}{A}\;R
+\]
+Le formule sopra la linea devono essere disponibili per poter scrivere
+la conclusione sotto la linea.
+
+\subsection{Dimostrabilità e derivazione da ipotesi}
+
+\noindent
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{
+\begin{definition}
+    Una \textbf{dimostrazione di $A$ in $\Sigma$} è una sequenza finita
+    di formule $\phi_1,\ldots,\phi_n$ che termina con $\phi_n=A$,
+    in cui ogni $\phi_k$ è un assioma di $\Sigma$ oppure si ottiene
+    applicando una sua regola di inferenza a formule che precedono
+    $\phi_k$ nella sequenza.
+\end{definition}
+}}%
+
+\medskip
+\noindent
+Se esiste una dimostrazione di $A$ in $\Sigma$, diciamo che $A$ è
+\textbf{dimostrabile} o, equivalentemente, che è un \textbf{teorema}
+di $\Sigma$. La notazione è $\vdash_\Sigma A$.
+
+\medskip
+\noindent
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{
+\begin{definition}
+    Una \textbf{dimostrazione di $A$ in $\Sigma$ dalle ipotesi $\Gamma$}
+    è una sequenza finita $\phi_1,\ldots,\phi_n$ che termina con
+    $\phi_n=A$. Ciascuna formula della sequenza è:
+    \begin{itemize}[label=--]
+        \item un assioma di $\Sigma$
+        \item una formula appartenente a $\Gamma$
+        \item il risultato di una regola di inferenza di $\Sigma$
+        applicata a formule che la precedono nella sequenza
+    \end{itemize}
+\end{definition}
+}}%
+
+\medskip
+\noindent
+Se una tale dimostrazione esiste, scriviamo $\Gamma\vdash_\Sigma A$ e
+diciamo che $A$ è \textbf{derivabile} da $\Gamma$. Quando il sistema è
+chiaro dal contesto, si scrive semplicemente $\Gamma\vdash A$.
+Con $\Gamma=\emptyset$ si ritrova la dimostrabilità senza ipotesi.
+
+Un insieme $\Gamma$ è \textbf{coerente in $\Sigma$} se da esso
+non si possono derivare contemporaneamente una formula e la sua
+negazione. È quindi \textbf{incoerente in $\Sigma$} se esiste una
+formula $B$ per cui valgono entrambe le derivazioni:
+\[
+    \Gamma\vdash_\Sigma B
+    \qquad\text{e}\qquad
+    \Gamma\vdash_\Sigma\neg B
+\]
+Il sistema stesso è \textbf{coerente} se l'insieme vuoto è coerente,
+ossia se nessuna formula e la sua negazione sono entrambe teoremi.
+
+\subsection{Proprietà dei sistemi di dimostrazione}
+Come per la conseguenza logica, possiamo studiare le proprietà
+della relazione di derivabilità. Le prime quattro proprietà qui sotto
+discendono dalla definizione di dimostrazione come sequenza finita.
+Le altre dipendono dagli assiomi e dalle regole del sistema.
+\begin{itemize}
+    \item \textbf{Riflessività.} Se $A\in\Gamma$, allora
+    $\Gamma\vdash_\Sigma A$, perché la sola ipotesi $A$ costituisce
+    già una dimostrazione.
+    \item \textbf{Monotonicità.} Se $\Gamma\vdash_\Sigma A$, allora
+    $\Gamma\cup\Delta\vdash_\Sigma A$, perché la stessa dimostrazione
+    resta valida quando si aggiungono ipotesi.
+    \item \textbf{Taglio.} Se $\Gamma\vdash_\Sigma A$ e
+    $\Delta\cup\{A\}\vdash_\Sigma B$, allora
+    $\Gamma\cup\Delta\vdash_\Sigma B$. Si può anteporre la
+    dimostrazione di $A$ e riutilizzarne la conclusione ogni volta
+    che la dimostrazione di $B$ richiede l'ipotesi $A$.
+    \item \textbf{Compattezza.} Se $\Gamma\vdash_\Sigma A$, esiste
+    un sottoinsieme finito $\Gamma_0\subseteq\Gamma$ tale che
+    $\Gamma_0\vdash_\Sigma A$. Basta prendere le ipotesi che
+    compaiono nella dimostrazione.
+    \item \textbf{Principio di esplosione} (\textit{ex falso
+    sequitur quodlibet}). Se $\Gamma$ è incoerente in $\Sigma$,
+    allora da $\Gamma$ si può derivare qualunque formula.
+    \item \textbf{Principio di deduzione.} Derivare $B$ con
+    l'ipotesi aggiuntiva $A$ equivale a derivare l'implicazione
+    $A\to B$ dalle sole ipotesi iniziali:
+    \[
+        \Gamma\cup\{A\}\vdash_\Sigma B
+        \quad\Longleftrightarrow\quad
+        \Gamma\vdash_\Sigma A\to B
+    \]
+    \item \textbf{Principio di confutazione.} Si può derivare
+    $A$ da $\Gamma$ se e solo se $\Gamma\cup\{\neg A\}$ è incoerente
+    in $\Sigma$. In un sistema che soddisfa questo principio
+    possiamo quindi dimostrare $A$ ricavando una contraddizione
+    dopo aver assunto $\neg A$.
+\end{itemize}
+
+\subsection{Sistema formale di dimostrazione di Hilbert}
+Il sistema di Hilbert $\mathcal{H}$ usa tre \textbf{schemi di assioma}
+e una sola regola di inferenza. Le lettere $\phi,\psi,\theta$
+rappresentano formule arbitrarie. Ogni sostituzione uniforme di queste
+lettere con formule produce un assioma del sistema.
+\[
+\begin{aligned}
+    \text{A1}\quad & \phi\to(\psi\to\phi) \\
+    \text{A2}\quad & (\phi\to(\psi\to\theta))
+                       \to((\phi\to\psi)\to(\phi\to\theta)) \\
+    \text{A3}\quad & (\neg\psi\to\neg\phi)
+                       \to((\neg\psi\to\phi)\to\psi)
+\end{aligned}
+\]
+L'unica regola è il \textbf{Modus Ponens} (MP). Avendo già ottenuto
+$\phi$ e $\phi\to\psi$, possiamo scrivere la conclusione $\psi$:
+\[
+    \frac{\phi,\qquad \phi\to\psi}{\psi}\;\mathrm{MP}
+\]
+I connettivi primitivi sono $\to$ e $\neg$. Gli altri si possono
+esprimere tramite questi due, come mostrano le seguenti equivalenze:
+\[
+\begin{aligned}
+    (A\land B) &\bimodels \neg(A\to\neg B) \\
+    (A\lor B) &\bimodels (\neg A\to B) \\
+    (A\equiv B) &\bimodels \neg((A\to B)\to\neg(B\to A))
+\end{aligned}
+\]
+Per esempio, $A\to\neg B$ è falsa esattamente quando $A$ e $B$ sono
+entrambe vere. La sua negazione ha quindi lo stesso valore di verità
+della congiunzione.
+
+\subsubsection*{Esempio di dimostrazione senza ipotesi}
+Per ogni formula $A$ si ha $\vdash_{\mathcal{H}} A\to A$.
+La notazione $\mathrm{MP}(i,j)$ indica che la riga $i$ contiene
+l'antecedente dell'implicazione riportata alla riga $j$.
+\[
+\begin{aligned}
+    1.\quad & A\to((A\to A)\to A)
+             && \text{A1} \\
+    2.\quad & (A\to((A\to A)\to A))
+               \to((A\to(A\to A))\to(A\to A))
+             && \text{A2} \\
+    3.\quad & (A\to(A\to A))\to(A\to A)
+             && \mathrm{MP}(1,2) \\
+    4.\quad & A\to(A\to A)
+             && \text{A1} \\
+    5.\quad & A\to A
+             && \mathrm{MP}(4,3)
+\end{aligned}
+\]
+La riga 2 si ottiene da A2 sostituendo $\phi$ e $\theta$ con $A$
+e $\psi$ con $A\to A$. Il primo Modus Ponens produce l'implicazione
+della riga 3. A quel punto la riga 4 fornisce il suo antecedente,
+quindi una seconda applicazione della regola dà la conclusione.
+
+\subsubsection*{Esempio di derivazione da ipotesi}
+Per due formule arbitrarie $A$ e $B$, dimostriamo
+$\{A,\neg A\}\vdash_{\mathcal{H}} B$. Questo esempio mostra come
+si ottiene il principio di esplosione in $\mathcal{H}$.
+\[
+\begin{aligned}
+    1.\quad & A
+             && \text{ipotesi} \\
+    2.\quad & A\to(\neg B\to A)
+             && \text{A1} \\
+    3.\quad & \neg B\to A
+             && \mathrm{MP}(1,2) \\
+    4.\quad & \neg A
+             && \text{ipotesi} \\
+    5.\quad & \neg A\to(\neg B\to\neg A)
+             && \text{A1} \\
+    6.\quad & \neg B\to\neg A
+             && \mathrm{MP}(4,5) \\
+    7.\quad & (\neg B\to\neg A)\to((\neg B\to A)\to B)
+             && \text{A3} \\
+    8.\quad & (\neg B\to A)\to B
+             && \mathrm{MP}(6,7) \\
+    9.\quad & B
+             && \mathrm{MP}(3,8)
+\end{aligned}
+\]
+Le righe 3 e 6 dicono che da $\neg B$ seguirebbero sia $A$ sia
+$\neg A$. L'istanza di A3 alla riga 7 permette di concludere $B$
+con due applicazioni di MP. Se $\Gamma$ è incoerente, fornisce già
+le due derivazioni di $A$ e $\neg A$ per qualche $A$. Collegandole
+alla derivazione appena vista si può ottenere da $\Gamma$ qualunque
+$B$.
+
+% Per l'esame, saper verificare se una derivazione proposta in
+% \mathcal{H} è corretta, controllando la giustificazione di ogni riga.
+
+\subsection{Correttezza e completezza}
+La \textbf{conseguenza logica} $\Gamma\models A$ riguarda la semantica:
+si controlla se ogni interpretazione che soddisfa $\Gamma$ soddisfa
+anche $A$. La \textbf{derivabilità} $\Gamma\vdash_\Sigma A$ riguarda
+la sintassi: si cerca una sequenza di formule che rispetti gli assiomi
+e le regole di $\Sigma$. La correttezza e la completezza collegano
+queste due relazioni.
+
+\noindent
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{
+\begin{definition}
+    Un sistema di dimostrazione $\Sigma$ è \textbf{corretto} se,
+    per ogni insieme di formule $\Gamma$ e ogni formula $A$,
+    ogni derivazione stabilisce una conseguenza logica:
+    \[
+        \Gamma\vdash_\Sigma A\quad\Longrightarrow\quad\Gamma\models A
+    \]
+    È \textbf{completo} se, per ogni $\Gamma$ e $A$, ogni
+    conseguenza logica ammette una derivazione:
+    \[
+        \Gamma\models A\quad\Longrightarrow\quad\Gamma\vdash_\Sigma A
+    \]
+\end{definition}
+}}%
+
+\subsubsection*{Correttezza e completezza di Hilbert}
+\noindent
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{
+\begin{theorem}[Correttezza di Hilbert]
+    Per ogni insieme di formule $\Gamma$ e ogni formula $A$ vale:
+    \[
+        \Gamma\vdash_{\mathcal{H}} A
+        \quad\Longrightarrow\quad
+        \Gamma\models A
+    \]
+\end{theorem}
+}}%
+
+\begin{proof}
+    Fissiamo un modello $\mathcal{I}$ di $\Gamma$ e una dimostrazione
+    di $A$ dalle ipotesi $\Gamma$. Mostriamo per induzione sulla
+    posizione nella sequenza che ogni riga è vera in $\mathcal{I}$.
+    \begin{itemize}
+        \item Se la riga è un'ipotesi, è vera perché $\mathcal{I}$
+        soddisfa tutte le formule di $\Gamma$.
+        \item Se è un assioma, è vera perché ogni istanza di A1, A2
+        e A3 è una tautologia. Per A1, quando $\phi$ è vera lo è
+        anche $\psi\to\phi$, e quando è falsa l'implicazione esterna
+        è vera. Per A2, supponiamo vere $\phi\to(\psi\to\theta)$
+        e $\phi\to\psi$. Se $\phi$ è vera, otteniamo $\psi$ e
+        $\psi\to\theta$, dunque $\theta$ è vera. Ne segue
+        l'implicazione $\phi\to\theta$. Per A3, se $\psi$ fosse
+        falsa, la verità di entrambe le premesse
+        $\neg\psi\to\neg\phi$ e $\neg\psi\to\phi$ imporrebbe
+        che $\phi$ fosse al tempo stesso vera e falsa.
+        \item Se la riga è ottenuta per Modus Ponens, per ipotesi
+        induttiva le righe precedenti da cui proviene, $\phi$ e
+        $\phi\to\psi$, sono vere in $\mathcal{I}$. Dalla semantica
+        dell'implicazione segue che anche $\psi$ è vera.
+    \end{itemize}
+    In particolare l'ultima riga, che contiene $A$, è vera in ogni
+    modello di $\Gamma$. Se $\Gamma$ non ha modelli, la conseguenza
+    logica vale per vacuità.
+\end{proof}
+
+\noindent
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{
+\begin{theorem}[Completezza di Hilbert]
+    Per ogni insieme di formule $\Gamma$ e ogni formula $A$ vale:
+    \[
+        \Gamma\models A
+        \quad\Longrightarrow\quad
+        \Gamma\vdash_{\mathcal{H}} A
+    \]
+\end{theorem}
+}}%
+
+\medskip
+\noindent
+I due teoremi stabiliscono che in $\mathcal{H}$ derivabilità e
+conseguenza logica coincidono:
+\[
+    \Gamma\vdash_{\mathcal{H}} A
+    \quad\Longleftrightarrow\quad
+    \Gamma\models A
+\]
+Con $\Gamma=\emptyset$, questo significa che i teoremi di
+$\mathcal{H}$ sono esattamente le tautologie della logica
+proposizionale. In particolare, $\mathcal{H}$ è coerente, perché
+una formula e la sua negazione non possono essere entrambe
+tautologie. Più in generale, se $\Gamma$ ha un modello, per
+correttezza quel modello deve soddisfare ogni formula derivabile
+da $\Gamma$, quindi una formula e la sua negazione non possono essere
+entrambe derivabili. Se $\Gamma$ è insoddisfacibile, implica
+qualsiasi formula e la sua negazione, che per completezza sono
+entrambe derivabili. La coerenza in $\mathcal{H}$ equivale dunque
+alla soddisfacibilità.
+
+\subsubsection*{Importanza del sistema di Hilbert}
+L'obiettivo di Hilbert era ottenere tutte le tautologie a partire
+da un apparato deduttivo con pochi schemi di assioma e poche regole.
+Anche una formula semplice come $A\to A$ richiede diversi passaggi
+espliciti. Questo rende le derivazioni poco intuitive e spiega
+perché, nella pratica, si usano spesso sistemi come la risoluzione
+e i tableaux. L'importanza storica del sistema di Hilbert sta
+nell'aver mostrato come formalizzare un ragionamento con un
+insieme ristretto di operazioni puramente sintattiche, rendendo
+possibile la verifica meccanica delle dimostrazioni.
