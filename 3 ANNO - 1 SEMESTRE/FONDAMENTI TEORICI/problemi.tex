@@ -968,3 +968,562 @@ Questo rende SAT uno dei problemi fondamentali
 della teoria della complessità computazionale.
 
 
+
+\section{Problemi NP-completi}
+\subsection{Indipendent Sets}
+Il problema Indipendent Set si basa sui gradi non orientati. Un grafo non orientato è una coppia $G = (V,E)$
+dove $V$ l'insieme dei vertici e $E$ è un insieme di coppie non ordinate di vertici in $V$ distinti. 
+Vediamo la definizione del problema:\smallskip\\
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
+   Sia $G = (V,E)$ un grafo non orientato. Un \textbf{indipendent set} $I \subseteq V$ di $G$ è un insieme 
+   di vertici tale che, per ogni coppia di vertici, $v, v' \in I$,
+   \[   \text{la coppia }  \{ v,v'  \} \notin E \]  
+   ovvero non è un arco
+\end{definition}}}\smallskip\\
+In altre parole, il problema consiste nello
+stabilire se un grafo contiene almeno $k$
+vertici tra i quali non esiste alcun arco.
+Chiaramente un vertice singolo è sempre un indipendent set, quindi proveremo l'esistenza degli indipendent sets 
+sopra una certa dimensione. Annotiamo la dimensione di un indipendent set con $|I|$.\smallskip\\
+Il linguaggio associato a questo problema è il seguente:
+\[   \textsc{indset} = \{  e(G), b(k) \ | \ \text{Esiste un indipendent set } I \text{ di } G \text{ di dimensione almeno } k     \}    \]
+assumendo un encoding standard $e$ dei grafi su alfabeto $\Sigma$ e un encoding binario $b$ di numeri naturali.\\
+Vogliamo dimostrare che il linguaggio \textsc{indset} appartiene alla classe NP.
+\begin{proof}
+    Per dimostrare che $\textsc{IndSet}\in NP$, costruiamo una
+Macchina di Turing non deterministica $M$ che
+decide il problema in tempo polinomiale.\\
+Assumiamo che l'input rappresenti un grafo
+$G=(V,E)$ e un intero $k$.
+La macchina esegue due fasi:
+
+\begin{enumerate}
+    \item \textbf{GUESS:} per ogni vertice
+    $v\in V$, la macchina sceglie
+    non deterministicamente un bit
+    $0$ oppure $1$.
+    Il valore $1$ indica che il vertice
+    viene inserito nell'insieme candidato
+    $I$, mentre il valore $0$ indica
+    che viene escluso.
+    Poiché vengono effettuate $|V|$ scelte,
+    questa fase richiede tempo polinomiale.
+
+    \item \textbf{CHECK:} la macchina verifica
+    che l'insieme candidato $I$ soddisfi
+    due condizioni:
+    \begin{itemize}
+        \item $|I|\geq k$, ovvero sono stati
+        selezionati almeno $k$ vertici.
+
+        \item Per ogni coppia di vertici distinti
+        $u,v\in I$, deve valere:
+        \[
+        \{u,v\}\notin E.
+        \]
+    \end{itemize}
+    \noindent La prima verifica può essere effettuata
+    contando i vertici selezionati.
+    La seconda richiede di controllare
+    al massimo $O(|V|^2)$ coppie di vertici.
+    Entrambe le verifiche possono essere
+    eseguite in tempo polinomiale rispetto
+    alla dimensione dell'input.
+\end{enumerate}
+La macchina accetta se almeno una delle
+possibili esecuzioni non deterministiche
+individua un insieme indipendente
+di dimensione almeno $k$.
+Poiché tutte le fasi richiedono tempo
+polinomiale, concludiamo:
+\[
+\boxed{\textsc{IndSet}\in NP.}
+\]
+\end{proof}
+
+
+\noindent Ora dimostriamo che il linguaggio \textsc{indset} è NP-completo.
+\begin{proof}
+Abbiamo già dimostrato che $\textsc{IndSet}\in NP$. Rimane quindi da dimostrare che $\textsc{IndSet}$ è \textbf{NP-hard}.
+Per farlo, costruiamo una riduzione molti-a-uno polinomiale dal problema $3-CNF$ a $\textsc{IndSet}$, ovvero:
+\[
+\boxed{3CNF\leq_m^p \textsc{IndSet}.}
+\]
+Ricordiamo che $3-CNF$ è il linguaggio delle codifiche delle formule soddisfacibili
+in forma normale congiuntiva con esattamente tre letterali per clausola.
+Una formula in $3$-CNF ha la forma:
+\[
+\phi=\gamma_1\land\gamma_2\land
+\cdots\land\gamma_m,
+\]
+dove ciascuna clausola è:
+\[
+\gamma_i=
+(l_{i,1}\lor l_{i,2}\lor l_{i,3}).
+\]
+Ogni $l_{i,j}$ è un letterale, cioè una variabile proposizionale oppure la sua negazione.
+L'obiettivo della riduzione è trasformare una formula $\phi$ in una coppia
+$(G_\phi,k_\phi)$ tale che:
+\[
+\boxed{
+\phi\text{ è soddisfacibile}
+\iff
+(G_\phi,k_\phi)\in \textsc{IndSet}.
+}
+\]
+\smallskip
+\noindent
+\textbf{Costruzione della riduzione.}
+Sia $\phi$ una formula in $3$-CNF
+contenente $m$ clausole.
+Costruiamo un grafo:
+\[
+G_\phi=(V_\phi,E_\phi)
+\]
+nel seguente modo.
+Per ogni clausola:
+\[
+\gamma_i=
+(l_{i,1}\lor l_{i,2}\lor l_{i,3}),
+\]
+creiamo tre vertici:
+\[
+v_{i,1},\quad v_{i,2},\quad v_{i,3},
+\]
+ciascuno corrispondente a un letterale
+della clausola.
+L'insieme dei vertici è quindi:
+\[
+\boxed{
+V_\phi=
+\{v_{i,j}\mid
+1\leq i\leq m,\ 1\leq j\leq3\}.
+}
+\]
+Di conseguenza, il grafo contiene
+esattamente $3m$ vertici.
+Successivamente, definiamo gli archi
+attraverso due regole.
+\begin{enumerate}
+    \item \textbf{Archi interni alle clausole.}
+    Per ogni clausola $\gamma_i$,
+    colleghiamo tra loro i tre vertici:
+    \[
+    \{v_{i,1},v_{i,2}\},\quad
+    \{v_{i,1},v_{i,3}\},\quad
+    \{v_{i,2},v_{i,3}\}.
+    \]
+    In questo modo, ogni clausola viene
+    rappresentata da un \textbf{triangolo}.
+    Poiché i tre vertici del triangolo
+    sono collegati tra loro, un Independent Set
+    può contenerne \textbf{al massimo uno}.
+    \item \textbf{Archi tra letterali opposti.}
+    Consideriamo due vertici appartenenti
+    a triangoli differenti.
+    Se rappresentano letterali opposti
+    sulla stessa variabile, aggiungiamo
+    un arco tra loro.
+    Formalmente, se $i\neq k$ e:
+    \[
+    l_{i,j}=x,\qquad l_{k,t}=\neg x,
+    \]
+    oppure viceversa, allora:
+    \[
+    \{v_{i,j},v_{k,t}\}\in E_\phi.
+    \]
+    Questi archi impediscono che un
+    Independent Set contenga contemporaneamente
+    un letterale e la sua negazione.
+\end{enumerate}
+Infine, definiamo:
+\[
+\boxed{k_\phi=m,}
+\]
+dove $m$ è il numero delle clausole.
+\textbf{Intuizione.}
+La costruzione trasforma ogni clausola
+in un triangolo e collega tra loro
+i letterali incompatibili.
+Cercare un Independent Set di dimensione
+almeno $m$ equivale quindi a cercare
+\textbf{un letterale per ogni clausola},
+senza selezionare letterali contraddittori.
+\smallskip
+\noindent
+\textbf{Definizione della funzione di riduzione.}
+La funzione $f$ è definita come:
+\[
+f(e(\phi))=
+\begin{cases}
+(e(G_\phi),b(k_\phi)),
+& \text{se }e(\phi)\text{ codifica una formula in 3-CNF},\\
+\varepsilon,
+& \text{altrimenti}.
+\end{cases}
+\]
+Assumiamo che $\varepsilon$ non rappresenti
+una codifica valida di un'istanza di $\textsc{IndSet}$.
+In questo modo, un input che non appartiene
+al linguaggio $3CNF$ perché malformato
+viene trasformato in una stringa
+che non appartiene a $\textsc{IndSet}$.
+\smallskip
+\noindent
+\textbf{Complessità della riduzione.}
+Dobbiamo dimostrare che la funzione $f$
+è calcolabile in tempo polinomiale.
+Una Macchina di Turing deterministica
+può costruire $(G_\phi,k_\phi)$
+attraverso le seguenti operazioni:
+\begin{enumerate}
+    \item Verifica che l'input rappresenti
+    una formula valida in $3$-CNF.
+
+    \item Se la codifica non è valida,
+    restituisce $\varepsilon$.
+
+    \item Conta il numero $m$ di clausole
+    e definisce $k_\phi=m$.
+
+    \item Per ogni clausola costruisce
+    tre vertici e i tre archi che
+    formano il relativo triangolo.
+
+    \item Per ogni coppia di vertici
+    appartenenti a triangoli differenti,
+    verifica se rappresentano
+    letterali opposti e, in tal caso,
+    aggiunge un arco.
+\end{enumerate}
+La costruzione genera:
+\[
+|V_\phi|=3m
+\]
+vertici e $3m$ archi interni ai triangoli.
+Il numero di possibili coppie di vertici
+è al più:
+\[
+\binom{3m}{2}=O(m^2).
+\]
+Quindi anche il numero di archi
+aggiuntivi è limitato da $O(m^2)$.
+Poiché tutte le verifiche e le operazioni
+possono essere effettuate in tempo
+polinomiale rispetto alla dimensione
+della formula, concludiamo che:
+\[
+\boxed{
+f\text{ è calcolabile in tempo polinomiale}.
+}
+\]
+\smallskip
+\noindent
+\textbf{Correttezza della riduzione.}
+Per dimostrare che $f$ è una riduzione
+valida, dobbiamo provare:
+\[
+\boxed{
+f(e(\phi))\in \textsc{IndSet}
+\iff
+e(\phi)\in 3CNF.
+}
+\]
+Consideriamo un input valido che rappresenta
+una formula $\phi$ in $3$-CNF.
+Dimostriamo separatamente le due implicazioni.
+\medskip
+\noindent
+\textbf{Prima implicazione:}
+\[
+(G_\phi,k_\phi)\in \textsc{IndSet}
+\Rightarrow
+\phi\text{ è soddisfacibile}.
+\]
+Supponiamo che $G_\phi$ possieda un
+Independent Set $I$ tale che:
+\[
+|I|\geq k_\phi=m.
+\]
+Per costruzione, il grafo contiene
+$m$ triangoli, uno per ogni clausola
+della formula.
+Poiché in ogni triangolo tutti i vertici
+sono collegati tra loro, l'insieme
+indipendente $I$ può contenere
+al massimo un vertice per triangolo.
+Di conseguenza:
+\[
+|I|\leq m.
+\]
+Ma per ipotesi sappiamo che $|I|\geq m$.
+Pertanto:
+\[
+\boxed{|I|=m.}
+\]
+Questo significa che $I$ contiene
+\textbf{esattamente un vertice per ogni
+triangolo}, e quindi un letterale
+per ogni clausola.
+Inoltre, $I$ non può contenere vertici
+che rappresentano letterali opposti
+sulla stessa variabile, poiché tali
+vertici sono collegati da un arco.
+Possiamo quindi costruire
+un'interpretazione $\mathcal J$
+che renda veri tutti i letterali
+rappresentati dai vertici di $I$.
+In particolare, per ogni variabile
+$x\in Var(\phi)$, definiamo:
+\[
+\mathcal J(x)=
+\begin{cases}
+1, & \text{se }I\text{ contiene un vertice}\\
+   & \text{che rappresenta }x,\\
+0, & \text{altrimenti}.
+\end{cases}
+\]
+Questa interpretazione è coerente,
+poiché $I$ non può contenere
+contemporaneamente un vertice che
+rappresenta $x$ e uno che
+rappresenta $\neg x$.
+Se viene selezionato un letterale
+positivo $x$, esso risulta vero.
+Se viene selezionato un letterale
+negativo $\neg x$, non può essere
+selezionato anche $x$, quindi
+$\mathcal J(x)=0$ e $\neg x$ risulta vero.
+Infine, poiché $I$ contiene esattamente
+un vertice per ogni triangolo,
+ogni clausola della formula contiene
+almeno un letterale vero.
+Di conseguenza:
+\[
+\mathcal J\models\phi.
+\]
+Abbiamo quindi dimostrato:
+\[
+\boxed{
+(G_\phi,k_\phi)\in \textsc{IndSet}
+\Rightarrow
+\phi\text{ è soddisfacibile}.
+}
+\]
+\medskip
+\noindent
+\textbf{Seconda implicazione:}
+\[
+\phi\text{ è soddisfacibile}
+\Rightarrow
+(G_\phi,k_\phi)\in \textsc{IndSet}.
+\]
+Supponiamo che $\phi$ sia soddisfacibile.
+Allora esiste un'interpretazione
+$\mathcal J$ tale che:
+\[
+\mathcal J\models\phi.
+\]
+Poiché:
+\[
+\phi=\gamma_1\land\cdots\land\gamma_m,
+\]
+l'interpretazione $\mathcal J$
+deve soddisfare tutte le clausole.
+In particolare, ogni clausola
+contiene almeno un letterale vero.
+Costruiamo un insieme $I\subseteq V_\phi$
+scegliendo, per ogni clausola $\gamma_i$,
+\textbf{esattamente un vertice}
+corrispondente a un letterale
+soddisfatto da $\mathcal J$.
+Poiché la formula contiene $m$
+clausole, otteniamo:
+\[
+\boxed{|I|=m=k_\phi.}
+\]
+Rimane da dimostrare che $I$
+è un Independent Set.
+Per costruzione, $I$ contiene
+un solo vertice per ogni triangolo,
+quindi non comprende due vertici
+collegati da archi interni
+alla stessa clausola.
+Inoltre, $I$ non può contenere
+due vertici che rappresentano
+letterali opposti.
+Infatti, l'interpretazione
+$\mathcal J$ non può rendere
+contemporaneamente veri
+$x$ e $\neg x$.
+Poiché gli unici archi del grafo
+sono quelli interni ai triangoli
+e quelli tra letterali opposti,
+nessuna coppia di vertici di $I$
+è collegata da un arco.
+Pertanto $I$ è un Independent Set
+di dimensione $m$.
+Concludiamo:
+\[
+\boxed{
+\phi\text{ è soddisfacibile}
+\Rightarrow
+(G_\phi,k_\phi)\in \textsc{IndSet}.
+}
+\]
+\medskip
+Avendo dimostrato entrambe
+le implicazioni, otteniamo:
+\[
+\boxed{
+\phi\text{ è soddisfacibile}
+\iff
+(G_\phi,k_\phi)\in \textsc{IndSet}.
+}
+\]
+Poiché la funzione $f$ è calcolabile
+in tempo polinomiale ed è corretta,
+abbiamo dimostrato che:
+\[
+\boxed{3CNF\leq_m^p \textsc{IndSet}.}
+\]
+Essendo $3CNF$ NP-completo,
+questo implica che $\textsc{IndSet}$
+è \textbf{NP-hard}.
+Inoltre, abbiamo già dimostrato
+che $\textsc{IndSet}\in NP$.
+Pertanto possiamo concludere:
+\[
+\boxed{
+\textsc{IndSet}\text{ è NP-completo}.
+}
+\]
+\smallskip
+\noindent
+\textbf{Intuizione finale.}
+La riduzione associa a ogni clausola
+della formula un triangolo e collega
+i vertici che rappresentano
+letterali incompatibili.
+Un Independent Set di dimensione $m$
+deve scegliere esattamente un vertice
+per ciascuna delle $m$ clausole,
+senza selezionare letterali opposti.
+Questo equivale a scegliere
+un letterale vero per ogni clausola,
+ottenendo così un'interpretazione
+che soddisfa l'intera formula.
+\end{proof}
+
+
+
+
+\subsection{Vertex Cover}
+Anche il problema Vertex Cover si basa sui grafi. Un grafo non orientato è una coppia $G = (V,E)$
+dove $V$ l'insieme dei vertici e $E$ è un insieme di coppie non ordinate di vertici in $V$ distinti. 
+Vediamo la definizione del problema:\smallskip\\
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
+   Sia $G (V,E)$ un grafo non orientato. Un \textbf{Vertex cover} $I \subseteq V$ di $G$ è un insieme 
+   di vertici tale che, per ogni arco $\{ v, v'  \}$
+   \[   v \in I \quad \text{oppure} \quad v' \in I      \]
+   ovvero ogni arco è coperto da almeno un vertice nel cover
+\end{definition}}}\smallskip\\
+Chiaramente tutto $V$ è un vertex cover di $G = (V,E)$, quindi ne proveremo l'esistenza solo sotto una certa 
+dimensione.\smallskip\\
+Il linguaggio associato a questo problema è il seguente:
+\[     \textsc{vertex cover} = \{  e(G), b(k) \ | \ \text{Esiste un Vertex Cover } C \text{ di } G \text{ di dimensione almeno } k     \}    \]
+assumendo un encoding standard $e$ dei grafi su alfabeto $\Sigma$ e un encoding binario $b$ di numeri naturali.\\
+Vogliamo dimostrare che il linguaggio \textsc{vertex cover} è NP.
+\begin{proof}
+    Costruiamo una macchina di Turing non deterministica che decide \textsc{vertex cover} in tempo polinomiale rispetto all'input,
+    assumendo che l'input rappresenti il grafo $G = (V,E)$ e l'intero $k$. La macchina $M$ avrà il seguente comportamento:
+    \begin{enumerate}
+        \item \textbf{GUESS}: $M$ genera non-deterministicamente, per ogni $v \in V$, un bit 0 o 1\\
+        Per ogni vertice $v$, $M$ sceglie se è dentro o fuori il vertex cover candidato che sta verificando
+        Ci sono un numero di vertici in $G$ al più pari alla dimensione di $G$, perciò 
+        questa fase può essere eseguita in un numero \textbf{polinomiale} di passi della macchina
+        
+        \item \textbf{CHECK}: $M$ verifica le seguenti proprietà:
+        \begin{itemize}[label = --]
+            \item Ci sono al più $k$ vertici a cui è stato assegnato il bit 1 
+            \item Per ogni coppia $\{ v,v'  \} \in E$ (gli archi) verifica che $v$ o $v'$ è stato assegnato al bit 1
+        \end{itemize}
+
+        
+    \end{enumerate}
+    \noindent La macchina accetta se almeno un esecuzione trova un Vertex Cover.
+
+\end{proof}
+
+
+\noindent Ora dimostriamo che Vertex Cover è NP-COMPLETO.
+\begin{proof}
+    Abbiamo gia dimostrato che Vertex Cover $\in NP$. Per questa dimostrazione possiamo sfruttare la 
+    dimostrazione fatta precedentemente sull'\textsc{indset}. Quindi ci basterà mostrare che vale la seguente riduzione efficiente:
+    \[  \textsc{indset} \le_{m}^{p}     \]
+    Per provare questa riduzione abbiamo bisogna di un lemma ausiliare:\smallskip\\
+    \colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{lemma}
+        Sia $G = (V,E)$ un grafo non orientato. $\mathcal{J}$ è un indipendent set di $G$ se e solo se 
+        $V / \mathcal{J}$ è un vertex cover di G 
+\end{lemma}}}\smallskip\\
+Ora creiamo una riduzione molti a uno polinomiale da \textsc{indset} a Vertex Cover:\\
+LA funzione $f$ è definita come segue:
+\begin{itemize}[label = --]
+    \item $f \big( e (G), b(k)     \big) = \big( e(G), b(|V|-k)  \big)$, dove $e(G)$ è l'encoding di un grafo, $b(k)$ è l'encoding 
+    di un intero e $|V| \ge k$.
+    \item $f\big(    e(G), b(K)    \big) = \epsilon$ (stringa vuota) altrimenti  
+\end{itemize} 
+Verifichiamo che la riduzione sia corretta:
+
+
+
+\end{proof}
+
+
+
+
+
+\subsection{Clique (non ancora fatto)}
+Anche il problema Clique si basa sui grafi. Un grafo non orientato è una coppia $G = (V,E)$
+dove $V$ l'insieme dei vertici e $E$ è un insieme di coppie non ordinate di vertici in $V$ distinti. 
+Vediamo la definizione del problema:\smallskip\\
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
+   Sia $G = (V,E)$ un grafo non orientato. Una \textbf{Clique} $I \subseteq V$ di $G$ è un insieme 
+   di vertici tale che, per ogni $v,v' \in I$ con $v \neq v'$:
+   \[   \{ v,v'  \in E  \}       \]
+   ovvero ogni vertice è connesso agli altri da un arco
+\end{definition}}}\smallskip\\
+Chiaramente $ \emptyset  $ è una clique $G (V,E)$ di dimensione 0, quindi ne proveremo l'esistenza solo sopra una certa dimensione.
+(METTERE IMMAGINE) \smallskip\\
+Il linguaggio associato a questo il problema è il seguente:
+\[   \textsc{clique} = \{  e(G), b(k) \ | \ \text{Esiste una clique } C \text{ di } G \text{ di dimensione almeno } k     \}         \]
+assumendo un encoding standard $e$ dei grafi su alfabeto $\Sigma$ e un encoding binario $b$ di numeri naturali.\\
+Vogliamo dimostrare che il linguaggio \textsc{clique} è NP.\smallskip\\
+\begin{proof}
+    Costruiamo una macchina di Turing non deterministica che decide \textsc{clique} in tempo polinomiale rispetto all'input\\
+    CONTINUARE DIMOSTRAZIONE \\
+    DIMOSTRAZIONE NP COMPLETO CON RIDUZIONE \\
+\end{proof}
+
+
+
+\subsection{Set Cover (non ancora fatto)}
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
+   Sia $U$ un insieme finito e $S \subseteq P(U)$ una famiglia di insiemi. Una sotto-famiglia $C \subseteq S$ è 
+   \textbf{Set Cover} di $U$ in $S$ se l'unione di insiemi in $C$ coincide con $U$
+\end{definition}}}\smallskip\\
+Per capire meglio vediamo un esempio.\\
+\textit{Esempio.} Siano $U$ e $S$ i seguenti insiemi:
+\[   U = \{1,2,3,4,5       \} \qquad S = \Big\{    \{ 1,2,3 \}, \{2,4 \}, \{ 3,4  \}, \{ 4,5  \}      \Big\}      \]
+Allora l'insieme $C \subseteq S  $ è un set cover di dimensione 2:
+\[   C = \Big\{    \{1,2,3\}, \{ 4,5    \}       \Big\}    \]
+Il linguaggio associato a questo problema è il seguente:
+\[  \textsc{sc} = \{ e(U),e(S), b(k) \ | \ \text{Esiste un Set Cover } C \text{ di } U \text{ in } S \text{ con } |C|\le k \}     \] 
+assumendo un encoding standard $e$ dei grafi su alfabeto $\Sigma$ e un encoding binario $b$ di numeri naturali.\\
+Vogliamo dimostrare che il linguaggio \textsc{setcover} è NP.\smallskip\\
+\begin{proof}
+    Costruiamo una macchina di Turing non deterministica che decide \textsc{set cover} in tempo polinomiale rispetto all'input\\
+    CONTINUARE DIMOSTRAZIONE \\
+    DIMOSTRAZIONE NP COMPLETO CON RIDUZIONE \\
+\end{proof}
+
