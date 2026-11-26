@@ -1429,15 +1429,54 @@ Vediamo la definizione del problema:\smallskip\\
    ovvero ogni arco è coperto da almeno un vertice nel cover
 \end{definition}}}\smallskip\\
 Chiaramente tutto $V$ è un vertex cover di $G = (V,E)$, quindi ne proveremo l'esistenza solo sotto una certa 
-dimensione. (METTERE IMMAGINE)\smallskip\\
+dimensione.\smallskip\\
 Il linguaggio associato a questo problema è il seguente:
 \[     \textsc{vertex cover} = \{  e(G), b(k) \ | \ \text{Esiste un Vertex Cover } C \text{ di } G \text{ di dimensione almeno } k     \}    \]
 assumendo un encoding standard $e$ dei grafi su alfabeto $\Sigma$ e un encoding binario $b$ di numeri naturali.\\
-Vogliamo dimostrare che il linguaggio \textsc{vertex cover} è NP.\smallskip\\
+Vogliamo dimostrare che il linguaggio \textsc{vertex cover} è NP.
 \begin{proof}
-    Costruiamo una macchina di Turing non deterministica che decide \textsc{vertex cover} in tempo polinomiale rispetto all'input\\
-    CONTINUARE DIMOSTRAZIONE \\
-    DIMOSTRAZIONE NP COMPLETO CON RIDUZIONE \\
+    Costruiamo una macchina di Turing non deterministica che decide \textsc{vertex cover} in tempo polinomiale rispetto all'input,
+    assumendo che l'input rappresenti il grafo $G = (V,E)$ e l'intero $k$. La macchina $M$ avrà il seguente comportamento:
+    \begin{enumerate}
+        \item \textbf{GUESS}: $M$ genera non-deterministicamente, per ogni $v \in V$, un bit 0 o 1\\
+        Per ogni vertice $v$, $M$ sceglie se è dentro o fuori il vertex cover candidato che sta verificando
+        Ci sono un numero di vertici in $G$ al più pari alla dimensione di $G$, perciò 
+        questa fase può essere eseguita in un numero \textbf{polinomiale} di passi della macchina
+        
+        \item \textbf{CHECK}: $M$ verifica le seguenti proprietà:
+        \begin{itemize}[label = --]
+            \item Ci sono al più $k$ vertici a cui è stato assegnato il bit 1 
+            \item Per ogni coppia $\{ v,v'  \} \in E$ (gli archi) verifica che $v$ o $v'$ è stato assegnato al bit 1
+        \end{itemize}
+
+        
+    \end{enumerate}
+    \noindent La macchina accetta se almeno un esecuzione trova un Vertex Cover.
+
+\end{proof}
+
+
+\noindent Ora dimostriamo che Vertex Cover è NP-COMPLETO.
+\begin{proof}
+    Abbiamo gia dimostrato che Vertex Cover $\in NP$. Per questa dimostrazione possiamo sfruttare la 
+    dimostrazione fatta precedentemente sull'\textsc{indset}. Quindi ci basterà mostrare che vale la seguente riduzione efficiente:
+    \[  \textsc{indset} \le_{m}^{p}     \]
+    Per provare questa riduzione abbiamo bisogna di un lemma ausiliare:\smallskip\\
+    \colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{lemma}
+        Sia $G = (V,E)$ un grafo non orientato. $\mathcal{J}$ è un indipendent set di $G$ se e solo se 
+        $V / \mathcal{J}$ è un vertex cover di G 
+\end{lemma}}}\smallskip\\
+Ora creiamo una riduzione molti a uno polinomiale da \textsc{indset} a Vertex Cover:\\
+LA funzione $f$ è definita come segue:
+\begin{itemize}[label = --]
+    \item $f \big( e (G), b(k)     \big) = \big( e(G), b(|V|-k)  \big)$, dove $e(G)$ è l'encoding di un grafo, $b(k)$ è l'encoding 
+    di un intero e $|V| \ge k$.
+    \item $f\big(    e(G), b(K)    \big) = \epsilon$ (stringa vuota) altrimenti  
+\end{itemize} 
+Verifichiamo che la riduzione sia corretta:
+
+
+
 \end{proof}
 
 
