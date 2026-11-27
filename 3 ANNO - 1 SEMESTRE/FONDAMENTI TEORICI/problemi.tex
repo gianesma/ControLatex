@@ -1419,111 +1419,380 @@ che soddisfa l'intera formula.
 
 
 \subsection{Vertex Cover}
-Anche il problema Vertex Cover si basa sui grafi. Un grafo non orientato è una coppia $G = (V,E)$
-dove $V$ l'insieme dei vertici e $E$ è un insieme di coppie non ordinate di vertici in $V$ distinti. 
-Vediamo la definizione del problema:\smallskip\\
-\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
-   Sia $G (V,E)$ un grafo non orientato. Un \textbf{Vertex cover} $I \subseteq V$ di $G$ è un insieme 
-   di vertici tale che, per ogni arco $\{ v, v'  \}$
-   \[   v \in I \quad \text{oppure} \quad v' \in I      \]
-   ovvero ogni arco è coperto da almeno un vertice nel cover
-\end{definition}}}\smallskip\\
-Chiaramente tutto $V$ è un vertex cover di $G = (V,E)$, quindi ne proveremo l'esistenza solo sotto una certa 
-dimensione.\smallskip\\
-Il linguaggio associato a questo problema è il seguente:
-\[     \textsc{vertex cover} = \{  e(G), b(k) \ | \ \text{Esiste un Vertex Cover } C \text{ di } G \text{ di dimensione almeno } k     \}    \]
-assumendo un encoding standard $e$ dei grafi su alfabeto $\Sigma$ e un encoding binario $b$ di numeri naturali.\\
-Vogliamo dimostrare che il linguaggio \textsc{vertex cover} è NP.
+Un arco è coperto da un insieme di vertici quando almeno uno
+dei suoi estremi appartiene all'insieme.
+
+\medskip
+\noindent
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{
+\begin{definition}[Vertex Cover]
+    Sia $G=(V,E)$ un grafo non orientato. Un \textbf{vertex cover}
+    di $G$ è un insieme $C\subseteq V$ tale che
+    \[
+        \forall\,\{u,v\}\in E,\qquad u\in C\ \text{oppure}\ v\in C
+    \]
+    La sua dimensione è il numero di vertici che contiene.
+\end{definition}
+}}%
+
+\medskip
+\noindent
+L'intero insieme $V$ è sempre un vertex cover. Il problema di
+decisione chiede se ne esiste uno di dimensione \textbf{al più}
+$k$. Indichiamo con $e$ una codifica standard dei grafi e con
+$b$ la codifica binaria dei naturali. Il linguaggio è
+\[
+    \textsc{VertexCover}
+    =\bigl\{(e(G),b(k))\mid
+        \exists C\subseteq V,\ C\text{ vertex cover di }G,\ |C|\le k\bigr\}
+\]
+
+\noindent
+\textit{Esempio.} Nel grafo delle slide, i vertici evidenziati
+formano il vertex cover $\{1,2,4\}$. Il solo vertice $1$ non
+basta, perché, per esempio, lascia scoperto l'arco $\{3,4\}$
+
+\begin{center}
+\begin{tikzpicture}[
+    vertice/.style={circle, draw, minimum size=6mm, inner sep=0pt},
+    scelto/.style={vertice, fill=lightblue}]
+    \node[scelto] (v1) at (0,1.6) {1};
+    \node[scelto] (v2) at (1.5,1.9) {2};
+    \node[vertice] (v3) at (1.9,0.7) {3};
+    \node[scelto] (v4) at (1.3,-0.3) {4};
+    \node[vertice] (v5) at (-0.2,-0.1) {5};
+    \draw (v1)--(v2)--(v3)--(v4)--(v5)--(v1) (v1)--(v3);
+\end{tikzpicture}
+\end{center}
+
+\subsubsection*{Appartenenza a NP}
+Dopo aver controllato che la codifica dell'input sia valida,
+una macchina non deterministica procede in due fasi.
+\begin{enumerate}
+    \item \textbf{Guess.} Genera un bit per ogni vertice di $G$.
+          I vertici associati a $1$ formano l'insieme candidato $C$
+    \item \textbf{Check.} Conta i vertici scelti, verifica che
+          siano al più $k$ e controlla ogni arco per assicurarsi
+          che almeno uno dei suoi estremi sia stato scelto.
+\end{enumerate}
+\noindent
+Ogni ramo della computazione richiede tempo polinomiale nella
+lunghezza dell'input. Esiste un ramo accettante se e solo se
+esiste un vertex cover della dimensione richiesta. Quindi
+$\textsc{VertexCover}\in\mathrm{NP}$
+
+\subsubsection*{NP-completezza}
+Per dimostrare la difficoltà di Vertex Cover partiamo da
+\textsc{IndSet}, già dimostrato NP-completo.
+
+\medskip
+\noindent
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{
+\begin{lemma}
+    Sia $G=(V,E)$ un grafo non orientato. Un insieme
+    $I\subseteq V$ è un independent set di $G$ se e solo se
+    $V\setminus I$ è un vertex cover di $G$
+\end{lemma}
+}}%
+
 \begin{proof}
-    Costruiamo una macchina di Turing non deterministica che decide \textsc{vertex cover} in tempo polinomiale rispetto all'input,
-    assumendo che l'input rappresenti il grafo $G = (V,E)$ e l'intero $k$. La macchina $M$ avrà il seguente comportamento:
-    \begin{enumerate}
-        \item \textbf{GUESS}: $M$ genera non-deterministicamente, per ogni $v \in V$, un bit 0 o 1\\
-        Per ogni vertice $v$, $M$ sceglie se è dentro o fuori il vertex cover candidato che sta verificando
-        Ci sono un numero di vertici in $G$ al più pari alla dimensione di $G$, perciò 
-        questa fase può essere eseguita in un numero \textbf{polinomiale} di passi della macchina
-        
-        \item \textbf{CHECK}: $M$ verifica le seguenti proprietà:
-        \begin{itemize}[label = --]
-            \item Ci sono al più $k$ vertici a cui è stato assegnato il bit 1 
-            \item Per ogni coppia $\{ v,v'  \} \in E$ (gli archi) verifica che $v$ o $v'$ è stato assegnato al bit 1
-        \end{itemize}
-
-        
-    \end{enumerate}
-    \noindent La macchina accetta se almeno un esecuzione trova un Vertex Cover.
-
+    Se $I$ è indipendente, nessun arco ha entrambi gli estremi
+    in $I$. Ogni arco ha quindi almeno un estremo in
+    $V\setminus I$, che risulta un vertex cover. Viceversa,
+    se $V\setminus I$ copre tutti gli archi, ogni arco ha
+    almeno un estremo fuori da $I$. Pertanto $I$ è indipendente.
 \end{proof}
 
+\noindent
+Nel grafo dell'esempio, al vertex cover $\{1,2,4\}$ corrisponde
+l'independent set $\{3,5\}$ di dimensione $5-3=2$
 
-\noindent Ora dimostriamo che Vertex Cover è NP-COMPLETO.
-\begin{proof}
-    Abbiamo gia dimostrato che Vertex Cover $\in NP$. Per questa dimostrazione possiamo sfruttare la 
-    dimostrazione fatta precedentemente sull'\textsc{indset}. Quindi ci basterà mostrare che vale la seguente riduzione efficiente:
-    \[  \textsc{indset} \le_{m}^{p}     \]
-    Per provare questa riduzione abbiamo bisogna di un lemma ausiliare:\smallskip\\
-    \colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{lemma}
-        Sia $G = (V,E)$ un grafo non orientato. $\mathcal{J}$ è un indipendent set di $G$ se e solo se 
-        $V / \mathcal{J}$ è un vertex cover di G 
-\end{lemma}}}\smallskip\\
-Ora creiamo una riduzione molti a uno polinomiale da \textsc{indset} a Vertex Cover:\\
-LA funzione $f$ è definita come segue:
-\begin{itemize}[label = --]
-    \item $f \big( e (G), b(k)     \big) = \big( e(G), b(|V|-k)  \big)$, dove $e(G)$ è l'encoding di un grafo, $b(k)$ è l'encoding 
-    di un intero e $|V| \ge k$.
-    \item $f\big(    e(G), b(K)    \big) = \epsilon$ (stringa vuota) altrimenti  
-\end{itemize} 
-Verifichiamo che la riduzione sia corretta:
+\medskip
+\noindent
+Per la riduzione $\textsc{IndSet}\le_m^p\textsc{VertexCover}$,
+poniamo
+\[
+    f(e(G),b(k))=(e(G),b(|V|-k))
+    \qquad\text{se la codifica è valida e } k\le |V|
+\]
+Negli altri casi restituiamo $\epsilon$, che non codifica
+un'istanza di Vertex Cover. Una codifica malformata non appartiene
+a \textsc{IndSet}, e con $k>|V|$ nessun independent set può
+raggiungere la soglia. Contare i vertici e calcolare la differenza
+richiede tempo polinomiale.
 
+\medskip
+\noindent
+Su un input valido con $k\le |V|$, se esiste un independent
+set $I$ con $|I|\ge k$, per il lemma $V\setminus I$ è un vertex
+cover con $|V\setminus I|\le |V|-k$. Viceversa, da un vertex cover
+$C$ con $|C|\le |V|-k$ si ottiene l'independent set $V\setminus C$
+con almeno $k$ vertici. Quindi $x\in\textsc{IndSet}$ se e solo se
+$f(x)\in\textsc{VertexCover}$. La riduzione dimostra che Vertex Cover
+è NP-hard. Poiché appartiene anche a NP, è \textbf{NP-completo}.
 
+\subsection{Clique}
+\noindent
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{
+\begin{definition}[Clique]
+    Sia $G=(V,E)$ un grafo non orientato. Una \textbf{clique}
+    di $G$ è un insieme $C\subseteq V$ in cui ogni coppia di
+    vertici distinti è unita da un arco. La sua dimensione è $|C|$
+\end{definition}
+}}%
 
+\medskip
+\noindent
+Nel grafo dell'esempio precedente, $\{1,2,3\}$ è una clique,
+mentre $\{1,3,4,5\}$ non lo è perché manca, tra gli altri,
+l'arco $\{1,4\}$. Il problema chiede se esiste una clique
+di dimensione \textbf{almeno} $k$
+\[
+    \textsc{Clique}
+    =\bigl\{(e(G),b(k))\mid
+        \exists C\subseteq V,\ C\text{ clique di }G,\ |C|\ge k\bigr\}
+\]
+
+\subsubsection*{Appartenenza a NP}
+Una macchina non deterministica sceglie un bit per ogni
+vertice e verifica che l'insieme dei vertici scelti abbia
+almeno $k$ elementi. Controlla poi che ogni coppia di vertici
+distinti scelti sia un arco di $G$. Esamina al più
+$\binom{|V|}{2}$ coppie e ogni controllo si esegue in tempo
+polinomiale. Esiste un ramo accettante esattamente quando
+esiste una clique di dimensione almeno $k$, dunque
+$\textsc{Clique}\in\mathrm{NP}$
+
+\subsubsection*{NP-completezza}
+Il \textbf{grafo complementare} di $G=(V,E)$ è
+$\overline G=(V,\overline E)$, dove
+\[
+    \overline E=\bigl\{\{u,v\}\mid
+        u,v\in V,\ u\ne v,\ \{u,v\}\notin E\bigr\}
+\]
+Un insieme $I$ è indipendente in $G$ se e solo se è una clique
+in $\overline G$. Infatti, ciascuna coppia di vertici distinti
+di $I$ è assente da $E$ esattamente quando è presente in
+$\overline E$. Per esempio, la clique $\{1,2,3\}$ del grafo
+precedente è indipendente nel suo complementare.
+
+\medskip
+\noindent
+Per ottenere $\textsc{IndSet}\le_m^p\textsc{Clique}$, mandiamo
+$(e(G),b(k))$ in $(e(\overline G),b(k))$ se la codifica è valida
+e $k\le |V|$. Negli altri casi restituiamo $\epsilon$, rifiutata
+da entrambi i linguaggi in quanto codifica malformata. Anche
+un input valido con $k>|V|$ è un'istanza negativa di
+\textsc{IndSet}. Il complementare si costruisce in tempo
+polinomiale esaminando tutte le coppie di vertici distinti.
+La corrispondenza conserva il sottoinsieme e la sua dimensione,
+quindi $G$ ha un independent set di almeno $k$ vertici se e
+solo se $\overline G$ ha una clique di almeno $k$ vertici.
+La riduzione e l'appartenenza a NP provano che Clique è
+\textbf{NP-completo}.
+
+\subsection{Set Cover}
+\noindent
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{
+\begin{definition}[Set Cover]
+    Sia $U$ un insieme finito e sia $S\subseteq\mathcal{P}(U)$
+    una famiglia di sottoinsiemi di $U$. Una sottofamiglia
+    $\mathcal{C}\subseteq S$ è un \textbf{set cover} di $U$ se
+    \[
+        \bigcup_{s\in\mathcal{C}}s=U
+    \]
+    La dimensione della copertura è il numero di insiemi scelti.
+\end{definition}
+}}%
+
+\medskip
+\noindent
+\textit{Esempio.} Siano $U=\{1,2,3,4,5\}$ e
+$S=\{\{1,2,3\},\{2,4\},\{3,4\},\{4,5\}\}$. I due insiemi
+$\{1,2,3\}$ e $\{4,5\}$ coprono $U$. Se in $S$ si sostituisce
+$\{4,5\}$ con $\{5\}$, ogni copertura deve scegliere sia
+$\{1,2,3\}$ per coprire $1$ sia $\{5\}$ per coprire $5$.
+Serve poi un terzo insieme per coprire $4$
+
+\medskip
+\noindent
+Usando codifiche esplicite dell'universo e della famiglia,
+il linguaggio associato è
+\[
+    \textsc{SC}
+    =\bigl\{(e(U),e(S),b(k))\mid
+        \exists\mathcal{C}\subseteq S,\
+        |\mathcal{C}|\le k,\ \textstyle\bigcup_{s\in\mathcal C}s=U\bigr\}
+\]
+
+\subsubsection*{Appartenenza a NP}
+Una macchina non deterministica sceglie un bit per ciascun
+insieme della famiglia $S$. Verifica che gli insiemi
+selezionati siano al più $k$ e che ogni elemento di $U$ compaia
+in almeno uno di essi. Sia la scelta sia la verifica richiedono
+tempo polinomiale nella dimensione della codifica esplicita.
+La macchina accetta se almeno un ramo trova la copertura
+richiesta. Quindi $\textsc{SC}\in\mathrm{NP}$
+
+\subsubsection*{NP-completezza}
+Mostriamo che $\textsc{VertexCover}\le_m^p\textsc{SC}$. L'idea
+è trasformare gli archi del grafo negli elementi da coprire e
+associare a ogni vertice l'insieme degli archi che esso copre.
+
+\medskip
+\noindent
+Per un'istanza valida $(e(G),b(k))$, con $G=(V,E)$, definiamo
+\[
+    U_G=E,\qquad
+    s_v=\{a\in E\mid v\in a\}\quad(v\in V),\qquad
+    S_G=\{s_v\mid v\in V\}
+\]
+La riduzione restituisce $(e(U_G),e(S_G),b(k))$. Per gli input
+malformati restituisce $\epsilon$, che non è una codifica valida
+di Set Cover. Per costruire l'istanza si inserisce ogni arco
+nell'universo e negli insiemi dei suoi due estremi. La codifica
+e l'eliminazione di eventuali insiemi uguali richiedono tempo
+polinomiale.
+
+\medskip
+\noindent
+\textit{Esempio.} Per il grafo già usato, scriviamo $a_{ij}$
+per l'arco $\{i,j\}$. Il vertex cover $\{1,2,4\}$ induce
+una copertura di $U_G$ mediante gli insiemi
+\[
+    s_1=\{a_{12},a_{13},a_{15}\},\qquad
+    s_2=\{a_{12},a_{23}\},\qquad
+    s_4=\{a_{34},a_{45}\}
+\]
+La loro unione comprende tutti i sei archi.
+
+\medskip
+\noindent
+Per verificare la correttezza della riduzione consideriamo
+entrambe le direzioni.
+\begin{itemize}
+    \item Se $C$ è un vertex cover con $|C|\le k$, scegliamo
+          $\mathcal{C}=\{s_v\mid v\in C\}$. Ogni arco ha un
+          estremo $v$ in $C$ e appartiene quindi a $s_v$.
+          Abbiamo così un set cover con $|\mathcal{C}|\le |C|\le k$
+    \item Se $\mathcal{C}\subseteq S_G$ è un set cover con
+          $|\mathcal{C}|\le k$, per ogni insieme scelto $s$
+          prendiamo un vertice $v$ tale che $s=s_v$. Ogni
+          arco appartiene a uno degli insiemi scelti e il
+          vertice corrispondente è un suo estremo. I vertici
+          presi formano quindi un vertex cover di dimensione al più $k$
+\end{itemize}
+\noindent
+La riduzione dimostra che Set Cover è NP-hard e, insieme
+all'appartenenza a NP, che è \textbf{NP-completo}.
+
+\subsubsection*{Catena delle riduzioni}
+Le frecce indicano riduzioni molti-a-uno polinomiali. La
+riduzione da \textsc{IndSet} permette di proseguire lungo
+due rami.
+\[
+    \begin{gathered}
+        \textsc{SAT}\longrightarrow\textsc{CNF}\longrightarrow
+        \textsc{3-CNF}\longrightarrow\textsc{IndSet}\\
+        \textsc{IndSet}\longrightarrow\textsc{VertexCover}\longrightarrow
+        \textsc{SC}
+        \qquad
+        \textsc{IndSet}\longrightarrow\textsc{Clique}
+    \end{gathered}
+\]
+Per il teorema di Cook--Levin, ogni linguaggio in NP si riduce
+a \textsc{SAT}. In particolare si riducono a \textsc{SAT}
+anche i linguaggi \textsc{SC} e \textsc{Clique}.
+
+\subsection{Colorazione di grafi}
+\noindent
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{
+\begin{definition}[Colorazione]
+    Una \textbf{colorazione} di un grafo non orientato
+    $G=(V,E)$ con un insieme di colori $C$ è una funzione
+    $f:V\to C$ tale che $f(u)\ne f(v)$ per ogni $\{u,v\}\in E$.
+    Se $|C|=n$, chiamiamo $f$ una $n$-colorazione. Il grafo
+    è $n$-colorabile se ammette una $n$-colorazione.
+\end{definition}
+}}%
+
+\medskip
+\noindent
+I colori disponibili possono anche rimanere inutilizzati.
+Di conseguenza, se il grafo è $n$-colorabile, è anche
+$n'$-colorabile per ogni $n'\ge n$
+
+\medskip
+\noindent
+\textit{Esempio.} Nel grafo a cinque vertici già considerato,
+$\{1,4\}$ può ricevere il primo colore, $\{2\}$ il secondo
+e $\{3,5\}$ il terzo. Il grafo completo $K_4$, invece, richiede
+quattro colori perché i suoi vertici sono tutti adiacenti a coppie.
+
+\medskip
+\noindent
+Per $r\in\{2,3\}$ definiamo
+\[
+    r\text{-}\textsc{Colorable}=\{e(G)\mid G\text{ è }r\text{-colorabile}\}
+\]
+Le slide enunciano che \textbf{3-Colorable è NP-completo}.
+Per \textbf{2-Colorable}, invece, c'è un algoritmo polinomiale.
+
+\begin{proof}[Dimostrazione che 2-Colorable è in P]
+    Si visita in ampiezza ciascuna componente connessa. Si
+    assegna un colore al vertice di partenza e, ogni volta che
+    si scopre un nuovo vertice, gli si assegna il colore opposto
+    a quello del vertice da cui è stato raggiunto. Se un arco
+    collega due vertici già colorati con lo stesso colore,
+    l'algoritmo rifiuta.
+
+    \noindent
+    Fissato il colore iniziale, gli archi dell'albero della
+    visita impongono il colore di ogni altro vertice della
+    componente. Cambiare il colore iniziale scambia tutti i
+    colori e lascia invariati i conflitti. Perciò un conflitto
+    esclude qualsiasi 2-colorazione della componente. Se la visita
+    termina senza conflitti, la colorazione ottenuta è valida.
+
+    \noindent
+    Con liste di adiacenza la visita usa tempo $O(|V|+|E|)$.
+    In un grafo semplice $|E|\le\binom{|V|}{2}$, dunque il
+    tempo della visita è al più quadratico in $|V|$
 \end{proof}
 
+\subsection{Ciclo hamiltoniano (nonchè il goat)} 
+In un grafo non orientato, un \textbf{cammino semplice} è una
+sequenza di vertici distinti $v_1,\ldots,v_t$ tale che ogni
+coppia consecutiva $\{v_i,v_{i+1}\}$ è un arco. È un
+\textbf{ciclo} se $t\ge 3$ e anche $\{v_t,v_1\}$ è un arco.
 
+\medskip
+\noindent
+\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{
+\begin{definition}[Ciclo hamiltoniano]
+    Un ciclo di $G$ è \textbf{hamiltoniano} se contiene tutti i
+    vertici di $G$, ciascuno esattamente una volta nella sequenza.
+\end{definition}
+}}%
 
+\medskip
+\noindent
+\textit{Esempio.} Nel grafo a cinque vertici, la sequenza
+$(1,2,3,4,5)$ è un ciclo hamiltoniano perché usa tutti i vertici
+e l'arco $\{5,1\}$ permette di tornare al punto di partenza.
+La sequenza $(1,2,3)$ è un ciclo che lascia fuori $4$ e $5$.
+La sequenza $(1,2,3,4)$ è un cammino semplice e non si chiude,
+perché $\{4,1\}\notin E$
 
-
-\subsection{Clique (non ancora fatto)}
-Anche il problema Clique si basa sui grafi. Un grafo non orientato è una coppia $G = (V,E)$
-dove $V$ l'insieme dei vertici e $E$ è un insieme di coppie non ordinate di vertici in $V$ distinti. 
-Vediamo la definizione del problema:\smallskip\\
-\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
-   Sia $G = (V,E)$ un grafo non orientato. Una \textbf{Clique} $I \subseteq V$ di $G$ è un insieme 
-   di vertici tale che, per ogni $v,v' \in I$ con $v \neq v'$:
-   \[   \{ v,v'  \in E  \}       \]
-   ovvero ogni vertice è connesso agli altri da un arco
-\end{definition}}}\smallskip\\
-Chiaramente $ \emptyset  $ è una clique $G (V,E)$ di dimensione 0, quindi ne proveremo l'esistenza solo sopra una certa dimensione.
-(METTERE IMMAGINE) \smallskip\\
-Il linguaggio associato a questo il problema è il seguente:
-\[   \textsc{clique} = \{  e(G), b(k) \ | \ \text{Esiste una clique } C \text{ di } G \text{ di dimensione almeno } k     \}         \]
-assumendo un encoding standard $e$ dei grafi su alfabeto $\Sigma$ e un encoding binario $b$ di numeri naturali.\\
-Vogliamo dimostrare che il linguaggio \textsc{clique} è NP.\smallskip\\
-\begin{proof}
-    Costruiamo una macchina di Turing non deterministica che decide \textsc{clique} in tempo polinomiale rispetto all'input\\
-    CONTINUARE DIMOSTRAZIONE \\
-    DIMOSTRAZIONE NP COMPLETO CON RIDUZIONE \\
-\end{proof}
-
-
-
-\subsection{Set Cover (non ancora fatto)}
-\colorbox{SALZO}{\parbox{\dimexpr\linewidth-2\fboxsep}{\begin{definition}
-   Sia $U$ un insieme finito e $S \subseteq P(U)$ una famiglia di insiemi. Una sotto-famiglia $C \subseteq S$ è 
-   \textbf{Set Cover} di $U$ in $S$ se l'unione di insiemi in $C$ coincide con $U$
-\end{definition}}}\smallskip\\
-Per capire meglio vediamo un esempio.\\
-\textit{Esempio.} Siano $U$ e $S$ i seguenti insiemi:
-\[   U = \{1,2,3,4,5       \} \qquad S = \Big\{    \{ 1,2,3 \}, \{2,4 \}, \{ 3,4  \}, \{ 4,5  \}      \Big\}      \]
-Allora l'insieme $C \subseteq S  $ è un set cover di dimensione 2:
-\[   C = \Big\{    \{1,2,3\}, \{ 4,5    \}       \Big\}    \]
-Il linguaggio associato a questo problema è il seguente:
-\[  \textsc{sc} = \{ e(U),e(S), b(k) \ | \ \text{Esiste un Set Cover } C \text{ di } U \text{ in } S \text{ con } |C|\le k \}     \] 
-assumendo un encoding standard $e$ dei grafi su alfabeto $\Sigma$ e un encoding binario $b$ di numeri naturali.\\
-Vogliamo dimostrare che il linguaggio \textsc{setcover} è NP.\smallskip\\
-\begin{proof}
-    Costruiamo una macchina di Turing non deterministica che decide \textsc{set cover} in tempo polinomiale rispetto all'input\\
-    CONTINUARE DIMOSTRAZIONE \\
-    DIMOSTRAZIONE NP COMPLETO CON RIDUZIONE \\
-\end{proof}
-
+\medskip
+\noindent
+Il linguaggio associato è
+\[
+    \textsc{HC}=\{e(G)\mid G\text{ contiene un ciclo hamiltoniano}\}
+\]
+L'appartenenza a NP si verifica usando come certificato
+l'ordine dei vertici lungo il ciclo. Basta controllare che
+la sequenza contenga almeno tre vertici, che ognuno compaia
+esattamente una volta e che esistano tutti gli archi consecutivi,
+compreso quello tra ultimo e primo vertice. Le slide enunciano
+il risultato di \textbf{NP-completezza di HC}.
