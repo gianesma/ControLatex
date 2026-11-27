@@ -1043,7 +1043,7 @@ e Donna, secondo la modellazione proposta
 nelle slide.
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.9\linewidth]{../images/log13.png}
+    \includegraphics[width=0.65\linewidth]{../images/log13.png}
     %\caption{caption}
     %\label{label}
 \end{figure}
@@ -1359,7 +1359,7 @@ entità $E_1,E_2,E_3,E_4$.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.9\linewidth]{../images/log16.png}
+    \includegraphics[width=0.65\linewidth]{../images/log16.png}
     %\caption{caption}
     %\label{label}
 \end{figure}
@@ -2201,3 +2201,1528 @@ Le principali trasformazioni effettuate sono:
 \end{itemize}
 
 \section{Traduzione diretta nel modello relazionale}
+\subsection{Proprietà dello schema ristrutturato}
+
+Al termine della fase di ristrutturazione si ottiene
+uno schema ER che presenta le seguenti proprietà:
+
+\begin{itemize}
+    \item \textbf{Preserva la semantica dello schema
+    originario:} ad ogni istanza dello schema
+    originario corrisponde un'opportuna istanza
+    dello schema ristrutturato e viceversa.
+
+    \item Può contenere delle ridondanze, purché
+    siano mantenute intenzionalmente per motivi
+    di efficienza e siano opportunamente documentate.
+
+    \item Non contiene attributi multivalore.
+
+    \item Non contiene attributi composti.
+
+    \item Non contiene ISA o generalizzazioni,
+    né tra entità né tra relazioni.
+    Tutte le entità risultano quindi disgiunte
+    a coppie.
+
+    \item Tutte le entità e tutte le relazioni
+    possiedono un unico identificatore principale.
+\end{itemize}
+
+\noindent
+Lo schema ER ristrutturato rappresenta il punto
+di partenza per la successiva traduzione nel
+modello relazionale.
+
+
+\section{Traduzione diretta}
+
+La \textbf{traduzione diretta} ha lo scopo di
+trasformare lo schema ER ristrutturato, comprensivo
+dei suoi vincoli, in uno schema relazionale
+che rappresenti le stesse informazioni.
+La traduzione viene effettuata mediante un
+\textbf{metodo automatico}, che non richiede
+ulteriori scelte progettuali, poiché si basa
+sulle decisioni già prese durante la fase
+di ristrutturazione.
+Il risultato è uno \textbf{schema logico di massima},
+che può essere già accettabile oppure richiedere
+ulteriori modifiche durante la fase di
+ristrutturazione dello schema logico.\medskip\\
+\noindent
+La traduzione diretta si articola in quattro
+attività:
+
+\begin{enumerate}
+    \item Traduzione delle entità dello schema ER
+    in relazioni dello schema logico, con i
+    relativi vincoli.
+
+    \item Traduzione delle relazioni dello schema
+    ER in relazioni dello schema logico, con i
+    relativi vincoli.
+
+    \item Traduzione dei vincoli esterni dello
+    schema ER in vincoli dello schema logico.
+
+    \item Riformulazione delle operazioni e delle
+    specifiche sul carico applicativo in termini
+    dello schema logico.
+\end{enumerate}
+\noindent
+Per evitare ambiguità terminologiche, utilizzeremo:
+
+\begin{itemize}
+    \item \textbf{ER-relazione:} relazione dello
+    schema concettuale ER;
+
+    \item \textbf{Relazione:} relazione dello
+    schema logico relazionale, rappresentabile
+    mediante una tabella.
+\end{itemize}
+
+
+\subsection{Notazione dello schema relazionale}
+Durante la traduzione diretta e la ristrutturazione
+dello schema logico, le relazioni vengono
+rappresentate mediante il loro nome, l'elenco
+degli attributi e i relativi vincoli espressi
+in forma testuale.
+La notazione utilizzata prevede:
+
+\begin{itemize}
+    \item gli attributi sottolineati costituiscono
+    la \textbf{chiave primaria};
+
+    \item gli attributi seguiti da un asterisco
+    ($*$) possono assumere valore NULL;
+
+    \item gli attributi senza asterisco non
+    possono assumere valore NULL;
+
+    \item gli eventuali vincoli di foreign key,
+    inclusione, chiave e altri vincoli vengono
+    riportati sotto la relazione.
+\end{itemize}
+\noindent
+\textcolor{verdeEsempio}{\textbf{Esempio. }}
+Si consideri la seguente relazione:
+\[
+\text{Partecipa}(
+\underline{\text{Cognome},\text{DataN}},
+\text{Progetto},\text{OreSett},\text{Iva}^{*})
+\]
+\noindent
+I vincoli associati alla relazione sono:
+\[
+\begin{aligned}
+\text{foreign key:}\quad
+&\text{Partecipa}[\text{Cognome},\text{DataN}]\\
+&\subseteq
+\text{Impiegato}[\text{Cognome},\text{DataN}]\\[4pt]
+\text{inclusione:}\quad
+&\text{Partecipa}[\text{OreSett}]
+\subseteq \text{Orario}[\text{Ore}]\\[4pt]
+\text{chiave:}\quad
+&\text{Progetto}
+\end{aligned}
+\]
+\noindent
+In particolare:
+\begin{itemize}
+    \item $(\text{Cognome},\text{DataN})$
+    costituisce la chiave primaria composta
+    della relazione Partecipa.
+
+    \item Progetto costituisce un'ulteriore
+    chiave della relazione, diversa dalla
+    chiave primaria.
+
+    \item Iva è l'unico attributo che può
+    assumere valore NULL.
+
+    \item Il vincolo di foreign key impone che
+    ogni coppia $(\text{Cognome},\text{DataN})$
+    presente in Partecipa corrisponda ad una
+    coppia presente nella relazione Impiegato,
+    dove costituisce una chiave.
+
+    \item Il vincolo di inclusione impone che
+    ogni valore di OreSett presente in
+    Partecipa sia presente nell'attributo Ore
+    della relazione Orario.
+\end{itemize}
+\noindent
+Un vincolo di foreign key è un particolare
+vincolo di inclusione nel quale gli attributi
+referenziati costituiscono una chiave della
+relazione di destinazione.\medskip\\
+\noindent
+Questa notazione può essere successivamente
+tradotta mediante istruzioni SQL
+\texttt{CREATE TABLE}, una volta scelti
+i domini degli attributi e tenendo conto
+dei vincoli da rappresentare.
+
+\subsection{Attività 1: traduzione delle entità}
+\subsubsection{Regole generali}
+Ogni entità $E$ dello schema ER viene tradotta
+in una relazione $R_E$ dello schema relazionale:
+\[
+E \longrightarrow R_E
+\]
+\noindent
+Gli attributi della relazione $R_E$ sono:
+\begin{itemize}
+    \item gli attributi originari dell'entità $E$;
+
+    \item gli attributi derivanti dall'eventuale
+    accorpamento di ER-relazioni in $R_E$.
+\end{itemize}
+\noindent
+Gli attributi originari dell'entità sono tutti
+obbligatori (NOT NULL), ad eccezione di quelli
+che nello schema ER presentano cardinalità
+$(0,1)$.\medskip\\
+\noindent
+Una ER-relazione $Q$ viene \textbf{accorpata}
+nella relazione $R_E$ quando uno o più ruoli
+di $Q$ partecipano all'identificatore principale
+esterno dell'entità $E$.
+In questo caso:
+\begin{itemize}
+    \item l'entità $E$ partecipa a $Q$ con
+    cardinalità $(1,1)$;
+
+    \item $E$ è l'unica entità per la quale
+    un ruolo di $Q$ partecipa all'identificatore
+    principale esterno, altrimenti si avrebbe
+    un ciclo di identificazione principale
+    esterna.
+\end{itemize}
+\noindent
+Per ogni ER-relazione $Q$ accorpata in $R_E$
+vengono aggiunti:
+\begin{itemize}
+    \item gli attributi corrispondenti alle
+    chiavi primarie delle relazioni ottenute
+    traducendo le entità che partecipano
+    agli altri ruoli di $Q$;
+
+    \item gli eventuali attributi propri
+    della ER-relazione $Q$.
+\end{itemize}
+\noindent
+La \textbf{chiave primaria} di $R_E$ viene
+determinata a partire dall'identificatore
+principale dell'entità $E$:
+\begin{itemize}
+    \item se l'identificatore è interno,
+    la chiave primaria è costituita dagli
+    attributi che lo compongono;
+
+    \item se l'identificatore è esterno,
+    la chiave primaria comprende gli attributi
+    derivanti dall'identificazione esterna
+    e gli eventuali attributi interni che
+    partecipano all'identificatore.
+\end{itemize}
+\noindent
+Gli altri identificatori dell'entità vengono
+tipicamente tradotti in vincoli di chiave
+non primaria.
+Possono inoltre essere necessari ulteriori
+vincoli, in particolare vincoli di foreign key,
+per rappresentare la partecipazione obbligatoria
+delle entità alle ER-relazioni.
+
+\subsubsection{Traduzione di entità senza accorpamento}
+Consideriamo il caso in cui un'entità $E$
+venga tradotta senza effettuare alcun
+accorpamento di ER-relazioni.
+Ciò avviene, in particolare, quando l'entità
+non possiede identificatori esterni.
+La traduzione segue le seguenti regole:
+\begin{enumerate}
+    \item L'entità $E$ diventa una relazione
+    $R_E$ dello schema relazionale.
+
+    \item Gli attributi di $E$ diventano
+    attributi di $R_E$.
+
+    \item Gli attributi opzionali, con
+    cardinalità $(0,1)$, possono assumere
+    valore NULL e vengono indicati con
+    un asterisco.
+
+    \item Gli attributi obbligatori non
+    possono assumere valore NULL.
+
+    \item L'identificatore principale
+    diventa la chiave primaria.
+
+    \item Gli altri identificatori interni
+    diventano ulteriori vincoli di chiave.
+
+    \item Gli eventuali vincoli esterni
+    sugli attributi vengono tradotti in
+    opportuni vincoli dello schema logico.
+\end{enumerate}
+\noindent
+\textcolor{verdeEsempio}{\textbf{Esempio. }}
+Traduzione di un'entità generica senza
+accorpamento.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.30\linewidth]{../images/log26.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent
+L'entità $E$ presenta:
+\begin{itemize}
+    \item identificatore principale $A_1$;
+
+    \item identificatore alternativo composto
+    da $A_2$ e $A_3$;
+
+    \item attributi obbligatori $A_1$, $A_2$,
+    $A_3$ e $A_4$;
+
+    \item attributi opzionali $A_5$ e $A_6$.
+\end{itemize}
+\noindent
+È inoltre presente un vincolo esterno secondo
+cui $A_5$ è definito se e solo se è definito
+anche $A_6$.
+La traduzione produce:
+\[
+E(\underline{A_1},A_2,A_3,A_4,A_5^*,A_6^*)
+\]
+\[
+\text{chiave: } A_2,A_3
+\]
+\[
+\text{vincolo di tupla: }
+A_5\text{ è NULL}
+\iff A_6\text{ è NULL}
+\]
+\noindent
+Il vincolo di tupla garantisce che i due
+attributi siano entrambi valorizzati oppure
+entrambi NULL.
+Non è quindi possibile che uno dei due
+attributi sia valorizzato e l'altro sia NULL.
+Questo vincolo può derivare dall'eliminazione
+di un attributo composto opzionale durante
+la fase di ristrutturazione.\medskip\\
+\noindent
+\textcolor{verdeEsempio}{\textbf{Esempio. }}
+Traduzione dell'entità Impiegato.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.50\linewidth]{../images/log27.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent
+L'entità Impiegato possiede:
+\begin{itemize}
+    \item CodFis come identificatore principale;
+
+    \item Cognome e DataN come identificatore
+    alternativo composto;
+
+    \item Stipendio come attributo obbligatorio;
+
+    \item Bonus come attributo opzionale,
+    con cardinalità $(0,1)$.
+\end{itemize}
+\noindent
+La traduzione produce:
+\[
+\begin{aligned}
+\text{Impiegato}(&\underline{\text{CodFis}},
+\text{Cognome},\text{DataN},\\
+&\text{Stipendio},\text{Bonus}^*)
+\end{aligned}
+\]
+\[
+\text{chiave: Cognome, DataN}
+\]
+\noindent
+CodFis diventa la chiave primaria, mentre
+la coppia $(\text{Cognome},\text{DataN})$
+costituisce un ulteriore vincolo di chiave.
+Bonus è l'unico attributo che può assumere
+valore NULL.
+Non essendoci ER-relazioni da accorpare,
+la traduzione mantiene semplicemente gli
+attributi dell'entità originaria.
+
+\subsubsection{Traduzione di entità con accorpamento:
+caso 1}
+Consideriamo il caso in cui una ER-relazione
+$R$ partecipi all'identificatore principale
+esterno di un'entità $E$, attraverso il ruolo
+$U$, e tutti gli altri ruoli di $R$ presentino
+cardinalità $(0,n)$.
+L'entità $E$ partecipa necessariamente alla
+ER-relazione $R$ con cardinalità $(1,1)$.
+In questo caso la ER-relazione $R$ viene
+\textbf{accorpata} nella relazione $R_E$
+corrispondente all'entità $E$.\medskip\\
+\noindent
+L'accorpamento consiste nell'aggiungere a $R_E$:
+
+\begin{itemize}
+    \item le chiavi primarie delle relazioni
+    corrispondenti alle entità che partecipano
+    agli altri ruoli di $R$;
+
+    \item gli eventuali attributi propri
+    della ER-relazione $R$.
+\end{itemize}
+\noindent
+Le chiavi primarie importate dalle altre
+relazioni diventano foreign key e contribuiscono
+alla formazione della chiave primaria di $R_E$,
+insieme agli eventuali attributi interni che
+partecipano all'identificatore principale di $E$.
+Gli altri identificatori dell'entità $E$
+vengono tradotti in ulteriori vincoli di chiave.\medskip\\
+\noindent
+\textbf{Osservazione:} la ER-relazione accorpata
+non viene tradotta in una relazione autonoma,
+poiché tutte le sue informazioni sono già
+rappresentate nella relazione $R_E$.\medskip\\
+\noindent
+\textcolor{verdeEsempio}{\textbf{Esempio. }}
+Accorpamento di una ER-relazione con più ruoli.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.30\linewidth]{../images/log28.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent
+La ER-relazione $R$ coinvolge:
+\begin{itemize}
+    \item l'entità $E$, con cardinalità $(1,1)$;
+
+    \item l'entità $F$, identificata da $B_1$;
+
+    \item l'entità $G$, identificata da $C_1$,
+    che partecipa attraverso due ruoli
+    distinti, $U_1$ e $U_2$.
+\end{itemize}
+\noindent
+La ER-relazione $R$ possiede inoltre
+l'attributo $D$.
+L'identificatore principale di $E$ è
+costituito dall'attributo $A_3$ e
+dall'identificazione esterna attraverso $R$.
+L'attributo $A_1$ costituisce invece
+un identificatore alternativo.
+Poiché $R$ partecipa all'identificatore
+principale esterno di $E$, viene accorpata
+nella relazione corrispondente ad $E$.
+La traduzione produce:
+\[
+E(A_1,A_2,\underline{A_3,F,U_1,U_2},D)
+\]
+\[
+\begin{aligned}
+\text{foreign key:}\quad
+&E[F]\subseteq F[B_1]\\
+\text{foreign key:}\quad
+&E[U_1]\subseteq G[C_1]\\
+\text{foreign key:}\quad
+&E[U_2]\subseteq G[C_1]\\
+\text{chiave:}\quad &A_1
+\end{aligned}
+\]
+\[
+F(\underline{B_1},B_2)
+\]
+\[
+G(\underline{C_1},C_2)
+\]
+\noindent
+In particolare:
+\begin{itemize}
+    \item $F$ rappresenta la chiave primaria
+    dell'entità $F$ importata nella relazione
+    $E$;
+
+    \item $U_1$ e $U_2$ rappresentano due
+    foreign key distinte verso la stessa
+    relazione $G$;
+
+    \item $D$ è l'attributo della ER-relazione
+    $R$, trasferito nella relazione $E$;
+
+    \item $A_1$ rimane una chiave alternativa.
+\end{itemize}
+\noindent
+La chiave primaria di $E$ è quindi:
+\[
+K_E=\{A_3,F,U_1,U_2\}
+\]
+\noindent
+È necessario introdurre due attributi distinti
+per rappresentare $U_1$ e $U_2$, poiché la
+stessa entità $G$ partecipa alla ER-relazione
+attraverso due ruoli differenti.
+La ER-relazione $R$ non viene rappresentata
+mediante una tabella separata.\medskip\\
+\noindent
+\textcolor{verdeEsempio}{\textbf{Esempio. }}
+Traduzione delle entità Ditta, Città e Nazione
+con accorpamento.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{../images/log29.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent
+Lo schema ER presenta tre entità:
+\begin{itemize}
+    \item Nazione, identificata dall'attributo
+    Nome;
+
+    \item Città, identificata dall'attributo
+    Nome e dalla partecipazione alla
+    ER-relazione In;
+
+    \item Ditta, identificata dall'attributo
+    Codice e dalla partecipazione alla
+    ER-relazione Di.
+\end{itemize}
+\noindent
+Le ER-relazioni presentano le seguenti
+cardinalità:
+\[
+\begin{aligned}
+\text{Di:}\qquad
+&\text{Ditta }(1,1),\quad
+\text{Città }(0,n)\\
+\text{In:}\qquad
+&\text{Città }(1,1),\quad
+\text{Nazione }(0,n)
+\end{aligned}
+\]
+\noindent
+Poiché sono presenti identificatori principali
+esterni, conviene effettuare la traduzione
+partendo dall'entità che possiede un
+identificatore interno.\medskip\\
+\noindent
+\textbf{1. Traduzione di Nazione}
+L'entità Nazione possiede un identificatore
+interno costituito dall'attributo Nome.
+Viene quindi tradotta senza accorpamento:
+\[
+\text{Nazione}(\underline{\text{Nome}},
+\text{Fascia})
+\]
+\noindent
+\textbf{2. Traduzione di Città}
+L'entità Città possiede un identificatore
+principale esterno costituito da Nome e
+dalla partecipazione alla ER-relazione In.
+La ER-relazione In viene accorpata nella
+relazione Città, importando la chiave
+primaria di Nazione.
+Si ottiene:
+\[
+\text{Città}(
+\underline{\text{Nome},\text{Nazione}},
+\text{NumAbitanti})
+\]
+\[
+\begin{aligned}
+\text{foreign key:}\quad
+\text{Città}[\text{Nazione}]
+\subseteq \text{Nazione}[\text{Nome}]
+\end{aligned}
+\]
+\noindent
+L'attributo Nazione svolge contemporaneamente
+due funzioni:
+\begin{itemize}
+    \item partecipa alla chiave primaria
+    composta di Città;
+
+    \item costituisce una foreign key
+    verso la relazione Nazione.
+\end{itemize}
+\noindent
+Il solo nome della città non è sufficiente
+per identificarla, poiché possono esistere
+città con lo stesso nome in nazioni diverse.\medskip\\
+\noindent
+\textbf{3. Traduzione di Ditta}
+L'entità Ditta possiede un identificatore
+principale esterno costituito da Codice
+e dalla partecipazione alla ER-relazione Di.
+La ER-relazione Di viene accorpata nella
+relazione Ditta.
+Poiché Città possiede una chiave primaria
+composta, è necessario importare entrambi
+gli attributi che la costituiscono.
+Si ottiene:
+\[
+\begin{aligned}
+\text{Ditta}(&
+\underline{\text{Codice},\text{NomeCit},
+\text{Nazione}},\\
+&\text{AnnoFond})
+\end{aligned}
+\]
+\[
+\begin{aligned}
+\text{foreign key:}\quad
+&\text{Ditta}[\text{NomeCit},\text{Nazione}]\\
+&\subseteq
+\text{Città}[\text{Nome},\text{Nazione}]
+\end{aligned}
+\]
+\noindent
+La chiave primaria di Ditta è costituita
+da tre attributi:
+\[
+K_{\text{Ditta}}=
+\{\text{Codice},\text{NomeCit},\text{Nazione}\}
+\]
+\noindent
+La coppia $(\text{NomeCit},\text{Nazione})$
+costituisce una foreign key composta verso
+la relazione Città.
+Non sarebbe sufficiente importare solamente
+NomeCit, poiché tale attributo non identifica
+univocamente una città.\medskip\\
+\noindent
+\textbf{Osservazione:} in presenza di una
+catena di identificazioni esterne, le chiavi
+primarie vengono propagate lungo la catena.
+In questo esempio:
+\[
+\text{Nazione}
+\longrightarrow
+\text{Città}
+\longrightarrow
+\text{Ditta}
+\]
+\noindent
+L'identificatore di Nazione contribuisce
+all'identificatore di Città, che a sua volta
+contribuisce all'identificatore di Ditta.
+Le ER-relazioni In e Di non vengono tradotte
+in relazioni autonome, poiché sono state
+accorpate rispettivamente in Città e Ditta.
+È inoltre importante osservare che gli
+attributi importati per identificazione
+principale esterna non possono assumere
+valore NULL, sia perché partecipano alla
+chiave primaria, sia perché derivano da
+partecipazioni obbligatorie con cardinalità
+$(1,1)$.
+
+\subsubsection{Traduzione di entità con accorpamento:
+caso 2}
+
+Consideriamo il caso in cui una ER-relazione $R$
+sia parte dell'identificatore principale esterno
+di un'entità $E$, che partecipa ad $R$ con
+cardinalità $(1,1)$, mentre alcuni degli altri
+ruoli presentano cardinalità $(1,n)$.
+La ER-relazione $R$ viene accorpata nell'entità
+$E$ in modo analogo al caso 1.
+La differenza consiste nella necessità di
+introdurre ulteriori \textbf{vincoli di inclusione}
+per rappresentare la cardinalità minima pari a 1.
+In particolare, per ogni ruolo con cardinalità
+$(1,n)$, si introduce un vincolo di inclusione
+dalla chiave primaria dell'entità corrispondente
+verso gli attributi importati nella relazione $R_E$.\medskip\\
+\noindent
+\textcolor{verdeEsempio}{\textbf{Esempio. }}
+Accorpamento con cardinalità $(1,n)$.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\linewidth]{../images/log30.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+
+\noindent
+L'identificatore principale dell'entità $E$
+è costituito dall'attributo $A_3$ e dalla
+partecipazione alla ER-relazione $R$.
+La traduzione produce:
+
+\[
+E(A_1,A_2,\underline{A_3,F,G},D)
+\]
+\[
+\begin{aligned}
+\text{foreign key:}\quad &E[F]\subseteq F[B_1]\\
+\text{foreign key:}\quad &E[G]\subseteq G[C_1]\\
+\text{chiave:}\quad &A_1
+\end{aligned}
+\]
+
+\[
+F(\underline{B_1},B_2)
+\]
+
+\[
+G(\underline{C_1},C_2)
+\]
+
+\[
+\text{inclusione:}\quad G[C_1]\subseteq E[G]
+\]
+
+\noindent
+Il vincolo di foreign key
+
+\[
+E[G]\subseteq G[C_1]
+\]
+\noindent
+garantisce che ogni valore di $G$ presente
+nella relazione $E$ corrisponda ad un'istanza
+esistente dell'entità $G$.\\
+Il vincolo di inclusione inverso
+
+\[
+G[C_1]\subseteq E[G]
+\]
+\noindent
+garantisce invece che ogni istanza di $G$
+partecipi almeno una volta alla ER-relazione $R$,
+rispettando la cardinalità minima pari a 1.
+Combinando i due vincoli si ottiene:
+
+\[
+E[G]=G[C_1]
+\]
+\noindent
+Il secondo vincolo è un semplice vincolo di
+inclusione e non un vincolo di foreign key,
+poiché $G$ non costituisce da solo una chiave
+della relazione $E$.\medskip\\
+\noindent
+\textcolor{verdeEsempio}{\textbf{Esempio. }}
+Traduzione delle entità Ditta, Città e Nazione
+con partecipazione obbligatoria di Città.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{../images/log31.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+
+\noindent
+Rispetto all'esempio del caso 1, cambia la
+cardinalità con cui Città partecipa alla
+ER-relazione Di, che passa da $(0,n)$ a $(1,n)$.
+Questo significa che ogni città deve essere
+associata ad almeno una ditta.
+La traduzione delle entità rimane invariata:
+\[
+\text{Ditta}(
+\underline{\text{Codice},\text{NomeCit},
+\text{Nazione}},\text{AnnoFond})
+\]
+\[
+\begin{aligned}
+\text{foreign key:}\quad
+&\text{Ditta}[\text{NomeCit},\text{Nazione}]\\
+&\subseteq
+\text{Città}[\text{Nome},\text{Nazione}]
+\end{aligned}
+\]
+\[
+\text{Città}(
+\underline{\text{Nome},\text{Nazione}},
+\text{NumAbitanti})
+\]
+\[
+\text{foreign key:}\quad
+\text{Città}[\text{Nazione}]
+\subseteq \text{Nazione}[\text{Nome}]
+\]
+\[
+\text{Nazione}(\underline{\text{Nome}},
+\text{Fascia})
+\]
+\noindent
+Si aggiunge però il seguente vincolo:
+\[
+\begin{aligned}
+\text{inclusione:}\quad
+&\text{Città}[\text{Nome},\text{Nazione}]\\
+&\subseteq
+\text{Ditta}[\text{NomeCit},\text{Nazione}]
+\end{aligned}
+\]
+\noindent
+Tale vincolo garantisce che ogni città compaia
+almeno una volta nella relazione Ditta.
+Non si introduce un analogo vincolo per
+Nazione, poiché essa partecipa alla
+ER-relazione In con cardinalità $(0,n)$
+e può quindi non essere associata ad alcuna città.
+
+\subsubsection{Traduzione di entità con accorpamento:
+caso 3}
+Consideriamo il caso in cui una ER-relazione $R$
+costituisca l'intero \textbf{identificatore
+principale esterno} di un'entità $E$, e alcuni
+degli altri ruoli di $R$ presentino cardinalità
+$(1,n)$.
+La ER-relazione $R$ viene accorpata nell'entità
+$E$ secondo le regole dei casi precedenti.
+Vengono inoltre introdotti opportuni vincoli
+di inclusione per rappresentare le cardinalità
+minime pari a 1.
+La differenza rispetto ai casi 1 e 2 è che
+l'identificatore principale di $E$ non comprende
+alcun attributo proprio dell'entità $E$.
+Di conseguenza, la chiave primaria della
+relazione $R_E$ è costituita esclusivamente
+dagli attributi derivanti dall'identificazione
+esterna.\medskip\\
+\noindent
+\textcolor{verdeEsempio}{\textbf{Esempio. }}
+Identificatore principale interamente esterno.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{../images/log32.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent
+La ER-relazione $R$ costituisce l'intero
+identificatore principale dell'entità $E$.
+La traduzione produce:
+\[
+E(A_1,A_2,A_3,\underline{F,G},D)
+\]
+\[
+\begin{aligned}
+\text{foreign key:}\quad &E[F]\subseteq F[B_1]\\
+\text{foreign key:}\quad &E[G]\subseteq G[C_1]\\
+\text{chiave:}\quad &A_1
+\end{aligned}
+\]
+\[
+F(\underline{B_1},B_2)
+\]
+\[
+G(\underline{C_1},C_2)
+\]
+\[
+\text{inclusione:}\quad G[C_1]\subseteq E[G]
+\]
+\noindent
+La chiave primaria di $E$ è quindi:
+\[
+K_E=\{F,G\}
+\]
+\noindent
+A differenza del caso 2, l'attributo $A_3$
+non partecipa alla chiave primaria, poiché
+non fa parte dell'identificatore principale
+dell'entità $E$.
+L'attributo $A_1$ rimane una chiave alternativa,
+mentre il vincolo di inclusione su $G$
+garantisce la partecipazione obbligatoria
+di tale entità alla ER-relazione $R$.
+
+\subsubsection{Traduzione di entità con accorpamento:
+caso 4}
+Consideriamo il caso in cui una ER-relazione $R$
+costituisca l'identificatore principale esterno
+di un'entità $E$ e almeno uno degli altri ruoli
+di $R$ presenti cardinalità massima pari a 1.
+La ER-relazione $R$ viene accorpata nell'entità
+$E$ analogamente ai casi precedenti.
+Tuttavia, poiché alcuni ruoli presentano
+cardinalità massima pari a 1, non è necessario
+utilizzare tutte le chiavi primarie importate
+per identificare univocamente una tupla di $E$.
+La \textbf{chiave primaria} di $R_E$ viene
+scelta tra le chiavi primarie delle altre
+entità coinvolte in $R$ attraverso ruoli
+con cardinalità massima pari a 1.
+Le altre chiavi importate corrispondenti a
+ruoli con cardinalità massima pari a 1
+diventano chiavi non primarie.\medskip\\
+\noindent
+Se un ruolo presenta cardinalità:
+\begin{itemize}
+    \item $(0,1)$, gli attributi importati
+    costituiscono una chiave, ma non è
+    necessario imporre la partecipazione
+    obbligatoria dell'entità referenziata;
+
+    \item $(1,1)$, gli attributi importati
+    costituiscono una chiave ed è necessario
+    introdurre anche un vincolo di inclusione
+    inverso, che in questo caso è un vincolo
+    di foreign key.
+\end{itemize}
+\noindent
+\textcolor{verdeEsempio}{\textbf{Esempio. }}
+Accorpamento con più ruoli aventi cardinalità
+massima pari a 1.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{../images/log33.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent
+Nello schema ER:
+\begin{itemize}
+    \item $E$ partecipa ad $R$ con cardinalità
+    $(1,1)$;
+
+    \item $F$ partecipa ad $R$ con cardinalità
+    $(1,1)$;
+
+    \item $G$ partecipa attraverso il ruolo
+    $U_1$ con cardinalità $(1,1)$;
+
+    \item $G$ partecipa attraverso il ruolo
+    $U_2$ con cardinalità $(0,n)$.
+\end{itemize}
+\noindent
+Sia $F$ sia $U_1$ possono identificare
+univocamente una tupla della relazione $E$.
+Supponiamo di scegliere $F$ come chiave
+primaria di $E$.
+La traduzione produce:
+\[
+E(A_1,A_2,A_3,\underline{F},U_1,U_2,D)
+\]
+\[
+\begin{aligned}
+\text{foreign key:}\quad &E[F]\subseteq F[B_1]\\
+\text{foreign key:}\quad &E[U_1]\subseteq G[C_1]\\
+\text{foreign key:}\quad &E[U_2]\subseteq G[C_1]\\
+\text{chiave:}\quad &A_1\\
+\text{chiave:}\quad &U_1
+\end{aligned}
+\]
+\[
+F(\underline{B_1},B_2)
+\]
+\[
+\text{foreign key:}\quad F[B_1]\subseteq E[F]
+\]
+\[
+G(\underline{C_1},C_2)
+\]
+\[
+\text{foreign key:}\quad G[C_1]\subseteq E[U_1]
+\]
+\noindent
+In particolare:
+\begin{itemize}
+    \item $F$ è la chiave primaria di $E$,
+    poiché ogni istanza di $F$ partecipa
+    esattamente una volta ad $R$;
+
+    \item $U_1$ è una chiave alternativa,
+    poiché anche attraverso tale ruolo
+    ogni istanza di $G$ partecipa
+    esattamente una volta ad $R$;
+
+    \item $U_2$ è una semplice foreign key,
+    poiché attraverso tale ruolo una stessa
+    istanza di $G$ può partecipare più volte
+    ad $R$;
+
+    \item $A_1$ rimane una chiave alternativa
+    derivante dall'identificatore interno di $E$.
+\end{itemize}
+\noindent
+I vincoli inversi
+\[
+F[B_1]\subseteq E[F]
+\]
+\[
+G[C_1]\subseteq E[U_1]
+\]
+\noindent
+sono vincoli di foreign key, poiché gli
+attributi referenziati costituiscono delle
+chiavi della relazione $E$.
+Essi garantiscono la partecipazione obbligatoria
+di $F$ e di $G$, attraverso il ruolo $U_1$,
+alla ER-relazione $R$.\medskip\\
+\noindent
+\textcolor{verdeEsempio}{\textbf{Esempio. }}
+Traduzione delle entità Rettore e Università.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{../images/log34.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent
+Le entità Rettore e Università partecipano
+entrambe alla ER-relazione Di con cardinalità
+$(1,1)$.
+Ciò significa che:
+\begin{itemize}
+    \item ogni rettore è associato esattamente
+    ad un'università;
+
+    \item ogni università è associata
+    esattamente ad un rettore.
+\end{itemize}
+\noindent
+La ER-relazione Di costituisce l'identificatore
+principale esterno di Rettore e viene quindi
+accorpata nella relazione Rettore.
+L'attributo Inizio, appartenente alla
+ER-relazione Di, viene trasferito nella
+relazione Rettore.
+La traduzione produce:
+\[
+\text{Rettore}(
+\text{Cognome},\text{DataN},\text{Inizio},
+\underline{\text{Università}})
+\]
+\[
+\begin{aligned}
+\text{foreign key:}\quad
+&\text{Rettore}[\text{Università}]\\
+&\subseteq \text{Università}[\text{Nome}]\\
+\text{chiave:}\quad
+&\text{Cognome},\text{DataN}
+\end{aligned}
+\]
+\[
+\text{Università}(\underline{\text{Nome}},
+\text{Città})
+\]
+\[
+\begin{aligned}
+\text{foreign key:}\quad
+&\text{Università}[\text{Nome}]\\
+&\subseteq \text{Rettore}[\text{Università}]
+\end{aligned}
+\]
+\noindent
+L'attributo Università costituisce la chiave
+primaria di Rettore, poiché l'università
+identifica univocamente il proprio rettore.
+La coppia $(\text{Cognome},\text{DataN})$
+costituisce invece una chiave alternativa.
+I due vincoli di foreign key, in direzioni
+opposte, garantiscono che ogni rettore abbia
+un'università e che ogni università abbia
+un rettore.
+L'unicità delle chiavi garantisce inoltre
+che tale associazione sia uno a uno.
+
+\subsubsection{Traduzione di entità con accorpamento:
+caso 5}
+Consideriamo il caso in cui una ER-relazione $R$:
+\begin{itemize}
+    \item costituisca l'intero identificatore
+    principale esterno di un'entità $E$;
+
+    \item presenti alcuni ruoli con cardinalità
+    $(1,1)$;
+
+    \item possieda uno o più identificatori,
+    eventualmente costituiti anche da
+    attributi propri della ER-relazione.
+\end{itemize}
+\noindent
+La ER-relazione $R$ viene accorpata nell'entità
+$E$ analogamente ai casi precedenti.
+La particolarità di questo caso è che gli
+\textbf{identificatori della ER-relazione}
+devono essere tradotti in opportuni vincoli
+di chiave della relazione $R_E$.
+Pertanto, oltre alle chiavi derivanti dagli
+identificatori dell'entità $E$, si ottengono
+ulteriori chiavi derivanti dagli identificatori
+della ER-relazione accorpata.\medskip\\
+\noindent
+\textcolor{verdeEsempio}{\textbf{Esempio. }}
+Accorpamento di una ER-relazione dotata di
+identificatori propri.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{../images/log35.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent
+La ER-relazione $R$ possiede un identificatore
+costituito dalla partecipazione dell'entità
+$F$ e dall'attributo $D$.
+Inoltre, l'entità $G$ partecipa ad $R$ con
+cardinalità $(1,1)$.
+Scegliendo $G$ come chiave primaria di $E$,
+si ottiene:
+\[
+E(A_1,A_2,A_3,F,\underline{G},D)
+\]
+\[
+\begin{aligned}
+\text{foreign key:}\quad &E[F]\subseteq F[B_1]\\
+\text{foreign key:}\quad &E[G]\subseteq G[C_1]\\
+\text{chiave:}\quad &A_1\\
+\text{chiave:}\quad &F,D
+\end{aligned}
+\]
+\[
+F(\underline{B_1},B_2)
+\]
+\[
+G(\underline{C_1},C_2)
+\]
+\[
+\text{foreign key:}\quad G[C_1]\subseteq E[G]
+\]
+\noindent
+La relazione $E$ possiede quindi:
+\begin{itemize}
+    \item $G$ come chiave primaria;
+
+    \item $A_1$ come chiave alternativa,
+    derivante dall'identificatore interno di $E$;
+
+    \item $(F,D)$ come chiave alternativa,
+    derivante dall'identificatore della
+    ER-relazione $R$.
+\end{itemize}
+\noindent
+Il vincolo di chiave su $(F,D)$ garantisce
+che non possano esistere due tuple distinte
+di $E$ con gli stessi valori di $F$ e $D$.
+Tale vincolo preserva l'identificatore della
+ER-relazione $R$ anche dopo il suo accorpamento.
+Il vincolo di foreign key inverso su $G$
+garantisce invece la partecipazione obbligatoria
+di $G$ alla ER-relazione $R$.
+
+\subsubsection{Riepilogo dei cinque casi di accorpamento}
+
+I cinque casi di accorpamento si distinguono
+principalmente in base alla composizione
+dell'identificatore principale esterno,
+alle cardinalità degli altri ruoli e agli
+eventuali identificatori della ER-relazione.
+
+\begin{enumerate}
+    \item \textbf{Caso 1:} la ER-relazione è
+    parte dell'identificatore principale
+    esterno e tutti gli altri ruoli hanno
+    cardinalità $(0,n)$.
+
+    \item \textbf{Caso 2:} la ER-relazione è
+    parte dell'identificatore principale
+    esterno e alcuni degli altri ruoli hanno
+    cardinalità $(1,n)$.
+    Si aggiungono vincoli di inclusione inversi.
+
+    \item \textbf{Caso 3:} la ER-relazione
+    costituisce l'intero identificatore
+    principale esterno e alcuni degli altri
+    ruoli hanno cardinalità $(1,n)$.
+    La chiave primaria è costituita
+    esclusivamente dagli attributi importati.
+
+    \item \textbf{Caso 4:} la ER-relazione
+    costituisce l'intero identificatore
+    principale esterno e almeno uno degli
+    altri ruoli ha cardinalità massima 1.
+    Si sceglie la chiave primaria tra quelle
+    importate attraverso tali ruoli.
+
+    \item \textbf{Caso 5:} la ER-relazione
+    costituisce l'intero identificatore
+    principale esterno, alcuni degli altri
+    ruoli hanno cardinalità $(1,1)$ e sono
+    presenti identificatori propri della
+    ER-relazione.
+    Questi ultimi generano ulteriori
+    vincoli di chiave.
+\end{enumerate}
+
+\noindent
+In tutti i casi la ER-relazione accorpata
+non viene tradotta in una tabella autonoma.
+
+
+\subsection{Accorpamento di ER-relazioni derivanti
+da ISA o generalizzazioni}
+
+Un caso particolarmente importante di
+identificazione principale esterna è quello
+derivante dalla ristrutturazione di una
+relazione ISA o di una generalizzazione.
+Consideriamo una relazione ISA:
+\[
+E\ \text{ISA}\ F
+\]
+\noindent
+Durante la ristrutturazione dello schema ER,
+l'ISA viene sostituita da una ER-relazione
+binaria tra le entità $E$ ed $F$, con cardinalità:
+
+\begin{itemize}
+    \item $(1,1)$ dalla parte dell'entità figlia $E$;
+
+    \item $(0,1)$ dalla parte dell'entità padre $F$.
+\end{itemize}
+
+\noindent
+La ER-relazione introdotta costituisce
+l'identificatore principale esterno
+dell'entità figlia $E$.
+Durante la traduzione diretta, tale
+ER-relazione viene quindi accorpata nella
+relazione corrispondente all'entità figlia.
+In particolare:
+\begin{itemize}
+    \item la chiave primaria dell'entità padre
+    viene importata nella relazione
+    corrispondente all'entità figlia;
+
+    \item gli attributi importati diventano
+    anche la chiave primaria dell'entità figlia;
+
+    \item viene introdotto un vincolo di
+    foreign key dall'entità figlia verso
+    l'entità padre;
+
+    \item gli eventuali identificatori propri
+    dell'entità figlia diventano chiavi
+    alternative.
+\end{itemize}
+
+\noindent
+\textcolor{verdeEsempio}{\textbf{Esempio. }}
+Traduzione di una generica relazione ISA.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.25\linewidth]{../images/log36.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent
+Consideriamo $E$ come entità figlia di $F$,
+dove $F$ è identificata dall'attributo $B_1$.
+La traduzione produce:
+\[
+E(A_1,A_2,\underline{B_1})
+\]
+\[
+\begin{aligned}
+\text{foreign key:}\quad &E[B_1]\subseteq F[B_1]\\
+\text{chiave:}\quad &A_1
+\end{aligned}
+\]
+\[
+F(\underline{B_1},B_2)
+\]
+
+\noindent
+L'attributo $B_1$ svolge contemporaneamente
+il ruolo di chiave primaria di $E$ e di
+foreign key verso $F$.
+Il vincolo
+\[
+E[B_1]\subseteq F[B_1]
+\]
+\noindent
+garantisce che ogni istanza dell'entità figlia
+corrisponda ad un'istanza dell'entità padre.
+Non viene introdotto il vincolo inverso,
+poiché non tutte le istanze di $F$ devono
+necessariamente appartenere ad $E$.
+Il vincolo ISA dello schema ER originario
+viene quindi rappresentato mediante un
+vincolo di foreign key nello schema logico.\medskip\\
+\noindent
+\textcolor{verdeEsempio}{\textbf{Esempio. }}
+Traduzione della relazione Studente ISA Persona.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{../images/log37.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+
+\noindent
+L'entità Persona è identificata dalla coppia
+$(\text{Cognome},\text{DataN})$.
+L'entità Studente possiede inoltre un proprio
+identificatore, costituito dall'attributo
+Matricola.
+Poiché Studente è un'entità figlia di Persona,
+il suo identificatore principale esterno
+deriva dalla partecipazione alla ER-relazione
+introdotta durante la ristrutturazione dell'ISA.
+La traduzione produce:
+\[
+\begin{aligned}
+\text{Studente}(&
+\underline{\text{Cognome},\text{DataN}},\\
+&\text{Matricola},\text{MediaVoti})
+\end{aligned}
+\]
+\[
+\begin{aligned}
+\text{foreign key:}\quad
+&\text{Studente}[\text{Cognome},\text{DataN}]\\
+&\subseteq
+\text{Persona}[\text{Cognome},\text{DataN}]\\
+\text{chiave:}\quad &\text{Matricola}
+\end{aligned}
+\]
+\[
+\text{Persona}(
+\underline{\text{Cognome},\text{DataN}},
+\text{Indirizzo})
+\]
+\noindent
+La coppia $(\text{Cognome},\text{DataN})$
+costituisce contemporaneamente la chiave
+primaria di Studente e una foreign key
+composta verso Persona.
+Matricola costituisce invece una chiave
+alternativa di Studente.
+Non è necessario riportare Indirizzo nella
+relazione Studente, poiché tale informazione
+è già memorizzata nella relazione Persona
+e può essere recuperata mediante un join.
+Il vincolo di foreign key garantisce che
+ogni studente sia necessariamente una persona,
+ma non impone che ogni persona sia uno studente.
+
+\subsubsection{Accorpamento derivante da una
+generalizzazione non completa}
+Consideriamo una generalizzazione non completa
+con entità padre $P$ ed entità figlie $E_1$
+ed $E_2$.
+Durante la ristrutturazione vengono introdotte
+due ER-relazioni, una per ciascuna ISA.
+Tali ER-relazioni vengono successivamente
+accorpate nelle rispettive entità figlie.
+Ogni entità figlia eredita la chiave primaria
+dell'entità padre, che diventa anche una
+foreign key verso quest'ultima.
+Poiché la generalizzazione è disgiunta,
+è necessario introdurre un ulteriore
+\textbf{vincolo di disgiunzione}.
+Indicando con $K$ la chiave primaria
+dell'entità padre, si ottiene:
+\[
+E_1[K]\cap E_2[K]=\varnothing
+\]
+\noindent
+Poiché la generalizzazione non è completa,
+non è necessario che tutte le istanze
+dell'entità padre appartengano ad una
+delle entità figlie.\medskip\\
+\noindent
+\textcolor{verdeEsempio}{\textbf{Esempio. }}
+Generalizzazione non completa di Persona
+in Studente e Docente.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\linewidth]{../images/log38.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent
+La traduzione produce:
+\[
+\text{Persona}(
+\underline{\text{CodiceFiscale}},\text{Età})
+\]
+\[
+\text{Studente}(
+\underline{\text{CodiceFiscale}},\text{Matricola})
+\]
+\[
+\begin{aligned}
+\text{foreign key:}\quad
+&\text{Studente}[\text{CodiceFiscale}]\\
+&\subseteq \text{Persona}[\text{CodiceFiscale}]\\
+\text{chiave:}\quad &\text{Matricola}
+\end{aligned}
+\]
+\[
+\text{Docente}(
+\underline{\text{CodiceFiscale}},\text{Fascia})
+\]
+\[
+\begin{aligned}
+\text{foreign key:}\quad
+&\text{Docente}[\text{CodiceFiscale}]\\
+&\subseteq \text{Persona}[\text{CodiceFiscale}]
+\end{aligned}
+\]
+\noindent
+Il vincolo di generalizzazione viene tradotto
+nel seguente vincolo dello schema logico:
+\[
+\begin{aligned}
+&\text{Studente}[\text{CodiceFiscale}]
+\cap\\
+&\text{Docente}[\text{CodiceFiscale}]
+=\varnothing
+\end{aligned}
+\]
+\noindent
+Tale vincolo garantisce che uno stesso codice
+fiscale non possa comparire contemporaneamente
+nelle relazioni Studente e Docente.
+In questo specifico schema, una persona può
+quindi essere:
+\begin{itemize}
+    \item uno studente;
+
+    \item un docente;
+
+    \item né uno studente né un docente.
+\end{itemize}
+\noindent
+Non può invece appartenere contemporaneamente
+ad entrambe le entità figlie.
+Le sole foreign key non sono sufficienti
+a garantire la disgiunzione, poiché consentirebbero
+allo stesso codice fiscale di comparire
+in entrambe le relazioni figlie.
+
+\subsubsection{Accorpamento derivante da una
+generalizzazione completa}
+Nel caso di una generalizzazione completa
+e disgiunta, ogni istanza dell'entità padre
+deve appartenere esattamente ad una delle
+entità figlie.
+La traduzione avviene analogamente al caso
+della generalizzazione non completa.
+Tuttavia, oltre al vincolo di disgiunzione,
+è necessario introdurre un
+\textbf{vincolo di completezza}.
+Indicando con $P$ l'entità padre, con
+$E_1$ ed $E_2$ le entità figlie e con $K$
+la chiave primaria importata, si ottengono:
+\[
+E_1[K]\cap E_2[K]=\varnothing
+\]
+\[
+P[K]\subseteq E_1[K]\cup E_2[K]
+\]
+\noindent
+Il primo vincolo garantisce che ogni istanza
+appartenga al massimo ad una delle entità
+figlie.
+Il secondo garantisce che ogni istanza
+dell'entità padre appartenga almeno ad una
+delle entità figlie.
+Combinando questi vincoli con le foreign key
+dalle entità figlie verso l'entità padre,
+si ottiene:
+\[
+P[K]=E_1[K]\cup E_2[K]
+\]
+\noindent
+Le entità figlie costituiscono quindi una
+partizione delle istanze dell'entità padre.\medskip\\
+\noindent
+\textcolor{verdeEsempio}{\textbf{Esempio. }}
+Generalizzazione completa di Persona
+in Uomo e Donna, secondo lo schema della slide.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\linewidth]{../images/log39.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent
+La traduzione produce:
+\[
+\text{Persona}(
+\underline{\text{CodFiscale}},\text{Età})
+\]
+\[
+\text{Uomo}(
+\underline{\text{CodFiscale}},\text{ServMilitare})
+\]
+\[
+\begin{aligned}
+\text{foreign key:}\quad
+&\text{Uomo}[\text{CodFiscale}]\\
+&\subseteq \text{Persona}[\text{CodFiscale}]
+\end{aligned}
+\]
+\[
+\text{Donna}(
+\underline{\text{CodFiscale}},\text{CogNubile})
+\]
+\[
+\begin{aligned}
+\text{foreign key:}\quad
+&\text{Donna}[\text{CodFiscale}]\\
+&\subseteq \text{Persona}[\text{CodFiscale}]
+\end{aligned}
+\]
+\noindent
+Il vincolo di generalizzazione viene tradotto
+in due distinti vincoli.\medskip\\
+\noindent
+\textbf{Vincolo di disgiunzione:}
+\[
+\text{Uomo}[\text{CodFiscale}]
+\cap
+\text{Donna}[\text{CodFiscale}]
+=\varnothing
+\]
+\noindent
+Garantisce che nessuna istanza di Persona
+appartenga contemporaneamente ad entrambe
+le entità figlie.\medskip\\
+\noindent
+\textbf{Vincolo di completezza:}
+\[
+\begin{aligned}
+&\text{Persona}[\text{CodFiscale}]
+\subseteq\\
+&\text{Uomo}[\text{CodFiscale}]
+\cup
+\text{Donna}[\text{CodFiscale}]
+\end{aligned}
+\]
+\noindent
+Garantisce che ogni codice fiscale presente
+nella relazione Persona sia presente in
+almeno una delle due relazioni figlie.
+Complessivamente, secondo i vincoli previsti
+da questo schema, ogni istanza di Persona
+deve appartenere esattamente ad una delle
+due entità figlie.
