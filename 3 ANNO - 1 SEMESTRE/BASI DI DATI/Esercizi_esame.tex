@@ -113,7 +113,7 @@ ogni argomento interessa il codice e l’area disciplinare.\medskip\\
 \textbf{Soluzione. }
 \begin{figure}[H]
     \centering  
-    \includegraphics[width=0.6\linewidth]{../images/es16.png}
+    \includegraphics[width=0.7\linewidth]{../images/es16.png}
     %\caption{caption}
     %\label{label}
 \end{figure}
@@ -189,7 +189,44 @@ della relazione padre: ogni sua istanza
     da una specifica associazione tra entità.
 \end{itemize}
 
-
+\subsection*{Esercizio 22}
+\textbf{Richiesta. }Descrivere lo schema concettuale corrispondente ad un'applicazione
+riguardante un insieme di officine, facendo riferimento alle seguenti
+specifiche.\\
+Delle officine interessano: nome (che identifica le officine), indirizzo, numero
+di dipendenti (maggiore di 0), dipendenti (ciascuno con l'informazione su
+quanti sono i suoi anni di servizio), e direttore. Si noti che ogni officina ha
+uno ed un solo direttore, ed un direttore dirige una ed una sola officina. Dei
+dipendenti e dei direttori interessano: codice fiscale, indirizzo, numeri di
+telefono, e anni di anzianità. Dei direttori interessa anche l'età. Si noti che
+un direttore non è necessariamente un dipendente di officina (ma può
+esserlo). Ogni riparazione è effettuata da una ed una sola officina, e
+riguarda uno ed un solo veicolo. Di ogni riparazione interessano: codice
+(univoco nell'ambito dell'officina), ora e data di accettazione del veicolo, e,
+nel caso di riparazione terminata, ora e data di riconsegna del veicolo. Dei
+veicoli interessano: modello, tipo, targa, anno di immatricolazione, e
+proprietario. Ogni veicolo ha uno ed un solo proprietario. Dei proprietari di
+veicoli interessano: codice fiscale, indirizzo, e numeri di telefono.\medskip\\
+\textbf{Soluzione. }
+\begin{figure}[H]
+    \centering  
+    \includegraphics[width=0.65\linewidth]{../images/esercizio22.png}
+    %\caption{caption}
+    %\label{label}
+\end{figure}
+\noindent
+Nello schema, \textbf{Persona} raccoglie i dati comuni a direttori, dipendenti e proprietari, così il codice fiscale, l'indirizzo e i numeri di telefono si 
+registrano una sola volta. Il codice fiscale identifica la persona, mentre $(0,n)$ accanto al telefono indica che si possono registrare zero, uno o più numeri. 
+\textbf{Direttore} e \textbf{Dipendente} sono due sottotipi di Persona che possono sovrapporsi: chi dirige un'officina può anche lavorare come dipendente. 
+Entrambi i sottotipi hanno gli anni di anzianità, mentre solo per il direttore interessa l'età. Per leggere una relazione conviene chiedersi quante volte può 
+parteciparvi ciascun soggetto. In \textbf{Dirige} compare $(1,1)$ da entrambe le parti perché ogni officina ha esattamente un direttore e ogni direttore dirige 
+esattamente un'officina. In \textbf{Lavora} compare invece $(1,n)$ da entrambe le parti: ogni officina ha almeno un dipendente e, nella soluzione proposta, 
+un dipendente può lavorare in più officine. Questo spiega perché \textbf{AnniServizio} è collegato a Lavora: se Anna lavora da cinque anni nell'officina Alfa 
+e da due nella Beta, il valore dipende dalla coppia dipendente--officina. Per ogni officina, \textbf{NumDip} deve quindi coincidere con il numero di dipendenti 
+collegati tramite Lavora. Ogni \textbf{Riparazione} è effettuata da una sola officina e riguarda un solo veicolo. Per identificarla servono sia il nome dell'officina 
+sia il codice della riparazione, perché Alfa e Beta potrebbero entrambe registrare una riparazione con codice~7. Data e ora di accettazione appartengono a tutte le riparazioni, 
+mentre data e ora di riconsegna appartengono al sottotipo \textbf{Terminata}, perché si conoscono soltanto quando il veicolo viene riconsegnato. La riconsegna deve avvenire dopo l'accettazione. 
+Infine, la targa identifica il \textbf{Veicolo} e la relazione \textbf{Possiede} lo collega a una sola persona: partecipare a questa relazione è ciò che rende quella persona proprietaria del veicolo.
 \section{Teoria}
 \subsection{Vincoli di integrità}
 \textbf{Richiesta. }Cos'è un vincolo di integrità?\\
