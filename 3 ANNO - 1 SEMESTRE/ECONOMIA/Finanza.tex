@@ -7437,3 +7437,406 @@ ai vincoli sulla vendita allo scoperto.
 \noindent Il mispricing può persistere
 anche se alcuni investitori
 lo riconoscono.
+\section{Il metodo AHP}
+
+\noindent L'\textbf{Analytic Hierarchy Process} (AHP) aiuta a scegliere
+quando contano più cose insieme. Per esempio, un robot può costare meno
+di un altro, ma essere meno preciso. Per decidere, prima stabiliamo quanto
+conta ogni criterio e poi valutiamo i robot rispetto a ciascun criterio.
+
+\subsection*{Obiettivo, criteri e alternative}
+
+\begin{enumerate}
+    \item \textbf{Gerarchia.} In alto mettiamo l'obiettivo, sotto
+        i criteri ed eventuali sottocriteri, in fondo le alternative.
+    \item \textbf{Confronti a coppie.} Confrontiamo due elementi
+        alla volta rispetto allo stesso elemento del livello superiore.
+    \item \textbf{Priorità.} Trasformiamo i giudizi in pesi e controlliamo
+        se i confronti sono abbastanza coerenti fra loro.
+    \item \textbf{Sintesi.} Combiniamo le priorità locali e verifichiamo
+        se la scelta cambia quando cambiano i pesi dei criteri.
+\end{enumerate}
+
+\noindent Nell'esempio, l'obiettivo è scegliere un robot.
+I criteri sono costo, precisione e carico utile.
+Sotto ciascun criterio confrontiamo tutti e tre i robot.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{../images/ahp_gerarchia_robot.png}
+    \caption{Obiettivo, criteri e alternative nella scelta del robot.}
+    %\label{fig:ahp_gerarchia_robot}
+\end{figure}
+
+\subsection*{Come si costruisce la matrice}
+
+\noindent La \textbf{scala di Saaty} traduce il giudizio in un numero.
+La domanda è: quanto conta l'elemento della \textbf{riga}
+rispetto a quello della \textbf{colonna}?
+\begin{center}
+    \begin{tabular}{cl}
+        \hline
+        Valore & Importanza della riga rispetto alla colonna \\
+        \hline
+        1 & Uguale \\
+        3 & Moderata \\
+        5 & Forte \\
+        7 & Molto forte \\
+        9 & Estrema \\
+        2, 4, 6, 8 & Giudizi intermedi \\
+        \hline
+    \end{tabular}
+\end{center}
+
+\noindent Se il costo è moderatamente più importante della precisione,
+scriviamo $3$ in riga Costo e colonna Precisione. Scambiando riga e
+colonna scriviamo $1/3$. Un criterio confrontato con se stesso vale $1$:
+\[
+    a_{ii}=1,\qquad a_{ji}=\frac{1}{a_{ij}}.
+\]
+
+\noindent La matrice è \textbf{positiva} perché tutti i valori sono
+maggiori di zero e \textbf{reciproca} perché i due versi del confronto
+sono uno l'inverso dell'altro. Con $n$ elementi dello stesso gruppo
+basta definire i confronti sopra la diagonale:
+\[
+    \text{Confronti da dare}=\frac{n(n-1)}{2}.
+\]
+\noindent Con tre criteri servono tre giudizi. I confronti tra loro
+riguardano l'obiettivo. I confronti tra i robot riguardano, ogni volta,
+un singolo criterio.
+
+\subsection*{Consistenza, autovettore e pesi}
+
+\noindent I giudizi sono \textbf{perfettamente consistenti} quando
+si incastrano tutti. Se $A$ vale il doppio di $B$ e $B$ vale tre
+volte $C$, allora $A$ deve valere sei volte $C$:
+\[
+    a_{ij}=\frac{w_i}{w_j},
+    \qquad a_{ij}a_{jk}=a_{ik},
+    \qquad \sum_i w_i=1.
+\]
+
+\noindent Nell'esempio delle slide, le righe indicano Stato,
+Accessibilità e Risparmio di tempo. La matrice è:
+\[
+    A=\begin{pmatrix}
+        1 & 1/2 & 3\\
+        2 & 1 & 6\\
+        1/3 & 1/6 & 1
+    \end{pmatrix}.
+\]
+\noindent Dividiamo ogni valore della prima colonna per
+$1+2+1/3=10/3$. Otteniamo i pesi $30\%$, $60\%$ e $10\%$.
+Con consistenza perfetta, normalizzando le altre colonne
+si trovano gli stessi pesi.
+
+\noindent Un \textbf{autovettore} è un vettore che, dopo la
+moltiplicazione per $A$, rimane sulla stessa retta. L'\textbf{autovalore}
+è il numero per cui viene moltiplicato. Nel caso perfettamente
+consistente, ogni prodotto $a_{ij}w_j$ vale $w_i$:
+\[
+    (Aw)_i=\sum_j a_{ij}w_j
+    =\sum_j\frac{w_i}{w_j}w_j=nw_i.
+\]
+\noindent Quindi $Aw=nw$. Le righe sono proporzionali, la matrice
+ha rango $1$ e gli altri $n-1$ autovalori sono zero.
+
+\noindent Se i confronti sono incoerenti, il metodo classico di
+Saaty usa l'\textbf{autovettore principale}:
+\[
+    Aw=\lambda_{\max}w,\qquad w_i>0,\qquad \sum_i w_i=1.
+\]
+\noindent Il teorema di Perron--Frobenius garantisce un autovettore
+principale positivo per questa matrice. Gli autovalori si possono
+cercare risolvendo $\det(A-\lambda I)=0$, dove $I$ è la matrice
+identità. Si possono trovare i pesi anche per via numerica.
+
+\subsection*{Tre modi per ottenere i pesi}
+
+\begin{enumerate}
+    \item \textbf{Colonne normalizzate.} Dividiamo ogni valore
+        per la somma della sua colonna, poi facciamo la media di ogni riga.
+    \item \textbf{Media geometrica.} Moltiplichiamo i valori della riga,
+        prendiamo la radice $n$-esima e dividiamo per la somma dei risultati:
+        \[
+            g_i=\left(\prod_{j=1}^n a_{ij}\right)^{1/n},
+            \qquad w_i=\frac{g_i}{\sum_k g_k}.
+        \]
+    \item \textbf{Autovettore principale.} Con il metodo delle potenze
+        partiamo da pesi uguali, moltiplichiamo per $A$ e dividiamo
+        per la somma delle nuove componenti. Ripetiamo finché i pesi
+        cambiano poco:
+        \[
+            w^{(k+1)}=\frac{Aw^{(k)}}{\sum_i(Aw^{(k)})_i}.
+        \]
+\end{enumerate}
+
+\noindent Con giudizi perfettamente consistenti questi metodi danno
+gli stessi pesi. Negli altri casi i risultati possono differire.
+
+\subsection*{Esempio di incoerenza e controllo con il CR}
+
+\noindent Riprendiamo la matrice precedente. Cambiamo da $6$ a $4$
+il confronto Accessibilità/Risparmio di tempo e, per reciprocità,
+da $1/6$ a $1/4$ quello inverso. Ora Stato/Accessibilità vale $1/2$,
+Accessibilità/Risparmio vale $4$, ma Stato/Risparmio vale $3$.
+I primi due rapporti suggerirebbero invece $(1/2)\cdot 4=2$.
+
+\noindent Partendo da $w^{(0)}=(1/3,1/3,1/3)^{\mathsf{T}}$,
+il primo prodotto dà $3/2$, $7/3$ e $19/36$.
+La loro somma è $157/36$, quindi:
+\[
+    w^{(1)}=\frac{1}{157}(54,84,19)^{\mathsf{T}}.
+\]
+\noindent Ripetendo, i pesi si stabilizzano sui valori:
+\[
+    \text{Stato }31{,}96\%,\qquad
+    \text{Accessibilità }55{,}84\%,\qquad
+    \text{Risparmio }12{,}20\%.
+\]
+
+\noindent Per controllare la coerenza calcoliamo la media dei rapporti
+$(Aw)_i/w_i$. Con l'autovettore esatto i rapporti sono tutti uguali
+a $\lambda_{\max}$:
+\[
+    \lambda_{\max}\approx\frac{1}{n}\sum_i\frac{(Aw)_i}{w_i},
+    \qquad CI=\frac{\lambda_{\max}-n}{n-1},
+    \qquad CR=\frac{CI}{RI_n}.
+\]
+\noindent Per una matrice positiva e reciproca, $\lambda_{\max}\ge n$.
+Vale $n$ quando i confronti sono perfettamente consistenti. Il $CI$
+misura lo scarto da quel caso. L'$RI_n$ è un valore di riferimento
+ottenuto da matrici reciproche con giudizi casuali. Dipende da $n$:
+\begin{center}
+    \begin{tabular}{c|cccccccc}
+        $n$ & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 \\
+        \hline
+        $RI_n$ & 0,58 & 0,90 & 1,12 & 1,24 & 1,32 & 1,41 & 1,45 & 1,49
+    \end{tabular}
+\end{center}
+
+\noindent Nell'esempio $n=3$, $\lambda_{\max}\approx 3{,}02$
+e $RI_3=0{,}58$. Tenendo la precisione nei calcoli intermedi,
+si ottiene $CR\approx1{,}58\%$. È sotto il $10\%$, la soglia
+orientativa usata nelle slide. Il $CR$ misura solo quanto
+i giudizi sono coerenti fra loro.
+
+\subsection*{AHP completo, AHP ibrido e limiti}
+
+\noindent Nell'\textbf{AHP completo} usiamo confronti a coppie sia per
+i criteri sia per le alternative sotto ogni criterio. Nell'\textbf{AHP
+ibrido} usiamo i confronti per i pesi dei criteri e una funzione
+dichiarata per convertire i dati tecnici in punteggi comparabili.
+Per il costo, ad esempio, una spesa minore dà una priorità maggiore.
+
+\noindent Un tetto di budget obbligatorio si applica prima della
+classifica: le alternative oltre il tetto sono inammissibili.
+Si possono anche studiare costi e benefici separatamente se è utile
+per la decisione.
+
+\noindent Due criteri sovrapposti rischiano di contare due volte
+la stessa cosa. Pesi diversi fra decisori possono dare scelte diverse.
+In alcune versioni dell'AHP, aggiungere un'alternativa può perfino
+cambiare l'ordine tra alternative già presenti (\emph{rank reversal}).
+
+\subsection{Esercitazione AHP sulla scelta di un robot}
+
+\subsection*{Richiamo e formula}
+
+\noindent Il peso $w_j$ dice quanto conta il criterio $j$.
+La priorità locale $p_{ij}$ dice quanto è preferito il robot $i$
+per quel criterio. Come già visto per le medie ponderate,
+moltiplichiamo ogni priorità per il peso e sommiamo:
+\[
+    S_i=\sum_j w_j p_{ij}.
+\]
+
+\subsection*{Dati e pesi dei criteri}
+
+\begin{center}
+    \begin{tabular}{lrrr}
+        \hline
+        Criterio & Robot A & Robot B & Robot C \\
+        \hline
+        Prezzo & 25.000 & 32.000 & 28.000 \\
+        Errore (mm) & 0,08 & 0,03 & 0,05 \\
+        Carico (kg) & 8 & 12 & 10 \\
+        \hline
+    \end{tabular}
+\end{center}
+
+\noindent Vogliamo un prezzo basso, un errore piccolo e un carico alto.
+Le righe e le colonne della matrice dei criteri sono nell'ordine
+\textbf{costo, precisione, carico}:
+\[
+    A_{\text{criteri}}=\begin{pmatrix}
+        1 & 3 & 5\\
+        1/3 & 1 & 2\\
+        1/5 & 1/2 & 1
+    \end{pmatrix}.
+\]
+\noindent Per la media geometrica moltiplichiamo i numeri di ogni
+riga e facciamo la radice cubica. Otteniamo:
+\[
+    (g_1,g_2,g_3)=
+    \left(\sqrt[3]{15},\sqrt[3]{2/3},\sqrt[3]{1/10}\right).
+\]
+\noindent Dividendo ciascun risultato per la somma dei tre,
+i pesi sono $64{,}83\%$, $22{,}97\%$ e $12{,}20\%$.
+Per questa matrice $3\times3$ reciproca, la media geometrica
+dà gli stessi pesi dell'autovettore principale.
+
+\subsection*{Confronti locali e classifica finale}
+
+\noindent Le matrici dei robot hanno righe e colonne nell'ordine
+$A,B,C$. Per il costo il robot $A$ è preferito a $B$ con intensità
+$3$ e a $C$ con intensità $2$.
+\[
+    A_{\text{costo}}=\begin{pmatrix}
+        1 & 3 & 2\\
+        1/3 & 1 & 1/2\\
+        1/2 & 2 & 1
+    \end{pmatrix}.
+\]
+\[
+    A_{\text{precisione}}=\begin{pmatrix}
+        1 & 1/5 & 1/3\\
+        5 & 1 & 3\\
+        3 & 1/3 & 1
+    \end{pmatrix},
+    \qquad
+    A_{\text{carico}}=\begin{pmatrix}
+        1 & 1/3 & 1/2\\
+        3 & 1 & 2\\
+        2 & 1/2 & 1
+    \end{pmatrix}.
+\]
+
+\noindent Per il costo, i prodotti di riga sono $6$, $1/6$ e $1$.
+Facciamo le radici cubiche e le dividiamo per la loro somma.
+Ripetiamo per precisione e carico e otteniamo queste priorità locali:
+\begin{center}
+    \begin{tabular}{lrrr}
+        \hline
+        Robot & Costo & Precisione & Carico \\
+        \hline
+        A & 53,96\% & 10,47\% & 16,34\% \\
+        B & 16,34\% & 63,70\% & 53,96\% \\
+        C & 29,70\% & 25,83\% & 29,70\% \\
+        \hline
+    \end{tabular}
+\end{center}
+
+\noindent Per $A$, moltiplichiamo ciascuna priorità locale
+per il peso del relativo criterio. Qui sotto le percentuali
+sono mostrate con due decimali:
+\begin{align*}
+    S_A &\approx \frac{64{,}83\cdot53{,}96
+                     +22{,}97\cdot10{,}47
+                     +12{,}20\cdot16{,}34}{100}\,\%
+          \approx 39{,}38\%, \\
+    S_B &\approx 31{,}81\%, \qquad S_C \approx 28{,}81\%.
+\end{align*}
+\noindent \textbf{Vince il robot A.} B è migliore per precisione
+e carico, ma A è il migliore nel criterio che qui pesa di più,
+cioè il costo.
+
+\subsection*{Analisi di sensibilità}
+
+\noindent Come già visto con il diagramma Tornado, cambiamo un'ipotesi
+e osserviamo l'effetto. Qui lasciamo ferme le priorità locali e
+proviamo un nuovo insieme di pesi: costo $30\%$, precisione $55\%$,
+carico $15\%$. Rifacendo le somme si ottiene:
+\[
+    S_A\approx24{,}40\%,\quad
+    S_B\approx48{,}03\%,\quad
+    S_C\approx27{,}57\%.
+\]
+
+\noindent \textbf{Vince il robot B.} La scelta cambia perché,
+dando più importanza alla precisione, il vantaggio di B conta di più.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{../images/ahp_sensibilita_robot.png}
+    \caption{Classifica dei robot al variare dei pesi dei criteri.}
+    %\label{fig:ahp_sensibilita_robot}
+\end{figure}
+
+\subsection{Esercitazione AHP sulla scelta di una piattaforma cloud}
+
+\subsection*{Richiamo e dati}
+
+\noindent Come sopra, troviamo i pesi dei criteri con la media
+geometrica e sommiamo le priorità locali pesate, $S_i=\sum_j w_jp_{ij}$.
+La slide lascia al gruppo la scelta dei giudizi. Quello che segue
+è un esempio di svolgimento.
+
+\begin{center}
+    \begin{tabular}{lrrr}
+        \hline
+        Criterio & A & B & C \\
+        \hline
+        Costo mensile & 120 & 170 & 140 \\
+        Disponibilità & 99,50\% & 99,95\% & 99,80\% \\
+        Latenza (ms) & 65 & 35 & 45 \\
+        \hline
+    \end{tabular}
+\end{center}
+
+\noindent Assumiamo un tetto di spesa di $170{,}00$ al mese.
+Passano tutte e tre. Vogliamo spendere meno, avere il servizio
+disponibile più spesso e aspettare meno la risposta.
+Disponibilità e latenza misurano cose diverse: se il servizio
+funziona e quanto velocemente risponde quando funziona.
+
+\subsection*{Pesi e classifica}
+
+\noindent Per un servizio in cui è importante evitare le interruzioni,
+scegliamo questi giudizi: disponibilità rispetto a costo vale $3$,
+disponibilità rispetto a latenza vale $5$ e costo rispetto a latenza
+vale $2$. Scriviamo la matrice in ordine costo, disponibilità, latenza:
+\[
+    A_{\text{criteri}}=\begin{pmatrix}
+        1 & 1/3 & 2\\
+        3 & 1 & 5\\
+        1/2 & 1/5 & 1
+    \end{pmatrix}.
+\]
+\noindent I prodotti di riga sono $2/3$, $15$ e $1/10$.
+Prendendo le radici cubiche e normalizzando, otteniamo $22{,}97\%$,
+$64{,}83\%$ e $12{,}20\%$. Il $CR$ dei criteri è circa $0{,}32\%$.
+
+\noindent Per ogni criterio, la terna seguente indica i confronti
+$A/B$, $A/C$, $B/C$. Le altre caselle si ottengono con i reciproci.
+\begin{center}
+    \begin{tabular}{lccc}
+        \hline
+        Criterio & $A/B$ & $A/C$ & $B/C$ \\
+        \hline
+        Costo & 3 & 2 & 1/2 \\
+        Disponibilità & 1/5 & 1/3 & 3 \\
+        Latenza & 1/3 & 1/2 & 2 \\
+        \hline
+    \end{tabular}
+\end{center}
+
+\noindent Per esempio, $A/B=1/5$ per la disponibilità vuol dire
+che, nel nostro giudizio, B è fortemente preferita ad A su quel
+criterio. I numeri della tabella esprimono preferenze di esempio.
+
+\noindent Le tre matrici locali hanno la stessa struttura di quelle
+del robot: costo, precisione e carico diventano qui costo,
+disponibilità e latenza. Usiamo quindi le stesse priorità locali
+della tabella precedente. Con i nuovi pesi, per B otteniamo:
+\begin{align*}
+    S_B &\approx \frac{22{,}97\cdot16{,}34
+                    +64{,}83\cdot63{,}70
+                    +12{,}20\cdot53{,}96}{100}\,\%
+          \approx 51{,}64\%, \\
+    S_A &\approx 21{,}18\%, \qquad S_C\approx 27{,}19\%.
+\end{align*}
+\noindent Con queste preferenze \textbf{si sceglie B}.
+È quella con la disponibilità più alta, che è il criterio
+a cui abbiamo dato più peso.
